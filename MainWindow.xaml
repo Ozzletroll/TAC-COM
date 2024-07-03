@@ -4,9 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TAC_COM"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        mc:Ignorable="d" FontSize="18"
+        Title="TAC/COM" Height="450" Width="800">
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="2" Grid.Row="1"
+                   Text="TAC/COM" FontFamily="Calibri" FontWeight="Bold" FontSize="24"  Foreground="#FFA90000"/>
+        <TextBlock Grid.Column="2" Grid.Row="2" 
+                   Text="COMMUNICATIONS::INTERFACE" FontFamily="Calibri" FontSize="12" Foreground="#FFA90000"/>
+        <Menu Grid.Column="2" Grid.Row="4" Background="White">
+            <Label HorizontalAlignment="Left" Width="90">
+                <TextBlock TextWrapping="WrapWithOverflow" Foreground="#FFA90000">
+                    INPUT DEVICE
+                </TextBlock>
+            </Label>
+            <ComboBox Width="120"/>
+
+        </Menu>
     </Grid>
 </Window>
