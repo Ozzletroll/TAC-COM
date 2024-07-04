@@ -35,7 +35,7 @@
                     INPUT DEVICE
                 </TextBlock>
             </Label>
-            <ComboBox Width="120"/>
+            <ComboBox x:Name="MicSelection" Width="184" SelectionChanged="MicSelection_SelectionChanged"></ComboBox>
 
         </Menu>
     </Grid>
