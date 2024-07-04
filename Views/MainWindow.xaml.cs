@@ -20,5 +20,10 @@ namespace TAC_COM
         {
             InitializeComponent();
         }
+
+        private void MicSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
