@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TAC_COM"
-        xmlns:views="clr-namespace:TAC_COM.Views"
+        xmlns:views="clr-namespace:TAC_COM.Views" 
+        xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels"
         mc:Ignorable="d" FontSize="18"
         Title="TAC/COM" Height="450" Width="800">
     <Grid>
-        <views:AudioInterfaceView />
+        <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

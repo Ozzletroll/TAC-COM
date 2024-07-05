@@ -4,12 +4,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAC_COM.Models;
+
 
 namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private ObservableCollection<string> allInputDevices;
+        private readonly AudioManager audioManager = new();
+
+        private ObservableCollection<string> allInputDevices = [];
         public ObservableCollection<string> AllInputDevices
         {
             get => allInputDevices;
@@ -20,18 +24,23 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private int activeDevice;
-        public int ActiveDevice
+        private string selectedInputDevice;
+        public string SelectedInputDevice
         {
-            get
-            {
-                return activeDevice;
-            }
+            get => selectedInputDevice;
             set
             {
-                activeDevice = value;
-                OnPropertyChanged(nameof(ActiveDevice));
+                selectedInputDevice = value;
+                // Handle selection change if needed
+                // (e.g., update other properties or perform actions)
             }
+        }
+
+        public AudioInterfaceViewModel()
+        {
+            // Initialize the AllInputDevices collection
+            AllInputDevices = new ObservableCollection<string>(
+                audioManager.audioDevices.Select(device => device.ProductName));
         }
     }
 }

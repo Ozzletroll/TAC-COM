@@ -1,6 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,24 +11,20 @@ namespace TAC_COM.Models
 {
     internal class AudioManager
     {
-        private List<WaveInCapabilities> audioDevices;
+        public List<WaveInCapabilities> audioDevices = [];
 
         public AudioManager()
         {
-            audioDevices = GetAudioDevices();
+            GetAudioDevices();
         }
 
-        public List<WaveInCapabilities> GetAudioDevices()
+        private void GetAudioDevices()
         {
             // Get all available input devices
-            var inputDevices = new List<WaveInCapabilities>();
             for (int i = 0; i < WaveIn.DeviceCount; i++)
             {
-                inputDevices.Add(WaveIn.GetCapabilities(i));
+                audioDevices.Add(WaveIn.GetCapabilities(i));
             }
-
-            audioDevices = inputDevices;
-            return inputDevices;
         }
 
     }
