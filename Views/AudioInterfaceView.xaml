@@ -13,8 +13,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
@@ -33,17 +31,56 @@
         <TextBlock Grid.Column="2" Grid.Row="2" 
             Text="COMMUNICATIONS::INTERFACE" FontFamily="Calibri" FontSize="12" 
             Foreground="#FFA90000"/>
-        <Menu Grid.Column="2" Grid.Row="4" Background="White">
-            <Label HorizontalAlignment="Left" Width="90">
+        <Menu Grid.Column="2" Grid.Row="4" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <Label HorizontalAlignment="Left" Width="93">
                 <TextBlock TextWrapping="WrapWithOverflow" 
                     Foreground="#FFA90000">
              INPUT DEVICE
                 </TextBlock>
             </Label>
+            
             <ComboBox x:Name="MicSelection" Width="184"
                       ItemsSource="{Binding AllInputDevices}"
-                      SelectedItem="{Binding SelectedInputDevice}">
+                      SelectedItem="{Binding SelectedInputDevice}" 
+                      SelectionChanged="MicSelection_SelectionChanged"
+                      Text="SELECT INPUT DEVICE" IsEditable="True" IsReadOnly="True" FontFamily="Calibri">
+                <ComboBox.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="#FFBDB6B6" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.Background>
             </ComboBox>
+
+            <ToggleButton Width="108" HorizontalAlignment="Center"
+             Foreground="White" BorderBrush="#FF560404" 
+             Checked="TogglePilotComms_Checked" Unchecked="TogglePilotComms_Unchecked" VerticalAlignment="Center">
+                <ToggleButton.Style>
+                    <Style TargetType="ToggleButton">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#FF730000"/>
+                                <Setter Property="Content" Value="DEACTIVATE"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Background" Value="#FFBB0000"/>
+                                <Setter Property="Content" Value="ACTIVATE"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            
         </Menu>
     </Grid>
 </UserControl>

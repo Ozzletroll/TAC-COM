@@ -13,7 +13,7 @@ namespace TAC_COM.ViewModels
     {
         private readonly AudioManager audioManager = new();
 
-        private ObservableCollection<string> allInputDevices = [];
+        private ObservableCollection<string> allInputDevices;
         public ObservableCollection<string> AllInputDevices
         {
             get => allInputDevices;
