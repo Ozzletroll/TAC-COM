@@ -1,10 +1,12 @@
-﻿using NAudio.Wave;
+﻿using CSCore.CoreAudioAPI;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 using TAC_COM.Models;
 
 
@@ -18,51 +20,32 @@ namespace TAC_COM.ViewModels
             get => audioManager;
         }
 
-
-        private ObservableCollection<string> allInputDevices;
-        public ObservableCollection<string> AllInputDevices
+        public List<MMDevice> AllDevices
         {
-            get => allInputDevices;
-            set
-            {
-                allInputDevices = value;
-                OnPropertyChanged(nameof(AllInputDevices));
-            }
+            get => audioManager.audioDevices;
         }
 
-        private int selectedIndex;
         public int SelectedIndex
         {
-            get => selectedIndex;
-            set
-            {
-                selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
-                audioManager.SetInputDevice(value);
-            }
+            set => audioManager.SetInputDevice(value);
         }
 
-        private int audioEnabled;
-        public int AudioEnabled
+        public bool ToggleState
         {
-            get => audioEnabled;
+            get => audioManager.state;
             set
             {
-                audioEnabled = value;
-                OnPropertyChanged(nameof(AudioEnabled));
-                audioManager.ToggleState(Convert.ToBoolean(audioEnabled));
+                audioManager.state = value;
+                audioManager.ToggleState();
+                OnPropertyChanged(nameof(AudioManager.state));
             }
         }
 
         public AudioInterfaceViewModel()
         {
             audioManager = new AudioManager();
-
-            // Initialize the AllInputDevices collection
-            AllInputDevices = new ObservableCollection<string>(
-                audioManager.audioDevices.Select(device => device.ProductName));
-
         }
 
     }
 }
+ 

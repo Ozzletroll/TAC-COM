@@ -41,7 +41,7 @@
             </Label>
 
             <ComboBox x:Name="MicSelection" Width="184"
-                      ItemsSource="{Binding AllInputDevices}"
+                      ItemsSource="{Binding AllDevices}"
                       SelectedIndex="{Binding SelectedIndex}" 
                       Text="SELECT INPUT DEVICE" FontFamily="Calibri" IsReadOnly="True">
                 <ComboBox.Background>
@@ -54,7 +54,7 @@
 
             <ToggleButton Width="108" HorizontalAlignment="Center"
              Foreground="White" BorderBrush="#FF560404" 
-             IsChecked="{Binding AudioEnabled}" VerticalAlignment="Center">
+             IsChecked="{Binding ToggleState}" VerticalAlignment="Center">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
                         <Setter Property="Template">
@@ -80,7 +80,8 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
-            <ProgressBar Value="{Binding AudioManager.LevelMeter}" Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>
+            <ProgressBar Value="{Binding AudioManager.PeakMeter}"
+            Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>
 
         </Menu>
 

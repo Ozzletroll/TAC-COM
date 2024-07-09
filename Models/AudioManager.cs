@@ -1,105 +1,104 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using CSCore;
+using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
+using CSCore.SoundOut;
+using CSCore.Streams;
+using CSCore.Streams.Effects;
 
 namespace TAC_COM.Models
 {
     internal class AudioManager : ModelBase
+
     {
-        public List<WaveInCapabilities> audioDevices = [];
+        private MMDevice activeDevice;
+        public List<MMDevice> audioDevices = [];
+        private WasapiCapture capture;
 
-        private WaveInEvent selectedInputDevice;
-        private BufferedWaveProvider bufferedWaveProvider;
+        public bool state;
 
-        private float levelMeter;
-        public float LevelMeter
+        private float peakMeter;
+        public float PeakMeter
         {
-            get => levelMeter;
+            get => peakMeter;
             set
             {
-                levelMeter = value;
-                OnPropertyChanged(nameof(levelMeter));
+                peakMeter = value;
+                OnPropertyChanged(nameof(peakMeter));
+            }
+        }
+
+        private void GetAudioDevices()
+        {
+            audioDevices.Clear();
+
+            var enumerator = new MMDeviceEnumerator();
+            var allDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
+
+            foreach (var device in allDevices)
+            {
+                audioDevices.Add(device);
+            }
+
+            OnPropertyChanged(nameof(audioDevices));
+        }
+
+        public void SetInputDevice(int deviceNumber)
+        {
+            activeDevice = audioDevices[deviceNumber];
+        }
+
+        public void ToggleState()
+        {
+            if (state == true)
+            {
+                if (activeDevice == null)
+                {
+                    state = false;
+                    OnPropertyChanged(nameof(state));
+                    return;
+                }
+
+                
+                capture.Device = activeDevice;
+                capture.Initialize();
+
+                // Subscribe to the DataAvailable event
+                capture.DataAvailable += (s, capData) =>
+                {
+                    // Handle the captured audio data (e.g., save to a buffer or file)
+                    // capData.Data contains the audio samples as byte array
+                    // You can process or save this data as needed
+
+                    using var meter = AudioMeterInformation.FromDevice(activeDevice);
+                    {
+                        PeakMeter = meter.PeakValue * 100;
+                        Console.WriteLine(peakMeter);
+                    }
+                };
+
+                // Start capturing
+                capture.Start();
+
+            }
+            else
+            {
+                Console.WriteLine("OFF");
+                capture.Stop();
             }
         }
 
         public AudioManager()
         {
             GetAudioDevices();
+            capture = new WasapiCapture(false, AudioClientShareMode.Shared);
         }
-
-        private void GetAudioDevices()
-        {
-            // Get all available input devices
-            for (int i = 0; i < WaveIn.DeviceCount; i++)
-            {
-                audioDevices.Add(WaveIn.GetCapabilities(i));
-            }
-
-        }
-
-        public void SetInputDevice(int deviceNumber)
-        {
-            selectedInputDevice = new WaveInEvent() { DeviceNumber = deviceNumber };
-        }
-
-        public void ToggleState(bool state)
-        {
-            if (state == true)
-            {
-                selectedInputDevice.WaveFormat = new WaveFormat(44100, 1); // Mono, 44.1 kHz
-                selectedInputDevice.DataAvailable += OnDataAvailable;
-                selectedInputDevice.RecordingStopped += OnRecordingStopped;
-                selectedInputDevice.StartRecording();
-
-                //var waveOut = new WaveOut();
-                //bufferedWaveProvider = new BufferedWaveProvider(selectedInputDevice.WaveFormat);
-                //waveOut.Init(bufferedWaveProvider);
-                //waveOut.Play();
-            }
-            else
-            {
-                selectedInputDevice.StopRecording();
-                Console.WriteLine("Deactivated");
-            }
-            
-        }
-
-        void OnDataAvailable(object sender, WaveInEventArgs args)
-        {
-            
-            // Apply processing logic here
-            // bufferedWaveProvider.AddSamples(args.Buffer, 0, args.BytesRecorded);
-
-            // Update level meter value
-            float max = 0;
-
-            // interpret as 16 bit audio
-            for (int index = 0; index < args.BytesRecorded; index += 2)
-            {
-                short sample = (short)((args.Buffer[index + 1] << 8) |
-                                        args.Buffer[index + 0]);
-                // Convert to float
-                var sample32 = sample / 32768f;
-                // Get absolute value
-                if (sample32 < 0) sample32 = -sample32;
-                // Update max value
-                if (sample32 > max) max = sample32;
-            }
-
-            LevelMeter = 100 * max;
-            Console.WriteLine(levelMeter);
-        }
-
-        private void OnRecordingStopped(object sender, StoppedEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
 
     }
 }
