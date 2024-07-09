@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +12,12 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private readonly AudioManager audioManager = new();
+        private readonly AudioManager audioManager;
+        public AudioManager AudioManager
+        {
+            get => audioManager;
+        }
+
 
         private ObservableCollection<string> allInputDevices;
         public ObservableCollection<string> AllInputDevices
@@ -24,23 +30,39 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private string selectedInputDevice;
-        public string SelectedInputDevice
+        private int selectedIndex;
+        public int SelectedIndex
         {
-            get => selectedInputDevice;
+            get => selectedIndex;
             set
             {
-                selectedInputDevice = value;
-                // Handle selection change if needed
-                // (e.g., update other properties or perform actions)
+                selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+                audioManager.SetInputDevice(value);
+            }
+        }
+
+        private int audioEnabled;
+        public int AudioEnabled
+        {
+            get => audioEnabled;
+            set
+            {
+                audioEnabled = value;
+                OnPropertyChanged(nameof(AudioEnabled));
+                audioManager.ToggleState(Convert.ToBoolean(audioEnabled));
             }
         }
 
         public AudioInterfaceViewModel()
         {
+            audioManager = new AudioManager();
+
             // Initialize the AllInputDevices collection
             AllInputDevices = new ObservableCollection<string>(
                 audioManager.audioDevices.Select(device => device.ProductName));
+
         }
+
     }
 }

@@ -25,20 +25,5 @@ namespace TAC_COM.Views
             InitializeComponent();
         }
 
-        private void TogglePilotComms_Checked(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("TOGGLED ON");
-            Console.WriteLine(sender);
-        }
-
-        private void TogglePilotComms_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("TOGGLED OFF");
-        }
-
-        private void MicSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

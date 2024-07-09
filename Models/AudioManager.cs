@@ -9,13 +9,23 @@ using System.Windows.Controls;
 
 namespace TAC_COM.Models
 {
-    internal class AudioManager
+    internal class AudioManager : ModelBase
     {
         public List<WaveInCapabilities> audioDevices = [];
 
         private WaveInEvent selectedInputDevice;
         private BufferedWaveProvider bufferedWaveProvider;
-        public float levelMeter;
+
+        private float levelMeter;
+        public float LevelMeter
+        {
+            get => levelMeter;
+            set
+            {
+                levelMeter = value;
+                OnPropertyChanged(nameof(levelMeter));
+            }
+        }
 
         public AudioManager()
         {
@@ -53,6 +63,7 @@ namespace TAC_COM.Models
             }
             else
             {
+                selectedInputDevice.StopRecording();
                 Console.WriteLine("Deactivated");
             }
             
@@ -80,14 +91,13 @@ namespace TAC_COM.Models
                 if (sample32 > max) max = sample32;
             }
 
-            levelMeter = 100 * max;
-
+            LevelMeter = 100 * max;
             Console.WriteLine(levelMeter);
         }
 
         private void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 

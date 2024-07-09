@@ -32,19 +32,18 @@
             Text="COMMUNICATIONS::INTERFACE" FontFamily="Calibri" FontSize="12" 
             Foreground="#FFA90000"/>
         <Menu Grid.Column="2" Grid.Row="4" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
-            
+
             <Label HorizontalAlignment="Left" Width="93">
                 <TextBlock TextWrapping="WrapWithOverflow" 
                     Foreground="#FFA90000">
              INPUT DEVICE
                 </TextBlock>
             </Label>
-            
+
             <ComboBox x:Name="MicSelection" Width="184"
                       ItemsSource="{Binding AllInputDevices}"
-                      SelectedItem="{Binding SelectedInputDevice}" 
-                      SelectionChanged="MicSelection_SelectionChanged"
-                      Text="SELECT INPUT DEVICE" IsEditable="True" IsReadOnly="True" FontFamily="Calibri">
+                      SelectedIndex="{Binding SelectedIndex}" 
+                      Text="SELECT INPUT DEVICE" FontFamily="Calibri" IsReadOnly="True">
                 <ComboBox.Background>
                     <LinearGradientBrush EndPoint="0,1">
                         <GradientStop Color="#FFF0F0F0"/>
@@ -55,7 +54,7 @@
 
             <ToggleButton Width="108" HorizontalAlignment="Center"
              Foreground="White" BorderBrush="#FF560404" 
-             Checked="TogglePilotComms_Checked" Unchecked="TogglePilotComms_Unchecked" VerticalAlignment="Center">
+             IsChecked="{Binding AudioEnabled}" VerticalAlignment="Center">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton">
                         <Setter Property="Template">
@@ -80,7 +79,14 @@
                     </Style>
                 </ToggleButton.Style>
             </ToggleButton>
-            
+
+            <TextBlock Text="{Binding LevelMeter}" />
+            <TextBlock Text="{Binding AudioManager.LevelMeter}" />
+            <!--<ProgressBar Value="{Binding LevelMeter}" Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>-->
+
         </Menu>
+
+
+
     </Grid>
 </UserControl>
