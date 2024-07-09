@@ -80,9 +80,7 @@
                 </ToggleButton.Style>
             </ToggleButton>
 
-            <TextBlock Text="{Binding LevelMeter}" />
-            <TextBlock Text="{Binding AudioManager.LevelMeter}" />
-            <!--<ProgressBar Value="{Binding LevelMeter}" Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>-->
+            <ProgressBar Value="{Binding AudioManager.LevelMeter}" Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>
 
         </Menu>
 
