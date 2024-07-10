@@ -21,7 +21,16 @@ namespace TAC_COM.Models
         public List<MMDevice> audioDevices = [];
         private WasapiCapture capture;
 
-        public bool state;
+        private bool state;
+        public bool State
+        {
+            get => state;
+            set
+            {
+                state = value;
+                OnPropertyChanged(nameof(State));
+            }
+        }
 
         private float peakMeter;
         public float PeakMeter
@@ -56,41 +65,39 @@ namespace TAC_COM.Models
 
         public void ToggleState()
         {
-            if (state == true)
+            if (state)
             {
                 if (activeDevice == null)
                 {
-                    state = false;
-                    OnPropertyChanged(nameof(state));
+                    State = false;
                     return;
                 }
 
-                
                 capture.Device = activeDevice;
                 capture.Initialize();
-
-                // Subscribe to the DataAvailable event
-                capture.DataAvailable += (s, capData) =>
-                {
-                    // Handle the captured audio data (e.g., save to a buffer or file)
-                    // capData.Data contains the audio samples as byte array
-                    // You can process or save this data as needed
-
-                    using var meter = AudioMeterInformation.FromDevice(activeDevice);
-                    {
-                        PeakMeter = meter.PeakValue * 100;
-                        Console.WriteLine(peakMeter);
-                    }
-                };
-
-                // Start capturing
+                capture.DataAvailable += OnDataAvailable;
+                capture.Stopped += OnStopped;
                 capture.Start();
-
             }
             else
             {
-                Console.WriteLine("OFF");
                 capture.Stop();
+            }
+        }
+
+        void OnStopped(object? sender, RecordingStoppedEventArgs e)
+        {
+            PeakMeter = 0;
+        }
+
+        void OnDataAvailable(object? sender, DataAvailableEventArgs e)
+        {
+            // Handle the captured audio data
+            // e.Data contains the audio samples as byte array
+
+            using var meter = AudioMeterInformation.FromDevice(activeDevice);
+            {
+                PeakMeter = meter.PeakValue * 100;
             }
         }
 

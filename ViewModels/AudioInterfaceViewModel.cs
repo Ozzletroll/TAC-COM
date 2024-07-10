@@ -32,12 +32,12 @@ namespace TAC_COM.ViewModels
 
         public bool ToggleState
         {
-            get => audioManager.state;
+            get => audioManager.State;
             set
             {
-                audioManager.state = value;
+                audioManager.State = value;
                 audioManager.ToggleState();
-                OnPropertyChanged(nameof(AudioManager.state));
+                OnPropertyChanged(nameof(AudioManager.State));
             }
         }
 
