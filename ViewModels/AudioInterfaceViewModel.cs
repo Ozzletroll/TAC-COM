@@ -20,15 +20,26 @@ namespace TAC_COM.ViewModels
             get => audioManager;
         }
 
-        public List<MMDevice> AllDevices
+        public List<MMDevice> AllInputDevices
         {
-            get => audioManager.audioDevices;
+            get => audioManager.inputDevices;
         }
 
-        public int SelectedIndex
+        public List<MMDevice> AllOutputDevices
+        {
+            get => audioManager.outputDevices;
+        }
+
+        public int SelectedInputIndex
         {
             set => audioManager.SetInputDevice(value);
         }
+
+        public int SelectedOutputIndex
+        {
+            set => audioManager.SetOutputDevice(value);
+        }
+
 
         public bool ToggleState
         {

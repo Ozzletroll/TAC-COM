@@ -31,61 +31,91 @@
         <TextBlock Grid.Column="2" Grid.Row="2" 
             Text="COMMUNICATIONS::INTERFACE" FontFamily="Calibri" FontSize="12" 
             Foreground="#FFA90000"/>
-        <Menu Grid.Column="2" Grid.Row="4" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <Label HorizontalAlignment="Left" Width="93">
-                <TextBlock TextWrapping="WrapWithOverflow" 
-                    Foreground="#FFA90000">
-             INPUT DEVICE
-                </TextBlock>
-            </Label>
+        <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
 
-            <ComboBox x:Name="MicSelection" Width="184"
-                      ItemsSource="{Binding AllDevices}"
-                      SelectedIndex="{Binding SelectedIndex}" 
-                      Text="SELECT INPUT DEVICE" FontFamily="Calibri" IsReadOnly="True">
-                <ComboBox.Background>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#FFF0F0F0"/>
-                        <GradientStop Color="#FFBDB6B6" Offset="1"/>
-                    </LinearGradientBrush>
-                </ComboBox.Background>
-            </ComboBox>
+            <StackPanel Width="360" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        INPUT
+                    </TextBlock>
+                </Label>
 
-            <ToggleButton Width="108" HorizontalAlignment="Center"
-             Foreground="White" BorderBrush="#FF560404" 
-             IsChecked="{Binding ToggleState}" VerticalAlignment="Center">
-                <ToggleButton.Style>
-                    <Style TargetType="ToggleButton">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Background" Value="#FF730000"/>
-                                <Setter Property="Content" Value="DEACTIVATE"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="False">
-                                <Setter Property="Background" Value="#FFBB0000"/>
-                                <Setter Property="Content" Value="ACTIVATE"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ToggleButton.Style>
-            </ToggleButton>
+                <ComboBox x:Name="MicSelection" Width="250" 
+                          ItemsSource="{Binding AllInputDevices}"
+                          SelectedIndex="{Binding SelectedInputIndex}" 
+                          Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="12"
+                          IsReadOnly="True" IsEditable="True" 
+                          VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="#FFBDB6B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
+                </ComboBox>
+            </StackPanel>
 
-            <ProgressBar Value="{Binding AudioManager.PeakMeter}"
-            Orientation="Vertical" Height="100" Width="20" Foreground="#FFBD0000" Background="#FFE6E6E6"/>
+            <StackPanel Width="360" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        OUTPUT
+                    </TextBlock>
+                </Label>
 
-        </Menu>
+                <ComboBox x:Name="OutputSelection" Width="250"
+                          ItemsSource="{Binding AllOutputDevices}"
+                          SelectedIndex="{Binding SelectedOutputIndex}" 
+                          Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="12"
+                          IsReadOnly="True" IsEditable="True" 
+                          VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="#FFBDB6B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
+                </ComboBox>
+            </StackPanel>
 
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="10">
+                <ToggleButton Width="108" HorizontalAlignment="Center" 
+                              Foreground="White" BorderBrush="#FF560404"
+                              IsChecked="{Binding ToggleState}" VerticalAlignment="Center" Cursor="Hand">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF730000"/>
+                                    <Setter Property="Content" Value="DEACTIVATE"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="#FFBB0000"/>
+                                    <Setter Property="Content" Value="ACTIVATE"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
 
+                <ProgressBar Value="{Binding AudioManager.PeakMeter}" 
+                             Orientation="Vertical" Height="Auto" Width="5"  Margin="10, 0, 0, 0"
+                             Foreground="#FFBD0000" Background="#FFE6E6E6"/>
+            </StackPanel>
+            
+
+      
+        </StackPanel>
 
     </Grid>
 </UserControl>

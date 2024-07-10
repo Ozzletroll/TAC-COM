@@ -17,8 +17,10 @@ namespace TAC_COM.Models
     internal class AudioManager : ModelBase
 
     {
-        private MMDevice activeDevice;
-        public List<MMDevice> audioDevices = [];
+        private MMDevice activeInputDevice;
+        private MMDevice activeOutputDevice;
+        public List<MMDevice> inputDevices = [];
+        public List<MMDevice> outputDevices = [];
         private WasapiCapture capture;
 
         private bool state;
@@ -45,35 +47,47 @@ namespace TAC_COM.Models
 
         private void GetAudioDevices()
         {
-            audioDevices.Clear();
+            inputDevices.Clear();
 
             var enumerator = new MMDeviceEnumerator();
-            var allDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
+            var allInputDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
+            var allOutputDevices = enumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active);
 
-            foreach (var device in allDevices)
+            foreach (var device in allInputDevices)
             {
-                audioDevices.Add(device);
+                inputDevices.Add(device);
+            }
+            foreach (var device in allOutputDevices)
+            {
+                outputDevices.Add(device);
             }
 
-            OnPropertyChanged(nameof(audioDevices));
+            OnPropertyChanged(nameof(inputDevices));
+            OnPropertyChanged(nameof(outputDevices));
         }
 
         public void SetInputDevice(int deviceNumber)
         {
-            activeDevice = audioDevices[deviceNumber];
+            activeInputDevice = inputDevices[deviceNumber];
+        }
+
+        internal void SetOutputDevice(int value)
+        {
+            activeOutputDevice = outputDevices[value];
+            Console.WriteLine(activeOutputDevice);
         }
 
         public void ToggleState()
         {
             if (state)
             {
-                if (activeDevice == null)
+                if (activeInputDevice == null)
                 {
                     State = false;
                     return;
                 }
 
-                capture.Device = activeDevice;
+                capture.Device = activeInputDevice;
                 capture.Initialize();
                 capture.DataAvailable += OnDataAvailable;
                 capture.Stopped += OnStopped;
@@ -85,20 +99,20 @@ namespace TAC_COM.Models
             }
         }
 
-        void OnStopped(object? sender, RecordingStoppedEventArgs e)
-        {
-            PeakMeter = 0;
-        }
-
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             // Handle the captured audio data
             // e.Data contains the audio samples as byte array
 
-            using var meter = AudioMeterInformation.FromDevice(activeDevice);
+            using var meter = AudioMeterInformation.FromDevice(activeInputDevice);
             {
                 PeakMeter = meter.PeakValue * 100;
             }
+        }
+
+        void OnStopped(object? sender, RecordingStoppedEventArgs e)
+        {
+            PeakMeter = 0;
         }
 
         public AudioManager()
