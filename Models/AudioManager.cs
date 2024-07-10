@@ -74,14 +74,13 @@ namespace TAC_COM.Models
         internal void SetOutputDevice(int value)
         {
             activeOutputDevice = outputDevices[value];
-            Console.WriteLine(activeOutputDevice);
         }
 
         public void ToggleState()
         {
             if (state)
             {
-                if (activeInputDevice == null)
+                if (activeInputDevice == null || activeOutputDevice == null)
                 {
                     State = false;
                     return;
