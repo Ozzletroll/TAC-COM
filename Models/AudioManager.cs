@@ -21,7 +21,8 @@ namespace TAC_COM.Models
         private MMDevice activeOutputDevice;
         public List<MMDevice> inputDevices = [];
         public List<MMDevice> outputDevices = [];
-        private WasapiCapture capture;
+        private WasapiCapture input;
+        private WasapiOut output;
 
         private bool state;
         public bool State
@@ -86,15 +87,24 @@ namespace TAC_COM.Models
                     return;
                 }
 
-                capture.Device = activeInputDevice;
-                capture.Initialize();
-                capture.DataAvailable += OnDataAvailable;
-                capture.Stopped += OnStopped;
-                capture.Start();
+                input.Device = activeInputDevice;
+                input.Initialize();
+                input.DataAvailable += OnDataAvailable;
+                input.Stopped += OnStopped;
+                input.Start();
+
+                IWaveSource outputSource = new SoundInSource(input) { FillWithZeros = true };
+                output.Device = activeOutputDevice;
+                output.Initialize(outputSource);
+                output.Play();
             }
             else
             {
-                capture.Stop();
+                input.Stop();
+                input.Dispose();
+
+                output.Stop();
+                output.Dispose();
             }
         }
 
@@ -117,7 +127,8 @@ namespace TAC_COM.Models
         public AudioManager()
         {
             GetAudioDevices();
-            capture = new WasapiCapture(false, AudioClientShareMode.Shared);
+            input = new WasapiCapture(false, AudioClientShareMode.Shared);
+            output = new WasapiOut();
         }
 
     }
