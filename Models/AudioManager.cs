@@ -70,11 +70,15 @@ namespace TAC_COM.Models
         public void SetInputDevice(int deviceNumber)
         {
             activeInputDevice = inputDevices[deviceNumber];
+            StopAudio();
+            ToggleState();
         }
 
         internal void SetOutputDevice(int value)
         {
             activeOutputDevice = outputDevices[value];
+            StopAudio();
+            ToggleState();
         }
 
         public void ToggleState()
@@ -86,7 +90,18 @@ namespace TAC_COM.Models
                     State = false;
                     return;
                 }
+                StartAudio();
+            }
+            else
+            {
+                StopAudio();
+            }
+        }
 
+        void StartAudio()
+        {
+            if (activeInputDevice != null && activeOutputDevice != null)
+            {
                 input = new WasapiCapture(false, AudioClientShareMode.Shared);
                 output = new WasapiOut();
 
@@ -101,11 +116,18 @@ namespace TAC_COM.Models
                 output.Initialize(outputSource);
                 output.Play();
             }
-            else
+        }
+
+        void StopAudio()
+        {
+            if (input != null)
             {
                 input.Stop();
                 input.Dispose();
-
+            }
+            
+            if (output != null)
+            {
                 output.Stop();
                 output.Dispose();
             }
