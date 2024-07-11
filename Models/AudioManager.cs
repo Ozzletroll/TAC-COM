@@ -87,6 +87,9 @@ namespace TAC_COM.Models
                     return;
                 }
 
+                input = new WasapiCapture(false, AudioClientShareMode.Shared);
+                output = new WasapiOut();
+
                 input.Device = activeInputDevice;
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
@@ -127,8 +130,6 @@ namespace TAC_COM.Models
         public AudioManager()
         {
             GetAudioDevices();
-            input = new WasapiCapture(false, AudioClientShareMode.Shared);
-            output = new WasapiOut();
         }
 
     }
