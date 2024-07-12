@@ -1,5 +1,4 @@
 ﻿using CSCore.CoreAudioAPI;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

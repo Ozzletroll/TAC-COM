@@ -24,6 +24,7 @@ namespace TAC_COM.Models
         public List<MMDevice> outputDevices = [];
         private WasapiCapture input;
         private WasapiOut output;
+        private AudioProcessor audioProcessor;
 
         private bool state;
         public bool State
@@ -111,16 +112,15 @@ namespace TAC_COM.Models
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
                 input.Stopped += OnStopped;
-                IWaveSource outputSource = new SoundInSource(input) { FillWithZeros = true };
                 input.Start();
 
                 // Initiliase effects chain
-                var effect1 = new DmoEchoEffect(outputSource);
-                var effect2 = new DmoFlangerEffect(effect1);
+                audioProcessor = new AudioProcessor(input);
+                var processedOutput = audioProcessor.Output();
 
                 // Initialise output
                 output.Device = activeOutputDevice;
-                output.Initialize(effect2);
+                output.Initialize(processedOutput);
                 output.Play();
             }
         }
