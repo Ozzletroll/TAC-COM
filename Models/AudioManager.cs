@@ -11,6 +11,7 @@ using CSCore.SoundIn;
 using CSCore.SoundOut;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
+using TAC_COM.Audio;
 
 namespace TAC_COM.Models
 {
@@ -105,15 +106,21 @@ namespace TAC_COM.Models
                 input = new WasapiCapture(false, AudioClientShareMode.Shared);
                 output = new WasapiOut();
 
+                // Initialise input
                 input.Device = activeInputDevice;
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
                 input.Stopped += OnStopped;
+                IWaveSource outputSource = new SoundInSource(input) { FillWithZeros = true };
                 input.Start();
 
-                IWaveSource outputSource = new SoundInSource(input) { FillWithZeros = true };
+                // Initiliase effects chain
+                var effect1 = new DmoEchoEffect(outputSource);
+                var effect2 = new DmoFlangerEffect(effect1);
+
+                // Initialise output
                 output.Device = activeOutputDevice;
-                output.Initialize(outputSource);
+                output.Initialize(effect2);
                 output.Play();
             }
         }
@@ -136,8 +143,6 @@ namespace TAC_COM.Models
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             // Handle the captured audio data
-            // e.Data contains the audio samples as byte array
-
             using var meter = AudioMeterInformation.FromDevice(activeInputDevice);
             {
                 PeakMeter = meter.PeakValue * 100;
