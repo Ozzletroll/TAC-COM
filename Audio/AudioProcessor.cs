@@ -30,20 +30,23 @@ namespace TAC_COM.Audio
             // Convert IWaveSource to SampleSource
             var sampleSource = outputSource.ToSampleSource();
 
+            // Gate
+            var gatedSource = new Gate(sampleSource);
+
             // Lowpass filter
-            var removedLowEnd = sampleSource
+            var removedLowEnd = gatedSource
                 .AppendSource(x => new BiQuadFilterSource(x));
             removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
 
             // Highpass filter
             var removedHighEnd = removedLowEnd
                 .AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 4000);
+            removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 6000);
 
-            //// Peak filter
+            // Peak filter
             var peakFiltered = removedHighEnd
                 .AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 700, 1000, 5);
+            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 2000, 500, 10);
 
             // Convert back to IWaveSource
             var filteredSource = peakFiltered.ToWaveSource();
@@ -62,8 +65,8 @@ namespace TAC_COM.Audio
             var distortion = new DmoDistortionEffect(compressor)
             {
                 Gain = -30,
-                Edge = 15,
-                PostEQCenterFrequency = 2400,
+                Edge = 25,
+                PostEQCenterFrequency = 3000,
                 PostEQBandwidth = 2400,
                 PreLowpassCutoff = 8000
             };
