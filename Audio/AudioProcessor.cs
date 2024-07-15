@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using CSCore.SoundIn;
 using CSCore.DMO.Effects;
 using CSCore.DSP;
+using TAC_COM.Audio.Effects;
 
 namespace TAC_COM.Audio
 {
@@ -32,20 +33,20 @@ namespace TAC_COM.Audio
             // Lowpass filter
             var removedLowEnd = sampleSource
                 .AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 600);
+            removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
 
             // Highpass filter
             var removedHighEnd = removedLowEnd
                 .AppendSource(x => new BiQuadFilterSource(x));
             removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 4000);
 
-            // Peak filter
+            //// Peak filter
             var peakFiltered = removedHighEnd
                 .AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 700, 1000, 12);
+            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 700, 1000, 5);
 
             // Convert back to IWaveSource
-            var filteredSource = peakFiltered.ToWaveSource();
+            var filteredSource = removedHighEnd.ToWaveSource();
 
             // Compression
             var compressor = new DmoCompressorEffect(filteredSource)
@@ -62,9 +63,9 @@ namespace TAC_COM.Audio
             {
                 Gain = -30,
                 Edge = 15,
-                PostEQCenterFrequency = 1500,
+                PostEQCenterFrequency = 2400,
                 PostEQBandwidth = 2400,
-                PreLowpassCutoff = 4000
+                PreLowpassCutoff = 8000
             };
 
             return distortion;
