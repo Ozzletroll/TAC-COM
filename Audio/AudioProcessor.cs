@@ -46,7 +46,7 @@ namespace TAC_COM.Audio
             peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 700, 1000, 5);
 
             // Convert back to IWaveSource
-            var filteredSource = removedHighEnd.ToWaveSource();
+            var filteredSource = peakFiltered.ToWaveSource();
 
             // Compression
             var compressor = new DmoCompressorEffect(filteredSource)
@@ -75,16 +75,16 @@ namespace TAC_COM.Audio
     public class BiQuadFilterSource : SampleAggregatorBase
     {
         private readonly object _lockObject = new object();
-        private BiQuad _biquad;
+        private BiQuad biquad;
 
         public BiQuad Filter
         {
-            get { return _biquad; }
+            get { return biquad; }
             set
             {
                 lock (_lockObject)
                 {
-                    _biquad = value;
+                    biquad = value;
                 }
             }
         }
