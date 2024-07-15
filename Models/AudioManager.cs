@@ -104,7 +104,7 @@ namespace TAC_COM.Models
         {
             if (activeInputDevice != null && activeOutputDevice != null)
             {
-                input = new WasapiCapture(false, AudioClientShareMode.Shared);
+                input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
                 output = new WasapiOut();
 
                 // Initialise input
@@ -116,11 +116,10 @@ namespace TAC_COM.Models
 
                 // Initiliase effects chain
                 audioProcessor = new AudioProcessor(input);
-                var processedOutput = audioProcessor.Output();
 
                 // Initialise output
                 output.Device = activeOutputDevice;
-                output.Initialize(processedOutput);
+                output.Initialize(audioProcessor.Output());
                 output.Play();
             }
         }

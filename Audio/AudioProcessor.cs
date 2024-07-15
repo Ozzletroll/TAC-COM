@@ -9,13 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using CSCore.SoundIn;
+using CSCore.DMO.Effects;
+using CSCore.DSP;
 
 namespace TAC_COM.Audio
 {
     internal class AudioProcessor
     {
 
-        public IWaveSource outputSource;
+        private readonly IWaveSource outputSource;
 
         public AudioProcessor(WasapiCapture input)
         {
@@ -24,9 +26,87 @@ namespace TAC_COM.Audio
 
         internal IWaveSource Output()
         {
-            var effect1 = new DmoEchoEffect(outputSource);
-            var effect2 = new DmoFlangerEffect(effect1);
-            return effect2;
+            // Convert IWaveSource to SampleSource
+            var sampleSource = outputSource.ToSampleSource();
+
+            // Lowpass filter
+            var removedLowEnd = sampleSource
+                .AppendSource(x => new BiQuadFilterSource(x));
+            removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 600);
+
+            // Highpass filter
+            var removedHighEnd = removedLowEnd
+                .AppendSource(x => new BiQuadFilterSource(x));
+            removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 4000);
+
+            // Peak filter
+            var peakFiltered = removedHighEnd
+                .AppendSource(x => new BiQuadFilterSource(x));
+            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 700, 1000, 12);
+
+            // Convert back to IWaveSource
+            var filteredSource = peakFiltered.ToWaveSource();
+
+            // Compression
+            var compressor = new DmoCompressorEffect(filteredSource)
+            {
+                Attack = 0.5f,
+                Gain = 10,
+                Ratio = 20,
+                Release = 200,
+                Threshold = -20
+            };
+
+            // Distortion
+            var distortion = new DmoDistortionEffect(compressor)
+            {
+                Gain = -30,
+                Edge = 15,
+                PostEQCenterFrequency = 1500,
+                PostEQBandwidth = 2400,
+                PreLowpassCutoff = 4000
+            };
+
+            return distortion;
+        }
+    }
+
+    public class BiQuadFilterSource : SampleAggregatorBase
+    {
+        private readonly object _lockObject = new object();
+        private BiQuad _biquad;
+
+        public BiQuad Filter
+        {
+            get { return _biquad; }
+            set
+            {
+                lock (_lockObject)
+                {
+                    _biquad = value;
+                }
+            }
+        }
+
+        public BiQuadFilterSource(ISampleSource source) : base(source)
+        {
+        }
+
+        public override int Read(float[] buffer, int offset, int count)
+        {
+            int read = base.Read(buffer, offset, count);
+            lock (_lockObject)
+            {
+                if (Filter != null)
+                {
+                    for (int i = 0; i < read; i++)
+                    {
+                        buffer[i + offset] = Filter.Process(buffer[i + offset]);
+                    }
+                }
+            }
+
+            return read;
         }
     }
 
