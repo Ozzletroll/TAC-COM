@@ -12,26 +12,31 @@ namespace TAC_COM.Audio.Effects
     internal class Gate : ISampleSource
     {
         readonly ISampleSource source;
-        readonly PeakMeter peakMeter;
         public float GainReductionDB { get; set; }
         public float ThresholdDB { get; set; }
+        public float Attack {  get; set; }
+        public float Release {  get; set; }
 
         public Gate(ISampleSource inputSource)
         {
             source = inputSource;
-            peakMeter = new PeakMeter(source);
-            peakMeter.Interval = 5;
-            peakMeter.PeakCalculated += OnPeakCalculated;
-        }
-
-        private void OnPeakCalculated(object? sender, PeakEventArgs e)
-        {
-            Console.WriteLine(peakMeter.PeakValue);
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = peakMeter.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
+
+            float total = 0f;
+
+            for (int i = offset; i < offset + samples; i++)
+            {
+                float sampleSquared = buffer[i] * buffer[i];
+                total += sampleSquared;
+            }
+
+            float rmsValue = (float)Math.Sqrt(total / buffer.Length);
+            Console.WriteLine(buffer.Length);
+
             return samples;
         }
 

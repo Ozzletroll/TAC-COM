@@ -27,8 +27,16 @@ namespace TAC_COM.Audio
 
         internal IWaveSource Output()
         {
-            // EQ
+            
             var sampleSource = outputSource.ToSampleSource();
+
+            sampleSource = sampleSource.AppendSource(x => new Gate(x)
+            {
+                ThresholdDB = -40,
+                GainReductionDB = -90,
+                Attack = 50,
+                Release = 200,
+            });
 
             // Lowpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
@@ -81,7 +89,7 @@ namespace TAC_COM.Audio
 
     public class BiQuadFilterSource(ISampleSource source) : SampleAggregatorBase(source)
     {
-        private readonly object _lockObject = new object();
+        private readonly object _lockObject = new();
         private BiQuad biquad;
 
         public BiQuad Filter
