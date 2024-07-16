@@ -27,55 +27,53 @@ namespace TAC_COM.Audio
 
         internal IWaveSource Output()
         {
-            // Convert IWaveSource to SampleSource
+            // EQ
             var sampleSource = outputSource.ToSampleSource();
 
-            // Gate
-            var gatedSource = new Gate(sampleSource);
-
-            // Lowpass filter
-            var removedLowEnd = gatedSource
+            var filteredSampleSource = sampleSource
                 .AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
 
-            // Highpass filter
-            var removedHighEnd = removedLowEnd
-                .AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 6000);
+            filteredSampleSource.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
+            filteredSampleSource.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 6000);
+            filteredSampleSource.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 2000, 500, 3);
 
-            // Peak filter
-            var peakFiltered = removedHighEnd
-                .AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 2000, 500, 10);
-
-            // Convert back to IWaveSource
-            var filteredSource = peakFiltered.ToWaveSource();
+            var filteredSource = filteredSampleSource.ToWaveSource();
 
             // Compression
-            var compressor = new DmoCompressorEffect(filteredSource)
-            {
-                Attack = 0.5f,
-                Gain = 10,
-                Ratio = 20,
-                Release = 200,
-                Threshold = -20
-            };
+            filteredSource = 
+                filteredSource.AppendSource(x => new DmoCompressorEffect(x)
+                {
+                    Attack = 0.5f,
+                    Gain = 15,
+                    Ratio = 20,
+                    Release = 200,
+                    Threshold = -20
+                });
 
             // Distortion
-            var distortion = new DmoDistortionEffect(compressor)
-            {
-                Gain = -30,
-                Edge = 25,
-                PostEQCenterFrequency = 3000,
-                PostEQBandwidth = 2400,
-                PreLowpassCutoff = 8000
-            };
+            filteredSource = 
+                filteredSource.AppendSource(x => new DmoDistortionEffect(x)
+                {
+                    Gain = -60,
+                    Edge = 60,
+                    PostEQCenterFrequency = 3000,
+                    PostEQBandwidth = 2400,
+                    PreLowpassCutoff = 8000
+                });
 
-            return distortion;
+            // Reduce gain
+            var outputSampleSource = filteredSource.ToSampleSource();
+            var reducedGain = new Gain(outputSampleSource)
+            {
+                GainDB = -60,
+            };
+            var output = reducedGain.ToWaveSource();
+
+            return output;
         }
     }
 
-    public class BiQuadFilterSource : SampleAggregatorBase
+    public class BiQuadFilterSource(ISampleSource source) : SampleAggregatorBase(source)
     {
         private readonly object _lockObject = new object();
         private BiQuad biquad;
@@ -90,10 +88,6 @@ namespace TAC_COM.Audio
                     biquad = value;
                 }
             }
-        }
-
-        public BiQuadFilterSource(ISampleSource source) : base(source)
-        {
         }
 
         public override int Read(float[] buffer, int offset, int count)
