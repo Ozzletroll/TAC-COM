@@ -17,6 +17,8 @@ namespace TAC_COM.Audio.Effects
         public float Attack {  get; set; }
         public float Release {  get; set; }
 
+        private float rmsValue;
+
         public Gate(ISampleSource inputSource)
         {
             source = inputSource;
@@ -25,7 +27,12 @@ namespace TAC_COM.Audio.Effects
         public int Read(float[] buffer, int offset, int count)
         {
             int samples = source.Read(buffer, offset, count);
+            CalculateRMS(samples, buffer, offset, count);
+            return samples;
+        }
 
+        public void CalculateRMS(int samples, float[] buffer, int offset, int count)
+        {
             float total = 0f;
 
             for (int i = offset; i < offset + samples; i++)
@@ -34,10 +41,7 @@ namespace TAC_COM.Audio.Effects
                 total += sampleSquared;
             }
 
-            float rmsValue = (float)Math.Sqrt(total / buffer.Length);
-            Console.WriteLine(buffer.Length);
-
-            return samples;
+            rmsValue = (float)Math.Sqrt(total / buffer.Length);
         }
 
         public bool CanSeek
