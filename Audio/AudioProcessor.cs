@@ -32,10 +32,10 @@ namespace TAC_COM.Audio
 
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
-                ThresholdDB = -40,
-                GainReductionDB = -90,
+                Threshold = -10,
+                GainReductionDB = 0,
                 Attack = 50,
-                Release = 200,
+                Release = 500,
             });
 
             // Lowpass filter

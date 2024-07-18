@@ -8,6 +8,7 @@ using System.Windows.Input;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.Streams;
+using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.Effects
 {
@@ -15,21 +16,25 @@ namespace TAC_COM.Audio.Effects
     {
         readonly ISampleSource source;
 
-        private float gainReductionLinear;
-        public float GainReductionDB
+        private float gainLinear;
+        private float gainDB;
+        public float GainDB
         {
             set
             {
-                gainReductionLinear = (float)Math.Pow(10, value / 20.0);
+                gainLinear = LinearDBConverter.DecibelToLinear(value);
+                gainDB = value;
             }
         }
 
         private float thresholdLinear;
+        private float thresholdDB;
         public float Threshold
         {
             set
             {
-                thresholdLinear = (float)Math.Pow(10, value / 20.0);
+                thresholdLinear = LinearDBConverter.DecibelToLinear(value);
+                thresholdDB = value;
             }
         }
         public double Attack {  get; set; }
@@ -37,10 +42,12 @@ namespace TAC_COM.Audio.Effects
         public double Release {  get; set; }
 
         private float rmsValue;
+        private readonly int sampleRate;
 
         public Gate(ISampleSource inputSource)
         {
             source = inputSource;
+            sampleRate = source.WaveFormat.SampleRate;
         }
 
         public int Read(float[] buffer, int offset, int count)
@@ -52,7 +59,7 @@ namespace TAC_COM.Audio.Effects
             {
                 if (rmsValue < thresholdLinear)
                 {
-                    buffer[i] *= gainReductionLinear;
+                    buffer[i] *= gainLinear;
                 }
             }
 
