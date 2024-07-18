@@ -105,7 +105,10 @@ namespace TAC_COM.Models
             if (activeInputDevice != null && activeOutputDevice != null)
             {
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                output = new WasapiOut();
+                output = new WasapiOut()
+                {
+                    Latency = 25,
+                };
 
                 // Initialise input
                 input.Device = activeInputDevice;
