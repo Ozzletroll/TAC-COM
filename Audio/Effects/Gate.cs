@@ -29,7 +29,7 @@ namespace TAC_COM.Audio.Effects
 
         private float thresholdLinear;
         private float thresholdDB;
-        public float Threshold
+        public float ThresholdDB
         {
             set
             {
@@ -37,9 +37,9 @@ namespace TAC_COM.Audio.Effects
                 thresholdDB = value;
             }
         }
-        public double Attack {  get; set; }
-        public double Hold { get; set; }
-        public double Release {  get; set; }
+        public double AttackMS {  get; set; }
+        public double HoldMS { get; set; }
+        public double ReleaseMS {  get; set; }
 
         private float rmsValue;
         private readonly int sampleRate;

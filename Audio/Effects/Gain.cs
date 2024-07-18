@@ -6,26 +6,29 @@ using System.Threading.Tasks;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.Streams;
+using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.Effects
 {
-    internal class Gain : ISampleSource
+    internal class Gain(ISampleSource inputSource) : ISampleSource
     {
-        readonly ISampleSource source;
-        public float GainDB { get; set; }
+        readonly ISampleSource source = inputSource;
 
-        public Gain(ISampleSource inputSource)
+        private float gainLinear;
+        public float GainDB
         {
-            source = inputSource;
+            set
+            {
+                gainLinear = LinearDBConverter.DecibelToLinear(value);
+            }
         }
 
         public int Read(float[] buffer, int offset, int count)
-        {
-            float gainAmplification = (float)(Math.Pow(10.0, GainDB / 20.0));
+        {;
             int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = Math.Max(Math.Min(buffer[i] * gainAmplification, 1), -1);
+                buffer[i] = Math.Max(Math.Min(buffer[i] * gainLinear, 1), -1);
             }
             return samples;
         }
