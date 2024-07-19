@@ -9,6 +9,7 @@ using CSCore.MediaFoundation;
 using CSCore.Streams;
 using TAC_COM.Audio.Utils;
 
+
 namespace TAC_COM.Audio.Effects
 {
     internal class EnveloperFollower(int sampleRate)

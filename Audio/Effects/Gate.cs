@@ -11,6 +11,7 @@ using CSCore.CoreAudioAPI;
 using CSCore.Streams;
 using TAC_COM.Audio.Utils;
 
+
 namespace TAC_COM.Audio.Effects
 {
     internal class Gate : ISampleSource
