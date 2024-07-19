@@ -35,18 +35,10 @@ namespace TAC_COM.Audio
             {
                 ThresholdDB = -30,
                 GainDB = 0,
-                Attack = 300,
-                Release = 500,
-                Ratio = 30,
+                Attack = 50,
+                Release = 1000,
+                Ratio = 20,
             });
-
-            var reducedGain1 = new Gain(sampleSource)
-            {
-                GainDB = -55,
-            };
-            var output1 = reducedGain1.ToWaveSource();
-
-            return output1;
 
             // Lowpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
@@ -79,7 +71,7 @@ namespace TAC_COM.Audio
                 filteredSource.AppendSource(x => new DmoDistortionEffect(x)
                 {
                     Gain = -60,
-                    Edge = 65,
+                    Edge = 35,
                     PostEQCenterFrequency = 3000,
                     PostEQBandwidth = 2400,
                     PreLowpassCutoff = 8000
@@ -89,7 +81,7 @@ namespace TAC_COM.Audio
             var outputSampleSource = filteredSource.ToSampleSource();
             var reducedGain = new Gain(outputSampleSource)
             {
-                GainDB = -55,
+                GainDB = -40,
             };
             var output = reducedGain.ToWaveSource();
 
