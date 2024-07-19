@@ -44,7 +44,7 @@ namespace TAC_COM.Audio.Effects
             get => envelopeFollower.Release / TimeCoefficient;
             set
             {
-                envelopeFollower.Release = (value / 1000) * TimeCoefficient;
+                envelopeFollower.Attack = (value / 1000) * TimeCoefficient;
             }
         }
         public float Release
@@ -52,7 +52,7 @@ namespace TAC_COM.Audio.Effects
             get => envelopeFollower.Attack / TimeCoefficient;
             set
             {
-                envelopeFollower.Attack = (value / 1000) * TimeCoefficient;
+                envelopeFollower.Release = (value / 1000) * TimeCoefficient;
             }
         }
 
