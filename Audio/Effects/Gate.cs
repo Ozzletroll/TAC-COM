@@ -14,7 +14,7 @@ using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.Effects
 {
-    internal class Gate : ISampleSource
+    public class Gate : ISampleSource
     {
         readonly ISampleSource source;
         private readonly EnveloperFollower envelopeFollower;
@@ -83,8 +83,7 @@ namespace TAC_COM.Audio.Effects
         public float Process(float sample)
         {
             var xg = sample > 1e-6f ? LinearDBConverter.LinearToDecibel(sample) : minAmplitudeDB;
-            var yg = 0f;
-            yg = xg > thresholdDB ? xg : thresholdDB + (xg - thresholdDB) * Ratio;
+            var yg = xg > thresholdDB ? xg : thresholdDB + (xg - thresholdDB) * Ratio;
 
             var envelope = envelopeFollower.Process(yg - xg);
             var sampleGain = gainLinear - envelope;
