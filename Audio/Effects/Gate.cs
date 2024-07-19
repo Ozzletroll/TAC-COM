@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,7 @@ namespace TAC_COM.Audio.Effects
     internal class Gate : ISampleSource
     {
         readonly ISampleSource source;
+        private readonly EnveloperFollower envelopeFollower;
 
         private float gainLinear;
         private float gainDB;
@@ -37,46 +39,67 @@ namespace TAC_COM.Audio.Effects
                 thresholdDB = value;
             }
         }
-        public double AttackMS {  get; set; }
-        public double HoldMS { get; set; }
-        public double ReleaseMS {  get; set; }
+        public float Attack
+        {
+            get => envelopeFollower.Release / TimeCoefficient;
+            set
+            {
+                envelopeFollower.Release = value * TimeCoefficient;
+            }
+        }
+        public float Release
+        {
+            get => envelopeFollower.Attack / TimeCoefficient;
+            set
+            {
+                envelopeFollower.Attack = value * TimeCoefficient;
+            }
+        }
 
-        private float rmsValue;
+        private readonly float TimeCoefficient = 1 / (float)Math.Log(9);
+
+        private float ratio;
+        public float Ratio
+        {
+            get => ratio;
+            set
+            {
+                ratio = value;
+            }
+        }
+
+        private float minAmplitudeDB;
         private readonly int sampleRate;
 
-        public Gate(ISampleSource inputSource)
+        public Gate(ISampleSource inputSource, float minAmplitudeDB = -120)
         {
             source = inputSource;
             sampleRate = source.WaveFormat.SampleRate;
+            envelopeFollower = new(sampleRate);
+            this.minAmplitudeDB = minAmplitudeDB;
+        }
+
+        public float Process(float sample)
+        {
+            var xg = sample > 1e-6f ? LinearDBConverter.LinearToDecibel(sample) : minAmplitudeDB;
+            var yg = 0f;
+            yg = xg > thresholdDB ? xg : thresholdDB + (xg - thresholdDB) * Ratio;
+
+            var envelope = envelopeFollower.Process(yg - xg);
+            var sampleGain = gainLinear - envelope;
+            return sample * sampleGain;
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
             int samples = source.Read(buffer, offset, count);
-            CalculateRMS(samples, buffer, offset);
-            
+
             for (int i = offset; i < offset + samples; i++)
             {
-                if (rmsValue < thresholdLinear)
-                {
-                    buffer[i] *= gainLinear;
-                }
+                buffer[i] = Process(buffer[i]);
             }
 
             return samples;
-        }
-
-        public void CalculateRMS(int samples, float[] buffer, int offset)
-        {
-            float total = 0f;
-
-            for (int i = offset; i < offset + samples; i++)
-            {
-                float sampleSquared = buffer[i] * buffer[i];
-                total += sampleSquared;
-            }
-
-            rmsValue = (float)Math.Sqrt(total / buffer.Length);
         }
 
         public bool CanSeek
