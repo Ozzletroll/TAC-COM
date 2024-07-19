@@ -13,7 +13,7 @@ namespace TAC_COM.Audio.Effects
 {
     internal class EnveloperFollower(int sampleRate)
     {
-        private int sampleRate = sampleRate;
+        private readonly int sampleRate = sampleRate;
         public float envelope = 0;
 
         private float attack;
