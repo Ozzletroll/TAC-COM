@@ -132,13 +132,10 @@ namespace TAC_COM.Models
             if (input != null)
             {
                 input.Stop();
-                input.Dispose();
             }
-            
             if (output != null)
             {
                 output.Stop();
-                output.Dispose();
             }
         }
 

@@ -37,15 +37,25 @@ namespace TAC_COM.Audio
                 ThresholdDB = -30,
                 GainDB = 0,
                 Attack = 50,
-                Release = 1000,
+                Release = 500,
                 Ratio = 20,
             });
 
-            // Lowpass filter
+            // Voice detection gate
+            sampleSource = sampleSource.AppendSource(x => new Gate(x)
+            {
+                ThresholdDB = -40,
+                GainDB = 0,
+                Attack = 10,
+                Release = 2000,
+                Ratio = 1,
+            });
+
+            // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
             removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
 
-            // Highpass filter
+            // Lowpass filter
             var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
             removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 6000);
 
