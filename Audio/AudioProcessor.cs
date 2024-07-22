@@ -16,6 +16,11 @@ using TAC_COM.Audio.DSP;
 
 namespace TAC_COM.Audio
 {
+
+    /// <summary>
+    /// Class <c>AudioProcessor</c> assembles the signal chains used by
+    /// the <c>AudioManager</c> Model class.
+    /// </summary>
     internal class AudioProcessor
     {
 
@@ -37,6 +42,11 @@ namespace TAC_COM.Audio
             return mixerSignalChain;
         }
 
+
+        /// <summary>
+        /// Method <c>InputSignalChain</c> returns the assembled
+        /// microphone input signal chain.
+        /// </summary>
         internal ISampleSource InputSignalChain()
         {
             
@@ -109,6 +119,10 @@ namespace TAC_COM.Audio
             return processedOutput;
         }
 
+        /// <summary>
+        /// Method <c>SFXSignalChain</c> returns the assembled
+        /// sfx input signal chain.
+        /// </summary>
         internal static ISampleSource SFXSignalChain()
         {
             // Placeholder sinewave
@@ -117,6 +131,10 @@ namespace TAC_COM.Audio
             return output;
         }
 
+        /// <summary>
+        /// Method <c>MixerSignalChain</c> combines the microphone
+        /// and sfx input sources in a <c>Mixer</c> class.
+        /// </summary>
         internal static IWaveSource MixerSignalChain(ISampleSource micInput, ISampleSource sfxInput, int sampleRate)
         {
             micInput = micInput.ToMono().ChangeSampleRate(sampleRate);
@@ -132,7 +150,7 @@ namespace TAC_COM.Audio
             mixer.AddSource(sfxInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource sfxVolume));
 
             micInputVolume.Volume = 1f;
-            sfxVolume.Volume = 0.05f;
+            sfxVolume.Volume = 0f;
 
             return mixer.ToWaveSource();
         }
