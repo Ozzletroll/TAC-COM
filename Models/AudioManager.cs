@@ -119,6 +119,7 @@ namespace TAC_COM.Models
 
                 // Initiliase effects chain
                 audioProcessor = new AudioProcessor(input);
+                
 
                 // Initialise output
                 output.Device = activeOutputDevice;
@@ -129,14 +130,8 @@ namespace TAC_COM.Models
 
         void StopAudio()
         {
-            if (input != null)
-            {
-                input.Stop();
-            }
-            if (output != null)
-            {
-                output.Stop();
-            }
+            input?.Stop();
+            output?.Stop();
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)

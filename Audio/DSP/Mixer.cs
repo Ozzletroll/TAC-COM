@@ -10,7 +10,7 @@ namespace TAC_COM.Audio.DSP
     public class Mixer : ISampleSource
     {
         private readonly WaveFormat waveFormat;
-        private readonly List<ISampleSource> sampleSources = new List<ISampleSource>();
+        private readonly List<ISampleSource> sampleSources = [];
         private readonly object lockObj = new();
         private float[] mixerBuffer;
 
@@ -75,7 +75,7 @@ namespace TAC_COM.Audio.DSP
                 lock (lockObj)
                 {
                     mixerBuffer = mixerBuffer.CheckBuffer(count);
-                    List<int> numberOfReadSamples = new List<int>();
+                    List<int> numberOfReadSamples = [];
                     for (int m = sampleSources.Count - 1; m >= 0; m--)
                     {
                         var sampleSource = sampleSources[m];

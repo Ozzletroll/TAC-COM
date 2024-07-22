@@ -19,17 +19,28 @@ namespace TAC_COM.Audio
     internal class AudioProcessor
     {
 
-        private readonly IWaveSource outputSource;
+        private readonly IWaveSource inputSource;
 
         public AudioProcessor(WasapiCapture input)
         {
-            outputSource = new SoundInSource(input) { FillWithZeros = true };
+            inputSource = new SoundInSource(input) { FillWithZeros = true };
         }
 
-        internal IWaveSource InputSignalChain()
+        internal IWaveSource Output()
+        {
+            var sampleRate = inputSource.WaveFormat.SampleRate;
+
+            var inputSignalChain = InputSignalChain();
+            var sfxSignalChain = SFXSignalChain();
+            var mixerSignalChain = MixerSignalChain(inputSignalChain, sfxSignalChain, sampleRate);
+
+            return mixerSignalChain;
+        }
+
+        internal ISampleSource InputSignalChain()
         {
             
-            var sampleSource = outputSource.ToSampleSource();
+            var sampleSource = inputSource.ToSampleSource();
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
@@ -53,15 +64,15 @@ namespace TAC_COM.Audio
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(outputSource.WaveFormat.SampleRate, 700);
+            removedLowEnd.Filter = new HighpassFilter(inputSource.WaveFormat.SampleRate, 700);
 
             // Lowpass filter
             var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(outputSource.WaveFormat.SampleRate, 6000);
+            removedHighEnd.Filter = new LowpassFilter(inputSource.WaveFormat.SampleRate, 6000);
 
             // Peak filter
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(outputSource.WaveFormat.SampleRate, 2000, 500, 2);
+            peakFiltered.Filter = new PeakFilter(inputSource.WaveFormat.SampleRate, 2000, 500, 2);
 
             // Convert back to IWaveSource
             var filteredSource = peakFiltered.ToWaveSource();
@@ -95,36 +106,35 @@ namespace TAC_COM.Audio
                 GainDB = -60,
             };
 
-            // Mix SFX channel with processed input
-            var mixer = new Mixer(1, processedOutput.WaveFormat.SampleRate)
+            return processedOutput;
+        }
+
+        internal static ISampleSource SFXSignalChain()
+        {
+            // Placeholder sinewave
+            var output = new SineGenerator();
+
+            return output;
+        }
+
+        internal static IWaveSource MixerSignalChain(ISampleSource micInput, ISampleSource sfxInput, int sampleRate)
+        {
+            micInput = micInput.ToMono().ChangeSampleRate(sampleRate);
+            sfxInput = sfxInput.ToMono().ChangeSampleRate(sampleRate);
+
+            var mixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
             };
 
-            VolumeSource sineVolume;
-            var sineWave = new SineGenerator()
-                .ToWaveSource()
-                .AppendSource(x => new VolumeSource(x.ToSampleSource()), out sineVolume);
+            mixer.AddSource(micInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource micInputVolume));
+            mixer.AddSource(sfxInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource sfxVolume));
 
-            mixer.AddSource(processedOutput.ToMono());
-            mixer.AddSource(sineWave.ChangeSampleRate(processedOutput.WaveFormat.SampleRate));
+            micInputVolume.Volume = 1f;
+            sfxVolume.Volume = 0.05f;
 
-            sineVolume.Volume = 0.05f;
-
-            var output = mixer.ToWaveSource();
-
-            return output;
-        }
-
-        internal class SFXSignalChain()
-        {
-
-        }
-
-        internal class OutputMixer()
-        {
-
+            return mixer.ToWaveSource();
         }
     }
 }
