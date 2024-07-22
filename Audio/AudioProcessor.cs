@@ -11,7 +11,7 @@ using CSCore.Streams.Effects;
 using CSCore.SoundIn;
 using CSCore.DMO.Effects;
 using CSCore.DSP;
-using TAC_COM.Audio.Effects;
+using TAC_COM.Audio.DSP;
 
 
 namespace TAC_COM.Audio
@@ -26,7 +26,7 @@ namespace TAC_COM.Audio
             outputSource = new SoundInSource(input) { FillWithZeros = true };
         }
 
-        internal IWaveSource Output()
+        internal IWaveSource InputSignalChain()
         {
             
             var sampleSource = outputSource.ToSampleSource();
@@ -90,13 +90,41 @@ namespace TAC_COM.Audio
 
             // Reduce gain
             var outputSampleSource = filteredSource.ToSampleSource();
-            var reducedGain = new Gain(outputSampleSource)
+            var processedOutput = new Gain(outputSampleSource)
             {
                 GainDB = -60,
             };
-            var output = reducedGain.ToWaveSource();
+
+            // Mix SFX channel with processed input
+            var mixer = new Mixer(1, processedOutput.WaveFormat.SampleRate)
+            {
+                FillWithZeros = true,
+                DivideResult = true,
+            };
+
+            VolumeSource sineVolume;
+            var sineWave = new SineGenerator()
+                .ToWaveSource()
+                .AppendSource(x => new VolumeSource(x.ToSampleSource()), out sineVolume);
+
+            mixer.AddSource(processedOutput.ToMono());
+            mixer.AddSource(sineWave.ChangeSampleRate(processedOutput.WaveFormat.SampleRate));
+
+            sineVolume.Volume = 0.05f;
+
+            var output = mixer.ToWaveSource();
 
             return output;
+        }
+
+        internal class SFXSignalChain()
+        {
+
+        }
+
+        internal class OutputMixer()
+        {
+
         }
     }
 }

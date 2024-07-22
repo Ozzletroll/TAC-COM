@@ -7,7 +7,7 @@ using CSCore;
 using CSCore.DSP;
 
 
-namespace TAC_COM.Audio.Effects
+namespace TAC_COM.Audio.DSP
 {
     public class BiQuadFilterSource(ISampleSource source) : SampleAggregatorBase(source)
     {

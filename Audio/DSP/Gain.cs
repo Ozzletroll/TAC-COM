@@ -8,7 +8,7 @@ using CSCore.CoreAudioAPI;
 using CSCore.Streams;
 using TAC_COM.Audio.Utils;
 
-namespace TAC_COM.Audio.Effects
+namespace TAC_COM.Audio.DSP
 {
     internal class Gain(ISampleSource inputSource) : ISampleSource
     {
