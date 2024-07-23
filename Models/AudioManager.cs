@@ -117,10 +117,9 @@ namespace TAC_COM.Models
                 input.Stopped += OnStopped;
                 input.Start();
 
-                // Initiliase effects chain
+                // Initiliase signal chain
                 audioProcessor = new AudioProcessor(input);
                 
-
                 // Initialise output
                 output.Device = activeOutputDevice;
                 output.Initialize(audioProcessor.Output());

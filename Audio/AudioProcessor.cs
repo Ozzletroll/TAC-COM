@@ -12,6 +12,10 @@ using CSCore.SoundIn;
 using CSCore.DMO.Effects;
 using CSCore.DSP;
 using TAC_COM.Audio.DSP;
+using CSCore.Codecs;
+using CSCore.SoundOut;
+using System.IO;
+using System.Windows.Input;
 
 
 namespace TAC_COM.Audio
@@ -25,6 +29,7 @@ namespace TAC_COM.Audio
     {
 
         private readonly IWaveSource inputSource;
+        private FileManager fileManager = new(Directory.GetCurrentDirectory());
 
         public AudioProcessor(WasapiCapture input)
         {
@@ -123,12 +128,17 @@ namespace TAC_COM.Audio
         /// Method <c>SFXSignalChain</c> returns the assembled
         /// sfx input signal chain.
         /// </summary>
-        internal static ISampleSource SFXSignalChain()
+        internal ISampleSource SFXSignalChain()
         {
-            // Placeholder sinewave
-            var output = new SineGenerator();
 
-            return output;
+            var file = fileManager.GetRandomFile("Static/SFX/GateOpen");
+
+            var fileSource =
+                CodecFactory.Instance.GetCodec(file)
+                    .ToSampleSource()
+                    .ToMono();
+
+            return fileSource;
         }
 
         /// <summary>
@@ -150,7 +160,7 @@ namespace TAC_COM.Audio
             mixer.AddSource(sfxInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource sfxVolume));
 
             micInputVolume.Volume = 1f;
-            sfxVolume.Volume = 0f;
+            sfxVolume.Volume = 0.3f;
 
             return mixer.ToWaveSource();
         }
