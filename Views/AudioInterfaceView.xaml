@@ -26,12 +26,12 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="2" Grid.Row="1"
-            Text="TAC/COM" FontFamily="Calibri" FontWeight="Bold" FontSize="24"  
-            Foreground="#FFA90000"/>
+        <!--<TextBlock Grid.Column="2" Grid.Row="1"
+            Text="TAC/COM" FontFamily="Microsoft YaHei" FontSize="24"  
+            Foreground="#FFA90000" FontWeight="Bold"/>
         <TextBlock Grid.Column="2" Grid.Row="2" 
-            Text="COMMUNICATIONS::INTERFACE" FontFamily="Calibri" FontSize="12" 
-            Foreground="#FFA90000"/>
+            Text="COMMUNICATIONS::INTERFACE" FontFamily="Microsoft YaHei" FontSize="12" 
+            Foreground="#FFA90000"/>-->
 
         <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
