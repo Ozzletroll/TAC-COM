@@ -7,13 +7,23 @@ using System.Threading.Tasks;
 
 namespace TAC_COM.Audio
 {
-    internal class FileManager(string directoryName)
+    internal class FileManager
     {
-        private readonly string baseDirectory = directoryName;
+        private readonly string baseDirectory;
+
+        public FileManager(string directoryName)
+        {
+            baseDirectory = directoryName;
+        }
 
         public string? GetRandomFile(string folder)
         {
             string subfolderPath = Path.Combine(baseDirectory, folder);
+
+            if (!Directory.Exists(subfolderPath))
+            {
+                return null;
+            }
 
             string[] files = Directory.GetFiles(subfolderPath);
 
