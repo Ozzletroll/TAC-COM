@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace TAC_COM.ViewModels
 {
@@ -14,6 +16,19 @@ namespace TAC_COM.ViewModels
         public MainViewModel() 
         {
             CurrentViewModel = new AudioInterfaceViewModel();
+        }
+
+        private ICommand openMic;
+        public ICommand OpenMic
+        {
+            get
+            {
+                return openMic
+                    ?? (openMic = new ActionCommand(() =>
+                    {
+                        MessageBox.Show("OpenMic");
+                    }));
+            }
         }
 
     }

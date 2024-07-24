@@ -11,6 +11,9 @@
     <Window.Icon>
         <DrawingImage/>
     </Window.Icon>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenMic}" Key="F5"/>
+    </Window.InputBindings>
     <Grid>
         <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
     </Grid>
