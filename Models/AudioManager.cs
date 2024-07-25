@@ -23,8 +23,10 @@ namespace TAC_COM.Models
         public List<MMDevice> inputDevices = [];
         public List<MMDevice> outputDevices = [];
         private WasapiCapture input;
-        private WasapiOut output;
+        private WasapiOut micOuput;
+        private WasapiOut sfxOutput;
         private AudioProcessor audioProcessor;
+        private FilePlayer filePlayer;
 
         private bool state;
         public bool State
@@ -47,6 +49,8 @@ namespace TAC_COM.Models
                 OnPropertyChanged(nameof(peakMeter));
             }
         }
+
+        public bool BypassState { get; internal set; }
 
         private void GetAudioDevices()
         {
@@ -105,7 +109,7 @@ namespace TAC_COM.Models
             if (activeInputDevice != null && activeOutputDevice != null)
             {
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                output = new WasapiOut()
+                micOuput = new WasapiOut()
                 {
                     Latency = 25,
                 };
@@ -119,18 +123,18 @@ namespace TAC_COM.Models
 
                 // Initiliase signal chain
                 audioProcessor = new AudioProcessor(input);
-                
+
                 // Initialise output
-                output.Device = activeOutputDevice;
-                output.Initialize(audioProcessor.Output());
-                output.Play();
+                micOuput.Device = activeOutputDevice;
+                micOuput.Initialize(audioProcessor.Output());
+                micOuput.Play();
             }
         }
 
         void StopAudio()
         {
             input?.Stop();
-            output?.Stop();
+            micOuput?.Stop();
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
@@ -142,9 +146,34 @@ namespace TAC_COM.Models
             }
         }
 
+        public void GateOpen()
+        {
+            filePlayer = new();
+            var file = filePlayer.GetOpenSFX();
+
+            sfxOutput.Device = activeOutputDevice;
+            sfxOutput.Initialize(file);
+            sfxOutput.Play();
+        }
+
+        public void GateClose()
+        {
+            filePlayer = new();
+            var file = filePlayer.GetCloseSFX();
+
+            sfxOutput.Device = activeOutputDevice;
+            sfxOutput.Initialize(file);
+            sfxOutput.Play();
+        }
+
         void OnStopped(object? sender, RecordingStoppedEventArgs e)
         {
             PeakMeter = 0;
+        }
+
+        internal void ToggleBypassState()
+        {
+            throw new NotImplementedException();
         }
 
         public AudioManager()

@@ -26,13 +26,6 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <!--<TextBlock Grid.Column="2" Grid.Row="1"
-            Text="TAC/COM" FontFamily="Microsoft YaHei" FontSize="24"  
-            Foreground="#FFA90000" FontWeight="Bold"/>
-        <TextBlock Grid.Column="2" Grid.Row="2" 
-            Text="COMMUNICATIONS::INTERFACE" FontFamily="Microsoft YaHei" FontSize="12" 
-            Foreground="#FFA90000"/>-->
-
         <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
 
@@ -80,8 +73,8 @@
                 </ComboBox>
             </StackPanel>
 
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="10">
-                <ToggleButton Width="108" HorizontalAlignment="Center" 
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <ToggleButton Width="108" HorizontalAlignment="Center" Margin="10"
                               Foreground="White" BorderBrush="#FF560404"
                               IsChecked="{Binding ToggleState}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
@@ -110,8 +103,38 @@
                 </ToggleButton>
 
                 <ProgressBar Value="{Binding AudioManager.PeakMeter}" 
-                             Orientation="Vertical" Height="Auto" Width="5"  Margin="10, 0, 0, 0"
+                             Orientation="Vertical" Height="Auto" Width="5"  Margin="10"
                              Foreground="#FFBD0000" Background="#FFE6E6E6"/>
+                
+                <ToggleButton Width="108" HorizontalAlignment="Center" Margin="10"
+                              Foreground="White" BorderBrush="#FF560404"
+                              IsChecked="{Binding BypassState}" VerticalAlignment="Center" Cursor="Hand">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#FF730000"/>
+                                    <Setter Property="Content" Value="BYPASS"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="#FFBB0000"/>
+                                    <Setter Property="Content" Value="PUSH TO TALK"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
+                
             </StackPanel>
 
         </StackPanel>

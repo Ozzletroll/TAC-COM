@@ -18,18 +18,5 @@ namespace TAC_COM.ViewModels
             CurrentViewModel = new AudioInterfaceViewModel();
         }
 
-        private ICommand openMic;
-        public ICommand OpenMic
-        {
-            get
-            {
-                return openMic
-                    ?? (openMic = new ActionCommand(() =>
-                    {
-                        MessageBox.Show("OpenMic");
-                    }));
-            }
-        }
-
     }
 }

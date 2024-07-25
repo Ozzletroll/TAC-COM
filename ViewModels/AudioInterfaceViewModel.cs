@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
@@ -48,6 +50,17 @@ namespace TAC_COM.ViewModels
                 audioManager.State = value;
                 audioManager.ToggleState();
                 OnPropertyChanged(nameof(AudioManager.State));
+            }
+        }
+
+        public bool BypassState
+        {
+            get => audioManager.BypassState;
+            set
+            {
+                audioManager.BypassState = value;
+                audioManager.ToggleBypassState();
+                OnPropertyChanged(nameof(AudioManager.BypassState));
             }
         }
 
