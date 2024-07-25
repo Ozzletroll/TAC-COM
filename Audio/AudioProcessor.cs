@@ -28,30 +28,24 @@ namespace TAC_COM.Audio
     internal class AudioProcessor
     {
 
-        private readonly IWaveSource inputSource;
-        private readonly FilePlayer filePlayer = new();
+        private readonly IWaveSource inputSource1;
+        private readonly IWaveSource inputSource2;
 
-        private bool bypassState;
-        public bool BypassState
-        {
-            get => bypassState;
-            set
-            {
-                bypassState = value;
-            }
-        }
+        public VolumeSource WetMixLevel;
+        public VolumeSource DryMixLevel;
 
         public AudioProcessor(WasapiCapture input)
         {
-            inputSource = new SoundInSource(input) { FillWithZeros = true };
+            inputSource1 = new SoundInSource(input) { FillWithZeros = true };
+            inputSource2 = new SoundInSource(input) { FillWithZeros = true };
         }
 
         internal IWaveSource Output()
         {
-            var sampleRate = inputSource.WaveFormat.SampleRate;
+            var sampleRate = inputSource1.WaveFormat.SampleRate;
 
             var inputSignalChain = InputSignalChain();
-            var sfxSignalChain = SFXSignalChain();
+            var sfxSignalChain = DrySignalChain();
             var mixerSignalChain = MixerSignalChain(inputSignalChain, sfxSignalChain, sampleRate);
 
             return mixerSignalChain;
@@ -65,7 +59,8 @@ namespace TAC_COM.Audio
         internal ISampleSource InputSignalChain()
         {
             
-            var sampleSource = inputSource.ToSampleSource();
+            var sampleSource = inputSource1.ToSampleSource();
+            var sampleRate = inputSource1.WaveFormat.SampleRate;
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
@@ -89,15 +84,15 @@ namespace TAC_COM.Audio
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(inputSource.WaveFormat.SampleRate, 700);
+            removedLowEnd.Filter = new HighpassFilter(sampleRate, 700);
 
             // Lowpass filter
             var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(inputSource.WaveFormat.SampleRate, 6000);
+            removedHighEnd.Filter = new LowpassFilter(sampleRate, 6000);
 
             // Peak filter
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(inputSource.WaveFormat.SampleRate, 2000, 500, 2);
+            peakFiltered.Filter = new PeakFilter(sampleRate, 2000, 500, 2);
 
             // Convert back to IWaveSource
             var filteredSource = peakFiltered.ToWaveSource();
@@ -128,7 +123,7 @@ namespace TAC_COM.Audio
             var outputSampleSource = filteredSource.ToSampleSource();
             var processedOutput = new Gain(outputSampleSource)
             {
-                GainDB = -60,
+                GainDB = -50,
             };
 
             return processedOutput;
@@ -138,22 +133,22 @@ namespace TAC_COM.Audio
         /// Method <c>SFXSignalChain</c> returns the assembled
         /// sfx input signal chain.
         /// </summary>
-        internal ISampleSource SFXSignalChain()
+        internal ISampleSource DrySignalChain()
         {
 
-            var fileSource = filePlayer.GetOpenSFX();
+            var sampleSource = inputSource2.ToSampleSource();
 
-            return fileSource.ToSampleSource();
+            return sampleSource;
         }
 
         /// <summary>
         /// Method <c>MixerSignalChain</c> combines the microphone
         /// and sfx input sources in a <c>Mixer</c> class.
         /// </summary>
-        internal static IWaveSource MixerSignalChain(ISampleSource micInput, ISampleSource sfxInput, int sampleRate)
+        internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, int sampleRate)
         {
-            micInput = micInput.ToMono().ChangeSampleRate(sampleRate);
-            sfxInput = sfxInput.ToMono().ChangeSampleRate(sampleRate);
+            wetMix = wetMix.ToMono().ChangeSampleRate(sampleRate);
+            dryMix = dryMix.ToMono().ChangeSampleRate(sampleRate);
 
             var mixer = new Mixer(1, sampleRate)
             {
@@ -161,11 +156,11 @@ namespace TAC_COM.Audio
                 DivideResult = true,
             };
 
-            mixer.AddSource(micInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource micInputVolume));
-            mixer.AddSource(sfxInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource sfxVolume));
+            mixer.AddSource(wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out WetMixLevel));
+            mixer.AddSource(dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out DryMixLevel));
 
-            micInputVolume.Volume = 1f;
-            sfxVolume.Volume = 0f;
+            WetMixLevel.Volume = 0;
+            DryMixLevel.Volume = 1;
 
             return mixer.ToWaveSource();
         }

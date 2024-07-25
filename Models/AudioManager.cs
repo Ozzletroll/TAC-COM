@@ -119,9 +119,11 @@ namespace TAC_COM.Models
             {
                 BypassState = false; return;
             }
-            else if (audioProcessor != null)
+
+            if (audioProcessor != null)
             {
-                audioProcessor.BypassState = bypassState;
+                audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
+                audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
             }
         }
 
