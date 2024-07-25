@@ -29,7 +29,17 @@ namespace TAC_COM.Audio
     {
 
         private readonly IWaveSource inputSource;
-        private FileManager fileManager = new(Directory.GetCurrentDirectory());
+        private readonly FilePlayer filePlayer = new();
+
+        private bool bypassState;
+        public bool BypassState
+        {
+            get => bypassState;
+            set
+            {
+                bypassState = value;
+            }
+        }
 
         public AudioProcessor(WasapiCapture input)
         {
@@ -67,15 +77,15 @@ namespace TAC_COM.Audio
                 Ratio = 20,
             });
 
-            // Voice detection gate
-            sampleSource = sampleSource.AppendSource(x => new Gate(x)
-            {
-                ThresholdDB = -40,
-                GainDB = 0,
-                Attack = 10,
-                Release = 2000,
-                Ratio = 1,
-            });
+           // Voice detection gate
+           sampleSource = sampleSource.AppendSource(x => new Gate(x)
+           {
+               ThresholdDB = -40,
+               GainDB = 0,
+               Attack = 10,
+               Release = 2000,
+               Ratio = 1,
+           });
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
@@ -93,7 +103,7 @@ namespace TAC_COM.Audio
             var filteredSource = peakFiltered.ToWaveSource();
 
             // Compression
-            filteredSource = 
+            filteredSource =
                 filteredSource.AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 0.5f,
@@ -104,7 +114,7 @@ namespace TAC_COM.Audio
                 });
 
             // Distortion
-            filteredSource = 
+            filteredSource =
                 filteredSource.AppendSource(x => new DmoDistortionEffect(x)
                 {
                     Gain = -60,
@@ -131,14 +141,9 @@ namespace TAC_COM.Audio
         internal ISampleSource SFXSignalChain()
         {
 
-            var file = fileManager.GetRandomFile("Static/SFX/GateOpen");
+            var fileSource = filePlayer.GetOpenSFX();
 
-            var fileSource =
-                CodecFactory.Instance.GetCodec(file)
-                    .ToSampleSource()
-                    .ToMono();
-
-            return fileSource;
+            return fileSource.ToSampleSource();
         }
 
         /// <summary>
@@ -160,7 +165,7 @@ namespace TAC_COM.Audio
             mixer.AddSource(sfxInput.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out VolumeSource sfxVolume));
 
             micInputVolume.Volume = 1f;
-            sfxVolume.Volume = 0.3f;
+            sfxVolume.Volume = 0f;
 
             return mixer.ToWaveSource();
         }

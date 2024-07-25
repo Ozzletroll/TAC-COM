@@ -39,6 +39,17 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool bypassState;
+        public bool BypassState
+        {
+            get => bypassState;
+            set
+            {
+                bypassState = value;
+                OnPropertyChanged(nameof(BypassState));
+            }
+        }
+
         private float peakMeter;
         public float PeakMeter
         {
@@ -49,8 +60,6 @@ namespace TAC_COM.Models
                 OnPropertyChanged(nameof(peakMeter));
             }
         }
-
-        public bool BypassState { get; internal set; }
 
         private void GetAudioDevices()
         {
@@ -101,6 +110,18 @@ namespace TAC_COM.Models
             else
             {
                 StopAudio();
+            }
+        }
+
+        internal void ToggleBypassState()
+        {
+            if (!state)
+            {
+                BypassState = false; return;
+            }
+            else if (audioProcessor != null)
+            {
+                audioProcessor.BypassState = bypassState;
             }
         }
 
@@ -171,10 +192,7 @@ namespace TAC_COM.Models
             PeakMeter = 0;
         }
 
-        internal void ToggleBypassState()
-        {
-            throw new NotImplementedException();
-        }
+
 
         public AudioManager()
         {
