@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -25,6 +26,7 @@ namespace TAC_COM.Models
         private WasapiCapture input;
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
+        private readonly float sfxVolume = 0.3f;
         private AudioProcessor audioProcessor;
         private FilePlayer filePlayer;
 
@@ -151,14 +153,16 @@ namespace TAC_COM.Models
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
                 input.Stopped += OnStopped;
-                input.Start();
-
+                
                 // Initiliase signal chain
                 audioProcessor = new AudioProcessor(input);
 
                 // Initialise output
                 micOutput.Device = activeOutputDevice;
                 micOutput.Initialize(audioProcessor.Output());
+
+                // Start audio
+                input.Start();
                 micOutput.Play();
             }
         }
@@ -188,7 +192,7 @@ namespace TAC_COM.Models
                 Device = activeOutputDevice
             };
             sfxOutput.Initialize(file);
-            sfxOutput.Volume = 0.5f;
+            sfxOutput.Volume = sfxVolume;
             sfxOutput.Play();
         }
 
@@ -202,7 +206,7 @@ namespace TAC_COM.Models
                 Device = activeOutputDevice
             };
             sfxOutput.Initialize(file);
-            sfxOutput.Volume = 0.5f;
+            sfxOutput.Volume = sfxVolume;
             sfxOutput.Play();
         }
 
@@ -210,8 +214,6 @@ namespace TAC_COM.Models
         {
             PeakMeter = 0;
         }
-
-
 
         public AudioManager()
         {
