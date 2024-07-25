@@ -23,7 +23,7 @@ namespace TAC_COM.Models
         public List<MMDevice> inputDevices = [];
         public List<MMDevice> outputDevices = [];
         private WasapiCapture input;
-        private WasapiOut micOuput;
+        private WasapiOut micOutput;
         private WasapiOut sfxOutput;
         private AudioProcessor audioProcessor;
         private FilePlayer filePlayer;
@@ -122,6 +122,15 @@ namespace TAC_COM.Models
 
             if (audioProcessor != null)
             {
+                if (bypassState)
+                {
+                    GateClose();
+                }
+                else
+                {
+                    GateClose();
+                }
+
                 audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
                 audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
             }
@@ -132,7 +141,7 @@ namespace TAC_COM.Models
             if (activeInputDevice != null && activeOutputDevice != null)
             {
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                micOuput = new WasapiOut()
+                micOutput = new WasapiOut()
                 {
                     Latency = 25,
                 };
@@ -148,16 +157,16 @@ namespace TAC_COM.Models
                 audioProcessor = new AudioProcessor(input);
 
                 // Initialise output
-                micOuput.Device = activeOutputDevice;
-                micOuput.Initialize(audioProcessor.Output());
-                micOuput.Play();
+                micOutput.Device = activeOutputDevice;
+                micOutput.Initialize(audioProcessor.Output());
+                micOutput.Play();
             }
         }
 
         void StopAudio()
         {
             input?.Stop();
-            micOuput?.Stop();
+            micOutput?.Stop();
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
@@ -174,8 +183,12 @@ namespace TAC_COM.Models
             filePlayer = new();
             var file = filePlayer.GetOpenSFX();
 
-            sfxOutput.Device = activeOutputDevice;
+            sfxOutput = new()
+            {
+                Device = activeOutputDevice
+            };
             sfxOutput.Initialize(file);
+            sfxOutput.Volume = 0.5f;
             sfxOutput.Play();
         }
 
@@ -184,8 +197,12 @@ namespace TAC_COM.Models
             filePlayer = new();
             var file = filePlayer.GetCloseSFX();
 
-            sfxOutput.Device = activeOutputDevice;
+            sfxOutput = new()
+            {
+                Device = activeOutputDevice
+            };
             sfxOutput.Initialize(file);
+            sfxOutput.Volume = 0.5f;
             sfxOutput.Play();
         }
 
