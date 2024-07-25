@@ -51,7 +51,6 @@ namespace TAC_COM.Audio
             return mixerSignalChain;
         }
 
-
         /// <summary>
         /// Method <c>InputSignalChain</c> returns the assembled
         /// microphone input signal chain.
@@ -71,16 +70,6 @@ namespace TAC_COM.Audio
                 Release = 500,
                 Ratio = 20,
             });
-
-           // Voice detection gate
-           sampleSource = sampleSource.AppendSource(x => new Gate(x)
-           {
-               ThresholdDB = -40,
-               GainDB = 0,
-               Attack = 10,
-               Release = 2000,
-               Ratio = 1,
-           });
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
@@ -123,15 +112,15 @@ namespace TAC_COM.Audio
             var outputSampleSource = filteredSource.ToSampleSource();
             var processedOutput = new Gain(outputSampleSource)
             {
-                GainDB = -50,
+                GainDB = -55,
             };
 
             return processedOutput;
         }
 
         /// <summary>
-        /// Method <c>SFXSignalChain</c> returns the assembled
-        /// sfx input signal chain.
+        /// Method <c>DrySignalChain</c> returns the assembled
+        /// unprocessed input signal chain.
         /// </summary>
         internal ISampleSource DrySignalChain()
         {
@@ -159,6 +148,7 @@ namespace TAC_COM.Audio
             mixer.AddSource(wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out WetMixLevel));
             mixer.AddSource(dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out DryMixLevel));
 
+            // Set initial levels
             WetMixLevel.Volume = 0;
             DryMixLevel.Volume = 1;
 
