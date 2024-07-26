@@ -17,47 +17,51 @@ namespace TAC_COM.Audio.DSP
     public class Gate : ISampleSource
     {
         readonly ISampleSource source;
-        private readonly EnveloperFollower envelopeFollower;
-
-        private float gainLinear;
-        private float gainDB;
-        public float GainDB
-        {
-            set
-            {
-                gainLinear = LinearDBConverter.DecibelToLinear(value);
-                gainDB = value;
-            }
-        }
 
         private float thresholdLinear;
-        private float thresholdDB;
         public float ThresholdDB
         {
             set
             {
                 thresholdLinear = LinearDBConverter.DecibelToLinear(value);
-                thresholdDB = value;
-            }
-        }
-        public float Attack
-        {
-            get => envelopeFollower.Release / TimeCoefficient;
-            set
-            {
-                envelopeFollower.Attack = (value / 1000) * TimeCoefficient;
-            }
-        }
-        public float Release
-        {
-            get => envelopeFollower.Attack / TimeCoefficient;
-            set
-            {
-                envelopeFollower.Release = (value / 1000) * TimeCoefficient;
             }
         }
 
-        private readonly float TimeCoefficient = 1 / (float)Math.Log(9);
+        private float attack;
+        private float attackCoefficient;
+        public float Attack
+        {
+            get => attack;
+            set
+            {
+                attack = value / 1000;
+                attackCoefficient = (float)Math.Exp(-Math.Log(9) / (sampleRate * attack));
+            }
+        }
+
+        private float hold;
+        private float holdTime;
+        public float Hold
+        {
+            get => hold;
+            set
+            {
+                hold = value / 1000;
+                holdTime = hold * sampleRate;
+            }
+        }
+
+        private float release;
+        private float releaseCoefficient;
+        public float Release
+        {
+            get => release;
+            set
+            {
+                release = value / 1000;
+                releaseCoefficient = (float)Math.Exp(-Math.Log(9) / (sampleRate * release));
+            }
+        }
 
         private float ratio;
         public float Ratio
@@ -69,27 +73,68 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
-        private float minAmplitudeDB;
         private readonly int sampleRate;
+        private float envelope;
+        private float gateControl;
+        private float[] gainArray = new float[2];
+        private int attackCounter;
+        private int releaseCounter;
 
-        public Gate(ISampleSource inputSource, float minAmplitudeDB = -120)
+        public Gate(ISampleSource inputSource)
         {
             source = inputSource;
             sampleRate = source.WaveFormat.SampleRate;
-            envelopeFollower = new(sampleRate);
-            this.minAmplitudeDB = minAmplitudeDB;
         }
 
         public float Process(float sample)
         {
-            var inputGainDB = sample > 1e-6f ? LinearDBConverter.LinearToDecibel(sample) : minAmplitudeDB;
-            var adjustedGainDB = 
-                inputGainDB > thresholdDB ? inputGainDB 
-                : thresholdDB + (inputGainDB - thresholdDB) * Ratio;
+            var absSample = Math.Abs(sample);
 
-            var envelope = envelopeFollower.Process(adjustedGainDB - inputGainDB);
-            var sampleGain = gainLinear - envelope;
-            return sample * sampleGain;
+            envelope = releaseCoefficient * envelope + (1 - attackCoefficient) 
+                * ((absSample - envelope > 0) ? absSample - envelope : 0);
+
+            if (envelope < thresholdLinear)
+            {
+                gateControl = 0;
+            }
+            else
+            {
+                gateControl = 1;
+            }
+
+            if (gateControl < gainArray[0])
+            {
+                // Attack mode
+                releaseCounter = 0;
+                if (++attackCounter < holdTime)
+                {
+                    // Hold mode
+                    gainArray[0] = gainArray[1];
+                }
+                else
+                {
+                    gainArray[0] = attackCoefficient * gainArray[1] + (1 - attackCoefficient) * gateControl;
+                }
+                gainArray[1] = gainArray[0];
+            }
+            else
+            {
+                // Release mode
+                attackCounter = 0;
+                if (++releaseCounter < holdTime)
+                {
+                    // Hold mode
+                    gainArray[0] = gainArray[1];
+                }
+                else
+                {
+                    gainArray[0] = releaseCoefficient * gainArray[1] + (1 - releaseCoefficient) * gateControl;
+                }
+                gainArray[1] = gainArray[0];
+            }
+
+            // Apply gain
+            return gainArray[0] * sample;
         }
 
         public int Read(float[] buffer, int offset, int count)

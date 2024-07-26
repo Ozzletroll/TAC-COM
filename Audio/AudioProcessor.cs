@@ -64,11 +64,10 @@ namespace TAC_COM.Audio
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
-                ThresholdDB = -30,
-                GainDB = 0,
+                ThresholdDB = -35,
                 Attack = 50,
-                Release = 500,
-                Ratio = 20,
+                Hold = 100,
+                Release = 300,
             });
 
             // Highpass filter
@@ -102,7 +101,7 @@ namespace TAC_COM.Audio
                 filteredSource.AppendSource(x => new DmoDistortionEffect(x)
                 {
                     Gain = -60,
-                    Edge = 35,
+                    Edge = 75,
                     PostEQCenterFrequency = 3000,
                     PostEQBandwidth = 2400,
                     PreLowpassCutoff = 8000
@@ -112,7 +111,7 @@ namespace TAC_COM.Audio
             var outputSampleSource = filteredSource.ToSampleSource();
             var processedOutput = new Gain(outputSampleSource)
             {
-                GainDB = -55,
+                GainDB = -40,
             };
 
             return processedOutput;
