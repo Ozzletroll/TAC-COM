@@ -76,7 +76,7 @@ namespace TAC_COM.Audio.DSP
         private readonly int sampleRate;
         private float envelope;
         private float gateControl;
-        private float[] gainArray = new float[2];
+        private readonly float[] gainArray = new float[2];
         private int attackCounter;
         private int releaseCounter;
 
