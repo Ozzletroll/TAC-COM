@@ -24,6 +24,5 @@ namespace TAC_COM.Views
         {
             InitializeComponent();
         }
-
     }
 }

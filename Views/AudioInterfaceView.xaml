@@ -102,10 +102,6 @@
                     </ToggleButton.Style>
                 </ToggleButton>
 
-                <ProgressBar Value="{Binding AudioManager.PeakMeter}" 
-                             Orientation="Vertical" Height="Auto" Width="5"  Margin="10"
-                             Foreground="#FFBD0000" Background="#FFE6E6E6"/>
-                
                 <ToggleButton Width="108" HorizontalAlignment="Center" Margin="10"
                               Foreground="White" BorderBrush="#FF560404"
                               IsChecked="{Binding BypassState}" VerticalAlignment="Center" Cursor="Hand">
@@ -135,9 +131,36 @@
                 </ToggleButton>
 
                 
+
             </StackPanel>
+            <Label Content="OUTPUT LEVEL" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Menu HorizontalAlignment="Center" Background="Transparent" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Grid.Column="2" Grid.Row="4"  Content="INPUT" FontSize="12" Width="60"
+                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
+                    <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical"
+                                 Height="50" Width="8" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                 Foreground="#FFBD0000" Background="#FFE6E6E6"
+                                 Value="{Binding AudioManager.PeakMeter}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"  Margin="0, 14, 0, 0"
+                            VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical">
+                    <Label Grid.Column="2" Grid.Row="4"  Content="OUTPUT" FontSize="12" Width="60"
+                           HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top"/>
+                    <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical"
+                                 Height="50" Width="8" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                 Foreground="#FFBD0000" Background="#FFE6E6E6"
+                                 Value="{Binding AudioManager.PeakMeter}"/>
+                </StackPanel>
+
+            </Menu>
 
         </StackPanel>
-
+        
     </Grid>
 </UserControl>
