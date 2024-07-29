@@ -26,6 +26,7 @@ namespace TAC_COM.Models
         private WasapiCapture input;
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
+        private WasapiOut noiseOutput;
         private readonly float sfxVolume = 0.3f;
         private AudioProcessor audioProcessor;
         private FilePlayer filePlayer;
@@ -149,7 +150,7 @@ namespace TAC_COM.Models
             {
                 if (bypassState)
                 {
-                    GateClose();
+                    GateOpen();
                 }
                 else
                 {
