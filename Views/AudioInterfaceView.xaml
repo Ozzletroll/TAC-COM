@@ -29,8 +29,8 @@
         <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
 
-            <StackPanel Width="360" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
                     <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
                         INPUT
                     </TextBlock>
@@ -39,7 +39,7 @@
                 <ComboBox x:Name="MicSelection" Width="250" 
                           ItemsSource="{Binding AllInputDevices}"
                           SelectedIndex="{Binding SelectedInputIndex}" 
-                          Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="12"
+                          Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">
                     <ComboBox.Background>
@@ -51,8 +51,8 @@
                 </ComboBox>
             </StackPanel>
 
-            <StackPanel Width="360" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
                     <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
                         OUTPUT
                     </TextBlock>
@@ -61,7 +61,7 @@
                 <ComboBox x:Name="OutputSelection" Width="250"
                           ItemsSource="{Binding AllOutputDevices}"
                           SelectedIndex="{Binding SelectedOutputIndex}" 
-                          Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="12"
+                          Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">
                     <ComboBox.Background>
@@ -74,8 +74,8 @@
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
-                <ToggleButton Width="108" HorizontalAlignment="Center" Margin="10"
-                              Foreground="White" BorderBrush="#FF560404"
+                <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
+                              Foreground="White" BorderBrush="#FF560404" FontSize="18"
                               IsChecked="{Binding ToggleState}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
@@ -91,19 +91,19 @@
                             <Style.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Background" Value="#FF730000"/>
-                                    <Setter Property="Content" Value="DEACTIVATE"/>
+                                    <Setter Property="Content" Value="DISABLE"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Background" Value="#FFBB0000"/>
-                                    <Setter Property="Content" Value="ACTIVATE"/>
+                                    <Setter Property="Content" Value="ENABLE"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
 
-                <ToggleButton Width="108" HorizontalAlignment="Center" Margin="10"
-                              Foreground="White" BorderBrush="#FF560404"
+                <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
+                              Foreground="White" BorderBrush="#FF560404" FontSize="18"
                               IsChecked="{Binding BypassState}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
