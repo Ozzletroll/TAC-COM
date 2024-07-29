@@ -66,8 +66,8 @@ namespace TAC_COM.Audio
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = -35,
-                Attack = 50,
-                Hold = 100,
+                Attack = 30,
+                Hold = 500,
                 Release = 300,
             });
 
@@ -112,7 +112,7 @@ namespace TAC_COM.Audio
             var outputSampleSource = filteredSource.ToSampleSource();
             outputSampleSource = new Gain(outputSampleSource)
             {
-                GainDB = -50,
+                GainDB = -45,
             };
 
             // User gain control
