@@ -49,6 +49,7 @@ namespace TAC_COM.Models
             set
             {
                 bypassState = value;
+                SetMixerLevels();
                 OnPropertyChanged(nameof(BypassState));
             }
         }
@@ -139,7 +140,16 @@ namespace TAC_COM.Models
             }
         }
 
-        internal void ToggleBypassState()
+        private void SetMixerLevels()
+        {
+            if (audioProcessor != null)
+            {
+                audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
+                audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
+            }
+        }
+
+        internal void CheckBypassState()
         {
             if (!state)
             {
@@ -156,9 +166,7 @@ namespace TAC_COM.Models
                 {
                     GateClose();
                 }
-
-                audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
-                audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
+                SetMixerLevels();
             }
         }
 
