@@ -52,14 +52,37 @@ namespace TAC_COM.Models
             }
         }
 
-        private float peakMeter;
-        public float PeakMeter
+        private float inputPeakMeter;
+        public float InputPeakMeter
         {
-            get => peakMeter;
+            get => inputPeakMeter;
             set
             {
-                peakMeter = value;
-                OnPropertyChanged(nameof(peakMeter));
+                inputPeakMeter = value;
+                OnPropertyChanged(nameof(inputPeakMeter));
+            }
+        }
+
+        private float outputPeakMeter;
+        public float OutputPeakMeter
+        {
+            get => outputPeakMeter;
+            set
+            {
+                outputPeakMeter = value;
+                OnPropertyChanged(nameof(outputPeakMeter));
+            }
+        }
+
+        private float outputGainLevel;
+        public float OutputGainLevel
+        {
+            get => outputGainLevel;
+            set
+            {
+                outputGainLevel = value;
+                SetUserGain(outputGainLevel);
+                OnPropertyChanged(nameof(outputGainLevel));
             }
         }
 
@@ -176,9 +199,13 @@ namespace TAC_COM.Models
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             // Handle the captured audio data
-            using var meter = AudioMeterInformation.FromDevice(activeInputDevice);
+            using var inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
             {
-                PeakMeter = meter.PeakValue * 100;
+                InputPeakMeter = inputMeter.PeakValue * 100;
+            }
+            using var outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
+            {
+                OutputPeakMeter = outputMeter.PeakValue * 100;
             }
         }
 
@@ -210,9 +237,17 @@ namespace TAC_COM.Models
             sfxOutput.Play();
         }
 
+        private void SetUserGain(float gain)
+        {
+            if (audioProcessor != null)
+            {
+                audioProcessor.UserGainControl.GainDB = gain;
+            }
+        }
+
         void OnStopped(object? sender, RecordingStoppedEventArgs e)
         {
-            PeakMeter = 0;
+            InputPeakMeter = 0;
         }
 
         public AudioManager()

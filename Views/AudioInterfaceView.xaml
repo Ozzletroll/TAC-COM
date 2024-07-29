@@ -141,12 +141,13 @@
                     <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical"
                                  Height="50" Width="8" VerticalAlignment="Top" HorizontalAlignment="Center"
                                  Foreground="#FFBD0000" Background="#FFE6E6E6"
-                                 Value="{Binding AudioManager.PeakMeter}"/>
+                                 Value="{Binding AudioManager.InputPeakMeter}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"  Margin="0, 14, 0, 0"
-                            VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"/>
+                            VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"
+                            Value="{Binding AudioManager.OutputGainLevel}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Vertical">
@@ -155,7 +156,7 @@
                     <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical"
                                  Height="50" Width="8" VerticalAlignment="Top" HorizontalAlignment="Center"
                                  Foreground="#FFBD0000" Background="#FFE6E6E6"
-                                 Value="{Binding AudioManager.PeakMeter}"/>
+                                 Value="{Binding AudioManager.OutputPeakMeter}"/>
                 </StackPanel>
 
             </Menu>

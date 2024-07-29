@@ -33,6 +33,7 @@ namespace TAC_COM.Audio
 
         public VolumeSource WetMixLevel;
         public VolumeSource DryMixLevel;
+        public Gain UserGainControl;
 
         public AudioProcessor(WasapiCapture input)
         {
@@ -107,14 +108,20 @@ namespace TAC_COM.Audio
                     PreLowpassCutoff = 8000
                 });
 
-            // Reduce gain
+            // Reduce gain to compensate for compression/distortion
             var outputSampleSource = filteredSource.ToSampleSource();
-            var processedOutput = new Gain(outputSampleSource)
+            outputSampleSource = new Gain(outputSampleSource)
             {
-                GainDB = -40,
+                GainDB = -50,
             };
 
-            return processedOutput;
+            // User gain control
+            UserGainControl = new Gain(outputSampleSource)
+            {
+                GainDB = 0,
+            };
+
+            return UserGainControl;
         }
 
         /// <summary>
