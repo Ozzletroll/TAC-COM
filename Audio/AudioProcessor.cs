@@ -92,7 +92,7 @@ namespace TAC_COM.Audio
                 {
                     Attack = 0.5f,
                     Gain = 15,
-                    Ratio = 20,
+                    Ratio = 30,
                     Release = 200,
                     Threshold = -20
                 });
