@@ -66,13 +66,11 @@ namespace TAC_COM.Audio
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
-                ThresholdDB = -40,
+                ThresholdDB = -45,
                 Attack = 30,
                 Hold = 200,
                 Release = 300,
             }, out NoiseGate);
-
-            Console.WriteLine(NoiseGate.ThresholdDB);
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
