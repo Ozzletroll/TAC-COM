@@ -25,5 +25,11 @@ namespace TAC_COM.Audio
             var filename = fileManager.GetRandomFile("Static/SFX/GateClose");
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
+
+        public IWaveSource GetNoiseSFX()
+        {
+            var filename = fileManager.GetRandomFile("Static/SFX/Noise");
+            return CodecFactory.Instance.GetCodec(filename).ToMono();
+        }
     }
 }
