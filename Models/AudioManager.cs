@@ -126,6 +126,7 @@ namespace TAC_COM.Models
             activeInputDevice = inputDevices[deviceNumber];
             StopAudio();
             ToggleState();
+            SetMixerLevels();
         }
 
         internal void SetOutputDevice(int value)
@@ -133,6 +134,7 @@ namespace TAC_COM.Models
             activeOutputDevice = outputDevices[value];
             StopAudio();
             ToggleState();
+            SetMixerLevels();
         }
 
         public void ToggleState()
