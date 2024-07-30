@@ -6,13 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TAC_COM.Audio.Utils;
 
-namespace TAC_COM.Audio
+namespace TAC_COM.Audio.Utils
 {
     internal class FilePlayer
     {
-        private readonly FileManager fileManager = new (Directory.GetCurrentDirectory());
+        private readonly FileManager fileManager = new(Directory.GetCurrentDirectory());
 
         public IWaveSource GetOpenSFX()
         {
@@ -23,6 +22,12 @@ namespace TAC_COM.Audio
         public IWaveSource GetCloseSFX()
         {
             var filename = fileManager.GetRandomFile("Static/SFX/GateClose");
+            return CodecFactory.Instance.GetCodec(filename).ToMono();
+        }
+
+        public IWaveSource GetNoiseSFX()
+        {
+            var filename = fileManager.GetRandomFile("Static/SFX/Noise");
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
     }

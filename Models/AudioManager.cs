@@ -13,6 +13,7 @@ using CSCore.SoundOut;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using TAC_COM.Audio;
+using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
 {
@@ -26,7 +27,6 @@ namespace TAC_COM.Models
         private WasapiCapture input;
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
-        private WasapiOut noiseOutput;
         private readonly float sfxVolume = 0.3f;
         private AudioProcessor audioProcessor;
         private FilePlayer filePlayer;
