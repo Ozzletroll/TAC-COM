@@ -19,10 +19,13 @@ namespace TAC_COM.Audio.DSP
         readonly ISampleSource source;
 
         private float thresholdLinear;
+        private float thresholdDB;
         public float ThresholdDB
         {
+            get => thresholdDB;
             set
             {
+                thresholdDB = value;
                 thresholdLinear = LinearDBConverter.DecibelToLinear(value);
             }
         }

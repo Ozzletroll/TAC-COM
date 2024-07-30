@@ -88,6 +88,18 @@ namespace TAC_COM.Models
             }
         }
 
+        private float noiseGateThreshold;
+        public float NoiseGateThreshold
+        {
+            get => noiseGateThreshold;
+            set
+            {
+                noiseGateThreshold = value;
+                SetNoiseGateThreshold(noiseGateThreshold);
+                OnPropertyChanged(nameof(noiseGateThreshold));
+            }
+        }
+
         private void GetAudioDevices()
         {
             inputDevices.Clear();
@@ -251,6 +263,14 @@ namespace TAC_COM.Models
             if (audioProcessor != null)
             {
                 audioProcessor.UserGainControl.GainDB = gain;
+            }
+        }
+
+        private void SetNoiseGateThreshold(float gain)
+        {
+            if (audioProcessor != null)
+            {
+                audioProcessor.NoiseGate.ThresholdDB = gain;
             }
         }
 

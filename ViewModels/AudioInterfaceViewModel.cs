@@ -41,7 +41,6 @@ namespace TAC_COM.ViewModels
             set => audioManager.SetOutputDevice(value);
         }
 
-
         public bool ToggleState
         {
             get => audioManager.State;
