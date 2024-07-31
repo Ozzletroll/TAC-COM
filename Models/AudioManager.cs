@@ -84,7 +84,7 @@ namespace TAC_COM.Models
             set
             {
                 outputGainLevel = value;
-                SetUserGain(outputGainLevel);
+                audioProcessor.UserGainLevel = value;
                 OnPropertyChanged(nameof(outputGainLevel));
                 OnPropertyChanged(nameof(outputGainLevelString));
             }
@@ -282,22 +282,6 @@ namespace TAC_COM.Models
             sfxOutput.Initialize(file);
             sfxOutput.Volume = sfxVolume;
             sfxOutput.Play();
-        }
-
-        private void SetUserGain(float gain)
-        {
-            if (audioProcessor.HasInitialised)
-            {
-                audioProcessor.UserGainControl.GainDB = gain;
-            }
-        }
-
-        private void SetNoiseGateThreshold(float threshold)
-        {
-            if (audioProcessor.HasInitialised)
-            {
-                audioProcessor.NoiseGate.ThresholdDB = threshold;
-            }
         }
 
         void OnStopped(object? sender, RecordingStoppedEventArgs e)

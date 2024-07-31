@@ -30,14 +30,26 @@ namespace TAC_COM.Audio
 
         private SoundInSource? inputSource1;
         private SoundInSource? inputSource2;
+        public VolumeSource? WetMixLevel;
+        public VolumeSource? DryMixLevel;
+        public Gain? UserGainControl;
+        public Gate? NoiseGate;
         public bool HasInitialised;
-
-        public VolumeSource WetMixLevel;
-        public VolumeSource DryMixLevel;
-        public Gain UserGainControl;
-        public Gate NoiseGate;
-
         private int SampleRate = 48000;
+
+        private float userGainLevel = 0;
+        public float UserGainLevel
+        {
+            get => userGainLevel;
+            set
+            {
+                userGainLevel = value;
+                if (HasInitialised && UserGainControl != null)
+                {
+                    UserGainControl.GainDB = value;
+                }
+            }
+        }
 
         private float noiseGateThreshold = -45;
         public float NoiseGateThreshold
@@ -46,7 +58,7 @@ namespace TAC_COM.Audio
             set 
             {
                 noiseGateThreshold = value;
-                if (HasInitialised)
+                if (HasInitialised && NoiseGate != null)
                 {
                     NoiseGate.ThresholdDB = value;
                 }
@@ -139,7 +151,7 @@ namespace TAC_COM.Audio
             // User gain control
             UserGainControl = new Gain(outputSampleSource)
             {
-                GainDB = 0,
+                GainDB = UserGainLevel,
             };
 
             return UserGainControl;
