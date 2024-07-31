@@ -174,7 +174,6 @@ namespace TAC_COM.Models
             else
             {
                 StopAudio();
-                audioProcessor.Dispose();
             }
         }
 
@@ -240,7 +239,10 @@ namespace TAC_COM.Models
         void StopAudio()
         {
             input?.Stop();
+            input?.Dispose();
             micOutput?.Stop();
+            micOutput?.Dispose();
+            audioProcessor.Dispose();
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)

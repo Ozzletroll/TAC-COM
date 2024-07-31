@@ -198,6 +198,7 @@ namespace TAC_COM.Audio
         {
             inputSource1?.Dispose();
             inputSource2?.Dispose();
+            HasInitialised = false;
         }
     }
 }
