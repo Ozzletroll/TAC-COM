@@ -109,6 +109,17 @@ namespace TAC_COM.Models
                 noiseGateThreshold = value;
                 SetNoiseGateThreshold(noiseGateThreshold);
                 OnPropertyChanged(nameof(noiseGateThreshold));
+                OnPropertyChanged(nameof(noiseGateThresholdString));
+            }
+        }
+
+        private readonly string noiseGateThresholdString;
+        public string NoiseGateThresholdString
+        {
+            get
+            {
+                string? sign = noiseGateThreshold < 0 ? null : "+";
+                return sign + noiseGateThreshold.ToString() + "DB";
             }
         }
 
