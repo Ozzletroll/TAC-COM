@@ -96,7 +96,7 @@ namespace TAC_COM.Models
             get
             {
                 string? sign = outputGainLevel < 0 ? null : "+";
-                return sign + outputGainLevel.ToString() + "DB";
+                return sign + outputGainLevel.ToString() + "dB";
             }
         }
 
@@ -119,7 +119,7 @@ namespace TAC_COM.Models
             get
             {
                 string? sign = noiseGateThreshold < 0 ? null : "+";
-                return sign + noiseGateThreshold.ToString() + "DB";
+                return sign + noiseGateThreshold.ToString() + "dB";
             }
         }
 
