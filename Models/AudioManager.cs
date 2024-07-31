@@ -174,6 +174,7 @@ namespace TAC_COM.Models
             else
             {
                 StopAudio();
+                audioProcessor.Dispose();
             }
         }
 

@@ -181,5 +181,11 @@ namespace TAC_COM.Audio
 
             return mixer.ToWaveSource();
         }
+
+        internal void Dispose()
+        {
+            inputSource1?.Dispose();
+            inputSource2?.Dispose();
+        }
     }
 }
