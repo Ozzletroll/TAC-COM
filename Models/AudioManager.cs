@@ -29,7 +29,7 @@ namespace TAC_COM.Models
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
         private readonly float sfxVolume = 0.3f;
-        private AudioProcessor audioProcessor;
+        private readonly AudioProcessor audioProcessor = new();
         private FilePlayer filePlayer;
 
         private bool state;
@@ -103,11 +103,11 @@ namespace TAC_COM.Models
         private float noiseGateThreshold;
         public float NoiseGateThreshold
         {
-            get => noiseGateThreshold;
+            get => audioProcessor.NoiseGateThreshold;
             set
             {
                 noiseGateThreshold = value;
-                SetNoiseGateThreshold(noiseGateThreshold);
+                audioProcessor.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(noiseGateThreshold));
                 OnPropertyChanged(nameof(noiseGateThresholdString));
             }
@@ -118,8 +118,8 @@ namespace TAC_COM.Models
         {
             get
             {
-                string? sign = noiseGateThreshold < 0 ? null : "+";
-                return sign + noiseGateThreshold.ToString() + "dB";
+                string? sign = audioProcessor.NoiseGateThreshold < 0 ? null : "+";
+                return sign + audioProcessor.NoiseGateThreshold.ToString() + "dB";
             }
         }
 
@@ -179,7 +179,7 @@ namespace TAC_COM.Models
 
         private void SetMixerLevels()
         {
-            if (audioProcessor != null)
+            if (audioProcessor.HasInitialised)
             {
                 audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
                 audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
@@ -193,7 +193,7 @@ namespace TAC_COM.Models
                 BypassState = false; return;
             }
 
-            if (audioProcessor != null)
+            if (audioProcessor.HasInitialised)
             {
                 if (bypassState)
                 {
@@ -224,7 +224,7 @@ namespace TAC_COM.Models
                 input.Stopped += OnStopped;
                 
                 // Initiliase signal chain
-                audioProcessor = new AudioProcessor(input);
+                audioProcessor.Initialise(input);
 
                 // Initialise output
                 micOutput.Device = activeOutputDevice;
@@ -285,17 +285,17 @@ namespace TAC_COM.Models
 
         private void SetUserGain(float gain)
         {
-            if (audioProcessor != null)
+            if (audioProcessor.HasInitialised)
             {
                 audioProcessor.UserGainControl.GainDB = gain;
             }
         }
 
-        private void SetNoiseGateThreshold(float gain)
+        private void SetNoiseGateThreshold(float threshold)
         {
-            if (audioProcessor != null)
+            if (audioProcessor.HasInitialised)
             {
-                audioProcessor.NoiseGate.ThresholdDB = gain;
+                audioProcessor.NoiseGate.ThresholdDB = threshold;
             }
         }
 
