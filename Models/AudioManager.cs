@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,17 @@ namespace TAC_COM.Models
                 outputGainLevel = value;
                 SetUserGain(outputGainLevel);
                 OnPropertyChanged(nameof(outputGainLevel));
+                OnPropertyChanged(nameof(outputGainLevelString));
+            }
+        }
+
+        private readonly string outputGainLevelString;
+        public string OutputGainLevelString
+        {
+            get
+            {
+                string? sign = outputGainLevel < 0 ? null : "+";
+                return sign + outputGainLevel.ToString() + "DB";
             }
         }
 
@@ -191,7 +203,7 @@ namespace TAC_COM.Models
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
                 micOutput = new WasapiOut()
                 {
-                    Latency = 25,
+                    Latency = 5,
                 };
 
                 // Initialise input
