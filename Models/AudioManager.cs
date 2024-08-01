@@ -203,7 +203,7 @@ namespace TAC_COM.Models
         {
             if (audioProcessor.HasInitialised)
             {
-                audioProcessor.WetMixLevel.Volume = Convert.ToInt32(bypassState);
+                audioProcessor.WetNoiseMixLevel.Volume = Convert.ToInt32(bypassState);
                 audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
             }
         }

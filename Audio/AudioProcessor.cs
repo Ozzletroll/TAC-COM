@@ -32,9 +32,10 @@ namespace TAC_COM.Audio
         private SoundInSource? inputSource;
         private SoundInSource? passthroughSource;
         private FilePlayer filePlayer = new();
-        public VolumeSource? WetMixLevel;
         public VolumeSource? DryMixLevel;
+        public VolumeSource? WetMixLevel;
         public VolumeSource? NoiseMixLevel;
+        public VolumeSource? WetNoiseMixLevel;
         public Gain? UserGainControl;
         public Gate? NoiseGate;
         public bool HasInitialised;
@@ -212,30 +213,45 @@ namespace TAC_COM.Audio
         /// </summary>
         internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
+            // Ensure all sources are mono and same sample rate
             wetMix = wetMix.ToMono().ChangeSampleRate(SampleRate);
             dryMix = dryMix.ToMono().ChangeSampleRate(SampleRate);
             noiseMix = noiseMix.ToMono().ChangeSampleRate(SampleRate);
 
-            var mixer = new Mixer(1, SampleRate)
+            // Mix wet signal with noise source
+            var WetNoiseMixer = new Mixer(1, SampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
             };
 
             WetMixLevel = wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
-            DryMixLevel = dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
             NoiseMixLevel = noiseMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
 
-            mixer.AddSource(WetMixLevel);
-            mixer.AddSource(DryMixLevel);
-            mixer.AddSource(NoiseMixLevel);
+            WetNoiseMixer.AddSource(WetMixLevel);
+            WetNoiseMixer.AddSource(NoiseMixLevel);
 
-            // Set initial levels
-            WetMixLevel.Volume = 0;
-            DryMixLevel.Volume = 1;
+            WetMixLevel.Volume = 1;
             NoiseMixLevel.Volume = 0;
 
-            return mixer.ToWaveSource();
+            // Mix combine wet + noise signal with dry signal
+            var WetDryMixer = new Mixer(1, SampleRate)
+            {
+                FillWithZeros = true,
+                DivideResult = true,
+            };
+
+            WetNoiseMixLevel = WetNoiseMixer.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+            DryMixLevel = dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+
+            WetDryMixer.AddSource(WetNoiseMixLevel);
+            WetDryMixer.AddSource(DryMixLevel);
+
+            // Set initial levels
+            WetNoiseMixLevel.Volume = 0;
+            DryMixLevel.Volume = 1;
+
+            return WetDryMixer.ToWaveSource();
         }
 
         internal void Dispose()
