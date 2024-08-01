@@ -93,6 +93,9 @@ namespace TAC_COM.Audio
             HasInitialised = true;
         }
 
+        /// <summary>
+        /// Returns the full combined signal chain for initialisation with the CSCore soundOut.
+        /// </summary>
         internal IWaveSource? Output()
         {
             if (HasInitialised)
@@ -108,8 +111,7 @@ namespace TAC_COM.Audio
         }
 
         /// <summary>
-        /// Method <c>InputSignalChain</c> returns the assembled
-        /// microphone input signal chain.
+        /// Returns the assembled processed microphone input signal chain.
         /// </summary>
         internal ISampleSource InputSignalChain()
         {
@@ -179,8 +181,7 @@ namespace TAC_COM.Audio
         }
 
         /// <summary>
-        /// Method <c>DrySignalChain</c> returns the assembled
-        /// unprocessed input signal chain.
+        /// Returns the assembled unprocessed input signal chain.
         /// </summary>
         internal ISampleSource DrySignalChain()
         {
@@ -190,6 +191,9 @@ namespace TAC_COM.Audio
             return sampleSource;
         }
 
+        /// <summary>
+        /// Returns the assembled noise signal chain.
+        /// </summary>
         internal ISampleSource NoiseSignalChain()
         {
 
@@ -208,8 +212,8 @@ namespace TAC_COM.Audio
         }
 
         /// <summary>
-        /// Method <c>MixerSignalChain</c> combines the microphone
-        /// and sfx input sources in a <c>Mixer</c> class.
+        /// Combines the microphone, noise and dry signal input
+        /// sources using two <c>Mixer</c> classes.
         /// </summary>
         internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
@@ -234,7 +238,7 @@ namespace TAC_COM.Audio
             WetMixLevel.Volume = 1;
             NoiseMixLevel.Volume = 0;
 
-            // Mix combine wet + noise signal with dry signal
+            // Mix combined wet + noise signal with dry signal
             var WetDryMixer = new Mixer(1, SampleRate)
             {
                 FillWithZeros = true,
@@ -254,6 +258,9 @@ namespace TAC_COM.Audio
             return WetDryMixer.ToWaveSource();
         }
 
+        /// <summary>
+        /// Disposes of the input and passthrough <c>SoundInSource</c>s.
+        /// </summary>
         internal void Dispose()
         {
             inputSource?.Dispose();
