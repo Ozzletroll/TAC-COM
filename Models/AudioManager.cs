@@ -132,6 +132,16 @@ namespace TAC_COM.Models
                 noiseLevel = value;
                 audioProcessor.UserNoiseLevel = value;
                 OnPropertyChanged(nameof(noiseLevel));
+                OnPropertyChanged(nameof(noiseLevelString));
+            }
+        }
+
+        private readonly string noiseLevelString;
+        public string NoiseLevelString
+        {
+            get
+            {
+                return (Math.Round(noiseLevel, 2) * 100).ToString() + "%";
             }
         }
 
