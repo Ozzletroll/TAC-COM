@@ -28,8 +28,8 @@ namespace TAC_COM.Audio
     internal class AudioProcessor
     {
 
-        private SoundInSource? inputSource1;
-        private SoundInSource? inputSource2;
+        private SoundInSource? inputSource;
+        private SoundInSource? passthroughSource;
         public VolumeSource? WetMixLevel;
         public VolumeSource? DryMixLevel;
         public Gain? UserGainControl;
@@ -67,9 +67,9 @@ namespace TAC_COM.Audio
 
         public void Initialise(WasapiCapture input)
         {
-            inputSource1 = new SoundInSource(input) { FillWithZeros = true };
-            inputSource2 = new SoundInSource(input) { FillWithZeros = true };
-            SampleRate = inputSource1.WaveFormat.SampleRate;
+            inputSource = new SoundInSource(input) { FillWithZeros = true };
+            passthroughSource = new SoundInSource(input) { FillWithZeros = true };
+            SampleRate = inputSource.WaveFormat.SampleRate;
             HasInitialised = true;
         }
 
@@ -93,7 +93,7 @@ namespace TAC_COM.Audio
         internal ISampleSource InputSignalChain()
         {
             
-            var sampleSource = inputSource1.ToSampleSource();
+            var sampleSource = inputSource.ToSampleSource();
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
@@ -164,7 +164,7 @@ namespace TAC_COM.Audio
         internal ISampleSource DrySignalChain()
         {
 
-            var sampleSource = inputSource2.ToSampleSource();
+            var sampleSource = passthroughSource.ToSampleSource();
 
             return sampleSource;
         }
@@ -184,8 +184,11 @@ namespace TAC_COM.Audio
                 DivideResult = true,
             };
 
-            mixer.AddSource(wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out WetMixLevel));
-            mixer.AddSource(dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()), out DryMixLevel));
+            WetMixLevel = wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+            DryMixLevel = dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+
+            mixer.AddSource(WetMixLevel);
+            mixer.AddSource(DryMixLevel);
 
             // Set initial levels
             WetMixLevel.Volume = 0;
@@ -196,8 +199,8 @@ namespace TAC_COM.Audio
 
         internal void Dispose()
         {
-            inputSource1?.Dispose();
-            inputSource2?.Dispose();
+            inputSource?.Dispose();
+            passthroughSource?.Dispose();
             HasInitialised = false;
         }
     }
