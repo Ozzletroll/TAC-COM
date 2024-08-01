@@ -123,6 +123,18 @@ namespace TAC_COM.Models
             }
         }
 
+        private float noiseLevel;
+        public float NoiseLevel
+        {
+            get => noiseLevel;
+            set
+            {
+                noiseLevel = value;
+                audioProcessor.UserNoiseLevel = value;
+                OnPropertyChanged(nameof(noiseLevel));
+            }
+        }
+
         private void GetAudioDevices()
         {
             inputDevices.Clear();

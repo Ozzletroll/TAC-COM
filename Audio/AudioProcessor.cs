@@ -16,6 +16,7 @@ using CSCore.Codecs;
 using CSCore.SoundOut;
 using System.IO;
 using System.Windows.Input;
+using TAC_COM.Audio.Utils;
 
 
 namespace TAC_COM.Audio
@@ -30,8 +31,10 @@ namespace TAC_COM.Audio
 
         private SoundInSource? inputSource;
         private SoundInSource? passthroughSource;
+        private FilePlayer filePlayer = new();
         public VolumeSource? WetMixLevel;
         public VolumeSource? DryMixLevel;
+        public VolumeSource? NoiseMixLevel;
         public Gain? UserGainControl;
         public Gate? NoiseGate;
         public bool HasInitialised;
@@ -65,6 +68,22 @@ namespace TAC_COM.Audio
             }
         }
 
+        private float userNoiseLevel = 0;
+        public float UserNoiseLevel
+        {
+            get => userNoiseLevel;
+            set
+            {
+                userNoiseLevel = value;
+                if (HasInitialised && NoiseMixLevel != null)
+                {
+                    NoiseMixLevel.Volume = value;
+                }
+            }
+        }
+
+        public float NoiseLevel { get; internal set; }
+
         public void Initialise(WasapiCapture input)
         {
             inputSource = new SoundInSource(input) { FillWithZeros = true };
@@ -79,7 +98,8 @@ namespace TAC_COM.Audio
             {
                 var inputSignalChain = InputSignalChain();
                 var sfxSignalChain = DrySignalChain();
-                var mixerSignalChain = MixerSignalChain(inputSignalChain, sfxSignalChain);
+                var noiseSignalChain = NoiseSignalChain();
+                var mixerSignalChain = MixerSignalChain(inputSignalChain, sfxSignalChain, noiseSignalChain);
 
                 return mixerSignalChain;
             }
@@ -169,14 +189,32 @@ namespace TAC_COM.Audio
             return sampleSource;
         }
 
+        internal ISampleSource NoiseSignalChain()
+        {
+
+            var noiseSource = filePlayer.GetNoiseSFX();
+            var loopSource = new LoopStream(noiseSource)
+            {
+                EnableLoop = true,
+            }.ToSampleSource();
+
+            var output = new Gain(loopSource)
+            {
+                GainDB = 10,
+            };
+
+            return output;
+        }
+
         /// <summary>
         /// Method <c>MixerSignalChain</c> combines the microphone
         /// and sfx input sources in a <c>Mixer</c> class.
         /// </summary>
-        internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix)
+        internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
             wetMix = wetMix.ToMono().ChangeSampleRate(SampleRate);
             dryMix = dryMix.ToMono().ChangeSampleRate(SampleRate);
+            noiseMix = noiseMix.ToMono().ChangeSampleRate(SampleRate);
 
             var mixer = new Mixer(1, SampleRate)
             {
@@ -186,13 +224,16 @@ namespace TAC_COM.Audio
 
             WetMixLevel = wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
             DryMixLevel = dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+            NoiseMixLevel = noiseMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
 
             mixer.AddSource(WetMixLevel);
             mixer.AddSource(DryMixLevel);
+            mixer.AddSource(NoiseMixLevel);
 
             // Set initial levels
             WetMixLevel.Volume = 0;
             DryMixLevel.Volume = 1;
+            NoiseMixLevel.Volume = 0;
 
             return mixer.ToWaveSource();
         }

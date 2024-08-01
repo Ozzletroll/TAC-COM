@@ -172,12 +172,13 @@
 
                 <StackPanel Orientation="Vertical" Width="240">
                     <Label Content="INTERFERENCE" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Label Content="0dB" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label Content="{Binding AudioManager.NoiseLevel}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
-                                    VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"/>
+                                    VerticalAlignment="Center" Width="120" TickPlacement="TopLeft" IsSnapToTickEnabled="True"
+                                    Value="{Binding AudioManager.NoiseLevel}" TickFrequency="0.1" Maximum="1"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
