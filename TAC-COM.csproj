@@ -15,6 +15,11 @@
     <None Remove="Static\SFX\GateClose\gate_close_2.wav" />
     <None Remove="Static\SFX\GateOpen\gate_open_1.wav" />
     <None Remove="Static\SFX\GateOpen\gate_open_2.wav" />
+    <None Remove="Static\SFX\Noise\NoiseGMS.wav" />
+    <None Remove="Static\SFX\Noise\NoiseHA.wav" />
+    <None Remove="Static\SFX\Noise\NoiseHORUS.wav" />
+    <None Remove="Static\SFX\Noise\NoiseIPSN.wav" />
+    <None Remove="Static\SFX\Noise\NoiseSSC.wav" />
     <None Remove="Static\SFX\Noise\Noise_GMS.wav" />
   </ItemGroup>
 
@@ -31,7 +36,19 @@
     <Content Include="Static\SFX\GateOpen\gate_open_2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\Noise_GMS.wav">
+    <Content Include="Static\SFX\Noise\NoiseGMS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseHA.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseHORUS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseIPSN.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseSSC.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

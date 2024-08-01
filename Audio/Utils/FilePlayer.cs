@@ -25,9 +25,10 @@ namespace TAC_COM.Audio.Utils
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
-        public IWaveSource GetNoiseSFX()
+        public IWaveSource GetNoiseSFX(string profile)
         {
-            var filename = fileManager.GetRandomFile("Static/SFX/Noise");
+            var sfxName = "Noise" + profile;
+            var filename = fileManager.GetFile("Static/SFX/Noise", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
     }

@@ -40,6 +40,7 @@ namespace TAC_COM.Audio
         public Gate? NoiseGate;
         public bool HasInitialised;
         private int SampleRate = 48000;
+        public string ActiveProfile = "GMS";
 
         private float userGainLevel = 0;
         public float UserGainLevel
@@ -82,8 +83,6 @@ namespace TAC_COM.Audio
                 }
             }
         }
-
-        public float NoiseLevel { get; internal set; }
 
         public void Initialise(WasapiCapture input)
         {
@@ -197,7 +196,7 @@ namespace TAC_COM.Audio
         internal ISampleSource NoiseSignalChain()
         {
 
-            var noiseSource = filePlayer.GetNoiseSFX();
+            var noiseSource = filePlayer.GetNoiseSFX(ActiveProfile);
             var loopSource = new LoopStream(noiseSource)
             {
                 EnableLoop = true,
@@ -205,7 +204,7 @@ namespace TAC_COM.Audio
 
             var output = new Gain(loopSource)
             {
-                GainDB = 10,
+                GainDB = 20,
             };
 
             return output;
