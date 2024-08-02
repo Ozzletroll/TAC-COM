@@ -31,12 +31,12 @@ namespace TAC_COM.ViewModels
             get => audioManager.outputDevices;
         }
 
-        public int SelectedInputIndex
+        public string SelectedInputItem
         {
             set => audioManager.SetInputDevice(value);
         }
 
-        public int SelectedOutputIndex
+        public string SelectedOutputItem
         {
             set => audioManager.SetOutputDevice(value);
         }

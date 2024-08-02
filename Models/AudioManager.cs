@@ -166,20 +166,28 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(outputDevices));
         }
 
-        public void SetInputDevice(int deviceNumber)
+        public void SetInputDevice(string deviceName)
         {
-            activeInputDevice = inputDevices[deviceNumber];
-            StopAudio();
-            ToggleState();
-            SetMixerLevels();
+            var matchingDevice = inputDevices.FirstOrDefault(device => device.FriendlyName == deviceName);
+            if (matchingDevice != null)
+            {
+                activeInputDevice = matchingDevice;
+                StopAudio();
+                ToggleState();
+                SetMixerLevels();
+            }
         }
 
-        internal void SetOutputDevice(int value)
+        internal void SetOutputDevice(string deviceName)
         {
-            activeOutputDevice = outputDevices[value];
-            StopAudio();
-            ToggleState();
-            SetMixerLevels();
+            var matchingDevice = outputDevices.FirstOrDefault(device => device.FriendlyName == deviceName);
+            if (matchingDevice != null)
+            {
+                activeOutputDevice = matchingDevice;
+                StopAudio();
+                ToggleState();
+                SetMixerLevels();
+            }
         }
 
         public void ToggleState()
