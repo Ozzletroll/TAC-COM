@@ -17,6 +17,7 @@ using CSCore.SoundOut;
 using System.IO;
 using System.Windows.Input;
 using TAC_COM.Audio.Utils;
+using System.Reflection.Metadata;
 
 
 namespace TAC_COM.Audio
@@ -38,6 +39,7 @@ namespace TAC_COM.Audio
         public VolumeSource? WetNoiseMixLevel;
         public Gain? UserGainControl;
         public Gate? NoiseGate;
+        public DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
         public string ActiveProfile = "GMS";
@@ -70,6 +72,8 @@ namespace TAC_COM.Audio
             }
         }
 
+        // UserNoiseLevel and DistortionLevel are linked
+        // so that increasing noise increases distortion
         private float userNoiseLevel = 0;
         public float UserNoiseLevel
         {
@@ -77,9 +81,26 @@ namespace TAC_COM.Audio
             set
             {
                 userNoiseLevel = value;
+                DistortionLevel = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
                     NoiseMixLevel.Volume = value;
+                }
+            }
+        }
+
+        private const float MinimumDistortion = 85;
+        private float distortionLevel;
+        public float DistortionLevel
+        {
+            get => distortionLevel;
+            set
+            {
+                value = MinimumDistortion + (value * (100 - MinimumDistortion));
+                distortionLevel = value;
+                if (HasInitialised && Distortion != null)
+                {
+                    Distortion.Edge = value;
                 }
             }
         }
@@ -157,11 +178,11 @@ namespace TAC_COM.Audio
                 filteredSource.AppendSource(x => new DmoDistortionEffect(x)
                 {
                     Gain = -60,
-                    Edge = 75,
+                    Edge = DistortionLevel,
                     PostEQCenterFrequency = 3000,
                     PostEQBandwidth = 2400,
                     PreLowpassCutoff = 8000
-                });
+                }, out Distortion);
 
             // Reduce gain to compensate for compression/distortion
             var outputSampleSource = filteredSource.ToSampleSource();
@@ -204,7 +225,7 @@ namespace TAC_COM.Audio
 
             var output = new Gain(loopSource)
             {
-                GainDB = 20,
+                GainDB = 10,
             };
 
             return output;
