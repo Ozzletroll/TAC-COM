@@ -235,7 +235,7 @@ namespace TAC_COM.Audio
             WetNoiseMixer.AddSource(NoiseMixLevel);
 
             WetMixLevel.Volume = 1;
-            NoiseMixLevel.Volume = 0;
+            NoiseMixLevel.Volume = UserNoiseLevel;
 
             // Mix combined wet + noise signal with dry signal
             var WetDryMixer = new Mixer(1, SampleRate)
