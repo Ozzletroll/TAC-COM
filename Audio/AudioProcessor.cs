@@ -31,7 +31,7 @@ namespace TAC_COM.Audio
 
         private SoundInSource? inputSource;
         private SoundInSource? passthroughSource;
-        private FilePlayer filePlayer = new();
+        private readonly FilePlayer filePlayer = new();
         public VolumeSource? DryMixLevel;
         public VolumeSource? WetMixLevel;
         public VolumeSource? NoiseMixLevel;
