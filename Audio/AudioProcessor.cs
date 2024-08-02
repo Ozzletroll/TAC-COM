@@ -35,14 +35,14 @@ namespace TAC_COM.Audio
         private readonly FilePlayer filePlayer = new();
         public VolumeSource? DryMixLevel;
         public VolumeSource? WetMixLevel;
-        public VolumeSource? NoiseMixLevel;
+        private VolumeSource? NoiseMixLevel;
         public VolumeSource? WetNoiseMixLevel;
-        public Gain? UserGainControl;
-        public Gate? NoiseGate;
-        public DmoDistortionEffect? Distortion;
+        private Gain? UserGainControl;
+        private Gate? NoiseGate;
+        private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
-        public string ActiveProfile = "GMS";
+        private string ActiveProfile = "GMS";
 
         private float userGainLevel = 0;
         public float UserGainLevel
