@@ -225,7 +225,7 @@ namespace TAC_COM.Audio
 
             var output = new Gain(loopSource)
             {
-                GainDB = 10,
+                GainDB = 5,
             };
 
             return output;
@@ -275,7 +275,19 @@ namespace TAC_COM.Audio
             WetNoiseMixLevel.Volume = 0;
             DryMixLevel.Volume = 1;
 
-            return WetDryMixer.ToWaveSource();
+            var compressedOutput = WetDryMixer.ToWaveSource();
+
+            compressedOutput
+                .AppendSource(x => new DmoCompressorEffect(x)
+                {
+                    Attack = 0.5f,
+                    Gain = 5,
+                    Ratio = 10,
+                    Release = 200,
+                    Threshold = -20
+                });
+
+            return compressedOutput;
         }
 
         /// <summary>
