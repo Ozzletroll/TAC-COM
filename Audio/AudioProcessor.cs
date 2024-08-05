@@ -24,7 +24,7 @@ namespace TAC_COM.Audio
 {
 
     /// <summary>
-    /// Class <c>AudioProcessor</c> assembles the signal chains used by
+    /// Class <c>AudioProcessor</c> assembles and mixes the signal chains used by
     /// the <c>AudioManager</c> Model class.
     /// </summary>
     internal class AudioProcessor
@@ -90,7 +90,7 @@ namespace TAC_COM.Audio
         }
 
         private const float MinimumDistortion = 85;
-        private float distortionLevel;
+        private float distortionLevel = MinimumDistortion;
         public float DistortionLevel
         {
             get => distortionLevel;
