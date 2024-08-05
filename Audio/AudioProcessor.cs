@@ -275,8 +275,8 @@ namespace TAC_COM.Audio
             WetNoiseMixLevel.Volume = 0;
             DryMixLevel.Volume = 1;
 
+            // Compress dynamics for final output
             var compressedOutput = WetDryMixer.ToWaveSource();
-
             compressedOutput
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
