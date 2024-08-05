@@ -100,15 +100,12 @@ namespace TAC_COM.Models
             }
         }
 
-        private float noiseGateThreshold;
         public float NoiseGateThreshold
         {
             get => audioProcessor.NoiseGateThreshold;
             set
             {
-                noiseGateThreshold = value;
                 audioProcessor.NoiseGateThreshold = value;
-                OnPropertyChanged(nameof(noiseGateThreshold));
                 OnPropertyChanged(nameof(noiseGateThresholdString));
             }
         }
@@ -123,15 +120,12 @@ namespace TAC_COM.Models
             }
         }
 
-        private float noiseLevel;
         public float NoiseLevel
         {
-            get => noiseLevel;
+            get => audioProcessor.UserNoiseLevel;
             set
             {
-                noiseLevel = value;
                 audioProcessor.UserNoiseLevel = value;
-                OnPropertyChanged(nameof(noiseLevel));
                 OnPropertyChanged(nameof(noiseLevelString));
             }
         }
@@ -141,7 +135,7 @@ namespace TAC_COM.Models
         {
             get
             {
-                return (Math.Round(noiseLevel, 2) * 100).ToString() + "%";
+                return (Math.Round(audioProcessor.UserNoiseLevel, 2) * 100).ToString() + "%";
             }
         }
 

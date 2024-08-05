@@ -42,7 +42,7 @@ namespace TAC_COM.Audio
         private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
-        private string ActiveProfile = "GMS";
+        private string ActiveProfile = "IPSN";
 
         private float userGainLevel = 0;
         public float UserGainLevel
@@ -74,7 +74,7 @@ namespace TAC_COM.Audio
 
         // UserNoiseLevel and DistortionLevel are linked
         // so that increasing noise increases distortion
-        private float userNoiseLevel = 0;
+        private float userNoiseLevel = 0.5f;
         public float UserNoiseLevel
         {
             get => userNoiseLevel;
@@ -225,7 +225,7 @@ namespace TAC_COM.Audio
 
             var output = new Gain(loopSource)
             {
-                GainDB = 5,
+                GainDB = 15,
             };
 
             return output;
