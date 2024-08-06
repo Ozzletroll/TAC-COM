@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using TAC_COM.Models;
+using TAC_COM.Settings;
 
 
 namespace TAC_COM.ViewModels
@@ -31,14 +32,28 @@ namespace TAC_COM.ViewModels
             get => audioManager.outputDevices;
         }
 
-        public string SelectedInputItem
+        private string inputDevice;
+        public string InputDevice
         {
-            set => audioManager.SetInputDevice(value);
+            get => inputDevice;
+            set
+            {
+                inputDevice = value;
+                audioManager.SetInputDevice(value);
+                OnPropertyChanged(nameof(InputDevice), value);
+            }
         }
 
-        public string SelectedOutputItem
+        private string outputDevice;
+        public string OutputDevice
         {
-            set => audioManager.SetOutputDevice(value);
+            get => outputDevice;
+            set 
+            {
+                outputDevice = value;
+                audioManager.SetOutputDevice(value);
+                OnPropertyChanged(nameof(OutputDevice), value);
+            } 
         }
 
         public bool ToggleState
@@ -48,7 +63,7 @@ namespace TAC_COM.ViewModels
             {
                 AudioManager.State = value;
                 AudioManager.ToggleState();
-                OnPropertyChanged(nameof(AudioManager.State));
+                OnPropertyChanged(nameof(AudioManager.State), value);
 
                 if (AudioManager.State == false)
                 {
@@ -64,7 +79,7 @@ namespace TAC_COM.ViewModels
             {
                 AudioManager.BypassState = value;
                 AudioManager.CheckBypassState();
-                OnPropertyChanged(nameof(AudioManager.BypassState));
+                OnPropertyChanged(nameof(AudioManager.BypassState), value);
             }
         }
 
