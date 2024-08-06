@@ -151,8 +151,8 @@
                           Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
-                                    VerticalAlignment="Center" Width="120" Minimum="-60"
-                                    Value="{Binding AudioManager.NoiseGateThreshold}" Maximum="-30" TickPlacement="TopLeft" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                                    VerticalAlignment="Center" Width="120" 
+                                    Value="{Binding NoiseGateThreshold}" Minimum="-60" Maximum="-30" TickPlacement="TopLeft" TickFrequency="1" IsSnapToTickEnabled="True"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

@@ -16,7 +16,11 @@ namespace TAC_COM.ViewModels
         protected void OnPropertyChanged(string propertyName, object value)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            UpdateAppConfig(propertyName, value);
+        }
 
+        private void UpdateAppConfig(string propertyName, object value)
+        {
             // Check if property in DeviceSettings section
             var property = AudioSettings.GetType().GetProperty(propertyName);
 
@@ -25,7 +29,7 @@ namespace TAC_COM.ViewModels
             {
                 property.SetValue(AudioSettings, value.ToString());
                 AppConfig.Save();
-            }  
+            }
         }
 
         public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
