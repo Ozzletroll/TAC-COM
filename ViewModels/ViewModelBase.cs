@@ -17,8 +17,6 @@ namespace TAC_COM.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-            Console.WriteLine($"UPDATED {propertyName}");
-
             // Check if property in DeviceSettings section
             var property = DeviceSettings.GetType().GetProperty(propertyName);
 
