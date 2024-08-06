@@ -38,7 +38,7 @@
 
                 <ComboBox x:Name="InputSelection" Width="250" 
                           ItemsSource="{Binding AllInputDevices}"
-                          SelectedItem="{Binding SelectedInputItem}"
+                          SelectedItem="{Binding InputDevice}"
                           Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -65,7 +65,7 @@
 
                 <ComboBox x:Name="OutputSelection" Width="250"
                           ItemsSource="{Binding AllOutputDevices}"
-                          SelectedItem="{Binding SelectedOutputItem}" 
+                          SelectedItem="{Binding OutputDevice}" 
                           Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">

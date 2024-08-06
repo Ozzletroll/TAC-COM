@@ -160,9 +160,9 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(outputDevices));
         }
 
-        public void SetInputDevice(string deviceName)
+        public void SetInputDevice(MMDevice inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(device => device.FriendlyName == deviceName);
+            var matchingDevice = inputDevices.FirstOrDefault(device => device == inputDevice);
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice;
@@ -172,9 +172,9 @@ namespace TAC_COM.Models
             }
         }
 
-        internal void SetOutputDevice(string deviceName)
+        internal void SetOutputDevice(MMDevice outputDevice)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(device => device.FriendlyName == deviceName);
+            var matchingDevice = outputDevices.FirstOrDefault(device => device == outputDevice);
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice;

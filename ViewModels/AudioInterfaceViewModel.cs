@@ -32,27 +32,33 @@ namespace TAC_COM.ViewModels
             get => audioManager.outputDevices;
         }
 
-        private string inputDevice;
-        public string InputDevice
+        private MMDevice? inputDevice;
+        public MMDevice? InputDevice
         {
             get => inputDevice;
             set
             {
                 inputDevice = value;
-                audioManager.SetInputDevice(value);
-                OnPropertyChanged(nameof(InputDevice), value);
+                if (value != null)
+                {
+                    audioManager.SetInputDevice(value);
+                    OnPropertyChanged(nameof(InputDevice), value);
+                }
             }
         }
 
-        private string outputDevice;
-        public string OutputDevice
+        private MMDevice? outputDevice;
+        public MMDevice? OutputDevice
         {
             get => outputDevice;
             set 
             {
                 outputDevice = value;
-                audioManager.SetOutputDevice(value);
-                OnPropertyChanged(nameof(OutputDevice), value);
+                if (value != null)
+                {
+                    audioManager.SetOutputDevice(value);
+                    OnPropertyChanged(nameof(OutputDevice), value);
+                }
             } 
         }
 
@@ -86,6 +92,18 @@ namespace TAC_COM.ViewModels
         public AudioInterfaceViewModel()
         {
             audioManager = new AudioManager();
+
+            // Load last used values from AppConfig
+            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == DeviceSettings.InputDevice);
+            if (savedInputDevice != null)
+            {
+                InputDevice = savedInputDevice;
+            }
+            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == DeviceSettings.OutputDevice);
+            if (savedOutputDevice != null)
+            {
+                OutputDevice = savedOutputDevice;
+            }
         }
 
     }

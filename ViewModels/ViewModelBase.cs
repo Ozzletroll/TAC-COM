@@ -23,7 +23,7 @@ namespace TAC_COM.ViewModels
             // Update AppConfig
             if (property != null)
             {
-                property.SetValue(DeviceSettings, value);
+                property.SetValue(DeviceSettings, value.ToString());
                 AppConfig.Save();
             }  
         }
