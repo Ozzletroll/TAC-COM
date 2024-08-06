@@ -18,27 +18,27 @@ namespace TAC_COM.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             // Check if property in DeviceSettings section
-            var property = DeviceSettings.GetType().GetProperty(propertyName);
+            var property = AudioSettings.GetType().GetProperty(propertyName);
 
             // Update AppConfig
             if (property != null)
             {
-                property.SetValue(DeviceSettings, value.ToString());
+                property.SetValue(AudioSettings, value.ToString());
                 AppConfig.Save();
             }  
         }
 
         public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        public DeviceSettings DeviceSettings;
+        public AudioSettings AudioSettings;
 
         public ViewModelBase()
         {
-            if (AppConfig.Sections["DeviceSettings"] is null)
+            if (AppConfig.Sections["AudioSettings"] is null)
             {
-                AppConfig.Sections.Add("DeviceSettings", new DeviceSettings());
+                AppConfig.Sections.Add("AudioSettings", new AudioSettings());
             }
 
-            DeviceSettings = (DeviceSettings)AppConfig.GetSection("DeviceSettings");
+            AudioSettings = (AudioSettings)AppConfig.GetSection("AudioSettings");
         }
     }
 }

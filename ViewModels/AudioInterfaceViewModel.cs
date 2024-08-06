@@ -94,12 +94,12 @@ namespace TAC_COM.ViewModels
             audioManager = new AudioManager();
 
             // Load last used values from AppConfig
-            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == DeviceSettings.InputDevice);
+            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.InputDevice);
             if (savedInputDevice != null)
             {
                 InputDevice = savedInputDevice;
             }
-            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == DeviceSettings.OutputDevice);
+            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.OutputDevice);
             if (savedOutputDevice != null)
             {
                 OutputDevice = savedOutputDevice;
