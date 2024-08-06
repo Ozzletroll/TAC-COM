@@ -22,12 +22,12 @@ namespace TAC_COM.ViewModels
             get => audioManager;
         }
 
-        public List<MMDevice> AllInputDevices
+        public ObservableCollection<MMDevice> AllInputDevices
         {
             get => audioManager.inputDevices;
         }
 
-        public List<MMDevice> AllOutputDevices
+        public ObservableCollection<MMDevice> AllOutputDevices
         {
             get => audioManager.outputDevices;
         }

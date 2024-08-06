@@ -23,8 +23,8 @@ namespace TAC_COM.Models
     {
         private MMDevice activeInputDevice;
         private MMDevice activeOutputDevice;
-        public List<MMDevice> inputDevices = [];
-        public List<MMDevice> outputDevices = [];
+        public ObservableCollection<MMDevice> inputDevices = [];
+        public ObservableCollection<MMDevice> outputDevices = [];
         private WasapiCapture input;
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
