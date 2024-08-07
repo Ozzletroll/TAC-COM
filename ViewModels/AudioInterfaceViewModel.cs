@@ -89,6 +89,26 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private List<Profile> profiles = [];
+        public List<Profile> Profiles
+        {
+            get => profiles;
+            set
+            {
+                profiles = value;
+            }
+        }
+
+        private string activeProfile;
+        public string ActiveProfile
+        {
+            get => activeProfile;
+            set
+            {
+                activeProfile = value;
+            }
+        }
+
         public AudioInterfaceViewModel()
         {
             // Load last used values from AppConfig
