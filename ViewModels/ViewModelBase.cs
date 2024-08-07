@@ -13,13 +13,12 @@ namespace TAC_COM.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName, object value)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            UpdateAppConfig(propertyName, value);
         }
 
-        private void UpdateAppConfig(string propertyName, object value)
+        public void UpdateAppConfig(string propertyName, object value)
         {
             // Check if property in DeviceSettings section
             var property = AudioSettings.GetType().GetProperty(propertyName);

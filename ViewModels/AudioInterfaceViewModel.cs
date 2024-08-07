@@ -42,7 +42,8 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.SetInputDevice(value);
-                    OnPropertyChanged(nameof(InputDevice), value);
+                    OnPropertyChanged(nameof(InputDevice));
+                    UpdateAppConfig(nameof(InputDevice), value);
                 }
             }
         }
@@ -57,7 +58,8 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.SetOutputDevice(value);
-                    OnPropertyChanged(nameof(OutputDevice), value);
+                    OnPropertyChanged(nameof(OutputDevice));
+                    UpdateAppConfig(nameof(OutputDevice), value);
                 }
             } 
         }
@@ -69,7 +71,7 @@ namespace TAC_COM.ViewModels
             {
                 AudioManager.State = value;
                 AudioManager.ToggleState();
-                OnPropertyChanged(nameof(AudioManager.State), value);
+                OnPropertyChanged(nameof(AudioManager.State));
 
                 if (AudioManager.State == false)
                 {
@@ -85,7 +87,7 @@ namespace TAC_COM.ViewModels
             {
                 AudioManager.BypassState = value;
                 AudioManager.CheckBypassState();
-                OnPropertyChanged(nameof(AudioManager.BypassState), value);
+                OnPropertyChanged(nameof(AudioManager.BypassState));
             }
         }
 
