@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace TAC_COM.Settings
 {
@@ -29,7 +30,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("noiseGateThreshold")]
+        [ConfigurationProperty("noiseGateThreshold", DefaultValue = -45f)]
         public float NoiseGateThreshold
         {
             get => (float)this["noiseGateThreshold"];
@@ -39,7 +40,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("outputLevel")]
+        [ConfigurationProperty("outputLevel", DefaultValue = 0f)]
         public float OutputLevel
         {
             get => (float)this["outputLevel"];
@@ -49,7 +50,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("interferenceLevel")]
+        [ConfigurationProperty("interferenceLevel", DefaultValue = 0.5f)]
         public float InterferenceLevel
         {
             get => (float)this["interferenceLevel"];
