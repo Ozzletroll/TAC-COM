@@ -83,6 +83,28 @@
                              Value="{Binding AudioManager.OutputPeakMeter}"/>
             </StackPanel>
 
+            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
+                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        PROFILE
+                    </TextBlock>
+                </Label>
+
+                <ComboBox x:Name="ProfileSelection" Width="250"
+                          ItemsSource="{Binding Profiles}"
+                          SelectedItem="{Binding ActiveProfile}"
+                          Text="SELECT MANUFACTURER" FontFamily="Calibri" FontSize="14"
+                          IsReadOnly="True" IsEditable="True" 
+                          VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ComboBox.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="#FFF0F0F0"/>
+                            <GradientStop Color="#FFBDB6B6" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ComboBox.Background>
+                </ComboBox>
+            </StackPanel>
+
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="White" BorderBrush="#FF560404" FontSize="18"
@@ -152,7 +174,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
                                     VerticalAlignment="Center" Width="120" 
-                                    Value="{Binding NoiseGateThreshold}" Minimum="-60" Maximum="-30" TickPlacement="TopLeft" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                                    Value="{Binding AudioManager.NoiseGateThreshold}" Minimum="-60" Maximum="-30" TickPlacement="TopLeft" TickFrequency="1" IsSnapToTickEnabled="True"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
