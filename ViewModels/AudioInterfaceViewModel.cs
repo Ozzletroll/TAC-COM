@@ -16,7 +16,7 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private readonly AudioManager audioManager;
+        private readonly AudioManager audioManager = new();
         public AudioManager AudioManager
         {
             get => audioManager;
@@ -91,8 +91,6 @@ namespace TAC_COM.ViewModels
 
         public AudioInterfaceViewModel()
         {
-            audioManager = new AudioManager();
-
             // Load last used values from AppConfig
             var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.InputDevice);
             if (savedInputDevice != null)
@@ -104,6 +102,9 @@ namespace TAC_COM.ViewModels
             {
                 OutputDevice = savedOutputDevice;
             }
+            audioManager.NoiseGateThreshold = AudioSettings.NoiseGateThreshold;
+            audioManager.OutputGainLevel = AudioSettings.OutputLevel;
+            audioManager.NoiseLevel = AudioSettings.InterferenceLevel;
         }
 
     }
