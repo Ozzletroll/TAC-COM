@@ -91,6 +91,17 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        public float NoiseGateThreshold
+        {
+            get => audioManager.NoiseGateThreshold;
+            set
+            {
+                audioManager.NoiseGateThreshold = value;
+                OnPropertyChanged(nameof(NoiseGateThreshold));
+                UpdateAppConfig(nameof(NoiseGateThreshold), value);
+            }
+        }
+
         private List<Profile> profiles = [];
         public List<Profile> Profiles
         {

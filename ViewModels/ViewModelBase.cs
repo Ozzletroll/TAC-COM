@@ -26,7 +26,14 @@ namespace TAC_COM.ViewModels
             // Update AppConfig
             if (property != null)
             {
-                property.SetValue(AudioSettings, value.ToString());
+                if (property.PropertyType == typeof(string))
+                {
+                    property.SetValue(AudioSettings, value.ToString());
+                }
+                else if (property.PropertyType == typeof(float))
+                {
+                    property.SetValue(AudioSettings, (float)value);
+                }
                 AppConfig.Save();
             }
         }
