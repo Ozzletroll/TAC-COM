@@ -113,6 +113,17 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        public float InterferenceLevel
+        {
+            get => audioManager.NoiseLevel;
+            set
+            {
+                audioManager.NoiseLevel = value;
+                OnPropertyChanged(nameof(InterferenceLevel));
+                UpdateAppConfig(nameof(InterferenceLevel), value);
+            }
+        }
+
         private List<Profile> profiles = [];
         public List<Profile> Profiles
         {

@@ -200,7 +200,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider x:Name="NoiseLevel" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
                                     VerticalAlignment="Center" Width="120" TickPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                    Value="{Binding AudioManager.NoiseLevel}" TickFrequency="0.1" Maximum="1"/>
+                                    Value="{Binding InterferenceLevel}" TickFrequency="0.1" Maximum="1"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
