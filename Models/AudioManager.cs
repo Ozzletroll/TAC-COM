@@ -271,14 +271,16 @@ namespace TAC_COM.Models
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
-            // Handle the captured audio data
-            using var inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
+            if (activeInputDevice != null && activeOutputDevice != null)
             {
-                InputPeakMeter = inputMeter.PeakValue * 100;
-            }
-            using var outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
-            {
-                OutputPeakMeter = outputMeter.PeakValue * 100;
+                using var inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
+                {
+                    InputPeakMeter = inputMeter.PeakValue * 100;
+                }
+                using var outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
+                {
+                    OutputPeakMeter = outputMeter.PeakValue * 100;
+                }
             }
         }
 
