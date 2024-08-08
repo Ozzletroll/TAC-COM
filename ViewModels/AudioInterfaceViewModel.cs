@@ -102,6 +102,17 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        public float OutputLevel
+        {
+            get => audioManager.OutputGainLevel;
+            set
+            {
+                audioManager.OutputGainLevel = value;
+                OnPropertyChanged(nameof(OutputLevel));
+                UpdateAppConfig(nameof(OutputLevel), value);
+            }
+        }
+
         private List<Profile> profiles = [];
         public List<Profile> Profiles
         {

@@ -187,7 +187,7 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Slider x:Name="OutputLevel" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
                                     VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"
-                                    Value="{Binding AudioManager.OutputGainLevel}" TickPlacement="TopLeft" SmallChange="1" IsSnapToTickEnabled="True"/>
+                                    Value="{Binding OutputLevel}" TickPlacement="TopLeft" SmallChange="1" IsSnapToTickEnabled="True"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
