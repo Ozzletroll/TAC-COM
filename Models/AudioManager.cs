@@ -25,6 +25,8 @@ namespace TAC_COM.Models
         private MMDevice activeOutputDevice;
         public ObservableCollection<MMDevice> inputDevices = [];
         public ObservableCollection<MMDevice> outputDevices = [];
+        private AudioMeterInformation? inputMeter;
+        private AudioMeterInformation? outputMeter;
         private WasapiCapture input;
         private WasapiOut micOutput;
         private WasapiOut sfxOutput;
@@ -85,7 +87,6 @@ namespace TAC_COM.Models
             {
                 outputGainLevel = value;
                 audioProcessor.UserGainLevel = value;
-                OnPropertyChanged(nameof(outputGainLevel));
                 OnPropertyChanged(nameof(outputGainLevelString));
             }
         }
@@ -165,10 +166,11 @@ namespace TAC_COM.Models
             var matchingDevice = inputDevices.FirstOrDefault(device => device == inputDevice);
             if (matchingDevice != null)
             {
-                activeInputDevice = matchingDevice;
                 StopAudio();
                 ToggleState();
                 SetMixerLevels();
+                activeInputDevice = matchingDevice;
+                inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
             }
         }
 
@@ -177,10 +179,11 @@ namespace TAC_COM.Models
             var matchingDevice = outputDevices.FirstOrDefault(device => device == outputDevice);
             if (matchingDevice != null)
             {
-                activeOutputDevice = matchingDevice;
                 StopAudio();
                 ToggleState();
                 SetMixerLevels();
+                activeOutputDevice = matchingDevice;
+                outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
             }
         }
 
@@ -271,16 +274,14 @@ namespace TAC_COM.Models
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
-            if (activeInputDevice != null && activeOutputDevice != null)
+            if (inputMeter != null)
             {
-                using var inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
-                {
-                    InputPeakMeter = inputMeter.PeakValue * 100;
-                }
-                using var outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
-                {
-                    OutputPeakMeter = outputMeter.PeakValue * 100;
-                }
+                InputPeakMeter = inputMeter.PeakValue * 100;
+            }
+
+            if (outputMeter != null)
+            {
+                OutputPeakMeter = outputMeter.PeakValue * 100;
             }
         }
 
