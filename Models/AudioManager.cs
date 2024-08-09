@@ -21,8 +21,9 @@ namespace TAC_COM.Models
     internal class AudioManager : ModelBase
 
     {
-        private MMDevice activeInputDevice;
-        private MMDevice activeOutputDevice;
+        private MMDevice? activeInputDevice;
+        private MMDevice? activeOutputDevice;
+        private string lastOutputDeviceID;
         public ObservableCollection<MMDevice> inputDevices = [];
         public ObservableCollection<MMDevice> outputDevices = [];
         private AudioMeterInformation? inputMeter;
@@ -143,6 +144,7 @@ namespace TAC_COM.Models
         private void GetAudioDevices()
         {
             inputDevices.Clear();
+            outputDevices.Clear();
 
             var enumerator = new MMDeviceEnumerator();
             var allInputDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
@@ -163,27 +165,38 @@ namespace TAC_COM.Models
 
         public void SetInputDevice(MMDevice inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(device => device == inputDevice);
+            var matchingDevice = inputDevices.FirstOrDefault(device => device.DeviceID == inputDevice.DeviceID);
             if (matchingDevice != null)
             {
-                StopAudio();
-                ToggleState();
-                SetMixerLevels();
                 activeInputDevice = matchingDevice;
                 inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
             }
         }
 
-        internal void SetOutputDevice(MMDevice outputDevice)
+        public void SetOutputDevice(MMDevice outputDevice)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(device => device == outputDevice);
+            var matchingDevice = outputDevices.FirstOrDefault(device => device.DeviceID == outputDevice.DeviceID);
             if (matchingDevice != null)
             {
-                StopAudio();
-                ToggleState();
-                SetMixerLevels();
                 activeOutputDevice = matchingDevice;
+                lastOutputDeviceID = outputDevice.DeviceID;
                 outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
+            }
+        }
+
+        private void ResetOutputDevice()
+        {
+            if (activeOutputDevice is null) return;
+            if (activeOutputDevice.IsDisposed)
+            {
+                GetAudioDevices();
+                var refoundOutputDevice = outputDevices.FirstOrDefault(device => device.DeviceID == lastOutputDeviceID);
+                if (refoundOutputDevice != null)
+                {
+                    SetOutputDevice(refoundOutputDevice);
+                    OnPropertyChanged(nameof(inputDevices));
+                    OnPropertyChanged(nameof(outputDevices));
+                }
             }
         }
 
@@ -244,11 +257,13 @@ namespace TAC_COM.Models
                     Latency = 5,
                 };
 
+                ResetOutputDevice();
+
                 // Initialise input
                 input.Device = activeInputDevice;
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
-                input.Stopped += OnStopped;
+                input.Stopped += OnInputStopped;
                 
                 // Initiliase signal chain
                 audioProcessor.Initialise(input);
@@ -263,13 +278,16 @@ namespace TAC_COM.Models
             }
         }
 
-        void StopAudio()
+        private void StopAudio()
         {
             input?.Stop();
-            input?.Dispose();
             micOutput?.Stop();
-            micOutput?.Dispose();
-            audioProcessor.Dispose();
+            sfxOutput?.Stop(); 
+        }
+
+        void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
+        {
+            InputPeakMeter = 0;
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
@@ -287,35 +305,40 @@ namespace TAC_COM.Models
 
         public void GateOpen()
         {
-            filePlayer = new();
-            var file = filePlayer.GetOpenSFX();
-
-            sfxOutput = new()
+            if (activeOutputDevice != null)
             {
-                Device = activeOutputDevice
-            };
-            sfxOutput.Initialize(file);
-            sfxOutput.Volume = sfxVolume;
-            sfxOutput.Play();
+                if (activeOutputDevice.IsDisposed) return;
+
+                filePlayer = new();
+                var file = filePlayer.GetOpenSFX();
+
+                sfxOutput = new()
+                {
+                    Device = activeOutputDevice
+                };
+                sfxOutput.Initialize(file);
+                sfxOutput.Volume = sfxVolume;
+                sfxOutput.Play();
+            }
         }
 
         public void GateClose()
         {
-            filePlayer = new();
-            var file = filePlayer.GetCloseSFX();
-
-            sfxOutput = new()
+            if (activeOutputDevice != null)
             {
-                Device = activeOutputDevice
-            };
-            sfxOutput.Initialize(file);
-            sfxOutput.Volume = sfxVolume;
-            sfxOutput.Play();
-        }
+                if (activeOutputDevice.IsDisposed) return;
 
-        void OnStopped(object? sender, RecordingStoppedEventArgs e)
-        {
-            InputPeakMeter = 0;
+                filePlayer = new();
+                var file = filePlayer.GetCloseSFX();
+
+                sfxOutput = new()
+                {
+                    Device = activeOutputDevice
+                };
+                sfxOutput.Initialize(file);
+                sfxOutput.Volume = sfxVolume;
+                sfxOutput.Play();
+            }
         }
 
         public AudioManager()
