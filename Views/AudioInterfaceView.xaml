@@ -39,6 +39,7 @@
                 <ComboBox x:Name="InputSelection" Width="250" 
                           ItemsSource="{Binding AllInputDevices}"
                           SelectedItem="{Binding InputDevice}"
+                          IsEnabled="{Binding IsSelectable}"
                           Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -65,7 +66,8 @@
 
                 <ComboBox x:Name="OutputSelection" Width="250"
                           ItemsSource="{Binding AllOutputDevices}"
-                          SelectedItem="{Binding OutputDevice}" 
+                          SelectedItem="{Binding OutputDevice}"
+                          IsEnabled="{Binding IsSelectable}"
                           Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -108,7 +110,7 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="White" BorderBrush="#FF560404" FontSize="18"
-                              IsChecked="{Binding ToggleState}" VerticalAlignment="Center" Cursor="Hand">
+                              IsChecked="{Binding State}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
                             <Setter Property="Template">

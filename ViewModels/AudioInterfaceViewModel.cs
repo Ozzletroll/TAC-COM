@@ -17,6 +17,7 @@ namespace TAC_COM.ViewModels
     internal class AudioInterfaceViewModel : ViewModelBase
     {
         private readonly AudioManager audioManager = new();
+
         public AudioManager AudioManager
         {
             get => audioManager;
@@ -64,12 +65,13 @@ namespace TAC_COM.ViewModels
             } 
         }
 
-        public bool ToggleState
+        public bool State
         {
             get => audioManager.State;
             set
             {
                 AudioManager.State = value;
+                IsSelectable = !value;
                 AudioManager.ToggleState();
                 OnPropertyChanged(nameof(AudioManager.State));
 
@@ -77,6 +79,17 @@ namespace TAC_COM.ViewModels
                 {
                     BypassState = true;
                 }
+            }
+        }
+
+        private bool isSelectable = true;
+        public bool IsSelectable
+        {
+            get => isSelectable;
+            set
+            {
+                isSelectable = value;
+                OnPropertyChanged(nameof(IsSelectable));
             }
         }
 
