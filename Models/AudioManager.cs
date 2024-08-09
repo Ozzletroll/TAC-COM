@@ -196,6 +196,7 @@ namespace TAC_COM.Models
                     SetOutputDevice(refoundOutputDevice);
                     OnPropertyChanged(nameof(inputDevices));
                     OnPropertyChanged(nameof(outputDevices));
+                    RaiseDeviceListReset();
                 }
             }
         }
@@ -339,6 +340,13 @@ namespace TAC_COM.Models
                 sfxOutput.Volume = sfxVolume;
                 sfxOutput.Play();
             }
+        }
+
+        public delegate void DeviceListResetEventHandler(object sender, EventArgs e);
+        public event DeviceListResetEventHandler DeviceListReset;
+        protected virtual void RaiseDeviceListReset()
+        {
+            DeviceListReset?.Invoke(this, EventArgs.Empty);
         }
 
         public AudioManager()

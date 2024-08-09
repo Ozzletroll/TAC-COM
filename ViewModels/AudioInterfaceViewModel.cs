@@ -157,7 +157,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public AudioInterfaceViewModel()
+        private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
             var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.InputDevice);
@@ -170,9 +170,25 @@ namespace TAC_COM.ViewModels
             {
                 OutputDevice = savedOutputDevice;
             }
+        }
+
+        private void LoadAudioSettings()
+        {
             audioManager.NoiseGateThreshold = AudioSettings.NoiseGateThreshold;
             audioManager.OutputGainLevel = AudioSettings.OutputLevel;
             audioManager.NoiseLevel = AudioSettings.InterferenceLevel;
+        }
+
+        private void OnDeviceListReset(object sender, EventArgs e)
+        {
+            LoadDeviceSettings();
+        }
+
+        public AudioInterfaceViewModel()
+        {
+            audioManager.DeviceListReset += OnDeviceListReset;
+            LoadDeviceSettings();
+            LoadAudioSettings();
         }
 
     }
