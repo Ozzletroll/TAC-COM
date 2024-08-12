@@ -13,7 +13,7 @@ namespace TAC_COM.Audio.Utils
     {
         private readonly string baseDirectory = directoryName;
 
-        public string? GetRandomFile(string folder)
+        public string GetRandomFile(string folder)
         {
             string subfolderPath = Path.Combine(baseDirectory, folder);
 

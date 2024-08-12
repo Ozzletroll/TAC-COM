@@ -95,6 +95,7 @@
                 <ComboBox x:Name="ProfileSelection" Width="250"
                           ItemsSource="{Binding Profiles}"
                           SelectedItem="{Binding ActiveProfile}"
+                          IsEnabled="{Binding IsSelectable}"
                           Text="SELECT MANUFACTURER" FontFamily="Calibri" FontSize="14"
                           IsReadOnly="True" IsEditable="True" 
                           VerticalAlignment="Center" HorizontalAlignment="Center">

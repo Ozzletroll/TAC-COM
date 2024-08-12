@@ -189,6 +189,7 @@ namespace TAC_COM.ViewModels
             audioManager.DeviceListReset += OnDeviceListReset;
             LoadDeviceSettings();
             LoadAudioSettings();
+            Profiles = ProfileManager.GetAllProfiles();
         }
 
     }
