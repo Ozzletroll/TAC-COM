@@ -152,8 +152,12 @@ namespace TAC_COM.ViewModels
             get => audioManager.activeProfile;
             set
             {
-                audioManager.activeProfile = value;
-                audioManager.activeProfile?.LoadSources();
+                if (value != null)
+                {
+                    audioManager.activeProfile = value;
+                    audioManager.activeProfile?.LoadSources();
+                    UpdateAppConfig(nameof(ActiveProfile), value);
+                }
             }
         }
 
@@ -177,6 +181,11 @@ namespace TAC_COM.ViewModels
             audioManager.NoiseGateThreshold = AudioSettings.NoiseGateThreshold;
             audioManager.OutputGainLevel = AudioSettings.OutputLevel;
             audioManager.NoiseLevel = AudioSettings.InterferenceLevel;
+            var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == AudioSettings.ActiveProfile);
+            if (savedProfile != null)
+            {
+                ActiveProfile = savedProfile;
+            }
         }
 
         private void OnDeviceListReset(object sender, EventArgs e)
@@ -187,9 +196,9 @@ namespace TAC_COM.ViewModels
         public AudioInterfaceViewModel()
         {
             audioManager.DeviceListReset += OnDeviceListReset;
+            Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
-            Profiles = ProfileManager.GetAllProfiles();
         }
 
     }

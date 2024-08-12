@@ -59,5 +59,15 @@ namespace TAC_COM.Settings
                 this["interferenceLevel"] = value;
             }
         }
+
+        [ConfigurationProperty("activeProfile", DefaultValue = "GMS")]
+        public string ActiveProfile
+        {
+            get => (string)this["activeProfile"];
+            set
+            {
+                this["activeProfile"] = value;
+            }
+        }
     }
 }
