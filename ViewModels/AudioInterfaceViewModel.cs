@@ -155,7 +155,6 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.activeProfile = value;
-                    audioManager.activeProfile?.LoadSources();
                     UpdateAppConfig(nameof(ActiveProfile), value);
                 }
             }

@@ -254,6 +254,9 @@ namespace TAC_COM.Models
                 && activeOutputDevice != null 
                 && activeProfile != null)
             {
+                // Initialise profile sfx sources
+                activeProfile.LoadSources();
+
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
                 micOutput = new WasapiOut()
                 {
