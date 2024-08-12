@@ -18,6 +18,7 @@ using System.IO;
 using System.Windows.Input;
 using TAC_COM.Audio.Utils;
 using System.Reflection.Metadata;
+using TAC_COM.Models;
 
 
 namespace TAC_COM.Audio
@@ -32,7 +33,6 @@ namespace TAC_COM.Audio
 
         private SoundInSource? inputSource;
         private SoundInSource? passthroughSource;
-        private readonly FilePlayer filePlayer = new();
         public VolumeSource? DryMixLevel;
         public VolumeSource? WetMixLevel;
         private VolumeSource? NoiseMixLevel;
@@ -42,7 +42,7 @@ namespace TAC_COM.Audio
         private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
-        private string ActiveProfile = "IPSN";
+        private Profile? ActiveProfile;
 
         private float userGainLevel = 0;
         public float UserGainLevel
@@ -105,11 +105,12 @@ namespace TAC_COM.Audio
             }
         }
 
-        public void Initialise(WasapiCapture input)
+        public void Initialise(WasapiCapture input, Profile activeProfile)
         {
             inputSource = new SoundInSource(input) { FillWithZeros = true };
             passthroughSource = new SoundInSource(input) { FillWithZeros = true };
             SampleRate = inputSource.WaveFormat.SampleRate;
+            ActiveProfile = activeProfile;
             HasInitialised = true;
         }
 
@@ -216,9 +217,7 @@ namespace TAC_COM.Audio
         /// </summary>
         internal ISampleSource NoiseSignalChain()
         {
-
-            var noiseSource = filePlayer.GetNoiseSFX(ActiveProfile);
-            var loopSource = new LoopStream(noiseSource)
+            var loopSource = new LoopStream(ActiveProfile.NoiseSource)
             {
                 EnableLoop = true,
             }.ToSampleSource();
@@ -299,5 +298,11 @@ namespace TAC_COM.Audio
             passthroughSource?.Dispose();
             HasInitialised = false;
         }
+
+        public void SetActiveProfile(Profile activeProfile)
+        {
+            ActiveProfile = activeProfile;
+        }
+
     }
 }

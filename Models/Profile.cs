@@ -9,20 +9,20 @@ using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
 {
-    public class Profile
+    public class Profile(string identifier, string fileIdentifier)
     {
-        public readonly string ProfileName;
-        public readonly string Filename;
-        private IWaveSource NoiseSource;
-        private IWaveSource OpenSFX;
-        private IWaveSource CloseSFX;
-        private FilePlayer FilePlayer = new();
+        public readonly string ProfileName = identifier;
+        public readonly string Filename = fileIdentifier;
+        public IWaveSource? NoiseSource;
+        public IWaveSource? OpenSFX;
+        public IWaveSource? CloseSFX;
+        private readonly FilePlayer FilePlayer = new();
 
-        public Profile(string identifier, string fileIdentifier)
+        public void LoadSources()
         {
-            ProfileName = identifier;
-            Filename = fileIdentifier;
-            NoiseSource = FilePlayer.GetNoiseSFX(fileIdentifier);
+            NoiseSource = FilePlayer.GetNoiseSFX(Filename);
+            OpenSFX = FilePlayer.GetOpenSFX();
+            CloseSFX = FilePlayer.GetCloseSFX();
         }
 
         public override string ToString()

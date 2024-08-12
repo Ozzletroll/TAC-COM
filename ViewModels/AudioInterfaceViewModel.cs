@@ -147,13 +147,13 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private string activeProfile;
-        public string ActiveProfile
+        public Profile? ActiveProfile
         {
-            get => activeProfile;
+            get => audioManager.activeProfile;
             set
             {
-                activeProfile = value;
+                audioManager.activeProfile = value;
+                audioManager.activeProfile?.LoadSources();
             }
         }
 

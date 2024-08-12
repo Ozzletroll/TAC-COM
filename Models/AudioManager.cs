@@ -33,7 +33,7 @@ namespace TAC_COM.Models
         private WasapiOut sfxOutput;
         private readonly float sfxVolume = 0.3f;
         private readonly AudioProcessor audioProcessor = new();
-        private FilePlayer filePlayer;
+        public Profile? activeProfile;
 
         private bool state;
         public bool State
@@ -250,7 +250,9 @@ namespace TAC_COM.Models
 
         void StartAudio()
         {
-            if (activeInputDevice != null && activeOutputDevice != null)
+            if (activeInputDevice != null
+                && activeOutputDevice != null 
+                && activeProfile != null)
             {
                 input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
                 micOutput = new WasapiOut()
@@ -267,7 +269,7 @@ namespace TAC_COM.Models
                 input.Stopped += OnInputStopped;
                 
                 // Initiliase signal chain
-                audioProcessor.Initialise(input);
+                audioProcessor.Initialise(input, activeProfile);
 
                 // Initialise output
                 micOutput.Device = activeOutputDevice;
@@ -306,12 +308,13 @@ namespace TAC_COM.Models
 
         public void GateOpen()
         {
-            if (activeOutputDevice != null)
+            if (activeOutputDevice != null
+                && activeProfile != null)
             {
                 if (activeOutputDevice.IsDisposed) return;
 
-                filePlayer = new();
-                var file = filePlayer.GetOpenSFX();
+                var file = activeProfile.OpenSFX;
+                file.SetPosition(new TimeSpan(0));
 
                 sfxOutput = new()
                 {
@@ -325,12 +328,13 @@ namespace TAC_COM.Models
 
         public void GateClose()
         {
-            if (activeOutputDevice != null)
+            if (activeOutputDevice != null
+                && activeProfile != null)
             {
                 if (activeOutputDevice.IsDisposed) return;
 
-                filePlayer = new();
-                var file = filePlayer.GetCloseSFX();
+                var file = activeProfile.CloseSFX;
+                file.SetPosition(new TimeSpan(0));
 
                 sfxOutput = new()
                 {
