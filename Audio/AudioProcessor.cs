@@ -118,7 +118,7 @@ namespace TAC_COM.Audio
             {
                 chorusDepthLevel = MinimumChorus + (value * (100 - MinimumChorus));
                 chorusFeedbackLevel = MinimumChorus + (value * (50 - MinimumChorus));
-                chorusMixLevel = MinimumChorus + (value * (50 - MinimumChorus));
+                chorusMixLevel = MinimumChorus + (value * (75 - MinimumChorus));
 
                 if (HasInitialised && Chorus != null)
                 {
@@ -186,8 +186,8 @@ namespace TAC_COM.Audio
 
             var pitchShifted = peakFiltered.AppendSource(x => new PitchShifter(x)
             {
-                PitchShiftFactor = 1f
-            });
+                PitchShiftFactor = ActiveProfile?.ProfileSettings?.PitchShiftFactor ?? 1f,
+            }, out PitchShifter);
 
             // Convert back to IWaveSource
             var filteredSource = pitchShifted.ToWaveSource();
@@ -199,7 +199,7 @@ namespace TAC_COM.Audio
                     Depth = chorusDepthLevel,
                     Feedback = chorusFeedbackLevel,
                     WetDryMix = chorusMixLevel,
-                    IsEnabled = true,
+                    IsEnabled = ActiveProfile?.ProfileSettings?.ChorusEnabled ?? false,
                 }, out Chorus);
 
             // Compression

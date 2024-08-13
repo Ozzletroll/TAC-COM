@@ -9,27 +9,41 @@ using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
 {
-    public class Profile(string identifier, string fileIdentifier)
+    public class Profile()
     {
-        public readonly string ProfileName = identifier;
-        public readonly string Filename = fileIdentifier;
+        public string? ProfileName;
+        public string? Filename;
         public IWaveSource? NoiseSource;
         public IWaveSource? OpenSFX;
         public IWaveSource? CloseSFX;
         private readonly FilePlayer FilePlayer = new();
+        public ProfileSettings ProfileSettings = new();
 
         public void LoadSources()
         {
-            NoiseSource = FilePlayer.GetNoiseSFX(Filename);
-            OpenSFX = FilePlayer.GetOpenSFX();
-            CloseSFX = FilePlayer.GetCloseSFX();
+            if (Filename != null)
+            {
+                NoiseSource = FilePlayer.GetNoiseSFX(Filename);
+                OpenSFX = FilePlayer.GetOpenSFX();
+                CloseSFX = FilePlayer.GetCloseSFX();
+            }
         }
 
         public override string ToString()
         {
-            return ProfileName;
+            if (ProfileName != null)
+            {
+                return ProfileName;
+            }
+            else return string.Empty;
         }
 
+    }
+
+    public class ProfileSettings
+    {
+        public bool ChorusEnabled = false;
+        public float PitchShiftFactor = 1f;
     }
 
     public class ProfileManager
@@ -39,11 +53,36 @@ namespace TAC_COM.Models
         {
             List<Profile> defaultProfiles = [];
 
-            defaultProfiles.Add(new Profile("GMS", "GMS"));
-            defaultProfiles.Add(new Profile("IPS-N", "IPSN"));
-            defaultProfiles.Add(new Profile("SSC", "SSC"));
-            defaultProfiles.Add(new Profile("HA", "HA"));
-            defaultProfiles.Add(new Profile("HORUS", "HORUS"));
+            defaultProfiles.Add(new Profile()
+            {
+                ProfileName = "General Massive Systems",
+                Filename = "GMS",
+            });
+            defaultProfiles.Add(new Profile()
+            {
+                ProfileName = "IPS-Northstar",
+                Filename = "IPSN",
+            });
+            defaultProfiles.Add(new Profile()
+            {
+                ProfileName = "Smith-Shimano Corpro",
+                Filename = "SSC",
+            });
+            defaultProfiles.Add(new Profile()
+            {
+                ProfileName = "HORUS",
+                Filename = "HORUS",
+                ProfileSettings = new ProfileSettings()
+                {
+                    PitchShiftFactor = 0.98f,
+                    ChorusEnabled = true,
+                }
+            });
+            defaultProfiles.Add(new Profile()
+            {
+                ProfileName = "Harrison Armoury",
+                Filename = "HA",
+            });
 
             return defaultProfiles;
         }
