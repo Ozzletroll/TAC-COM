@@ -39,6 +39,8 @@ namespace TAC_COM.Audio
         public VolumeSource? WetNoiseMixLevel;
         private Gain? UserGainControl;
         private Gate? NoiseGate;
+        private PitchShifter? PitchShifter;
+        private DmoChorusEffect? Chorus;
         private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
@@ -82,6 +84,7 @@ namespace TAC_COM.Audio
             {
                 userNoiseLevel = value;
                 DistortionLevel = value;
+                ChorusLevel = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
                     NoiseMixLevel.Volume = value;
@@ -101,6 +104,27 @@ namespace TAC_COM.Audio
                 if (HasInitialised && Distortion != null)
                 {
                     Distortion.Edge = value;
+                }
+            }
+        }
+
+        private const float MinimumChorus = 0;
+        private float chorusDepthLevel;
+        private float chorusFeedbackLevel;
+        private float chorusMixLevel;
+        public float ChorusLevel
+        {
+            set
+            {
+                chorusDepthLevel = MinimumChorus + (value * (100 - MinimumChorus));
+                chorusFeedbackLevel = MinimumChorus + (value * (50 - MinimumChorus));
+                chorusMixLevel = MinimumChorus + (value * (50 - MinimumChorus));
+
+                if (HasInitialised && Chorus != null)
+                {
+                    Chorus.Depth = chorusDepthLevel;
+                    Chorus.Feedback = chorusFeedbackLevel;
+                    Chorus.WetDryMix = chorusMixLevel;
                 }
             }
         }
@@ -160,8 +184,23 @@ namespace TAC_COM.Audio
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
             peakFiltered.Filter = new PeakFilter(SampleRate, 2000, 500, 2);
 
+            var pitchShifted = peakFiltered.AppendSource(x => new PitchShifter(x)
+            {
+                PitchShiftFactor = 1f
+            });
+
             // Convert back to IWaveSource
-            var filteredSource = peakFiltered.ToWaveSource();
+            var filteredSource = pitchShifted.ToWaveSource();
+
+            // Chorus
+            filteredSource = 
+                filteredSource.AppendSource(x => new DmoChorusEffect(x)
+                {
+                    Depth = chorusDepthLevel,
+                    Feedback = chorusFeedbackLevel,
+                    WetDryMix = chorusMixLevel,
+                    IsEnabled = true,
+                }, out Chorus);
 
             // Compression
             filteredSource =
