@@ -7,7 +7,9 @@
         xmlns:views="clr-namespace:TAC_COM.Views" 
         xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d" FontSize="18"
-        Height="450" Width="800">
+        Height="350" Width="700"
+        MinHeight="350" MinWidth="700"
+        ResizeMode="CanMinimize">
     <Window.Icon>
         <DrawingImage/>
     </Window.Icon>
