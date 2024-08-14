@@ -12,7 +12,7 @@ namespace TAC_COM.Models
     public class Profile()
     {
         public string? ProfileName;
-        public string? Filename;
+        public string? FileIdentifier;
         public IWaveSource? NoiseSource;
         public IWaveSource? OpenSFX;
         public IWaveSource? CloseSFX;
@@ -21,21 +21,17 @@ namespace TAC_COM.Models
 
         public void LoadSources()
         {
-            if (Filename != null)
+            if (FileIdentifier != null)
             {
-                NoiseSource = FilePlayer.GetNoiseSFX(Filename);
-                OpenSFX = FilePlayer.GetOpenSFX();
-                CloseSFX = FilePlayer.GetCloseSFX();
+                NoiseSource = FilePlayer.GetNoiseSFX(FileIdentifier);
+                OpenSFX = FilePlayer.GetOpenSFX(FileIdentifier);
+                CloseSFX = FilePlayer.GetCloseSFX(FileIdentifier);
             }
         }
 
         public override string ToString()
         {
-            if (ProfileName != null)
-            {
-                return ProfileName;
-            }
-            else return string.Empty;
+            return ProfileName ?? string.Empty;
         }
 
     }
@@ -55,23 +51,23 @@ namespace TAC_COM.Models
 
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "General Massive Systems",
-                Filename = "GMS",
+                ProfileName = "General Massive Systems (GMS)",
+                FileIdentifier = "GMS",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "IPS-Northstar",
-                Filename = "IPSN",
+                ProfileName = "IPS-Northstar (IPS-N)",
+                FileIdentifier = "IPSN",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "Smith-Shimano Corpro",
-                Filename = "SSC",
+                ProfileName = "Smith-Shimano Corpro (SSC)",
+                FileIdentifier = "SSC",
             });
             defaultProfiles.Add(new Profile()
             {
                 ProfileName = "HORUS",
-                Filename = "HORUS",
+                FileIdentifier = "HORUS",
                 ProfileSettings = new ProfileSettings()
                 {
                     PitchShiftFactor = 0.98f,
@@ -80,8 +76,8 @@ namespace TAC_COM.Models
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "Harrison Armoury",
-                Filename = "HA",
+                ProfileName = "Harrison Armoury (HA)",
+                FileIdentifier = "HA",
             });
 
             return defaultProfiles;

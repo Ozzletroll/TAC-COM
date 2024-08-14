@@ -60,7 +60,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("activeProfile", DefaultValue = "GMS")]
+        [ConfigurationProperty("activeProfile", DefaultValue = "General Massive Systems (GMS)")]
         public string ActiveProfile
         {
             get => (string)this["activeProfile"];
