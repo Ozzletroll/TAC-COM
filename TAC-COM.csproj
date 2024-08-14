@@ -10,11 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
     <None Remove="Static\SFX\GateClose\gate_close_1.mp3" />
-    <None Remove="Static\SFX\GateClose\gate_close_1.wav" />
-    <None Remove="Static\SFX\GateClose\gate_close_2.wav" />
-    <None Remove="Static\SFX\GateOpen\gate_open_1.wav" />
-    <None Remove="Static\SFX\GateOpen\gate_open_2.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenGMS.wav" />
     <None Remove="Static\SFX\Noise\NoiseGMS.wav" />
     <None Remove="Static\SFX\Noise\NoiseHA.wav" />
     <None Remove="Static\SFX\Noise\NoiseHORUS.wav" />
@@ -24,16 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Static\SFX\GateClose\gate_close_1.wav">
+    <Content Include="Static\SFX\GateClose\GateCloseGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\gate_close_2.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Static\SFX\GateOpen\gate_open_1.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Static\SFX\GateOpen\gate_open_2.wav">
+    <Content Include="Static\SFX\GateOpen\GateOpenGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Static\SFX\Noise\NoiseGMS.wav">
