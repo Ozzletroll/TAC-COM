@@ -71,8 +71,8 @@ namespace TAC_COM.ViewModels
             set
             {
                 AudioManager.State = value;
-                IsSelectable = !value;
                 AudioManager.ToggleState();
+                IsSelectable = !AudioManager.State;
                 OnPropertyChanged(nameof(AudioManager.State));
 
                 if (AudioManager.State == false)
