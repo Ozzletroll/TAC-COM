@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAC_COM.Models;
 
 namespace TAC_COM.Audio.Utils
 {
@@ -13,15 +14,17 @@ namespace TAC_COM.Audio.Utils
     {
         private readonly FileManager fileManager = new(Directory.GetCurrentDirectory());
 
-        public IWaveSource GetOpenSFX()
+        public IWaveSource GetOpenSFX(string fileSuffix)
         {
-            var filename = fileManager.GetRandomFile("Static/SFX/GateOpen");
+            var sfxName = "GateOpen" + fileSuffix;
+            var filename = fileManager.GetFile("Static/SFX/GateOpen", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
-        public IWaveSource GetCloseSFX()
+        public IWaveSource GetCloseSFX(string profile)
         {
-            var filename = fileManager.GetRandomFile("Static/SFX/GateClose");
+            var sfxName = "GateClose" + profile;
+            var filename = fileManager.GetFile("Static/SFX/GateClose", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
