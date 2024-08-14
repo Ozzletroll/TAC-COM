@@ -7,8 +7,6 @@
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
-             d:DesignWidth="800"
              FontSize="12">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
