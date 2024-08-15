@@ -66,6 +66,11 @@ namespace TAC_COM.Models
             });
             defaultProfiles.Add(new Profile()
             {
+                ProfileName = "Harrison Armory (HA)",
+                FileIdentifier = "HA",
+            });
+            defaultProfiles.Add(new Profile()
+            {
                 ProfileName = "HORUS",
                 FileIdentifier = "HORUS",
                 ProfileSettings = new ProfileSettings()
@@ -74,12 +79,6 @@ namespace TAC_COM.Models
                     ChorusEnabled = true,
                 }
             });
-            defaultProfiles.Add(new Profile()
-            {
-                ProfileName = "Harrison Armoury (HA)",
-                FileIdentifier = "HA",
-            });
-
             return defaultProfiles;
         }
     }
