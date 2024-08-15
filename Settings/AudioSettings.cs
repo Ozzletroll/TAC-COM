@@ -30,7 +30,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("noiseGateThreshold", DefaultValue = -70f)]
+        [ConfigurationProperty("noiseGateThreshold", DefaultValue = -75f)]
         public float NoiseGateThreshold
         {
             get => (float)this["noiseGateThreshold"];

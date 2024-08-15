@@ -38,7 +38,8 @@ namespace TAC_COM.Audio
         private VolumeSource? NoiseMixLevel;
         public VolumeSource? WetNoiseMixLevel;
         private Gain? UserGainControl;
-        private Gate? NoiseGate;
+        private Gate? ProcessedNoiseGate;
+        private Gate? DryNoiseGate;
         private PitchShifter? PitchShifter;
         private DmoChorusEffect? Chorus;
         private DmoDistortionEffect? Distortion;
@@ -67,9 +68,16 @@ namespace TAC_COM.Audio
             set 
             {
                 noiseGateThreshold = value;
-                if (HasInitialised && NoiseGate != null)
+                if (HasInitialised)
                 {
-                    NoiseGate.ThresholdDB = value;
+                    if (ProcessedNoiseGate != null)
+                    {
+                        ProcessedNoiseGate.ThresholdDB = value;
+                    }
+                    if (DryNoiseGate != null)
+                    {
+                        DryNoiseGate.ThresholdDB = value;
+                    }
                 }
             }
         }
@@ -170,7 +178,7 @@ namespace TAC_COM.Audio
                 Attack = 10,
                 Hold = 200,
                 Release = 300,
-            }, out NoiseGate);
+            }, out ProcessedNoiseGate);
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
@@ -246,9 +254,16 @@ namespace TAC_COM.Audio
         internal ISampleSource DrySignalChain()
         {
 
-            var sampleSource = passthroughSource.ToSampleSource();
+            // Noise gate
+            var sampleSource = passthroughSource.ToSampleSource().AppendSource(x => new Gate(x)
+            {
+                ThresholdDB = NoiseGateThreshold,
+                Attack = 10,
+                Hold = 200,
+                Release = 300,
+            }, out DryNoiseGate);
 
-            return sampleSource;
+            return sampleSource == null ? throw new InvalidOperationException("Sample source cannot be null.") : (ISampleSource)sampleSource;
         }
 
         /// <summary>
