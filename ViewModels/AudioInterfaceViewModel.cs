@@ -109,6 +109,7 @@ namespace TAC_COM.ViewModels
             get => audioManager.NoiseGateThreshold;
             set
             {
+                value = (float)Math.Round(value, 0);
                 audioManager.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(NoiseGateThreshold));
                 UpdateAppConfig(nameof(NoiseGateThreshold), value);
