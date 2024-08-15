@@ -167,7 +167,7 @@ namespace TAC_COM.Audio
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
-                Attack = 30,
+                Attack = 10,
                 Hold = 200,
                 Release = 300,
             }, out NoiseGate);
