@@ -8,6 +8,11 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="V" Command="{Binding PushToTalk}"/>
+    </UserControl.InputBindings>
+
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -137,7 +142,8 @@
 
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="White" BorderBrush="#FF560404" FontSize="18"
-                              IsChecked="{Binding BypassState}" VerticalAlignment="Center" Cursor="Hand">
+                              IsChecked="{Binding BypassState}"
+                              VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
                             <Setter Property="Template">
