@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
+using System.Windows.Input;
 using TAC_COM.Models;
 using TAC_COM.Settings;
 
@@ -191,6 +192,13 @@ namespace TAC_COM.ViewModels
         private void OnDeviceListReset(object sender, EventArgs e)
         {
             LoadDeviceSettings();
+        }
+
+        public RelayCommand PushToTalk => new (execute => ExecutePushToTalk());
+
+        private void ExecutePushToTalk()
+        {
+            BypassState = !BypassState;
         }
 
         public AudioInterfaceViewModel()
