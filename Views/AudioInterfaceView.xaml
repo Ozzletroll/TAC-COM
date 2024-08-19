@@ -28,14 +28,14 @@
         <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
 
-            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Width="380" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center">
                         INPUT
                     </TextBlock>
                 </Label>
 
-                <ComboBox x:Name="InputSelection" Width="250" 
+                <ComboBox x:Name="InputSelection" Width="280" 
                           ItemsSource="{Binding AllInputDevices}"
                           SelectedItem="{Binding InputDevice}"
                           IsEnabled="{Binding IsSelectable}"
@@ -56,14 +56,14 @@
                              Value="{Binding AudioManager.InputPeakMeter}"/>
             </StackPanel>
 
-            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Width="380" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center">
                         OUTPUT
                     </TextBlock>
                 </Label>
 
-                <ComboBox x:Name="OutputSelection" Width="250"
+                <ComboBox x:Name="OutputSelection" Width="280"
                           ItemsSource="{Binding AllOutputDevices}"
                           SelectedItem="{Binding OutputDevice}"
                           IsEnabled="{Binding IsSelectable}"
@@ -84,14 +84,14 @@
                              Value="{Binding AudioManager.OutputPeakMeter}"/>
             </StackPanel>
 
-            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Width="380" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="95" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center">
                         PROFILE
                     </TextBlock>
                 </Label>
 
-                <ComboBox x:Name="ProfileSelection" Width="250"
+                <ComboBox x:Name="ProfileSelection" Width="280"
                           ItemsSource="{Binding Profiles}"
                           SelectedItem="{Binding ActiveProfile}"
                           IsEnabled="{Binding IsSelectable}"
