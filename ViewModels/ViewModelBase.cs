@@ -41,6 +41,10 @@ namespace TAC_COM.ViewModels
         public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         public AudioSettings AudioSettings;
 
+        public RelayCommand PushToTalk => new(execute => ExecutePushToTalk());
+
+        public virtual void ExecutePushToTalk() {}
+
         public ViewModelBase()
         {
             if (AppConfig.Sections["AudioSettings"] is null)

@@ -194,9 +194,7 @@ namespace TAC_COM.ViewModels
             LoadDeviceSettings();
         }
 
-        public RelayCommand PushToTalk => new (execute => ExecutePushToTalk());
-
-        private void ExecutePushToTalk()
+        public override void ExecutePushToTalk()
         {
             BypassState = !BypassState;
         }

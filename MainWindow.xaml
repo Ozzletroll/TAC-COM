@@ -16,4 +16,8 @@
     <Grid>
         <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
     </Grid>
+
+    <Window.InputBindings>
+        <KeyBinding Key="V" Command="{Binding CurrentViewModel.PushToTalk}"/>
+    </Window.InputBindings>
 </Window>

@@ -9,10 +9,6 @@
              mc:Ignorable="d" 
              FontSize="12">
 
-    <UserControl.InputBindings>
-        <KeyBinding Key="V" Command="{Binding PushToTalk}"/>
-    </UserControl.InputBindings>
-
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
