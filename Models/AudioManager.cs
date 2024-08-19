@@ -283,6 +283,7 @@ namespace TAC_COM.Models
                 // Initialise output
                 micOutput.Device = activeOutputDevice;
                 micOutput.Initialize(audioProcessor.Output());
+                micOutput.Stopped += OnOutputStopped;
 
                 // Start audio
                 input.Start();
@@ -300,6 +301,11 @@ namespace TAC_COM.Models
         void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
         {
             InputPeakMeter = 0;
+        }
+
+        void OnOutputStopped(object? sender, PlaybackStoppedEventArgs e)
+        {
+            OutputPeakMeter = 0;
         }
 
         void OnDataAvailable(object? sender, DataAvailableEventArgs e)
