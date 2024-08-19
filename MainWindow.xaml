@@ -18,6 +18,7 @@
     </Grid>
 
     <Window.InputBindings>
-        <KeyBinding Key="V" Command="{Binding CurrentViewModel.PushToTalk}"/>
+        <KeyBinding Key="V" Command="{Binding CurrentViewModel.PushToTalk}"
+                    HotkeyManager.RegisterGlobalHotkey="True"/>
     </Window.InputBindings>
 </Window>

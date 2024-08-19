@@ -79,6 +79,7 @@
 
   <ItemGroup>
     <PackageReference Include="CSCore" Version="1.2.1.2" />
+    <PackageReference Include="NHotkey.Wpf" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
