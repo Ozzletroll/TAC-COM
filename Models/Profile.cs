@@ -51,27 +51,27 @@ namespace TAC_COM.Models
 
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "General Massive Systems (GMS)",
+                ProfileName = "GMS Type-4 Datalink",
                 FileIdentifier = "GMS",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "IPS-Northstar (IPS-N)",
+                ProfileName = "IPS-N Itegrated Tactical Network",
                 FileIdentifier = "IPSN",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "Smith-Shimano Corpro (SSC)",
+                ProfileName = "SSC Hamadryas Stealth Tranceiver",
                 FileIdentifier = "SSC",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "Harrison Armory (HA)",
+                ProfileName = "HA Hardened Waveform Radio",
                 FileIdentifier = "HA",
             });
             defaultProfiles.Add(new Profile()
             {
-                ProfileName = "HORUS",
+                ProfileName = "HORUS [UNRECOGNISED DEVICE]",
                 FileIdentifier = "HORUS",
                 ProfileSettings = new ProfileSettings()
                 {
