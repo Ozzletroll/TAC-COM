@@ -19,6 +19,8 @@ using System.Windows.Input;
 using TAC_COM.Audio.Utils;
 using System.Reflection.Metadata;
 using TAC_COM.Models;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 
 namespace TAC_COM.Audio
@@ -41,6 +43,8 @@ namespace TAC_COM.Audio
         private Gate? ProcessedNoiseGate;
         private Gate? DryNoiseGate;
         private PitchShifter? PitchShifter;
+        private DmoResampler? DownSampler;
+        private DmoResampler? UpSampler;
         private DmoChorusEffect? Chorus;
         private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
@@ -82,8 +86,8 @@ namespace TAC_COM.Audio
             }
         }
 
-        // UserNoiseLevel and DistortionLevel are linked
-        // so that increasing noise increases distortion
+        // UserNoiseLevel is linked with DistortionLevel and QualityLevel
+        // so that increasing noise increases distortion and lowers resampling quality
         private float userNoiseLevel = 0.5f;
         public float UserNoiseLevel
         {
@@ -92,6 +96,7 @@ namespace TAC_COM.Audio
             {
                 userNoiseLevel = value;
                 DistortionLevel = value;
+                QualityLevel = (int)(value * 100);
                 ChorusLevel = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
@@ -112,6 +117,31 @@ namespace TAC_COM.Audio
                 if (HasInitialised && Distortion != null)
                 {
                     Distortion.Edge = value;
+                }
+            }
+        }
+
+        private const int MinimumQuality = 1;
+        private const int MaximumQuality = 60;
+        private int qualityLevel = MinimumQuality;
+        public int QualityLevel
+        {
+            get => qualityLevel;
+            set
+            {
+                value = Math.Max(MaximumQuality - (value * (MaximumQuality - MinimumQuality) / 100), 1);
+                qualityLevel = value;
+                if (HasInitialised)
+                {
+                    if (DownSampler != null)
+                    {
+                        DownSampler.Quality = value;
+                    }
+                    if (UpSampler != null)
+                    {
+                        UpSampler.Quality = value;
+                    }
+                    
                 }
             }
         }
@@ -182,11 +212,11 @@ namespace TAC_COM.Audio
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(SampleRate, 700);
+            removedLowEnd.Filter = new HighpassFilter(SampleRate, 800);
 
             // Lowpass filter
             var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(SampleRate, 6000);
+            removedHighEnd.Filter = new LowpassFilter(SampleRate, 7000);
 
             // Peak filter
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
@@ -200,9 +230,20 @@ namespace TAC_COM.Audio
             // Convert back to IWaveSource
             var filteredSource = pitchShifted.ToWaveSource();
 
+            // Downsample and resample back to target sample rate
+            var bitcrushed = filteredSource.AppendSource(x => new DmoResampler(x, 6000)
+            {
+                Quality = QualityLevel
+            }, out DownSampler);
+            var resampled = bitcrushed.AppendSource(x => new DmoResampler(x, SampleRate)
+            {
+                Quality = QualityLevel
+            }, out UpSampler);
+
             // Chorus
             filteredSource = 
-                filteredSource.AppendSource(x => new DmoChorusEffect(x)
+                resampled
+                .AppendSource(x => new DmoChorusEffect(x)
                 {
                     Depth = chorusDepthLevel,
                     Feedback = chorusFeedbackLevel,
