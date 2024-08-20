@@ -103,9 +103,12 @@ namespace TAC_COM.ViewModels
             get => audioManager.BypassState;
             set
             {
-                AudioManager.BypassState = value;
-                AudioManager.CheckBypassState();
-                OnPropertyChanged(nameof(AudioManager.BypassState));
+                if (value != AudioManager.BypassState)
+                {
+                    AudioManager.BypassState = value;
+                    AudioManager.CheckBypassState();
+                    OnPropertyChanged(nameof(AudioManager.BypassState));
+                }
             }
         }
 
