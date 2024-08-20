@@ -1,4 +1,6 @@
 ﻿using CSCore.CoreAudioAPI;
+using Dapplo.Windows.Input.Enums;
+using Dapplo.Windows.Input.Keyboard;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +19,8 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
+        private IDisposable? keybindSubscription;
+        private bool isKeyPressed;
         private readonly AudioManager audioManager = new();
 
         public AudioManager AudioManager
@@ -194,9 +198,40 @@ namespace TAC_COM.ViewModels
             LoadDeviceSettings();
         }
 
-        public override void ExecutePushToTalk()
+        public RelayCommand PushToTalk => new(execute => ExecutePushToTalk());
+
+        public virtual void ExecutePushToTalk() { }
+
+        private void InitialisePTTKeybind()
         {
-            BypassState = !BypassState;
+            keybindSubscription 
+                = KeyboardHook.KeyboardEvents.Subscribe(args =>
+                {
+                    var key = VirtualKeyCode.KeyV;
+
+                    if (args.Key == key)
+                    {
+                        if (args.IsKeyDown)
+                        {
+                            if (!isKeyPressed)
+                            {
+                                // Talk
+                                isKeyPressed = true;
+                                BypassState = true;
+                            }
+                        }
+                        else
+                        {
+                            if (isKeyPressed)
+                            {
+                                isKeyPressed = false;
+                            }
+
+                            // Stop
+                            BypassState = false;
+                        }
+                    }
+                });
         }
 
         public AudioInterfaceViewModel()
@@ -205,6 +240,7 @@ namespace TAC_COM.ViewModels
             Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
+            InitialisePTTKeybind();
         }
 
     }
