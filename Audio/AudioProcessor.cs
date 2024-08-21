@@ -216,7 +216,7 @@ namespace TAC_COM.Audio
         /// </summary>
         internal ISampleSource InputSignalChain()
         {
-            
+            // Conver to SampleSource
             var sampleSource = inputSource.ToSampleSource();
 
             // Noise gate
@@ -245,7 +245,7 @@ namespace TAC_COM.Audio
                 PitchShiftFactor = ActiveProfile?.ProfileSettings?.PitchShiftFactor ?? 1f,
             }, out PitchShifter);
 
-            // Convert back to IWaveSource
+            // Convert back to WaveSource
             var filteredSource = pitchShifted.ToWaveSource();
 
             // Downsample and resample back to target sample rate
@@ -271,7 +271,8 @@ namespace TAC_COM.Audio
 
             // Compression
             filteredSource =
-                filteredSource.AppendSource(x => new DmoCompressorEffect(x)
+                filteredSource
+                .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 0.5f,
                     Gain = 15,
@@ -291,15 +292,17 @@ namespace TAC_COM.Audio
                     PreLowpassCutoff = 8000
                 }, out Distortion);
 
-            // Reduce gain to compensate for compression/distortion
+            // Convert to SampleSource
             var outputSampleSource = filteredSource.ToSampleSource();
-            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+
+            // Reduce gain to compensate for compression/distortion
+            PostDistortionGainReduction = new Gain(outputSampleSource)
             {
                 GainDB = DistortionCompensation,
-            }, out PostDistortionGainReduction);
+            };
 
             // User gain control
-            UserGainControl = new Gain(outputSampleSource)
+            UserGainControl = new Gain(PostDistortionGainReduction)
             {
                 GainDB = UserGainLevel,
             };

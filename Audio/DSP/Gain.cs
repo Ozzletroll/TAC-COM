@@ -17,6 +17,7 @@ namespace TAC_COM.Audio.DSP
         private float gainLinear;
         public float GainDB
         {
+            get => LinearDBConverter.LinearToDecibel(gainLinear);
             set
             {
                 gainLinear = LinearDBConverter.DecibelToLinear(value);
