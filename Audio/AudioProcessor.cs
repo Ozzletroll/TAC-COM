@@ -39,6 +39,7 @@ namespace TAC_COM.Audio
         public VolumeSource? WetMixLevel;
         private VolumeSource? NoiseMixLevel;
         public VolumeSource? WetNoiseMixLevel;
+        public Gain? PostDistortionGainReduction;
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
         private Gate? DryNoiseGate;
@@ -98,6 +99,7 @@ namespace TAC_COM.Audio
                 DistortionLevel = value;
                 QualityLevel = (int)(value * 100);
                 ChorusLevel = value;
+                DistortionCompensation = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
                     NoiseMixLevel.Volume = value;
@@ -163,6 +165,22 @@ namespace TAC_COM.Audio
                     Chorus.Depth = chorusDepthLevel;
                     Chorus.Feedback = chorusFeedbackLevel;
                     Chorus.WetDryMix = chorusMixLevel;
+                }
+            }
+        }
+
+        private const float MinDistortionCompensation = -48;
+        private const float MaxDistortionCompensation = -52;
+        private float distortionCompensation;
+        public float DistortionCompensation
+        {
+            get => distortionCompensation;
+            set
+            {
+                distortionCompensation = MinDistortionCompensation + (value * (MaxDistortionCompensation - MinDistortionCompensation));
+                if (PostDistortionGainReduction != null)
+                {
+                    PostDistortionGainReduction.GainDB = distortionCompensation;
                 }
             }
         }
@@ -275,10 +293,10 @@ namespace TAC_COM.Audio
 
             // Reduce gain to compensate for compression/distortion
             var outputSampleSource = filteredSource.ToSampleSource();
-            outputSampleSource = new Gain(outputSampleSource)
+            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
             {
-                GainDB = -45,
-            };
+                GainDB = DistortionCompensation,
+            }, out PostDistortionGainReduction);
 
             // User gain control
             UserGainControl = new Gain(outputSampleSource)
