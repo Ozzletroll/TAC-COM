@@ -19,8 +19,11 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private IDisposable? keybindSubscription;
+        private IDisposable? PTTKeybindSubscription;
+        private IDisposable? UserKeybindSubscription;
+        private VirtualKeyCode? PTTKey;
         private bool isKeyPressed;
+
         private readonly AudioManager audioManager = new();
 
         public AudioManager AudioManager
@@ -79,7 +82,7 @@ namespace TAC_COM.ViewModels
                 AudioManager.ToggleState();
                 IsSelectable = !AudioManager.State;
                 OnPropertyChanged(nameof(AudioManager.State));
-
+                InitialisePTTKeybind();
                 if (AudioManager.State == false)
                 {
                     BypassState = true;
@@ -201,36 +204,47 @@ namespace TAC_COM.ViewModels
             LoadDeviceSettings();
         }
 
+        private void TogglePTT(KeyboardHookEventArgs args)
+        {
+            if (args.IsKeyDown)
+            {
+                if (!isKeyPressed)
+                {
+                    // Talk
+                    isKeyPressed = true;
+                    BypassState = true;
+                }
+            }
+            else
+            {
+                if (isKeyPressed)
+                {
+                    isKeyPressed = false;
+                }
+                // Stop
+                BypassState = false;
+            }
+        }
+
         private void InitialisePTTKeybind()
         {
-            keybindSubscription 
+            if (State) InitialisePTTKeySubscription();
+            else DisposeKeyboardSubscription(PTTKeybindSubscription);
+        }
+
+        private void InitialisePTTKeySubscription()
+        {
+            PTTKeybindSubscription 
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
                 {
                     var key = VirtualKeyCode.KeyV;
-
-                    if (args.Key == key)
-                    {
-                        if (args.IsKeyDown)
-                        {
-                            if (!isKeyPressed)
-                            {
-                                // Talk
-                                isKeyPressed = true;
-                                BypassState = true;
-                            }
-                        }
-                        else
-                        {
-                            if (isKeyPressed)
-                            {
-                                isKeyPressed = false;
-                            }
-
-                            // Stop
-                            BypassState = false;
-                        }
-                    }
+                    if (args.Key == key) TogglePTT(args);
                 });
+        }
+
+        private static void DisposeKeyboardSubscription(IDisposable? subscription)
+        {
+            subscription?.Dispose();
         }
 
         public AudioInterfaceViewModel()
@@ -239,9 +253,7 @@ namespace TAC_COM.ViewModels
             Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
-            InitialisePTTKeybind();
         }
-
     }
 }
  
