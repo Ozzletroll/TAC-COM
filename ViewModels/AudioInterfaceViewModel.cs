@@ -201,10 +201,6 @@ namespace TAC_COM.ViewModels
             LoadDeviceSettings();
         }
 
-        public RelayCommand PushToTalk => new(execute => ExecutePushToTalk());
-
-        public virtual void ExecutePushToTalk() { }
-
         private void InitialisePTTKeybind()
         {
             keybindSubscription 
