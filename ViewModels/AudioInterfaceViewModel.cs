@@ -21,7 +21,8 @@ namespace TAC_COM.ViewModels
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
-        private VirtualKeyCode? PTTKey;
+        private Keybind NewPTTKeybind;
+        private Keybind? PTTKey;
         private bool isKeyPressed;
 
         private readonly AudioManager audioManager = new();
@@ -87,6 +88,18 @@ namespace TAC_COM.ViewModels
                 {
                     BypassState = true;
                 }
+            }
+        }
+
+        private bool keybindListen;
+        public bool KeybindListen
+        {
+            get => keybindListen;
+            set
+            {
+                keybindListen = value;
+                OnPropertyChanged(nameof(KeybindListen));
+                InitialiseUserKeybind();
             }
         }
 
@@ -239,6 +252,24 @@ namespace TAC_COM.ViewModels
                 {
                     var key = VirtualKeyCode.KeyV;
                     if (args.Key == key) TogglePTT(args);
+                });
+        }
+
+        private void InitialiseUserKeybind()
+        {
+            if (KeybindListen) InitialiseUserKeybindSubscription();
+            else DisposeKeyboardSubscription(UserKeybindSubscription);
+        }
+
+        private void InitialiseUserKeybindSubscription()
+        {
+            UserKeybindSubscription
+                = KeyboardHook.KeyboardEvents.Subscribe(args =>
+                {
+                    if (args.IsKeyDown)
+                    {
+                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl);
+                    }
                 });
         }
 
