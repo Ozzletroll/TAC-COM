@@ -13,19 +13,15 @@ using System.Windows.Automation;
 using System.Windows.Input;
 using TAC_COM.Models;
 using TAC_COM.Settings;
+using static TAC_COM.Models.KeybindManager;
 
 
 namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private IDisposable? PTTKeybindSubscription;
-        private IDisposable? UserKeybindSubscription;
-        private Keybind? NewPTTKeybind;
-        private Keybind? PTTKey;
-        private bool isKeyPressed;
-
         private readonly AudioManager audioManager = new();
+        private readonly KeybindManager keybindManager = new();
 
         public AudioManager AudioManager
         {
@@ -82,8 +78,8 @@ namespace TAC_COM.ViewModels
                 AudioManager.State = value;
                 AudioManager.ToggleState();
                 IsSelectable = !AudioManager.State;
+                keybindManager.TogglePTTKeybind(State);
                 OnPropertyChanged(nameof(AudioManager.State));
-                InitialisePTTKeybind();
                 if (AudioManager.State == false)
                 {
                     BypassState = true;
@@ -98,8 +94,8 @@ namespace TAC_COM.ViewModels
             set
             {
                 keybindListen = value;
+                keybindManager.ToggleUserKeybind(KeybindListen);
                 OnPropertyChanged(nameof(KeybindListen));
-                InitialiseUserKeybind();
             }
         }
 
@@ -217,70 +213,15 @@ namespace TAC_COM.ViewModels
             LoadDeviceSettings();
         }
 
-        private void TogglePTT(KeyboardHookEventArgs args)
+        private void OnPTTToggle(object sender, PTTToggleEventArgs e)
         {
-            if (args.IsKeyDown)
-            {
-                if (!isKeyPressed)
-                {
-                    // Talk
-                    isKeyPressed = true;
-                    BypassState = true;
-                }
-            }
-            else
-            {
-                if (isKeyPressed)
-                {
-                    isKeyPressed = false;
-                }
-                // Stop
-                BypassState = false;
-            }
-        }
-
-        private void InitialisePTTKeybind()
-        {
-            if (State) InitialisePTTKeySubscription();
-            else DisposeKeyboardSubscription(PTTKeybindSubscription);
-        }
-
-        private void InitialisePTTKeySubscription()
-        {
-            PTTKeybindSubscription 
-                = KeyboardHook.KeyboardEvents.Subscribe(args =>
-                {
-                    var key = VirtualKeyCode.KeyV;
-                    if (args.Key == key) TogglePTT(args);
-                });
-        }
-
-        private void InitialiseUserKeybind()
-        {
-            if (KeybindListen) InitialiseUserKeybindSubscription();
-            else DisposeKeyboardSubscription(UserKeybindSubscription);
-        }
-
-        private void InitialiseUserKeybindSubscription()
-        {
-            UserKeybindSubscription
-                = KeyboardHook.KeyboardEvents.Subscribe(args =>
-                {
-                    if (args.IsKeyDown)
-                    {
-                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl);
-                    }
-                });
-        }
-
-        private static void DisposeKeyboardSubscription(IDisposable? subscription)
-        {
-            subscription?.Dispose();
+            BypassState = e.BypassState;
         }
 
         public AudioInterfaceViewModel()
         {
             audioManager.DeviceListReset += OnDeviceListReset;
+            keybindManager.PTTToggle += OnPTTToggle;
             Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
