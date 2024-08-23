@@ -21,7 +21,7 @@ namespace TAC_COM.ViewModels
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
-        private Keybind NewPTTKeybind;
+        private Keybind? NewPTTKeybind;
         private Keybind? PTTKey;
         private bool isKeyPressed;
 
