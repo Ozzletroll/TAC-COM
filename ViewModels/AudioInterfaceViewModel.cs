@@ -181,11 +181,8 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public string KeybindName
-        {
-            get => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
-        }
-
+        public string KeybindName => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
+        
         private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
