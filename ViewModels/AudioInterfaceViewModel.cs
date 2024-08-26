@@ -183,7 +183,7 @@ namespace TAC_COM.ViewModels
 
         public string KeybindName
         {
-            get => keybindManager.PTTKey?.ToString() ?? "None";
+            get => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
         }
 
         private void LoadDeviceSettings()
