@@ -14,12 +14,15 @@ using System.Windows.Input;
 using TAC_COM.Models;
 using TAC_COM.Settings;
 using static TAC_COM.Models.KeybindManager;
-
+using TAC_COM.ViewModels;
+using System.Windows;
+using TAC_COM.Services;
 
 namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
+        private WindowService windowService = new();
         private readonly AudioManager audioManager = new();
         private readonly KeybindManager keybindManager = new();
 
@@ -182,6 +185,7 @@ namespace TAC_COM.ViewModels
         }
 
         public string KeybindName => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
+        public string NewKeybindName => keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
         
         private void LoadDeviceSettings()
         {
@@ -220,6 +224,20 @@ namespace TAC_COM.ViewModels
             {
                 BypassState = keybindManager.ToggleState;
             }
+        }
+
+        public RelayCommand ShowKeybindDialog => new(execute => ExecuteShowKeybindDialog());
+
+        private void ExecuteShowKeybindDialog()
+        {
+            windowService.OpenWindow();
+        }
+
+        public RelayCommand CloseKeybindDialog => new(execute => ExecuteCloseKeybindDialog());
+
+        private void ExecuteCloseKeybindDialog()
+        {
+            windowService.CloseWindow();
         }
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
