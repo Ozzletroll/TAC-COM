@@ -107,6 +107,24 @@
                 </ComboBox>
             </StackPanel>
 
+            <StackPanel Width="380" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        PTT KEY
+                    </TextBlock>
+                </Label>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center"
+                               Width="230" IsEnabled="{Binding IsSelectable}" Content="{Binding KeybindName}"/>
+                    <Button DockPanel.Dock="Right" Width="50" Height="20"
+                            Foreground="White" Background="#FFBB0000" BorderThickness="0" Cursor="Hand"
+                            IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}">
+                        EDIT
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="White" BorderBrush="#FF560404" FontSize="18"
@@ -210,6 +228,6 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        
+
     </Grid>
 </UserControl>
