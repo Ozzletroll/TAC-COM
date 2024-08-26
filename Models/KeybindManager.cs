@@ -16,28 +16,33 @@ namespace TAC_COM.Models
         public VirtualKeyCode KeyCode = keyCode;
     }
 
-    public class KeybindManager()
+    internal class KeybindManager : ModelBase
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
         private Keybind? NewPTTKeybind;
         private Keybind? PTTKey;
-        private bool IsKeyPressed;
+
+        private bool toggleState;
+        public bool ToggleState
+        {
+            get => toggleState;
+            set
+            {
+                toggleState = value;
+                OnPropertyChanged(nameof(ToggleState));
+            }
+        }
 
         public void TogglePTT(KeyboardHookEventArgs args)
         {
             if (args.IsKeyDown)
             {
-                if (!IsKeyPressed)
-                {
-                    IsKeyPressed = true;
-                    RaisePTTToggle(true);
-                }
+                if (!ToggleState) ToggleState = true;
             }
             else
             {
-                if (IsKeyPressed) IsKeyPressed = false;
-                RaisePTTToggle(false);
+                if (ToggleState) ToggleState = false;
             }
         }
 
@@ -78,18 +83,6 @@ namespace TAC_COM.Models
         private static void DisposeKeyboardSubscription(IDisposable? subscription)
         {
             subscription?.Dispose();
-        }
-
-        public class PTTToggleEventArgs(bool bypassState) : EventArgs
-        {
-            public bool BypassState { get; } = bypassState;
-        }
-
-        public delegate void PTTToggleHandler(object sender, PTTToggleEventArgs e);
-        public event PTTToggleHandler? PTTToggle;
-        protected virtual void RaisePTTToggle(bool bypassState)
-        {
-            PTTToggle?.Invoke(this, new PTTToggleEventArgs(bypassState));
         }
     }
 }

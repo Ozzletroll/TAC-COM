@@ -212,16 +212,18 @@ namespace TAC_COM.ViewModels
         {
             LoadDeviceSettings();
         }
-
-        private void OnPTTToggle(object sender, PTTToggleEventArgs e)
+        private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            BypassState = e.BypassState;
+            if (e.PropertyName == nameof(KeybindManager.ToggleState))
+            {
+                BypassState = keybindManager.ToggleState;
+            }
         }
 
         public AudioInterfaceViewModel()
         {
             audioManager.DeviceListReset += OnDeviceListReset;
-            keybindManager.PTTToggle += OnPTTToggle;
+            keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
             Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
