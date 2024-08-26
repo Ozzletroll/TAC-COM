@@ -9,19 +9,12 @@ using static System.Windows.Forms.AxHost;
 
 namespace TAC_COM.Models
 {
-    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl)
-    {
-        public bool Shift = shift;
-        public bool Ctrl = ctrl;
-        public VirtualKeyCode KeyCode = keyCode;
-    }
-
     internal class KeybindManager : ModelBase
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
-        private Keybind? NewPTTKeybind;
-        private Keybind? PTTKey;
+        public Keybind? NewPTTKeybind;
+        public Keybind? PTTKey;
 
         private bool toggleState;
         public bool ToggleState
@@ -83,6 +76,33 @@ namespace TAC_COM.Models
         private static void DisposeKeyboardSubscription(IDisposable? subscription)
         {
             subscription?.Dispose();
+        }
+
+        internal void UpdateKeybind()
+        {
+            PTTKey = NewPTTKeybind;
+        }
+    }
+    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl)
+    {
+        public bool Shift = shift;
+        public bool Ctrl = ctrl;
+        public VirtualKeyCode KeyCode = keyCode;
+
+        public override string ToString()
+        {
+            var output = new StringBuilder();
+            if (Shift)
+            {
+                output.Append("Shift + ");
+            }
+            if (Ctrl)
+            {
+                output.Append("Ctrl + ");
+            }
+            output.Append(KeyCode.ToString());
+
+            return output.ToString();
         }
     }
 }

@@ -181,6 +181,11 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        public string KeybindName
+        {
+            get => keybindManager.PTTKey?.ToString() ?? "None";
+        }
+
         private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
@@ -218,6 +223,13 @@ namespace TAC_COM.ViewModels
             {
                 BypassState = keybindManager.ToggleState;
             }
+        }
+
+        public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
+
+        public void ExecuteKeybindChange() 
+        {
+            keybindManager.UpdateKeybind();
         }
 
         public AudioInterfaceViewModel()
