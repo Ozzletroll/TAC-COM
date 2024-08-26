@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TAC_COM.Services;
+using TAC_COM.ViewModels;
 
 namespace TAC_COM.Views
 {
@@ -23,6 +25,7 @@ namespace TAC_COM.Views
         public KeybindWindow()
         {
             InitializeComponent();
+            DataContext = new KeybindWindowViewModel();
         }
     }
 }

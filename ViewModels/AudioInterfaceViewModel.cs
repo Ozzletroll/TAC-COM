@@ -22,7 +22,7 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private WindowService windowService = new();
+        private readonly WindowService windowService = new();
         private readonly AudioManager audioManager = new();
         private readonly KeybindManager keybindManager = new();
 
@@ -185,7 +185,6 @@ namespace TAC_COM.ViewModels
         }
 
         public string KeybindName => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
-        public string NewKeybindName => keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
         
         private void LoadDeviceSettings()
         {
@@ -231,13 +230,6 @@ namespace TAC_COM.ViewModels
         private void ExecuteShowKeybindDialog()
         {
             windowService.OpenWindow();
-        }
-
-        public RelayCommand CloseKeybindDialog => new(execute => ExecuteCloseKeybindDialog());
-
-        private void ExecuteCloseKeybindDialog()
-        {
-            windowService.CloseWindow();
         }
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
