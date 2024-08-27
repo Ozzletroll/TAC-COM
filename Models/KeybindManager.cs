@@ -68,7 +68,7 @@ namespace TAC_COM.Models
                 {
                     if (args.IsKeyDown)
                     {
-                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl);
+                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier);
                     }
                 });
         }
@@ -83,25 +83,51 @@ namespace TAC_COM.Models
             PTTKey = NewPTTKeybind;
         }
     }
-    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl)
+    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier)
     {
+        private bool IsModifier = isModifier;
         public bool Shift = shift;
         public bool Ctrl = ctrl;
+        public bool Alt = alt;
         public VirtualKeyCode KeyCode = keyCode;
 
         public override string ToString()
         {
             var output = new StringBuilder();
-            if (Shift)
+            if (!IsModifier)
             {
-                output.Append("Shift + ");
-            }
-            if (Ctrl)
-            {
-                output.Append("Ctrl + ");
-            }
-            output.Append(KeyCode.ToString());
+                if (Shift) output.Append("Shift + ");
+                if (Ctrl) output.Append("Ctrl + ");
+                if (Alt) output.Append("Alt + ");
 
+                var keystring = KeyCode.ToString();
+                if (keystring.StartsWith("Key"))
+                {
+                    keystring = keystring[3..];
+                }
+                output.Append(keystring);
+            }
+            else
+            {
+                bool[] modifiers = [Shift,  Ctrl, Alt];
+                if (modifiers.Count(m => m) > 1)
+                {
+                    List<string> heldKeys = new List<string>();
+
+                    if (Shift) heldKeys.Add("Shift");
+                    if (Ctrl) heldKeys.Add("Ctrl");
+                    if (Alt) heldKeys.Add("Alt");
+
+                    output.Append(string.Join(" + ", heldKeys));
+                }
+                else
+                {
+                    if (Shift) output.Append("Shift");
+                    if (Ctrl) output.Append("Ctrl");
+                    if (Alt) output.Append("Alt");
+                }
+                
+            }
             return output.ToString();
         }
     }
