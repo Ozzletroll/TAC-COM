@@ -112,7 +112,7 @@ namespace TAC_COM.Models
                 bool[] modifiers = [Shift,  Ctrl, Alt];
                 if (modifiers.Count(m => m) > 1)
                 {
-                    List<string> heldKeys = new List<string>();
+                    List<string> heldKeys = [];
 
                     if (Shift) heldKeys.Add("Shift");
                     if (Ctrl) heldKeys.Add("Ctrl");
