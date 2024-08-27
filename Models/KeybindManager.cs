@@ -29,13 +29,16 @@ namespace TAC_COM.Models
 
         public void TogglePTT(KeyboardHookEventArgs args)
         {
-            if (args.IsKeyDown)
+            if (PTTKey != null)
             {
-                if (!ToggleState) ToggleState = true;
-            }
-            else
-            {
-                if (ToggleState) ToggleState = false;
+                if (PTTKey.IsPressed(args))
+                {
+                    if (!ToggleState) ToggleState = true;
+                }
+                else
+                {
+                    if (ToggleState) ToggleState = false;
+                }
             }
         }
 
@@ -50,8 +53,7 @@ namespace TAC_COM.Models
             PTTKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
                 {
-                    var key = VirtualKeyCode.KeyV;
-                    if (args.Key == key) TogglePTT(args);
+                    TogglePTT(args);
                 });
         }
 
@@ -69,7 +71,6 @@ namespace TAC_COM.Models
                     if (args.IsKeyDown)
                     {
                         NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier);
-                        Console.WriteLine(NewPTTKeybind.ToString());
                     }
                 });
         }
@@ -91,6 +92,23 @@ namespace TAC_COM.Models
         public bool Ctrl = ctrl;
         public bool Alt = alt;
         public VirtualKeyCode KeyCode = keyCode;
+
+        public bool IsPressed(KeyboardHookEventArgs args)
+        {
+            if (args.Key != KeyCode) return false;
+
+            if (args.IsKeyDown)
+            {
+                if (args.IsShift == Shift
+                    && args.IsControl == Ctrl
+                    && args.IsAlt == Alt)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
 
         public override string ToString()
         {
