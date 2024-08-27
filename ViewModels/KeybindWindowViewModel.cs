@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,16 @@ namespace TAC_COM.ViewModels
     {
         private readonly KeybindManager keybindManager;
 
-        public string NewKeybindName => keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
+        private string? newKeybindName;
+        public string? NewKeybindName
+        {
+            get => newKeybindName;
+            set
+            {
+                newKeybindName = value;
+                OnPropertyChanged(nameof(newKeybindName));
+            }
+        }
 
         public RelayCommand CloseKeybindDialog => new(execute => ExecuteCloseKeybindDialog());
 
@@ -23,9 +33,18 @@ namespace TAC_COM.ViewModels
             WindowService.CloseWindow();
         }
 
+        private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(KeybindManager.NewPTTKeybind))
+            {
+                NewKeybindName = keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
+            }
+        }
+
         public KeybindWindowViewModel(KeybindManager _keybindManager)
         {
             keybindManager = _keybindManager;
+            keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
             keybindManager.ToggleUserKeybind(true);
         }
     }

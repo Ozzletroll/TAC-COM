@@ -13,8 +13,19 @@ namespace TAC_COM.Models
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
-        public Keybind? NewPTTKeybind;
+
         public Keybind? PTTKey;
+
+        private Keybind? newPTTKeybind;
+        public Keybind? NewPTTKeybind
+        {
+            get => newPTTKeybind;
+            set
+            {
+                newPTTKeybind = value;
+                OnPropertyChanged(nameof(NewPTTKeybind));
+            }
+        }
 
         private bool toggleState;
         public bool ToggleState
