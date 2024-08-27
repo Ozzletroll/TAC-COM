@@ -23,7 +23,6 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private readonly WindowService windowService = new();
         private readonly AudioManager audioManager = new();
         private readonly KeybindManager keybindManager = new();
 
@@ -218,7 +217,7 @@ namespace TAC_COM.ViewModels
 
         private void ExecuteShowKeybindDialog()
         {
-            windowService.OpenWindow(new KeybindWindow(keybindManager));
+            WindowService.OpenWindow(new KeybindWindow(keybindManager));
         }
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());

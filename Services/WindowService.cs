@@ -10,12 +10,12 @@ namespace TAC_COM.Services
 {
     public class WindowService
     {
-        public void OpenWindow(Window window)
+        public static void OpenWindow(Window window)
         {
             window.ShowDialog();
         }
 
-        public void CloseWindow()
+        public static void CloseWindow()
         {
             var window = Application.Current.Windows.OfType<KeybindWindow>().SingleOrDefault(x => x.IsActive);
             window?.Close();
