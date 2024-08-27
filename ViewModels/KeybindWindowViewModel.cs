@@ -11,7 +11,7 @@ namespace TAC_COM.ViewModels
     internal class KeybindWindowViewModel : ViewModelBase
     {
         private readonly WindowService windowService = new();
-        private readonly KeybindManager keybindManager = new();
+        private readonly KeybindManager keybindManager;
 
         public string NewKeybindName => keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
 
@@ -24,8 +24,9 @@ namespace TAC_COM.ViewModels
             windowService.CloseWindow();
         }
 
-        public KeybindWindowViewModel()
+        public KeybindWindowViewModel(KeybindManager _keybindManager)
         {
+            keybindManager = _keybindManager;
             keybindManager.ToggleUserKeybind(true);
         }
     }

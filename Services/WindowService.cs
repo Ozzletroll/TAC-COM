@@ -8,11 +8,10 @@ using TAC_COM.Views;
 
 namespace TAC_COM.Services
 {
-    public class WindowService : IWindowService
+    public class WindowService
     {
-        public void OpenWindow()
+        public void OpenWindow(Window window)
         {
-            var window = new KeybindWindow();
             window.ShowDialog();
         }
 

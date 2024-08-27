@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TAC_COM.Models
 {
-    internal class ModelBase : INotifyPropertyChanged
+    public class ModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

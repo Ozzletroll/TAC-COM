@@ -9,7 +9,7 @@ using static System.Windows.Forms.AxHost;
 
 namespace TAC_COM.Models
 {
-    internal class KeybindManager : ModelBase
+    public class KeybindManager : ModelBase
     {
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
@@ -69,6 +69,7 @@ namespace TAC_COM.Models
                     if (args.IsKeyDown)
                     {
                         NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier);
+                        Console.WriteLine(NewPTTKeybind.ToString());
                     }
                 });
         }
@@ -85,7 +86,7 @@ namespace TAC_COM.Models
     }
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier)
     {
-        private bool IsModifier = isModifier;
+        private readonly bool IsModifier = isModifier;
         public bool Shift = shift;
         public bool Ctrl = ctrl;
         public bool Alt = alt;

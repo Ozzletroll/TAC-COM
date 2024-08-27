@@ -17,6 +17,7 @@ using static TAC_COM.Models.KeybindManager;
 using TAC_COM.ViewModels;
 using System.Windows;
 using TAC_COM.Services;
+using TAC_COM.Views;
 
 namespace TAC_COM.ViewModels
 {
@@ -87,18 +88,6 @@ namespace TAC_COM.ViewModels
                 {
                     BypassState = true;
                 }
-            }
-        }
-
-        private bool keybindListen;
-        public bool KeybindListen
-        {
-            get => keybindListen;
-            set
-            {
-                keybindListen = value;
-                keybindManager.ToggleUserKeybind(KeybindListen);
-                OnPropertyChanged(nameof(KeybindListen));
             }
         }
 
@@ -229,7 +218,7 @@ namespace TAC_COM.ViewModels
 
         private void ExecuteShowKeybindDialog()
         {
-            windowService.OpenWindow();
+            windowService.OpenWindow(new KeybindWindow(keybindManager));
         }
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
@@ -243,6 +232,7 @@ namespace TAC_COM.ViewModels
         {
             audioManager.DeviceListReset += OnDeviceListReset;
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
+
             Profiles = ProfileManager.GetAllProfiles();
             LoadDeviceSettings();
             LoadAudioSettings();
