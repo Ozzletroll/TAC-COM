@@ -172,7 +172,16 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public string KeybindName => keybindManager.PTTKey?.ToString().ToUpper() ?? "NONE";
+        private string? keybindName;
+        public string? KeybindName
+        {
+            get => keybindName;
+            set
+            {
+                keybindName = value;
+                OnPropertyChanged(nameof(KeybindName));
+            }
+        }
         
         private void LoadDeviceSettings()
         {
@@ -205,11 +214,16 @@ namespace TAC_COM.ViewModels
         {
             LoadDeviceSettings();
         }
+
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(KeybindManager.ToggleState))
             {
                 BypassState = keybindManager.ToggleState;
+            }
+            if (e.PropertyName == nameof(KeybindManager.PTTKey))
+            {
+                KeybindName = keybindManager?.PTTKey?.ToString().ToUpper() ?? "NONE";
             }
         }
 

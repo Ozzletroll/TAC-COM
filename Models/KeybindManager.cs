@@ -14,7 +14,16 @@ namespace TAC_COM.Models
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
 
-        public Keybind? PTTKey;
+        private Keybind? pttKey;
+        public Keybind? PTTKey
+        {
+            get => pttKey;
+            set
+            {
+                pttKey = value;
+                OnPropertyChanged(nameof(PTTKey));
+            }
+        }
 
         private Keybind? newPTTKeybind;
         public Keybind? NewPTTKeybind
