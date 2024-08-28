@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace TAC_COM.Settings
 {
-    internal class AudioSettings : ConfigurationSection
+    public class AudioSettings : ConfigurationSection
     {
         [ConfigurationProperty("inputDevice")]
         public string InputDevice
