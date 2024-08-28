@@ -7,7 +7,7 @@
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:KeybindWindowViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="200"
+             d:DesignHeight="150" d:DesignWidth="250"
              Height="150" Width="250"
              ResizeMode="NoResize"
              Topmost="True">
@@ -33,7 +33,9 @@
             <TextBlock>
                 PRESS NEW KEYBIND
             </TextBlock>
-            <Label Content="{Binding NewKeybindName}"/>
+            <Label Height="40" Content="{Binding NewKeybindName}"
+                   HorizontalAlignment="Center"
+                   Foreground="#FFBD0000"/>
             <Button Command="{Binding CloseKeybindDialog}">
                 CONFIRM
             </Button>
