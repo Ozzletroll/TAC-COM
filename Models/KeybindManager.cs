@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAC_COM.Services;
 using static System.Windows.Forms.AxHost;
 
 namespace TAC_COM.Models
 {
-    public class KeybindManager : ModelBase
+    public class KeybindManager(SettingsService settingsService) : ModelBase
     {
+        public SettingsService SettingsService = settingsService;
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? UserKeybindSubscription;
 
@@ -22,6 +24,14 @@ namespace TAC_COM.Models
             {
                 pttKey = value;
                 OnPropertyChanged(nameof(PTTKey));
+
+                if (value != null )
+                {
+                    foreach (var (key, dictValue) in value.ToDictionary()) 
+                    {
+                        SettingsService.UpdateAppConfig(key, dictValue);
+                    }
+                }
             }
         }
 
@@ -104,10 +114,21 @@ namespace TAC_COM.Models
         {
             PTTKey = NewPTTKeybind;
         }
+
+        internal void LoadKeybindSettings()
+        {
+            PTTKey = new Keybind(
+                keyCode: (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), SettingsService.KeybindSettings.KeyCode),
+                shift: SettingsService.KeybindSettings.Shift,
+                ctrl: SettingsService.KeybindSettings.Ctrl,
+                alt: SettingsService.KeybindSettings.Alt,
+                isModifier: SettingsService.KeybindSettings.IsModifier);
+        }
     }
+
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier)
     {
-        private readonly bool IsModifier = isModifier;
+        public bool IsModifier = isModifier;
         public bool Shift = shift;
         public bool Ctrl = ctrl;
         public bool Alt = alt;
@@ -168,6 +189,18 @@ namespace TAC_COM.Models
                 
             }
             return output.ToString();
+        }
+
+        public Dictionary<string, object> ToDictionary()
+        {
+            return new Dictionary<string, object>
+            {
+                { "KeyCode", KeyCode },
+                { "Shift", Shift },
+                { "Ctrl", Ctrl },
+                { "Alt", Alt },
+                { "IsModifier", IsModifier }
+            };
         }
     }
 }

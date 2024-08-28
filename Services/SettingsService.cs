@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -8,7 +9,7 @@ using TAC_COM.Settings;
 
 namespace TAC_COM.Services
 {
-    internal class SettingsService
+    public class SettingsService
     {
         public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         public AudioSettings AudioSettings;
@@ -16,25 +17,28 @@ namespace TAC_COM.Services
 
         public void UpdateAppConfig(string propertyName, object value)
         {
-            // Check if property in AudioSettings
-            var property = AudioSettings.GetType().GetProperty(propertyName);
-
-            // If property not found in AudioSettings, check in KeybindSettings
-            if (property == null)
-            {
-                property = KeybindSettings.GetType().GetProperty(propertyName);
-            }
+            // Check if property in settings
+            var property = AudioSettings.GetType().GetProperty(propertyName) 
+                ?? KeybindSettings.GetType().GetProperty(propertyName);
 
             // Update AppConfig
             if (property != null)
             {
                 if (property.PropertyType == typeof(string))
                 {
-                    property.SetValue(property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings, value.ToString());
+                    property.SetValue(property.DeclaringType 
+                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, value.ToString());
                 }
                 else if (property.PropertyType == typeof(float))
                 {
-                    property.SetValue(property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (float)value);
+                    property.SetValue(property.DeclaringType 
+                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (float)value);
+                }
+                else if (property.PropertyType == typeof(bool))
+                {
+                    Console.WriteLine((bool)value);
+                    property.SetValue(property.DeclaringType 
+                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (bool)value);
                 }
                 AppConfig.Save();
             }

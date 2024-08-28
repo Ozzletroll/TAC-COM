@@ -23,9 +23,9 @@ namespace TAC_COM.ViewModels
 {
     internal class AudioInterfaceViewModel : ViewModelBase
     {
-        private readonly AudioManager audioManager = new();
-        private readonly KeybindManager keybindManager = new();
-        public SettingsService SettingsService = new();
+        public SettingsService settingsService;
+        private readonly AudioManager audioManager;
+        private readonly KeybindManager keybindManager;
 
         public AudioManager AudioManager
         {
@@ -53,7 +53,7 @@ namespace TAC_COM.ViewModels
                 {
                     audioManager.SetInputDevice(value);
                     OnPropertyChanged(nameof(InputDevice));
-                    SettingsService.UpdateAppConfig(nameof(InputDevice), value);
+                    settingsService.UpdateAppConfig(nameof(InputDevice), value);
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace TAC_COM.ViewModels
                 {
                     audioManager.SetOutputDevice(value);
                     OnPropertyChanged(nameof(OutputDevice));
-                    SettingsService.UpdateAppConfig(nameof(OutputDevice), value);
+                    settingsService.UpdateAppConfig(nameof(OutputDevice), value);
                 }
             } 
         }
@@ -124,7 +124,7 @@ namespace TAC_COM.ViewModels
                 value = (float)Math.Round(value, 0);
                 audioManager.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(NoiseGateThreshold));
-                SettingsService.UpdateAppConfig(nameof(NoiseGateThreshold), value);
+                settingsService.UpdateAppConfig(nameof(NoiseGateThreshold), value);
             }
         }
 
@@ -135,7 +135,7 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.OutputGainLevel = value;
                 OnPropertyChanged(nameof(OutputLevel));
-                SettingsService.UpdateAppConfig(nameof(OutputLevel), value);
+                settingsService.UpdateAppConfig(nameof(OutputLevel), value);
             }
         }
 
@@ -146,7 +146,7 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.NoiseLevel = value;
                 OnPropertyChanged(nameof(InterferenceLevel));
-                SettingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
+                settingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
             }
         }
 
@@ -168,7 +168,7 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.activeProfile = value;
-                    SettingsService.UpdateAppConfig(nameof(ActiveProfile), value);
+                    settingsService.UpdateAppConfig(nameof(ActiveProfile), value);
                 }
             }
         }
@@ -187,12 +187,12 @@ namespace TAC_COM.ViewModels
         private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
-            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == SettingsService.AudioSettings.InputDevice);
+            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == settingsService.AudioSettings.InputDevice);
             if (savedInputDevice != null)
             {
                 InputDevice = savedInputDevice;
             }
-            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == SettingsService.AudioSettings.OutputDevice);
+            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == settingsService.AudioSettings.OutputDevice);
             if (savedOutputDevice != null)
             {
                 OutputDevice = savedOutputDevice;
@@ -201,10 +201,10 @@ namespace TAC_COM.ViewModels
 
         private void LoadAudioSettings()
         {
-            audioManager.NoiseGateThreshold = SettingsService.AudioSettings.NoiseGateThreshold;
-            audioManager.OutputGainLevel = SettingsService.AudioSettings.OutputLevel;
-            audioManager.NoiseLevel = SettingsService.AudioSettings.InterferenceLevel;
-            var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == SettingsService.AudioSettings.ActiveProfile);
+            audioManager.NoiseGateThreshold = settingsService.AudioSettings.NoiseGateThreshold;
+            audioManager.OutputGainLevel = settingsService.AudioSettings.OutputLevel;
+            audioManager.NoiseLevel = settingsService.AudioSettings.InterferenceLevel;
+            var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == settingsService.AudioSettings.ActiveProfile);
             if (savedProfile != null)
             {
                 ActiveProfile = savedProfile;
@@ -244,10 +244,21 @@ namespace TAC_COM.ViewModels
 
         public AudioInterfaceViewModel()
         {
+            Profiles = ProfileManager.GetAllProfiles();
+
+            audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
+
+            settingsService = new();
+
+            keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
 
-            Profiles = ProfileManager.GetAllProfiles();
+            if (settingsService.KeybindSettings != null)
+            {
+                keybindManager.LoadKeybindSettings();
+            }
+
             LoadDeviceSettings();
             LoadAudioSettings();
         }
