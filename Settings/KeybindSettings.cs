@@ -10,17 +10,17 @@ namespace TAC_COM.Settings
 {
     public class KeybindSettings : ConfigurationSection
     {
-        [ConfigurationProperty("KeyCode")]
+        [ConfigurationProperty("keyCode", DefaultValue = "KeyV")]
         public string KeyCode
         {
-            get => (string)this["KeyCode"];
+            get => (string)this["keyCode"];
             set
             {
-                this["KeyCode"] = value;
+                this["keyCode"] = value;
             }
         }
 
-        [ConfigurationProperty("shift")]
+        [ConfigurationProperty("shift", DefaultValue = false)]
         public bool Shift
         {
             get => (bool)this["shift"];
@@ -30,17 +30,17 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("ctrl")]
+        [ConfigurationProperty("ctrl", DefaultValue = false)]
         public bool Ctrl
         {
-            get => (bool)this["shift"];
+            get => (bool)this["ctrl"];
             set
             {
-                this["shift"] = value;
+                this["ctrl"] = value;
             }
         }
 
-        [ConfigurationProperty("alt")]
+        [ConfigurationProperty("alt", DefaultValue = false)]
         public bool Alt
         {
             get => (bool)this["alt"];
@@ -50,7 +50,7 @@ namespace TAC_COM.Settings
             }
         }
 
-        [ConfigurationProperty("isModifier")]
+        [ConfigurationProperty("isModifier", DefaultValue = false)]
         public bool IsModifier
         {
             get => (bool)this["isModifier"];
