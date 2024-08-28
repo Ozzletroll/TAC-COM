@@ -36,7 +36,6 @@ namespace TAC_COM.Services
                 }
                 else if (property.PropertyType == typeof(bool))
                 {
-                    Console.WriteLine((bool)value);
                     property.SetValue(property.DeclaringType 
                         == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (bool)value);
                 }
