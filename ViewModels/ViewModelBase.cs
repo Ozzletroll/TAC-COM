@@ -12,8 +12,6 @@ namespace TAC_COM.ViewModels
 {
     internal class ViewModelBase : INotifyPropertyChanged
     {
-        public SettingsService SettingsService = new();
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

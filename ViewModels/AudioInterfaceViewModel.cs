@@ -25,6 +25,7 @@ namespace TAC_COM.ViewModels
     {
         private readonly AudioManager audioManager = new();
         private readonly KeybindManager keybindManager = new();
+        public SettingsService SettingsService = new();
 
         public AudioManager AudioManager
         {
