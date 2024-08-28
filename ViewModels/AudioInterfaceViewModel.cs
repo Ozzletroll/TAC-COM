@@ -52,7 +52,7 @@ namespace TAC_COM.ViewModels
                 {
                     audioManager.SetInputDevice(value);
                     OnPropertyChanged(nameof(InputDevice));
-                    UpdateAppConfig(nameof(InputDevice), value);
+                    SettingsService.UpdateAppConfig(nameof(InputDevice), value);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace TAC_COM.ViewModels
                 {
                     audioManager.SetOutputDevice(value);
                     OnPropertyChanged(nameof(OutputDevice));
-                    UpdateAppConfig(nameof(OutputDevice), value);
+                    SettingsService.UpdateAppConfig(nameof(OutputDevice), value);
                 }
             } 
         }
@@ -123,7 +123,7 @@ namespace TAC_COM.ViewModels
                 value = (float)Math.Round(value, 0);
                 audioManager.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(NoiseGateThreshold));
-                UpdateAppConfig(nameof(NoiseGateThreshold), value);
+                SettingsService.UpdateAppConfig(nameof(NoiseGateThreshold), value);
             }
         }
 
@@ -134,7 +134,7 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.OutputGainLevel = value;
                 OnPropertyChanged(nameof(OutputLevel));
-                UpdateAppConfig(nameof(OutputLevel), value);
+                SettingsService.UpdateAppConfig(nameof(OutputLevel), value);
             }
         }
 
@@ -145,7 +145,7 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.NoiseLevel = value;
                 OnPropertyChanged(nameof(InterferenceLevel));
-                UpdateAppConfig(nameof(InterferenceLevel), value);
+                SettingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
             }
         }
 
@@ -167,7 +167,7 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.activeProfile = value;
-                    UpdateAppConfig(nameof(ActiveProfile), value);
+                    SettingsService.UpdateAppConfig(nameof(ActiveProfile), value);
                 }
             }
         }
@@ -186,12 +186,12 @@ namespace TAC_COM.ViewModels
         private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
-            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.InputDevice);
+            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == SettingsService.AudioSettings.InputDevice);
             if (savedInputDevice != null)
             {
                 InputDevice = savedInputDevice;
             }
-            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == AudioSettings.OutputDevice);
+            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == SettingsService.AudioSettings.OutputDevice);
             if (savedOutputDevice != null)
             {
                 OutputDevice = savedOutputDevice;
@@ -200,10 +200,10 @@ namespace TAC_COM.ViewModels
 
         private void LoadAudioSettings()
         {
-            audioManager.NoiseGateThreshold = AudioSettings.NoiseGateThreshold;
-            audioManager.OutputGainLevel = AudioSettings.OutputLevel;
-            audioManager.NoiseLevel = AudioSettings.InterferenceLevel;
-            var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == AudioSettings.ActiveProfile);
+            audioManager.NoiseGateThreshold = SettingsService.AudioSettings.NoiseGateThreshold;
+            audioManager.OutputGainLevel = SettingsService.AudioSettings.OutputLevel;
+            audioManager.NoiseLevel = SettingsService.AudioSettings.InterferenceLevel;
+            var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == SettingsService.AudioSettings.ActiveProfile);
             if (savedProfile != null)
             {
                 ActiveProfile = savedProfile;
