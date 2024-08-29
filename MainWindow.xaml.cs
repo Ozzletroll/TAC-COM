@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TAC_COM.Services;
+using TAC_COM.ViewModels;
 
 namespace TAC_COM
 {
@@ -19,6 +21,7 @@ namespace TAC_COM
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }
 
     }

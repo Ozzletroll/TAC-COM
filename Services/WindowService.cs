@@ -12,6 +12,8 @@ namespace TAC_COM.Services
     {
         public static void OpenWindow(Window window)
         {
+            window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.ShowDialog();
         }
 
