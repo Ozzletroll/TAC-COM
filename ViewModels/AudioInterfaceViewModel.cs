@@ -179,7 +179,7 @@ namespace TAC_COM.ViewModels
             get => keybindName;
             set
             {
-                keybindName = value;
+                keybindName = "[ " + value + " ]";
                 OnPropertyChanged(nameof(KeybindName));
             }
         }
