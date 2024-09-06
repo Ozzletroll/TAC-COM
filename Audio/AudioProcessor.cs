@@ -223,9 +223,9 @@ namespace TAC_COM.Audio
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
-                Attack = 10,
-                Hold = 200,
-                Release = 300,
+                Attack = 5,
+                Hold = 30,
+                Release = 5,
             }, out ProcessedNoiseGate);
 
             // Highpass filter
@@ -320,9 +320,9 @@ namespace TAC_COM.Audio
             var sampleSource = passthroughSource.ToSampleSource().AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
-                Attack = 10,
-                Hold = 200,
-                Release = 300,
+                Attack = 5,
+                Hold = 30,
+                Release = 5,
             }, out DryNoiseGate);
 
             return sampleSource == null ? throw new InvalidOperationException("Sample source cannot be null.") : (ISampleSource)sampleSource;
