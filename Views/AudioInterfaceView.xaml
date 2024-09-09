@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TAC_COM.Views" 
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
 
-    <Grid Background="White">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="auto"/>
@@ -25,12 +27,14 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="2" Grid.Row="4" Background="White" 
+        <StackPanel Grid.Column="2" Grid.Row="4" Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
-
+            
             <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Width="70" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
                         INPUT
                     </TextBlock>
                 </Label>
@@ -51,13 +55,15 @@
 
                 <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical" Height="20" Width="4" Margin="10, 0, 0, 0"
                              VerticalAlignment="Center" HorizontalAlignment="Center"
-                             Foreground="#FFBD0000" Background="#FFE6E6E6"
+                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                              Value="{Binding AudioManager.InputPeakMeter}"/>
             </StackPanel>
 
             <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" 
+                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
                         OUTPUT
                     </TextBlock>
                 </Label>
@@ -78,13 +84,15 @@
 
                 <ProgressBar Grid.Column="2" Grid.Row="4" Orientation="Vertical" Height="20" Width="4" Margin="10, 0, 0, 0"
                              VerticalAlignment="Center" HorizontalAlignment="Center"
-                             Foreground="#FFBD0000" Background="#FFE6E6E6"
+                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                              Value="{Binding AudioManager.OutputPeakMeter}"/>
             </StackPanel>
 
             <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" 
+                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
                         PROFILE
                     </TextBlock>
                 </Label>
@@ -105,8 +113,10 @@
             </StackPanel>
 
             <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="5">
-                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16">
-                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" Foreground="#FFA90000" Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" 
+                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
                         PTT KEY
                     </TextBlock>
                 </Label>
@@ -118,8 +128,10 @@
                     <Button DockPanel.Dock="Right" Width="50" Height="20" 
                             HorizontalAlignment="Center" VerticalAlignment="Center" 
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                            Foreground="White" Background="#FFBB0000" BorderThickness="0" Cursor="Hand"
-                            IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10">
+                            Foreground="White" Background="#b30000" BorderThickness="0" Cursor="Hand"
+                            IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
+                            adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                            adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
                         EDIT
                     </Button>
                 </StackPanel>
@@ -127,7 +139,7 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="White" BorderBrush="#FF560404" FontSize="18"
+                              Foreground="White" FontSize="18"
                               IsChecked="{Binding State}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
@@ -142,11 +154,11 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Background" Value="#FF730000"/>
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
                                     <Setter Property="Content" Value="DISABLE"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
-                                    <Setter Property="Background" Value="#FFBB0000"/>
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
                                     <Setter Property="Content" Value="ENABLE"/>
                                 </Trigger>
                             </Style.Triggers>
@@ -155,7 +167,7 @@
                 </ToggleButton>
 
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="White" BorderBrush="#FF560404" FontSize="18"
+                              Foreground="White" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}" FontSize="18"
                               IsChecked="{Binding BypassState}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
@@ -171,11 +183,11 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter Property="Background" Value="#FF730000"/>
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
                                     <Setter Property="Content" Value="BYPASS"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
-                                    <Setter Property="Background" Value="#FFBB0000"/>
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
                                     <Setter Property="Content" Value="PUSH TO TALK"/>
                                 </Trigger>
                             </Style.Triggers>
