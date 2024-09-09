@@ -184,7 +184,7 @@
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                               FontSize="18" FontWeight="ExtraLight"
-                              IsChecked="{Binding BypassState}"
+                              IsChecked="{Binding BypassState}" IsEnabled="{Binding State}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
@@ -214,6 +214,9 @@
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.3"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
