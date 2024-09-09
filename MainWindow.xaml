@@ -14,10 +14,8 @@
                              Height="350" Width="700" MinHeight="350" MinWidth="700"
                              TitleBarForeground="White" TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              BorderThickness="1" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
-                             ResizeMode="CanMinimize">
-    <Window.Icon>
-        <DrawingImage/>
-    </Window.Icon>
+                             ResizeMode="CanMinimize"
+                             Icon="/Static/Icons/headset-white.png">
     <Grid>
         <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
     </Grid>
