@@ -144,7 +144,8 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" FontSize="18"
+                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
+                              FontSize="18" FontWeight="ExtraLight" Padding="5"
                               IsChecked="{Binding State}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
@@ -169,13 +170,20 @@
                                     <Setter Property="Content" Value="ENABLE"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
 
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" FontSize="18"
+                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
+                              FontSize="18" FontWeight="ExtraLight"
                               IsChecked="{Binding BypassState}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
@@ -200,6 +208,12 @@
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
                                     <Setter Property="Content" Value="PUSH TO TALK"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>

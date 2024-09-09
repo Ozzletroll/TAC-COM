@@ -37,10 +37,12 @@
             <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#ffefefef</Color>
 
             <!--Enable/disable/edit buttons-->
-            <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color>
-            <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#ffBB0000</Color>
-            <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff0000</Color>
-            <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color>
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color> <!--Toggle Off-->
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#ffBB0000</Color> <!--Toggle On-->
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff0000</Color> <!--Border-->
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color> <!--Text-->
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#ffffff</Color> <!--Hover-->
+            <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#ffa90000</Color> <!--Click-->
 
         </ResourceDictionary>
     </Application.Resources>
