@@ -29,7 +29,7 @@
 
         <StackPanel Grid.Column="2" Grid.Row="4" Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
-            
+
             <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Margin="5">
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
@@ -125,17 +125,20 @@
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"
                            FontWeight="Normal"
                            Width="250" Height="20" IsEnabled="{Binding IsSelectable}" Content="{Binding KeybindName}"/>
-                    <Button DockPanel.Dock="Right" Width="50" Height="20" 
-                            HorizontalAlignment="Center" VerticalAlignment="Center" 
-                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
-                            Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}" 
-                            BorderThickness="0" Cursor="Hand"
-                            IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
-                            adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
-                            adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
-                        EDIT
-                    </Button>
+                    <Border BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}" BorderThickness="1" CornerRadius="1">
+                        <Button DockPanel.Dock="Right" Width="50" Height="20" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
+                                Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}" Cursor="Hand"
+                                IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
+                                BorderThickness="0"
+                                adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                                adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
+                            EDIT
+                        </Button>
+                    </Border>
+                   
                 </StackPanel>
             </StackPanel>
 
@@ -148,7 +151,8 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ToggleButton">
-                                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                                BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="1">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                     </ControlTemplate>
@@ -158,10 +162,12 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
                                     <Setter Property="Content" Value="DISABLE"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
                                     <Setter Property="Content" Value="ENABLE"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -169,7 +175,7 @@
                 </ToggleButton>
 
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="White" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}" FontSize="18"
+                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" FontSize="18"
                               IsChecked="{Binding BypassState}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
@@ -177,7 +183,8 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ToggleButton">
-                                        <Border BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                                        <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                                BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="1">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
                                     </ControlTemplate>
@@ -187,10 +194,12 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
                                     <Setter Property="Content" Value="BYPASS"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
                                     <Setter Property="Content" Value="PUSH TO TALK"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
