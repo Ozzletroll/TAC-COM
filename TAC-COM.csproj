@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Static\Icons\headset-white.png" />
     <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
     <None Remove="Static\SFX\GateClose\GateCloseHA.wav" />
     <None Remove="Static\SFX\GateClose\GateCloseHORUS.wav" />
@@ -30,6 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Static\Icons\headset-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Static\SFX\GateClose\GateCloseGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

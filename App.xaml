@@ -36,10 +36,11 @@
             <!--Sliders-->
             <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#ffefefef</Color>
 
-            <!--Enable/disable buttons-->
+            <!--Enable/disable/edit buttons-->
             <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color>
             <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#ffBB0000</Color>
             <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff560404</Color>
+            <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color>
 
         </ResourceDictionary>
     </Application.Resources>

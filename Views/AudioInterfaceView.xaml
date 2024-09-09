@@ -128,7 +128,9 @@
                     <Button DockPanel.Dock="Right" Width="50" Height="20" 
                             HorizontalAlignment="Center" VerticalAlignment="Center" 
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                            Foreground="White" Background="#b30000" BorderThickness="0" Cursor="Hand"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
+                            Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}" 
+                            BorderThickness="0" Cursor="Hand"
                             IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
                             adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
                             adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
@@ -139,7 +141,7 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
-                              Foreground="White" FontSize="18"
+                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" FontSize="18"
                               IsChecked="{Binding State}" VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
