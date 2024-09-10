@@ -1,4 +1,7 @@
-﻿<Window x:Class="TAC_COM.Views.KeybindWindow"
+﻿<adonisControls:AdonisWindow  
+             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI" 
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             x:Class="TAC_COM.Views.KeybindWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +13,14 @@
              d:DesignHeight="150" d:DesignWidth="250"
              Height="160" Width="250"
              ResizeMode="NoResize"
-             Topmost="True">
+             
+             Topmost="True"
+             Title="SET NEW KEYBIND"
+             TitleBarForeground="White" 
+             TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
+             BorderThickness="1" 
+             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
+             Icon="/Static/Icons/headset-white.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -40,4 +50,4 @@
         </StackPanel>
 
     </Grid>
-</Window>
+</adonisControls:AdonisWindow>
