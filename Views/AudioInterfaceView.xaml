@@ -125,20 +125,46 @@
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"
                            FontWeight="Normal"
                            Width="250" Height="20" IsEnabled="{Binding IsSelectable}" Content="{Binding KeybindName}"/>
-                    <Border BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}" BorderThickness="1" CornerRadius="1">
-                        <Button DockPanel.Dock="Right" Width="50" Height="20" 
+                    <Button DockPanel.Dock="Right" Width="50" Height="20" 
                                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
-                                Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}" Cursor="Hand"
+                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
                                 IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
                                 BorderThickness="0"
                                 adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
                                 adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
-                            EDIT
-                        </Button>
-                    </Border>
-                   
+                        EDIT
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"
+                                                        BorderThickness="1" CornerRadius="1">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="False">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
                 </StackPanel>
             </StackPanel>
 
