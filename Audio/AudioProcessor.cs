@@ -333,17 +333,21 @@ namespace TAC_COM.Audio
         /// </summary>
         internal ISampleSource NoiseSignalChain()
         {
-            var loopSource = new LoopStream(ActiveProfile.NoiseSource)
+            if (ActiveProfile != null)
             {
-                EnableLoop = true,
-            }.ToSampleSource();
+                var loopSource = new LoopStream(ActiveProfile.NoiseSource)
+                {
+                    EnableLoop = true,
+                }.ToSampleSource();
 
-            var output = new Gain(loopSource)
-            {
-                GainDB = 15,
-            };
+                var output = new Gain(loopSource)
+                {
+                    GainDB = 15,
+                };
 
-            return output;
+                return output;
+            }
+            else throw new InvalidOperationException("Active Profile must be set");
         }
 
         /// <summary>
