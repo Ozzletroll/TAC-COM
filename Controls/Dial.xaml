@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="TAC_COM.Controls.Dial"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Path}" x:Key="GaugePanel">
+            <Setter Property="Width" Value="380"/>
+            <Setter Property="Height" Value="380"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <RotateTransform Angle="45"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Viewbox>
+        <Grid Height="400" Width="400">
+            <!--Gauge Background-->
+            <Path Fill="Gray" Style="{StaticResource GaugePanel}">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathGeometry.Figures>
+                            <PathFigureCollection>
+                                <PathFigure StartPoint="190,380">
+                                    <PathFigure.Segments>
+                                        <PathSegmentCollection>
+                                            <ArcSegment Size="190,190"
+														IsLargeArc="True"
+														SweepDirection="Clockwise"
+														Point="380,190"/>
+                                            <LineSegment Point="190,190"/>
+                                        </PathSegmentCollection>
+                                    </PathFigure.Segments>
+                                </PathFigure>
+                            </PathFigureCollection>
+                        </PathGeometry.Figures>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            <!--Gauge-->
+            <Path Fill="red" Style="{StaticResource GaugePanel}">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathGeometry.Figures>
+                            <PathFigureCollection>
+                                <PathFigure StartPoint="190,380">
+                                    <PathFigure.Segments>
+                                        <PathSegmentCollection>
+                                            <ArcSegment Size="190,190"
+														IsLargeArc="True"
+														SweepDirection="Clockwise"
+														Point="380,190"
+														x:Name="arcGauge"/>
+                                            <LineSegment Point="190,190"/>
+                                        </PathSegmentCollection>
+                                    </PathFigure.Segments>
+                                </PathFigure>
+                            </PathFigureCollection>
+                        </PathGeometry.Figures>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            <!--Center Circle-->
+            <Ellipse Height="355" Width="355" Fill="white"/>
+
+            <!--Marker-->
+            <Grid RenderTransformOrigin="0.5,1.23" Margin="208,100,179,143">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="225" x:Name="Marker"/>
+                        <TranslateTransform Y="-110"/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Row="1" Fill="#f34370" RadiusX="1" RadiusY="1">
+                </Rectangle>
+            </Grid>
+
+            <!--Inner Center Circles-->
+            <Ellipse Height="215" Width="215" StrokeThickness="3" Stroke="Gray"/>
+        </Grid>
+    </Viewbox>
+</UserControl>
+
