@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -22,6 +23,7 @@ namespace TAC_COM.Controls
     {
         private const double FULLRANGE_ANGLE = 270;
         private const double START_ANGLE_OFFSET = 90;
+        private const double START_MARKER_ANGLE = 225;
 
         public static readonly DependencyProperty MinProperty 
             = DependencyProperty.Register("Min", typeof(int), typeof(Dial));
@@ -74,6 +76,24 @@ namespace TAC_COM.Controls
 
             display.IsLargeArc = angle > 180;
             display.Point = new Point(x, y);
+
+            // Rotate marker
+            DoubleAnimation animation = new();
+            Duration duration = new(TimeSpan.FromMilliseconds(250));
+            ExponentialEase acc = new()
+            {
+                EasingMode = EasingMode.EaseOut,
+                Exponent = 5
+            };
+            animation.To = angle + START_MARKER_ANGLE;
+            animation.Duration = duration;
+            animation.EasingFunction = acc;
+            Storyboard.SetTargetName(animation, "Marker");
+            Storyboard.SetTargetProperty(animation, new PropertyPath(RotateTransform.AngleProperty));
+
+            Storyboard storyboard = new();
+            storyboard.Children.Add(animation);
+            storyboard.Begin(this);
         }
 
         public Dial()
