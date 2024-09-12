@@ -57,7 +57,7 @@
 														IsLargeArc="True"
 														SweepDirection="Clockwise"
 														Point="380,190"
-														x:Name="arcGauge"/>
+														x:Name="display"/>
                                             <LineSegment Point="190,190"/>
                                         </PathSegmentCollection>
                                     </PathFigure.Segments>
@@ -68,16 +68,15 @@
                 </Path.Data>
             </Path>
 
-            <!--Center Circle-->
+            <!--Centre Circle-->
             <Ellipse Height="355" Width="355" Fill="white"/>
 
             <!--Marker-->
-            <Grid RenderTransformOrigin="0.5,1.23" Margin="208,100,179,143">
+            <Grid Height="150" Width="10" RenderTransformOrigin="0.5,1.23">
                 <Grid.RenderTransform>
                     <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="225" x:Name="Marker"/>
+                        <!--Bind this for rotation angle -->
+                        <RotateTransform Angle="0"/>
                         <TranslateTransform Y="-110"/>
                     </TransformGroup>
                 </Grid.RenderTransform>
@@ -85,13 +84,12 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Rectangle Grid.Row="1" Fill="#f34370" RadiusX="1" RadiusY="1">
+                <Rectangle Grid.Row="1" Fill="red" RadiusX="1" RadiusY="1">
                 </Rectangle>
             </Grid>
 
-            <!--Inner Center Circles-->
-            <Ellipse Height="215" Width="215" StrokeThickness="3" Stroke="Gray"/>
+            <!--Inner Centre Circles-->
+            <Ellipse Height="250" Width="250" StrokeThickness="3" Stroke="Gray"/>
         </Grid>
     </Viewbox>
 </UserControl>
-
