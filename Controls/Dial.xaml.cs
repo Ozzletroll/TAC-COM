@@ -25,6 +25,12 @@ namespace TAC_COM.Controls
         private const double START_ANGLE_OFFSET = 90;
         private const double START_MARKER_ANGLE = 225;
 
+        private const double MOUSE_MOVE_THRESHOLD = 1;
+        private const double INTERVAL = 1;
+        private const float SENSITIVITY = 2f;
+
+        private Point initialPosition;
+
         public static readonly DependencyProperty MinProperty 
             = DependencyProperty.Register("Min", typeof(int), typeof(Dial));
         public int Min
@@ -54,7 +60,7 @@ namespace TAC_COM.Controls
             get => (int)GetValue(ValueProperty);
             set 
             { 
-                SetValue(ValueProperty, value); 
+                SetValue(ValueProperty, Math.Clamp(value, Min, Max)); 
             }
         }
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -96,9 +102,39 @@ namespace TAC_COM.Controls
             storyboard.Begin(this);
         }
 
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(this);
+            initialPosition = Mouse.GetPosition(this);
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (Mouse.Captured == this)
+            {
+                Point currentPosition = Mouse.GetPosition(this);
+
+                double dY = (initialPosition.X - currentPosition.X);
+                if (Math.Abs(dY) > MOUSE_MOVE_THRESHOLD)
+                {
+                    Value -= (int)(Math.Sign(dY) * INTERVAL * SENSITIVITY);
+                    initialPosition = currentPosition;
+                }
+
+            }
+        }
+
         public Dial()
         {
             InitializeComponent();
+            MouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseUp += OnMouseUp;
+            MouseMove += OnMouseMove;
         }
     }
 }
