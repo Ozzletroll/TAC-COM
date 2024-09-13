@@ -26,16 +26,14 @@ namespace TAC_COM.Controls
         private const double START_MARKER_ANGLE = 225;
 
         private const double MOUSE_MOVE_THRESHOLD = 1;
-        private const double INTERVAL = 1;
-        private const float SENSITIVITY = 2f;
 
         private Point initialPosition;
 
         public static readonly DependencyProperty MinProperty 
-            = DependencyProperty.Register("Min", typeof(int), typeof(Dial));
-        public int Min
+            = DependencyProperty.Register("Min", typeof(float), typeof(Dial));
+        public float Min
         {
-            get => (int)GetValue(MinProperty); 
+            get => (float)GetValue(MinProperty); 
             set 
             { 
                 SetValue(MinProperty, value); 
@@ -43,10 +41,10 @@ namespace TAC_COM.Controls
         }
 
         public static readonly DependencyProperty MaxProperty 
-            = DependencyProperty.Register("Max", typeof(int), typeof(Dial));
-        public int Max
+            = DependencyProperty.Register("Max", typeof(float), typeof(Dial));
+        public float Max
         {
-            get => (int)GetValue(MaxProperty);
+            get => (float)GetValue(MaxProperty);
             set 
             { 
                 SetValue(MaxProperty, value); 
@@ -54,10 +52,10 @@ namespace TAC_COM.Controls
         }
 
         public static readonly DependencyProperty ValueProperty 
-            = DependencyProperty.Register("Value", typeof(int), typeof(Dial), new FrameworkPropertyMetadata(0, new PropertyChangedCallback(OnValuePropertyChanged)));
-        public int Value
+            = DependencyProperty.Register("Value", typeof(float), typeof(Dial), new FrameworkPropertyMetadata(0f, new PropertyChangedCallback(OnValuePropertyChanged)));
+        public float Value
         {
-            get => (int)GetValue(ValueProperty);
+            get => (float)GetValue(ValueProperty);
             set 
             { 
                 SetValue(ValueProperty, Math.Clamp(value, Min, Max)); 
@@ -66,8 +64,29 @@ namespace TAC_COM.Controls
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Dial? f = d as Dial;
-            f.Value = (int)e.NewValue;
-            f.RenderDisplay();
+            f?.RenderDisplay();
+        }
+
+        public static readonly DependencyProperty IntervalProperty
+            = DependencyProperty.Register("Interval", typeof(float), typeof(Dial));
+        public float Interval
+        {
+            get => (float)GetValue(IntervalProperty);
+            set
+            {
+                SetValue(IntervalProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty SensitivityProperty
+            = DependencyProperty.Register("Sensitivity", typeof(float), typeof(Dial));
+        public float Sensitivity
+        {
+            get => (float)GetValue(SensitivityProperty);
+            set
+            {
+                SetValue(SensitivityProperty, value);
+            }
         }
 
         private void RenderDisplay()
@@ -119,13 +138,12 @@ namespace TAC_COM.Controls
             {
                 Point currentPosition = Mouse.GetPosition(this);
 
-                double dY = (initialPosition.X - currentPosition.X);
-                if (Math.Abs(dY) > MOUSE_MOVE_THRESHOLD)
+                double movementDifference = (initialPosition.X - currentPosition.X) * Sensitivity;
+                if (Math.Abs(movementDifference) > MOUSE_MOVE_THRESHOLD)
                 {
-                    Value -= (int)(Math.Sign(dY) * INTERVAL * SENSITIVITY);
+                    Value -= (float)(Math.Sign(movementDifference) * Interval);
                     initialPosition = currentPosition;
                 }
-
             }
         }
 
