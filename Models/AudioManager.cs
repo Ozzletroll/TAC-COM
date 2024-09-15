@@ -137,7 +137,7 @@ namespace TAC_COM.Models
         {
             get
             {
-                return (Math.Round(audioProcessor.UserNoiseLevel, 2) * 100).ToString() + "%";
+                return Math.Round(audioProcessor.UserNoiseLevel * 100).ToString() + "%";
             }
         }
 
