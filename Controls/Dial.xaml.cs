@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TAC_COM.Controls
 {
@@ -25,7 +26,7 @@ namespace TAC_COM.Controls
         private const double START_ANGLE_OFFSET = 90;
         private const double START_MARKER_ANGLE = 225;
 
-        private const double MOUSE_MOVE_THRESHOLD = 1;
+        private const double MOUSE_MOVE_THRESHOLD = 2;
 
         private Point initialPosition;
 
@@ -51,19 +52,41 @@ namespace TAC_COM.Controls
             }
         }
 
+        private float percentValue;
+        public float PercentValue
+        {
+            get => percentValue;
+            set
+            {
+                percentValue = Math.Clamp(value, 0, 100);
+                Value = MathF.Round((Min + (percentValue / 100) * (Max - Min)) / Interval) * Interval ;
+            }
+        }
+
         public static readonly DependencyProperty ValueProperty 
             = DependencyProperty.Register("Value", typeof(float), typeof(Dial), new FrameworkPropertyMetadata(0f, new PropertyChangedCallback(OnValuePropertyChanged)));
         public float Value
         {
             get => (float)GetValue(ValueProperty);
             set 
-            { 
-                SetValue(ValueProperty, Math.Clamp(value, Min, Max)); 
+            {
+                SetValue(ValueProperty, Math.Clamp(value, Min, Max));
             }
         }
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Dial? f = d as Dial;
+
+            // Update percentValue after initial load.
+            // This is set here as the WPF framework directly calls SetValue on the dependency property,
+            // rather than via the above Value setter.
+            if (f != null)
+            {
+                if (e.NewValue != e.OldValue)
+                {
+                    f.percentValue = (f.Value - f.Min) / (f.Max - f.Min) * 100;
+                }
+            }
             f?.RenderDisplay();
         }
 
@@ -141,7 +164,7 @@ namespace TAC_COM.Controls
                 double movementDifference = (initialPosition.X - currentPosition.X) * Sensitivity;
                 if (Math.Abs(movementDifference) > MOUSE_MOVE_THRESHOLD)
                 {
-                    Value -= (float)(Math.Sign(movementDifference) * Interval);
+                    PercentValue -= (Math.Sign(movementDifference));
                     initialPosition = currentPosition;
                 }
             }
