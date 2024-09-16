@@ -59,7 +59,15 @@ namespace TAC_COM.Controls
             set
             {
                 percentValue = Math.Clamp(value, 0, 100);
-                Value = MathF.Round((Min + (percentValue / 100) * (Max - Min)) / Interval) * Interval ;
+                float calculatedValue = MathF.Round((Min + (percentValue / 100) * (Max - Min)) / Interval) * Interval;
+
+                // Prevent -0 values
+                if (Math.Abs(calculatedValue) < float.Epsilon)
+                {
+                    calculatedValue = 0;
+                }
+
+                Value = calculatedValue;
             }
         }
 
@@ -164,7 +172,7 @@ namespace TAC_COM.Controls
                 double movementDifference = (initialPosition.X - currentPosition.X) * Sensitivity;
                 if (Math.Abs(movementDifference) > MOUSE_MOVE_THRESHOLD)
                 {
-                    PercentValue -= (Math.Sign(movementDifference));
+                    PercentValue -= Math.Sign(movementDifference);
                     initialPosition = currentPosition;
                 }
             }
