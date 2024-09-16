@@ -84,17 +84,6 @@ namespace TAC_COM.Controls
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Dial? f = d as Dial;
-
-            // Update percentValue after initial load.
-            // This is set here as the WPF framework directly calls SetValue on the dependency property,
-            // rather than via the above Value setter.
-            if (f != null)
-            {
-                if (e.NewValue != e.OldValue)
-                {
-                    f.percentValue = (f.Value - f.Min) / (f.Max - f.Min) * 100;
-                }
-            }
             f?.RenderDisplay();
         }
 
@@ -178,12 +167,19 @@ namespace TAC_COM.Controls
             }
         }
 
+        private void OnDialLoaded(object sender, RoutedEventArgs e)
+        {
+            percentValue = (Value - Min) / (Max - Min) * 100;
+            RenderDisplay();
+        }
+
         public Dial()
         {
             InitializeComponent();
             MouseLeftButtonDown += OnMouseLeftButtonDown;
             MouseUp += OnMouseUp;
             MouseMove += OnMouseMove;
+            Loaded += OnDialLoaded;
         }
     }
 }
