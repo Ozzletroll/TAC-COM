@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TAC_COM.Views" 
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-             xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
+             xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" xmlns:controls="clr-namespace:TAC_COM.Controls"
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
@@ -253,42 +253,44 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0">
 
-                <StackPanel Orientation="Vertical" Width="240">
-                    <Label x:Name="GateThreshold" Content="NOISE GATE THRESHOLD" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <Label Content="{Binding AudioManager.NoiseGateThresholdString}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40"
+                <StackPanel Orientation="Vertical" Width="160">
+                    <Label x:Name="GateThreshold" Content="NOISE GATE THRESHOLD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                           Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Slider Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
-                                    VerticalAlignment="Center" Width="120" 
-                                    Value="{Binding NoiseGateThreshold}" Minimum="-100" Maximum="0" 
-                                    TickPlacement="TopLeft" TickFrequency="5" IsSnapToTickEnabled="False"/>
+                            <controls:Dial Height="50" Width="50"
+                                           Min="-100" Max="0" Interval="1" Sensitivity="2"
+                                           Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
+                            <Label Content="{Binding AudioManager.NoiseGateThresholdString}" 
+                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Width="240">
-                    <Label Content="OUTPUT LEVEL" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <Label Content="{Binding AudioManager.OutputGainLevelString}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40"
+                <StackPanel Orientation="Vertical" Width="160">
+                    <Label Content="OUTPUT LEVEL" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Slider x:Name="OutputLevel" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
-                                    VerticalAlignment="Center" Width="120" Maximum="10" Minimum="-10"
-                                    Value="{Binding OutputLevel}" TickPlacement="TopLeft" SmallChange="1" IsSnapToTickEnabled="True"/>
+                            <controls:Dial Height="50" Width="50"
+                                           Min="-10" Max="10" Interval="1" Sensitivity="2"
+                                           Value="{Binding OutputLevel, Mode=TwoWay}"/>
+                            <Label Content="{Binding AudioManager.OutputGainLevelString}" 
+                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Width="240">
-                    <Label Content="INTERFERENCE" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <Label Content="{Binding AudioManager.NoiseLevelString}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40"
+                <StackPanel Orientation="Vertical" Width="160">
+                    <Label Content="INTERFERENCE" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Slider x:Name="NoiseLevel" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="4"
-                                    VerticalAlignment="Center" Width="120" TickPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                    Value="{Binding InterferenceLevel}" TickFrequency="0.1" Maximum="1"/>
+                            <controls:Dial Height="50" Width="50"
+                                           Min="0" Max="1" Interval="0.01" Sensitivity="2"
+                                           Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
+                            <Label Content="{Binding AudioManager.NoiseLevelString}" 
+                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
