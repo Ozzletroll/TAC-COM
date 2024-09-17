@@ -109,7 +109,7 @@ namespace TAC_COM.Models
             // This must be used alongside a generic keyBoardEvents hook as KeyCombinationHandler
             // does not register key up events.
 
-            if (!passthroughState)
+            if (!PTTKey.Passthrough)
             {
                 var keyCodes = new List<VirtualKeyCode> { PTTKey.KeyCode };
 
@@ -140,7 +140,7 @@ namespace TAC_COM.Models
                 {
                     if (args.IsKeyDown)
                     {
-                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier);
+                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier, PassthroughState);
                     }
                 });
         }
@@ -162,17 +162,19 @@ namespace TAC_COM.Models
                 shift: SettingsService.KeybindSettings.Shift,
                 ctrl: SettingsService.KeybindSettings.Ctrl,
                 alt: SettingsService.KeybindSettings.Alt,
-                isModifier: SettingsService.KeybindSettings.IsModifier);
+                isModifier: SettingsService.KeybindSettings.IsModifier,
+                passthrough: SettingsService.KeybindSettings.Passthrough);
         }
     }
 
-    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier)
+    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
     {
+        public VirtualKeyCode KeyCode = keyCode;
         public bool IsModifier = isModifier;
         public bool Shift = shift;
         public bool Ctrl = ctrl;
         public bool Alt = alt;
-        public VirtualKeyCode KeyCode = keyCode;
+        public bool Passthrough = passthrough;
 
         public bool IsPressed(KeyboardHookEventArgs args)
         {
@@ -251,7 +253,8 @@ namespace TAC_COM.Models
                 { "Shift", Shift },
                 { "Ctrl", Ctrl },
                 { "Alt", Alt },
-                { "IsModifier", IsModifier }
+                { "IsModifier", IsModifier },
+                { "Passthrough", Passthrough }
             };
         }
     }

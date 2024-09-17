@@ -59,5 +59,15 @@ namespace TAC_COM.Settings
                 this["isModifier"] = value;
             }
         }
+
+        [ConfigurationProperty("passthrough", DefaultValue = false)]
+        public bool Passthrough
+        {
+            get => (bool)this["passthrough"];
+            set
+            {
+                this["passthrough"] = value;
+            }
+        }
     }
 }
