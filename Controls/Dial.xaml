@@ -71,6 +71,12 @@
             <!--Centre Circle-->
             <Ellipse Height="355" Width="355" Fill="white"/>
 
+            <!--Inner Centre Circles-->
+            <Ellipse Height="250" Width="250" StrokeThickness="3" Stroke="Gray" Fill="White"
+                     x:Name="centreDial"
+                     MouseEnter="Ellipse_MouseEnter"
+                     MouseLeave="Ellipse_MouseLeave"/>
+
             <!--Marker-->
             <Grid Height="150" Width="10" RenderTransformOrigin="0.5,1.23">
                 <Grid.RenderTransform>
@@ -88,8 +94,6 @@
                 </Rectangle>
             </Grid>
 
-            <!--Inner Centre Circles-->
-            <Ellipse Height="250" Width="250" StrokeThickness="3" Stroke="Gray"/>
         </Grid>
     </Viewbox>
 </UserControl>
