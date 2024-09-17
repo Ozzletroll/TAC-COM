@@ -24,6 +24,16 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        public bool PassthroughState
+        {
+            get => keybindManager.PassthroughState;
+            set
+            {
+                keybindManager.PassthroughState = value;
+                OnPropertyChanged(nameof(PassthroughState));
+            }
+        }
+
         public RelayCommand CloseKeybindDialog => new(execute => ExecuteCloseKeybindDialog());
 
         private void ExecuteCloseKeybindDialog()

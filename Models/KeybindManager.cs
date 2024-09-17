@@ -58,6 +58,17 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool passthroughState;
+        public bool PassthroughState
+        {
+            get => passthroughState;
+            set
+            {
+                passthroughState = value;
+                OnPropertyChanged(nameof(PassthroughState));
+            }
+        }
+
         public void TogglePTT(KeyboardHookEventArgs args)
         {
             if (PTTKey != null)
@@ -98,18 +109,22 @@ namespace TAC_COM.Models
             // This must be used alongside a generic keyBoardEvents hook as KeyCombinationHandler
             // does not register key up events.
 
-            var keyCodes = new List<VirtualKeyCode> { PTTKey.KeyCode };
+            if (!passthroughState)
+            {
+                var keyCodes = new List<VirtualKeyCode> { PTTKey.KeyCode };
 
-            if (PTTKey.Shift) keyCodes.Add(VirtualKeyCode.Shift);
-            if (PTTKey.Ctrl) keyCodes.Add(VirtualKeyCode.LeftControl);
-            if (PTTKey.Alt) keyCodes.Add(VirtualKeyCode.LeftMenu);
+                if (PTTKey.Shift) keyCodes.Add(VirtualKeyCode.Shift);
+                if (PTTKey.Ctrl) keyCodes.Add(VirtualKeyCode.LeftControl);
+                if (PTTKey.Alt) keyCodes.Add(VirtualKeyCode.LeftMenu);
 
-            var keyHandler 
-                = new KeyCombinationHandler(keyCodes.ToArray())
-                {
-                    IsPassThrough = false
-                };
-            PTTKeybindCatchSubscription = KeyboardHook.KeyboardEvents.Where(keyHandler).Subscribe();
+                var keyHandler
+                    = new KeyCombinationHandler(keyCodes.ToArray())
+                    {
+                        IsPassThrough = false
+                    };
+
+                PTTKeybindCatchSubscription = KeyboardHook.KeyboardEvents.Where(keyHandler).Subscribe();
+            }
         }
 
         public void ToggleUserKeybind(bool state)

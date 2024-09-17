@@ -11,8 +11,8 @@
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:KeybindWindowViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="250"
-             Height="160" Width="250"
+             d:DesignHeight="185" d:DesignWidth="260"
+             Height="185" Width="260"
              ResizeMode="NoResize"
              Topmost="True"
              Title="SET NEW KEYBIND"
@@ -46,6 +46,17 @@
                    VerticalAlignment="Center"
                    Margin="0, 10, 0, 10"
                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Margin="5">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="12" FontWeight="Normal"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}">
+                    PASSTHROUGH
+                </Label>
+                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="4"
+                          IsChecked="{Binding PassthroughState}"/>
+            </StackPanel>
             <Button DockPanel.Dock="Right" Width="80" Height="24" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" 
                     HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
