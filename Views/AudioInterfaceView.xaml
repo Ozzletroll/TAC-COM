@@ -261,8 +261,9 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="-100" Max="0" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
-                            <Label Content="{Binding AudioManager.NoiseGateThresholdString}" 
-                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Label Content="{Binding AudioManager.NoiseGateThresholdString}"
+                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -276,7 +277,8 @@
                                            Min="-10" Max="10" Interval="1" Sensitivity="2"
                                            Value="{Binding OutputLevel, Mode=TwoWay}"/>
                             <Label Content="{Binding AudioManager.OutputGainLevelString}" 
-                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -290,7 +292,8 @@
                                            Min="0" Max="1" Interval="0.01" Sensitivity="2"
                                            Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
                             <Label Content="{Binding AudioManager.NoiseLevelString}" 
-                                   FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
