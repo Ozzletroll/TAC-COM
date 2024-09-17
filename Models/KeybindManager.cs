@@ -77,7 +77,7 @@ namespace TAC_COM.Models
                 {
                     if (!ToggleState) ToggleState = true;
                 }
-                else
+                if (PTTKey.IsReleased(args))
                 {
                     if (ToggleState) ToggleState = false;
                 }
@@ -189,6 +189,18 @@ namespace TAC_COM.Models
                 else return false;
             }
             else return false;
+        }
+
+        public bool IsReleased(KeyboardHookEventArgs args)
+        {
+            if (args.Key == KeyCode)
+            {
+                if (!args.IsKeyDown)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override string ToString()
