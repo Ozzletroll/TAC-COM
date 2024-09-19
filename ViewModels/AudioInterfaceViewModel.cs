@@ -24,6 +24,7 @@ namespace TAC_COM.ViewModels
     internal class AudioInterfaceViewModel : ViewModelBase
     {
         public SettingsService settingsService;
+        private IconService iconService;
         private readonly AudioManager audioManager;
         private readonly KeybindManager keybindManager;
 
@@ -87,6 +88,11 @@ namespace TAC_COM.ViewModels
                 if (AudioManager.State == false)
                 {
                     BypassState = true;
+                    iconService.SetStandbyIcon();
+                }
+                else
+                {
+                    iconService.SetEnabledIcon();
                 }
             }
         }
@@ -112,6 +118,15 @@ namespace TAC_COM.ViewModels
                     AudioManager.BypassState = value;
                     AudioManager.CheckBypassState();
                     OnPropertyChanged(nameof(AudioManager.BypassState));
+
+                    if (BypassState)
+                    {
+                        iconService.SetLiveIcon();
+                    }
+                    else
+                    {
+                        iconService.SetEnabledIcon();
+                    }
                 }
             }
         }
@@ -250,6 +265,7 @@ namespace TAC_COM.ViewModels
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new();
+            iconService = new(Application.Current.MainWindow as MainWindow);
 
             keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;

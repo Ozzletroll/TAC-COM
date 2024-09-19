@@ -15,7 +15,7 @@
                              TitleBarForeground="White" TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              BorderThickness="1" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              ResizeMode="CanMinimize"
-                             Icon="/Static/Icons/headset-white.png">
+                             Icon="/Static/Icons/icon.png">
     <Grid>
         <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
     </Grid>

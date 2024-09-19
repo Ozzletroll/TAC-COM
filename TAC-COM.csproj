@@ -10,7 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Static\Icons\enabled.ico" />
     <None Remove="Static\Icons\headset-white.png" />
+    <None Remove="Static\Icons\icon-white.png" />
+    <None Remove="Static\Icons\icon.png" />
+    <None Remove="Static\Icons\live.ico" />
+    <None Remove="Static\Icons\main-icon.png" />
+    <None Remove="Static\Icons\mic.ico" />
+    <None Remove="Static\Icons\standby.ico" />
     <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
     <None Remove="Static\SFX\GateClose\GateCloseHA.wav" />
     <None Remove="Static\SFX\GateClose\GateCloseHORUS.wav" />
@@ -31,7 +38,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Static\Icons\headset-white.png">
+    <Content Include="Static\Icons\enabled.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\live.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\standby.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Static\SFX\GateClose\GateCloseGMS.wav">

@@ -1,4 +1,5 @@
-﻿using AdonisUI.Controls;
+﻿using AdonisUI;
+using AdonisUI.Controls;
 using System.Drawing;
 using System.Text;
 using System.Windows;
@@ -21,10 +22,32 @@ namespace TAC_COM
     /// </summary>
     public partial class MainWindow : AdonisWindow
     {
+        private readonly NotifyIcon notifyIcon;
+
+        public void ChangeNotifyIcon(string iconPath, string notifyText)
+        {
+            notifyIcon.Icon = new Icon(@iconPath);
+            notifyIcon.Text = notifyText;
+        }
+
+        private void OnMainWindowClose(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            notifyIcon.Dispose();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+
+            notifyIcon = new NotifyIcon
+            {
+                Text = "TAC/COM STANDBY",
+                Icon = new Icon(@"./Static/Icons/standby.ico"),
+                Visible = true
+            };
+
+            Closing += OnMainWindowClose;
         }
     }
 }
