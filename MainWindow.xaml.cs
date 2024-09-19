@@ -28,6 +28,7 @@ namespace TAC_COM
         {
             notifyIcon.Icon = new Icon(@iconPath);
             notifyIcon.Text = notifyText;
+            notifyIcon.Visible = true;
         }
 
         private void OnMainWindowClose(object? sender, System.ComponentModel.CancelEventArgs e)
