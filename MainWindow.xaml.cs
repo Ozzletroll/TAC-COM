@@ -42,6 +42,12 @@ namespace TAC_COM
             Focus();
         }
 
+        private void OnAlwaysOnTop(object? sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripMenuItem;
+            Topmost = menuItem?.Checked ?? false;
+        }
+
         private void OnExitClick(object? sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
@@ -54,6 +60,7 @@ namespace TAC_COM
 
             contextMenuStrip = new ContextMenuStrip();
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, new EventHandler(OnShowClick)));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Always on Top", null, new EventHandler(OnAlwaysOnTop)) { CheckOnClick = true });
             contextMenuStrip.Items.Add(new ToolStripSeparator());
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, new EventHandler(OnExitClick)));
 
@@ -69,4 +76,4 @@ namespace TAC_COM
         }
 
     }
-}
+} 
