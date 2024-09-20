@@ -59,7 +59,7 @@ namespace TAC_COM
 
             notifyIcon = new NotifyIcon
             {
-                Text = "TAC/COM STANDBY",
+                Text = "Standby",
                 Icon = new Icon(@"./Static/Icons/standby.ico"),
                 Visible = true,
                 ContextMenuStrip = contextMenuStrip,
