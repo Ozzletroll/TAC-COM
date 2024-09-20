@@ -23,6 +23,7 @@ namespace TAC_COM
     public partial class MainWindow : AdonisWindow
     {
         private readonly NotifyIcon notifyIcon;
+        private readonly ContextMenuStrip contextMenuStrip;
 
         public void ChangeNotifyIcon(string iconPath, string notifyText)
         {
@@ -36,19 +37,36 @@ namespace TAC_COM
             notifyIcon.Dispose();
         }
 
+        private void OnShowClick(object? sender, EventArgs e)
+        {
+            Focus();
+        }
+
+        private void OnExitClick(object? sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
 
+            contextMenuStrip = new ContextMenuStrip();
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, new EventHandler(OnShowClick)));
+            contextMenuStrip.Items.Add(new ToolStripSeparator());
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, new EventHandler(OnExitClick)));
+
             notifyIcon = new NotifyIcon
             {
                 Text = "TAC/COM STANDBY",
                 Icon = new Icon(@"./Static/Icons/standby.ico"),
-                Visible = true
+                Visible = true,
+                ContextMenuStrip = contextMenuStrip,
             };
 
             Closing += OnMainWindowClose;
         }
+
     }
 }
