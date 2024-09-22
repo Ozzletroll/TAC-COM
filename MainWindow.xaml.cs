@@ -39,6 +39,11 @@ namespace TAC_COM
 
         private void OnShowClick(object? sender, EventArgs e)
         {
+            if (WindowState == WindowState.Minimized)
+            {
+                Show();
+                WindowState = WindowState.Normal;
+            }
             Focus();
         }
 
@@ -51,6 +56,18 @@ namespace TAC_COM
         private void OnExitClick(object? sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
+        }
+
+        private void OnIconDoubleClick(object? sender, EventArgs e)
+        {
+            Show();
+            WindowState = WindowState.Normal;
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized) Hide();
+            base.OnStateChanged(e);
         }
 
         public MainWindow()
@@ -72,8 +89,8 @@ namespace TAC_COM
                 ContextMenuStrip = contextMenuStrip,
             };
 
+            notifyIcon.DoubleClick += OnIconDoubleClick;
             Closing += OnMainWindowClose;
         }
-
     }
 } 
