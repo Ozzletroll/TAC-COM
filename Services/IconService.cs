@@ -12,17 +12,17 @@ namespace TAC_COM.Services
 
         public void SetLiveIcon()
         {
-            mainWindow?.ChangeNotifyIcon("./Static/Icons/live.ico", "Live");
+            mainWindow?.ChangeNotifyIcon("./Static/Icons/live.ico", "TAC/COM Live");
         }
 
         public void SetEnabledIcon()
         {
-            mainWindow?.ChangeNotifyIcon("./Static/Icons/enabled.ico", "Enabled");
+            mainWindow?.ChangeNotifyIcon("./Static/Icons/enabled.ico", "TAC/COM Enabled");
         }
 
         public void SetStandbyIcon()
         {
-            mainWindow?.ChangeNotifyIcon("./Static/Icons/standby.ico", "Standby");
+            mainWindow?.ChangeNotifyIcon("./Static/Icons/standby.ico", "TAC/COM Standby");
         }
     }
 }
