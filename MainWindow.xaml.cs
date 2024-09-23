@@ -22,15 +22,8 @@ namespace TAC_COM
     /// </summary>
     public partial class MainWindow : AdonisWindow
     {
-        private readonly NotifyIcon notifyIcon;
+        public readonly NotifyIcon notifyIcon;
         private readonly ContextMenuStrip contextMenuStrip;
-
-        public void ChangeNotifyIcon(string iconPath, string notifyText)
-        {
-            notifyIcon.Icon = new Icon(@iconPath);
-            notifyIcon.Text = notifyText;
-            notifyIcon.Visible = true;
-        }
 
         protected override void OnStateChanged(EventArgs e)
         {

@@ -257,7 +257,7 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel()
+        public AudioInterfaceViewModel(MainViewModel mainViewModel)
         {
             Profiles = ProfileManager.GetAllProfiles();
 
@@ -265,7 +265,7 @@ namespace TAC_COM.ViewModels
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new();
-            iconService = new(Application.Current.MainWindow as MainWindow);
+            iconService = new(mainViewModel);
 
             keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;

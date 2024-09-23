@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,27 +13,34 @@ namespace TAC_COM.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
-        private readonly Window mainWindow;
+        private readonly MainWindow MainWindow;
         public ViewModelBase CurrentViewModel { get; }
         public RelayCommand ShowCommand => new(execute => OnShow());
         public static RelayCommand ExitCommand => new(execute => OnExit());
         public RelayCommand IconDoubleClickCommand => new(execute => OnIconDoubleClick());
         public RelayCommand AlwaysOnTopCommand;
 
+        public void ChangeNotifyIcon(string iconPath, string notifyText)
+        {
+            MainWindow.notifyIcon.Icon = new Icon(@iconPath);
+            MainWindow.notifyIcon.Text = notifyText;
+            MainWindow.notifyIcon.Visible = true;
+        }
+
         private void OnShow()
         {
-            if (mainWindow.WindowState == WindowState.Minimized)
+            if (MainWindow.WindowState == WindowState.Minimized)
             {
-                mainWindow.Show();
-                mainWindow.WindowState = WindowState.Normal;
+                MainWindow.Show();
+                MainWindow.WindowState = WindowState.Normal;
             }
-            mainWindow.Focus();
+            MainWindow.Focus();
         }
 
         private void OnAlwaysOnTop(object parameter)
         {
             var menuItem = parameter as ToolStripMenuItem;
-            mainWindow.Topmost = menuItem?.Checked ?? false;
+            MainWindow.Topmost = menuItem?.Checked ?? false;
         }
 
         private static void OnExit()
@@ -42,14 +50,14 @@ namespace TAC_COM.ViewModels
 
         private void OnIconDoubleClick()
         {
-            mainWindow.Show();
-            mainWindow.WindowState = WindowState.Normal;
+            MainWindow.Show();
+            MainWindow.WindowState = WindowState.Normal;
         }
 
-        public MainViewModel(Window window)
+        public MainViewModel(MainWindow window)
         {
-            CurrentViewModel = new AudioInterfaceViewModel();
-            mainWindow = window;
+            CurrentViewModel = new AudioInterfaceViewModel(this);
+            MainWindow = window;
             AlwaysOnTopCommand = new RelayCommand(OnAlwaysOnTop);
         }
     }
