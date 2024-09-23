@@ -41,6 +41,9 @@ namespace TAC_COM.Views
             source.AddHook(WndProc);
         }
 
+        /// <summary>
+        /// Prevents the user from moving the window
+        /// </summary>
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             const int WM_SYSCOMMAND = 0x0112;
