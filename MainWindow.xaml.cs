@@ -32,38 +32,6 @@ namespace TAC_COM
             notifyIcon.Visible = true;
         }
 
-        private void OnMainWindowClose(object? sender, System.ComponentModel.CancelEventArgs e)
-        {
-            notifyIcon.Dispose();
-        }
-
-        private void OnShowClick(object? sender, EventArgs e)
-        {
-            if (WindowState == WindowState.Minimized)
-            {
-                Show();
-                WindowState = WindowState.Normal;
-            }
-            Focus();
-        }
-
-        private void OnAlwaysOnTop(object? sender, EventArgs e)
-        {
-            var menuItem = sender as ToolStripMenuItem;
-            Topmost = menuItem?.Checked ?? false;
-        }
-
-        private void OnExitClick(object? sender, EventArgs e)
-        {
-            System.Windows.Application.Current.Shutdown();
-        }
-
-        private void OnIconDoubleClick(object? sender, EventArgs e)
-        {
-            Show();
-            WindowState = WindowState.Normal;
-        }
-
         protected override void OnStateChanged(EventArgs e)
         {
             if (WindowState == WindowState.Minimized) Hide();
@@ -73,13 +41,15 @@ namespace TAC_COM
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+
+            var viewModel = new MainViewModel(this);
+            DataContext = viewModel;
 
             contextMenuStrip = new ContextMenuStrip();
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, new EventHandler(OnShowClick)));
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("Always on Top", null, new EventHandler(OnAlwaysOnTop)) { CheckOnClick = true });
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, (s, e) => viewModel.ShowCommand.Execute(null)));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Always on Top", null, (s, e) => viewModel.AlwaysOnTopCommand.Execute(s)) { CheckOnClick = true });
             contextMenuStrip.Items.Add(new ToolStripSeparator());
-            contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, new EventHandler(OnExitClick)));
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, (s, e) => MainViewModel.ExitCommand.Execute(null)));
 
             notifyIcon = new NotifyIcon
             {
@@ -89,8 +59,8 @@ namespace TAC_COM
                 ContextMenuStrip = contextMenuStrip,
             };
 
-            notifyIcon.DoubleClick += OnIconDoubleClick;
-            Closing += OnMainWindowClose;
+            notifyIcon.DoubleClick += (s, e) => viewModel.IconDoubleClickCommand.Execute(null);
+            Closing += (s, e) => notifyIcon.Dispose();
         }
     }
-} 
+}
