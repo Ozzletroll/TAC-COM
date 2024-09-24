@@ -23,12 +23,11 @@ namespace TAC_COM.Views
     /// <summary>
     /// Interaction logic for KeybindWindow.xaml
     /// </summary>
-    public partial class KeybindWindow : AdonisWindow
+    public partial class KeybindWindowView : AdonisWindow
     {
-        public KeybindWindow(KeybindManager keybindManager)
+        public KeybindWindowView()
         {
             InitializeComponent();
-            DataContext = new KeybindWindowViewModel(keybindManager);
 
             // Prevent moving of window
             SourceInitialized += Window_SourceInitialized;

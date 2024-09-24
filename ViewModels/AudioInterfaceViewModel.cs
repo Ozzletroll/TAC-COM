@@ -25,6 +25,7 @@ namespace TAC_COM.ViewModels
     {
         public SettingsService settingsService;
         private IconService iconService;
+        private WindowService windowService;
         private readonly AudioManager audioManager;
         private readonly KeybindManager keybindManager;
 
@@ -247,7 +248,7 @@ namespace TAC_COM.ViewModels
 
         private void ExecuteShowKeybindDialog()
         {
-            WindowService.OpenWindow(new KeybindWindow(keybindManager));
+            windowService.OpenKeybindWindow();
         }
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
@@ -269,6 +270,8 @@ namespace TAC_COM.ViewModels
 
             keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
+
+            windowService = new(keybindManager);
 
             if (settingsService.KeybindSettings != null)
             {

@@ -4,23 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using TAC_COM.Models;
+using TAC_COM.ViewModels;
 using TAC_COM.Views;
 
 namespace TAC_COM.Services
 {
-    public class WindowService
+    public class WindowService(KeybindManager _keybindManager)
     {
-        public static void OpenWindow(Window window)
-        {
-            window.Owner = Application.Current.MainWindow;
-            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            window.ShowDialog();
-        }
+        private readonly KeybindManager keybindManager = _keybindManager;
+        private KeybindWindowView? keybindWindow;
 
-        public static void CloseWindow()
+        public void OpenKeybindWindow()
         {
-            var window = Application.Current.Windows.OfType<KeybindWindow>().SingleOrDefault(x => x.IsActive);
-            window?.Close();
+            var viewModel = new KeybindWindowViewModel(keybindManager);
+
+            keybindWindow = new KeybindWindowView()
+            {
+                DataContext = viewModel,
+                Owner = Application.Current.MainWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            viewModel.Close += (s, e) => keybindWindow.Close();
+
+            keybindWindow.ShowDialog();
         }
     }
 }

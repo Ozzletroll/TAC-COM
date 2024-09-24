@@ -13,6 +13,13 @@ namespace TAC_COM.ViewModels
     {
         private readonly KeybindManager keybindManager;
 
+        public delegate void CloseEventHandler(object sender, EventArgs e);
+        public event CloseEventHandler? Close;
+        protected virtual void RaiseClose()
+        {
+            Close?.Invoke(this, EventArgs.Empty);
+        }
+
         private string? newKeybindName;
         public string? NewKeybindName
         {
@@ -40,7 +47,7 @@ namespace TAC_COM.ViewModels
         {
             keybindManager.ToggleUserKeybind(false);
             keybindManager.UpdateKeybind();
-            WindowService.CloseWindow();
+            RaiseClose();
         }
 
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
