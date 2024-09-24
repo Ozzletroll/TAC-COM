@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI">
 
     <ResourceDictionary.MergedDictionaries>
 
@@ -56,5 +57,20 @@
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowToggleButton.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
+
+    <!-- Override colours -->
+    <Color x:Key="{x:Static adonisUi:Colors.AccentColor}">#ff0000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.ForegroundColor}">#000000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.AccentForegroundColor}">#ffa90000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonHighlightColor}">#ff0000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonInteractionColor}">#ffa90000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer0BackgroundColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#ffefefef</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#ffBB0000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff0000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#ffa90000</Color>
 
 </ResourceDictionary>
