@@ -152,6 +152,7 @@ namespace TAC_COM.Models
 
         internal void UpdateKeybind()
         {
+            if (NewPTTKeybind != null) NewPTTKeybind.Passthrough = PassthroughState;
             PTTKey = NewPTTKeybind;
         }
 
@@ -166,7 +167,7 @@ namespace TAC_COM.Models
                 passthrough: SettingsService.KeybindSettings.Passthrough);
         }
     }
-
+    
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
     {
         public VirtualKeyCode KeyCode = keyCode;
