@@ -81,7 +81,7 @@ To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test
 
 Repeat this process whilst holding the Push-to-talk key. Ideally you should hear your own processed voice clearly, as well as the distinct mic open/close click tones on keydown/release.
 
-> **Make sure to set the "Interference" value to 0% during testing.**
+> **Make sure to set the "Interference" level to 0% during testing, as this setting deliberately introduces noise to the processed signal.**
 
 ## Settings
 
