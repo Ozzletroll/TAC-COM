@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.Metadata;
@@ -23,14 +24,14 @@ namespace TAC_COM.Models
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
-        private string lastOutputDeviceID;
+        private string? lastOutputDeviceID;
         public ObservableCollection<MMDevice> inputDevices = [];
         public ObservableCollection<MMDevice> outputDevices = [];
         private AudioMeterInformation? inputMeter;
         private AudioMeterInformation? outputMeter;
-        private WasapiCapture input;
-        private WasapiOut micOutput;
-        private WasapiOut sfxOutput;
+        private WasapiCapture? input;
+        private WasapiOut? micOutput;
+        private WasapiOut? sfxOutput;
         private readonly float sfxVolume = 0.5f;
         private readonly AudioProcessor audioProcessor = new();
         public Profile? activeProfile;
@@ -92,7 +93,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private readonly string outputGainLevelString;
+        private readonly string? outputGainLevelString;
         public string OutputGainLevelString
         {
             get
@@ -112,7 +113,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private readonly string noiseGateThresholdString;
+        private readonly string? noiseGateThresholdString;
         public string NoiseGateThresholdString
         {
             get
@@ -132,7 +133,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private readonly string noiseLevelString;
+        private readonly string? noiseLevelString;
         public string NoiseLevelString
         {
             get
@@ -362,7 +363,7 @@ namespace TAC_COM.Models
         }
 
         public delegate void DeviceListResetEventHandler(object sender, EventArgs e);
-        public event DeviceListResetEventHandler DeviceListReset;
+        public event DeviceListResetEventHandler? DeviceListReset;
         protected virtual void RaiseDeviceListReset()
         {
             DeviceListReset?.Invoke(this, EventArgs.Empty);
