@@ -168,6 +168,7 @@ namespace TAC_COM.Models
         }
     }
     
+
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
     {
         public VirtualKeyCode KeyCode = keyCode;
