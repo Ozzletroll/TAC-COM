@@ -4,21 +4,18 @@
 <br />
 <div align="center">
   <a href="https://github.com/Ozzletroll/TAC-COM">
-    <img src="" alt="Logo" width="45" height="40">
+    <img src="https://github.com/Ozzletroll/TAC-COM/blob/main/Static/Icons/live.ico" alt="Logo" width="30" height="30">
   </a>
-
 <h3 align="center">TAC/COM</h3>
 
   <p align="center">
     Mech Pilot Voice Comms Interface
     <br />
-    <a href="">Download</a>
-    .
-    <a href="">Roadmap</a>
+    <a href="https://github.com/Ozzletroll/TAC-COM/releases">Download</a>
     ·
-    <a href="">Report Bug</a>
+    <a href="https://github.com/Ozzletroll/TAC-COM/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=%5BBUG%5D">Report Bug</a>
     ·
-    <a href="">Request Feature</a>
+    <a href="https://github.com/Ozzletroll/TAC-COM/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.md&title=%5BFEATURE+REQUEST%5D">Request Feature</a>
   </p>
 </div>
 
