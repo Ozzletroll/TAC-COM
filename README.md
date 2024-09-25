@@ -21,7 +21,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Features
-TAC/COM is a realtime VoIP effect processor for Windows that emulates sci-fi radio comms chatter.
+TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms chatter.
 
 - Realtime vocal processing
 - Push-to-talk
