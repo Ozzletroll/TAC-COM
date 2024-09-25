@@ -13,7 +13,6 @@ using System.Windows.Automation;
 using System.Windows.Input;
 using TAC_COM.Models;
 using TAC_COM.Settings;
-using static TAC_COM.Models.KeybindManager;
 using TAC_COM.ViewModels;
 using System.Windows;
 using TAC_COM.Services;
@@ -24,8 +23,8 @@ namespace TAC_COM.ViewModels
     internal class AudioInterfaceViewModel : ViewModelBase
     {
         public SettingsService settingsService;
-        private IconService iconService;
-        private WindowService windowService;
+        private readonly IconService iconService;
+        private readonly WindowService windowService;
         private readonly AudioManager audioManager;
         private readonly KeybindManager keybindManager;
 
