@@ -1,8 +1,6 @@
 ﻿<Application x:Class="TAC_COM.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TAC_COM"
-             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
