@@ -72,7 +72,7 @@ Whilst instructions here are given for Discord, setup should be largely identica
 2. Hit your chosen Push-to-talk key to begin "radio" transmission. Release the key to return to regular mic passthrough.
 
 ## Tips
-To set TAC/COM's noise gate threshold correctly, you can temporarily route TAC/COM's output to your speakers, allowing you to hear TAC/COM's output. Alternatively, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video).
+To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video), allowing you to hear TAC/COM's output.
 
 1. Set the noise gate threshold in TAC/COM to -100db.
 2. Speak at a normal volume.
