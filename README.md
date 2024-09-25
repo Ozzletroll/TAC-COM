@@ -91,8 +91,8 @@ The threshold in dB at which noise attenuation begins. Ranges from 0dB to -100dB
 ### Output Level
 The level boost in dB for the processed output signal. Ranges from -10dB to +10dB.
 
-### Interferece
-Sets the level of the processed signal's "background noise" effect, as well as affecting the overall "character" of the processed signal, increasing signal distortion at high levels. Ranges from 0% to 100%.
+### Interference
+Sets the level of the processed signal's "background noise" effect, as well as affecting the overall character of the processed signal, increasing signal distortion at high levels. Ranges from 0% to 100%.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
