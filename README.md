@@ -23,10 +23,11 @@
 ## Features
 TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms chatter.
 
-- Realtime vocal processing
+- Realtime audio processing
 - Push-to-talk
 - Adjustable noise gate
 - Themed mic click sfx
+- Compatible with any VoIP software
 
 ### Built With
 
@@ -52,9 +53,13 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
    <a href="https://vb-audio.com/Cable/">VB-Cable Virtual Audio Device</a>
 3. Unzip and run the TAC/COM executable.
 4. Set the TAC/COM input device to your microphone input device.
-5. Set the TAC/COM output device to your virtual audio cable output device.
+5. Set the TAC/COM output device to your virtual audio cable input device.
 6. Select your desired radio profile. Each profile features unique transmission click sfx and adjustable background noise.
 7. Set your chosen Push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
+
+<p align="center">
+  <img src="/Static/Images/setup.png" alt="Screenshot of the TAC/COM window setup with a microphone input device and 'CABLE Input Input (VB-Audio Virtual Cable)' as the output device.">
+</p>
 
 ## Discord Setup
 
@@ -63,7 +68,16 @@ Whilst instructions here are given for Discord, setup should be largely identica
 1. Navigate to "User Settings".
 2. Open "Voice & Video" under "App Settings".
 3. Set input device to your virtual audio cable output device.
+
+<p align="center">
+  <img src="/Static/Images/discord-setup-1.png" alt="Screenshot of Discord's Voice & Video settings, with the input device set to 'CABLE Output (VB-Audio Virtual Cable)'.">
+</p>
+
 4. Disable Discord's noise suppression.
+
+<p align="center">
+  <img src="/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
+</p>
 
 > **Unless disabled, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
 
@@ -86,13 +100,14 @@ Repeat this process whilst holding the Push-to-talk key. Ideally you should hear
 ## Settings
 
 ### Noise Gate Threshold
-The threshold in dB at which noise attenuation begins. Ranges from 0dB to -100dB.
+The threshold in dB at which noise attenuation begins. All input below the given threshold will be attenuated. Ranges from 0dB to -100dB.
 
 ### Output Level
-The level boost in dB for the processed output signal. Ranges from -10dB to +10dB.
+The level boost in dB for the processed output signal. Used to normalise input/output levels. Ranges from -10dB to +10dB.
 
 ### Interference
-Sets the level of the processed signal's "background noise" effect, as well as affecting the overall character of the processed signal, increasing signal distortion at high levels. Ranges from 0% to 100%.
+Sets the level of the processed signal's "background noise" effect during transmission, as well as affecting the overall character of the processed signal. 
+Increases signal distortion at high levels. Ranges from 0% to 100%.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
