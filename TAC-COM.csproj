@@ -7,15 +7,16 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Static\Icons\live.ico</ApplicationIcon>
+    <ApplicationIcon>Static\Icons\icon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Title>TAC/COM</Title>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Static\Icons\enabled.ico" />
     <None Remove="Static\Icons\headset-white.png" />
     <None Remove="Static\Icons\icon-white.png" />
-    <None Remove="Static\Icons\icon.png" />
     <None Remove="Static\Icons\live.ico" />
     <None Remove="Static\Icons\main-icon.png" />
     <None Remove="Static\Icons\mic.ico" />
@@ -44,6 +45,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Static\Icons\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Static\Icons\live.ico">
@@ -104,6 +108,13 @@
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
     <PackageReference Include="CSCore" Version="1.2.1.2" />
     <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Static\Icons\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
