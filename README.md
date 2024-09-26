@@ -23,10 +23,11 @@
 ## Features
 TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms chatter.
 
-- Realtime vocal processing
+- Realtime audio processing
 - Push-to-talk
 - Adjustable noise gate
 - Themed mic click sfx
+- Compatible with any VoIP software
 
 ### Built With
 
@@ -99,13 +100,14 @@ Repeat this process whilst holding the Push-to-talk key. Ideally you should hear
 ## Settings
 
 ### Noise Gate Threshold
-The threshold in dB at which noise attenuation begins. Ranges from 0dB to -100dB.
+The threshold in dB at which noise attenuation begins. All input below the given threshold will be attenuated. Ranges from 0dB to -100dB.
 
 ### Output Level
-The level boost in dB for the processed output signal. Ranges from -10dB to +10dB.
+The level boost in dB for the processed output signal. Used to normalise input/output levels. Ranges from -10dB to +10dB.
 
 ### Interference
-Sets the level of the processed signal's "background noise" effect, as well as affecting the overall character of the processed signal, increasing signal distortion at high levels. Ranges from 0% to 100%.
+Sets the level of the processed signal's "background noise" effect during transmission, as well as affecting the overall character of the processed signal. 
+Increases signal distortion at high levels. Ranges from 0% to 100%.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
