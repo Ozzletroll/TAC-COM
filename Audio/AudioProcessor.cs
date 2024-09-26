@@ -169,7 +169,7 @@ namespace TAC_COM.Audio
             }
         }
 
-        private const float MinDistortionCompensation = -48;
+        private const float MinDistortionCompensation = -45;
         private const float MaxDistortionCompensation = -52;
         private float distortionCompensation;
         public float DistortionCompensation
