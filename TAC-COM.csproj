@@ -11,6 +11,8 @@
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <Title>TAC/COM</Title>
     <PackageIcon>icon.png</PackageIcon>
+    <Version>$(VersionPrefix) 0.8.0</Version>
+    <Company>$(Authors) Harvey Gent</Company>
   </PropertyGroup>
 
   <ItemGroup>
