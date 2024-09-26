@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore;
-using CSCore.CoreAudioAPI;
-using CSCore.MediaFoundation;
-using CSCore.Streams;
-using TAC_COM.Audio.Utils;
-
-
+﻿
 namespace TAC_COM.Audio.DSP
 {
     internal class EnveloperFollower(int sampleRate)

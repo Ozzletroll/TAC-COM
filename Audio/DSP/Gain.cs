@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore;
-using CSCore.CoreAudioAPI;
-using CSCore.Streams;
+﻿using CSCore;
 using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.DSP

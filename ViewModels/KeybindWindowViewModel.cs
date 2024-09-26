@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using TAC_COM.Models;
-using TAC_COM.Services;
 
 namespace TAC_COM.ViewModels
 {

@@ -1,22 +1,8 @@
 ﻿using CSCore.CoreAudioAPI;
-using Dapplo.Windows.Input.Enums;
-using Dapplo.Windows.Input.Keyboard;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
-using System.Windows.Input;
 using TAC_COM.Models;
-using TAC_COM.Settings;
-using TAC_COM.ViewModels;
-using System.Windows;
 using TAC_COM.Services;
-using TAC_COM.Views;
 
 namespace TAC_COM.ViewModels
 {

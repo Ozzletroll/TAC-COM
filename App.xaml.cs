@@ -1,8 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-using TAC_COM.ViewModels;
-
+﻿using System.Windows;
 
 namespace TAC_COM
 {

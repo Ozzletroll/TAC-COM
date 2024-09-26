@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using CSCore.Streams;
-using CSCore.Streams.Effects;
 using TAC_COM.Audio;
-using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
 {

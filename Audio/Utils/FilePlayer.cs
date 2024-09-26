@@ -1,12 +1,6 @@
 ﻿using CSCore;
 using CSCore.Codecs;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TAC_COM.Models;
 
 namespace TAC_COM.Audio.Utils
 {

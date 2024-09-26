@@ -1,27 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
-using CSCore;
+﻿using CSCore;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using CSCore.SoundIn;
-using CSCore.DMO.Effects;
 using CSCore.DSP;
 using TAC_COM.Audio.DSP;
-using CSCore.Codecs;
-using CSCore.SoundOut;
-using System.IO;
-using System.Windows.Input;
-using TAC_COM.Audio.Utils;
-using System.Reflection.Metadata;
 using TAC_COM.Models;
-using System.Windows.Controls;
-using System.Windows.Documents;
-
 
 namespace TAC_COM.Audio
 {
