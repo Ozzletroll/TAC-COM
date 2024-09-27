@@ -2,29 +2,25 @@
 
 namespace TAC_COM.ViewModels
 {
-    internal class RelayCommand(Action<object> execute, Func<object, bool>? canExecute = null) : ICommand
+    internal class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {
-        private readonly Action<object> execute = execute;
-        private readonly Func<object, bool>? canExecute = canExecute;
+        private readonly Action<object?> execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        private readonly Func<object?, bool>? canExecute = canExecute;
 
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
-            remove {  CommandManager.RequerySuggested -= value;}
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         public bool CanExecute(object? parameter)
         {
-            if (canExecute != null && parameter != null)
-            {
-                return canExecute(parameter);
-            }
-            else return canExecute == null;
+            return canExecute == null || canExecute(parameter);
         }
 
         public void Execute(object? parameter)
         {
-            execute?.Invoke(parameter);
+            execute(parameter);
         }
     }
 }

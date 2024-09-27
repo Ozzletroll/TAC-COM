@@ -30,7 +30,7 @@ namespace TAC_COM.ViewModels
             MainWindow.Focus();
         }
 
-        private void OnAlwaysOnTop(object parameter)
+        private void OnAlwaysOnTop(object? parameter)
         {
             var menuItem = parameter as ToolStripMenuItem;
             MainWindow.Topmost = menuItem?.Checked ?? false;
