@@ -20,6 +20,12 @@ namespace TAC_COM
             base.OnStateChanged(e);
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            System.Windows.Application.Current.Shutdown();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
