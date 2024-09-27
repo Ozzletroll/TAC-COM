@@ -113,7 +113,7 @@ namespace TAC_COM.Models
                 if (PTTKey.Alt) keyCodes.Add(VirtualKeyCode.LeftMenu);
 
                 var keyHandler
-                    = new KeyCombinationHandler(keyCodes.ToArray())
+                    = new KeyCombinationHandler([.. keyCodes])
                     {
                         IsPassThrough = false
                     };
