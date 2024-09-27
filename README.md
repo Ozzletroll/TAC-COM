@@ -49,13 +49,17 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
 ### Installation
 
 1. Download the latest <a href="https://github.com/Ozzletroll/TAC-COM/releases">release</a>.
-2. Install virtual audio cable driver:
+2. If you don't already have it, download and install <a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">.NET Desktop Runtime 8</a>.
+3. Install virtual audio cable driver:
    <a href="https://vb-audio.com/Cable/">VB-Cable Virtual Audio Device</a>
-3. Unzip and run the TAC/COM executable.
-4. Set the TAC/COM input device to your microphone input device.
-5. Set the TAC/COM output device to your virtual audio cable input device.
-6. Select your desired radio profile. Each profile features unique transmission click sfx and adjustable background noise.
-7. Set your chosen Push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
+4. Unzip and run the TAC/COM executable.
+
+### Setup
+
+1. Set the TAC/COM input device to your microphone input device.
+2. Set the TAC/COM output device to your virtual audio cable input device.
+3. Select your desired radio profile. Each profile features unique transmission click sfx and transmission static.
+4. Set your chosen Push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
 
 <p align="center">
   <img src="/Static/Images/setup.png" alt="Screenshot of the TAC/COM window setup with a microphone input device and 'CABLE Input Input (VB-Audio Virtual Cable)' as the output device.">
