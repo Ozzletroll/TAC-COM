@@ -77,11 +77,10 @@ namespace TAC_COM.Models
             {
                 outputGainLevel = value;
                 audioProcessor.UserGainLevel = value;
-                OnPropertyChanged(nameof(outputGainLevelString));
+                OnPropertyChanged(nameof(OutputGainLevelString));
             }
         }
 
-        private readonly string? outputGainLevelString;
         public string OutputGainLevelString
         {
             get
@@ -97,11 +96,10 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.NoiseGateThreshold = value;
-                OnPropertyChanged(nameof(noiseGateThresholdString));
+                OnPropertyChanged(nameof(NoiseGateThresholdString));
             }
         }
 
-        private readonly string? noiseGateThresholdString;
         public string NoiseGateThresholdString
         {
             get
@@ -117,11 +115,10 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.UserNoiseLevel = value;
-                OnPropertyChanged(nameof(noiseLevelString));
+                OnPropertyChanged(nameof(NoiseLevelString));
             }
         }
 
-        private readonly string? noiseLevelString;
         public string NoiseLevelString
         {
             get
