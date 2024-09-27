@@ -246,6 +246,10 @@ namespace TAC_COM.Models
                 && activeOutputDevice != null 
                 && activeProfile != null)
             {
+                // Dispose of any old resources
+                input?.Dispose();
+                micOutput?.Dispose();
+
                 // Initialise profile sfx sources
                 activeProfile.LoadSources();
 
@@ -280,7 +284,9 @@ namespace TAC_COM.Models
         private void StopAudio()
         {
             input?.Stop();
+            input?.Dispose();
             micOutput?.Stop();
+            micOutput?.Dispose();
         }
 
         void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
