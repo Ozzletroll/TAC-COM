@@ -7,7 +7,7 @@ namespace TAC_COM.Audio.DSP
         private readonly WaveFormat waveFormat;
         private readonly List<ISampleSource> sampleSources = [];
         private readonly object lockObj = new();
-        private float[] mixerBuffer;
+        private float[]? mixerBuffer;
 
         public bool FillWithZeros { get; set; }
 
