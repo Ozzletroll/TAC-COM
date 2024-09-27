@@ -3,14 +3,14 @@ using CSCore.DSP;
 
 namespace TAC_COM.Audio.DSP
 {
-    public class BiQuadFilterSource(ISampleSource source) : SampleAggregatorBase(source)
+    public class BiQuadFilterSource(ISampleSource? source) : SampleAggregatorBase(source)
     {
         private readonly object _lockObject = new();
-        private BiQuad biquad;
 
-        public BiQuad Filter
+        private BiQuad? biquad;
+        public BiQuad? Filter
         {
-            get { return biquad; }
+            get => biquad;
             set
             {
                 lock (_lockObject)
