@@ -281,7 +281,6 @@ namespace TAC_COM.Models
         {
             input?.Stop();
             micOutput?.Stop();
-            sfxOutput?.Stop(); 
         }
 
         void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
@@ -317,13 +316,7 @@ namespace TAC_COM.Models
                 var file = activeProfile.OpenSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                sfxOutput = new()
-                {
-                    Device = activeOutputDevice
-                };
-                sfxOutput.Initialize(file);
-                sfxOutput.Volume = sfxVolume;
-                sfxOutput.Play();
+                if (file != null) PlaySFX(file);
             }
         }
 
@@ -337,14 +330,21 @@ namespace TAC_COM.Models
                 var file = activeProfile.CloseSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                sfxOutput = new()
-                {
-                    Device = activeOutputDevice
-                };
-                sfxOutput.Initialize(file);
-                sfxOutput.Volume = sfxVolume;
-                sfxOutput.Play();
+                if (file != null) PlaySFX(file);
             }
+        }
+
+        private void PlaySFX(IWaveSource file)
+        {
+            sfxOutput?.Dispose();
+
+            sfxOutput = new()
+            {
+                Device = activeOutputDevice
+            };
+            sfxOutput.Initialize(file);
+            sfxOutput.Volume = sfxVolume;
+            sfxOutput.Play();
         }
 
         public delegate void DeviceListResetEventHandler(object sender, EventArgs e);
