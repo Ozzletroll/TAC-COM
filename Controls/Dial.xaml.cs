@@ -109,8 +109,8 @@ namespace TAC_COM.Controls
             double x = offset * Math.Cos(rad) + offset;
             double y = offset * Math.Sin(rad) + offset;
 
-            display.IsLargeArc = angle > 180;
-            display.Point = new Point(x, y);
+            Gauge.IsLargeArc = angle > 180;
+            Gauge.Point = new Point(x, y);
 
             // Rotate marker
             DoubleAnimation animation = new();

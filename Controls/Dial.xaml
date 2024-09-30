@@ -58,7 +58,7 @@
 														IsLargeArc="True"
 														SweepDirection="Clockwise"
 														Point="380,190"
-														x:Name="display"/>
+														x:Name="Gauge"/>
                                             <LineSegment Point="190,190"/>
                                         </PathSegmentCollection>
                                     </PathFigure.Segments>
