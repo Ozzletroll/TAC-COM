@@ -18,7 +18,7 @@ namespace TAC_COM.Audio.DSP
         }
 
         public int Read(float[] buffer, int offset, int count)
-        {;
+        {
             int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
