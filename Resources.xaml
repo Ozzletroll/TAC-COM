@@ -60,8 +60,6 @@
 
     <!-- Override colours -->
 
-    <!-- Override colours -->
-
     <!--Dropdown box border, Progress bar fill, Label text-->
     <Color x:Key="{x:Static adonisUi:Colors.AccentColor}">#ff0000</Color>
 
@@ -94,5 +92,12 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#ffffff</Color>
     <!--Click-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#ffa90000</Color>
+
+    <!--Dial-->
+    
+    <!--Border-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer4BorderColor}">#ababab</Color>
+    <!--Marker/Gauge-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer4HighlightColor}">#ff0000</Color>
 
 </ResourceDictionary>

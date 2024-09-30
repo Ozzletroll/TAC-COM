@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
 
     <UserControl.Resources>
-        <Style TargetType="{x:Type Path}" x:Key="GaugePanel">
+        <Style TargetType="{x:Type Path}" x:Key="Dial">
             <Setter Property="Width" Value="380"/>
             <Setter Property="Height" Value="380"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
@@ -22,7 +23,7 @@
     <Viewbox>
         <Grid Height="400" Width="400">
             <!--Gauge Background-->
-            <Path Fill="Gray" Style="{StaticResource GaugePanel}">
+            <Path Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}" Style="{StaticResource Dial}">
                 <Path.Data>
                     <PathGeometry>
                         <PathGeometry.Figures>
@@ -45,7 +46,7 @@
             </Path>
 
             <!--Gauge-->
-            <Path Fill="red" Style="{StaticResource GaugePanel}">
+            <Path Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer4HighlightBrush}}" Style="{StaticResource Dial}">
                 <Path.Data>
                     <PathGeometry>
                         <PathGeometry.Figures>
@@ -69,10 +70,12 @@
             </Path>
 
             <!--Centre Circle-->
-            <Ellipse Height="355" Width="355" Fill="white"/>
+            <Ellipse Height="355" Width="355" Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"/>
 
             <!--Inner Centre Circles-->
-            <Ellipse Height="250" Width="250" StrokeThickness="3" Stroke="Gray" Fill="White"
+            <Ellipse Height="250" Width="250" StrokeThickness="3"
+                     Stroke="{DynamicResource {x:Static adonisUi:Brushes.Layer4BorderBrush}}" 
+                     Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
                      x:Name="centreDial"
                      MouseEnter="Ellipse_MouseEnter"
                      MouseLeave="Ellipse_MouseLeave"/>
@@ -90,7 +93,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Rectangle Grid.Row="1" Fill="red" RadiusX="1" RadiusY="1">
+                <Rectangle Grid.Row="1" Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer4HighlightBrush}}" RadiusX="1" RadiusY="1">
                 </Rectangle>
             </Grid>
 
