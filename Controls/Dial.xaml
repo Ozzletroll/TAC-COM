@@ -23,7 +23,7 @@
     <Viewbox>
         <Grid Height="400" Width="400">
             <!--Gauge Background-->
-            <Path Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}" Style="{StaticResource Dial}">
+            <Path Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer4BorderBrush}}" Style="{StaticResource Dial}">
                 <Path.Data>
                     <PathGeometry>
                         <PathGeometry.Figures>
