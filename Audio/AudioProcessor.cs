@@ -170,6 +170,9 @@ namespace TAC_COM.Audio
 
         public void Initialise(WasapiCapture input, Profile activeProfile)
         {
+            inputSource?.Dispose();
+            passthroughSource?.Dispose();
+
             inputSource = new SoundInSource(input) { FillWithZeros = true };
             passthroughSource = new SoundInSource(input) { FillWithZeros = true };
             SampleRate = inputSource.WaveFormat.SampleRate;
