@@ -1,5 +1,6 @@
 ﻿using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
+using Microsoft.VisualBasic.Logging;
 using System.Text;
 using TAC_COM.Services;
 
@@ -11,6 +12,7 @@ namespace TAC_COM.Models
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? PTTKeybindCatchSubscription;
         private IDisposable? UserKeybindSubscription;
+        private IDisposable? SystemKeybindSubscription;
 
         private Keybind? pttKey;
         public Keybind? PTTKey
@@ -86,6 +88,7 @@ namespace TAC_COM.Models
             {
                 DisposeKeyboardSubscription(PTTKeybindSubscription);
                 DisposeKeyboardSubscription(PTTKeybindCatchSubscription);
+                DisposeKeyboardSubscription(SystemKeybindSubscription);
             };
         }
 
@@ -112,14 +115,23 @@ namespace TAC_COM.Models
                 if (PTTKey.Ctrl) keyCodes.Add(VirtualKeyCode.LeftControl);
                 if (PTTKey.Alt) keyCodes.Add(VirtualKeyCode.LeftMenu);
 
-                var keyHandler
-                    = new KeyCombinationHandler([.. keyCodes])
-                    {
-                        IsPassThrough = false
-                    };
+                var keyHandler = new KeyCombinationHandler([.. keyCodes])
+                {
+                    IsPassThrough = false
+                };
 
                 PTTKeybindCatchSubscription = KeyboardHook.KeyboardEvents.Where(keyHandler).Subscribe();
             }
+
+            // Keyhandler to handle system key combinations (Ctrl + Alt + Del etc.), preventing issues with key up commands not firing
+            var systemKeyhandler = new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.Menu, VirtualKeyCode.Delete);
+
+            SystemKeybindSubscription = KeyboardHook.KeyboardEvents.Where(systemKeyhandler).Subscribe(args =>
+            {
+                // Call keyup for Ctrl and Alt, otherwise keyhandlers register them as constantly pressed
+                KeyboardInputGenerator.KeyUp(VirtualKeyCode.Control);
+                KeyboardInputGenerator.KeyUp(VirtualKeyCode.Menu);
+            });
         }
 
         public void ToggleUserKeybind(bool state)
