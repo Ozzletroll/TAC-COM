@@ -3,6 +3,7 @@
 
     <ResourceDictionary.MergedDictionaries>
 
+        <ResourceDictionary Source="pack://application:,,,/AdonisUI;component/ColorSchemes/Light.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Dimensions.xaml"/>
 
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Templates/DatePickerDropDownButton.xaml"/>
@@ -53,9 +54,7 @@
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/ToolbarButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/ToolbarToggleButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowButton.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowToggleButton.xaml" />
-
-        <ResourceDictionary Source="pack://application:,,,/Themes/ThemeGMS.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowToggleButton.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 
