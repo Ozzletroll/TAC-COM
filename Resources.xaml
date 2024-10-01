@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
 
@@ -56,48 +55,8 @@
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowButton.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/NamedStyles/WindowToggleButton.xaml" />
 
+        <ResourceDictionary Source="pack://application:,,,/Themes/ThemeGMS.xaml"/>
+
     </ResourceDictionary.MergedDictionaries>
-
-    <!-- Override colours -->
-
-    <!--Dropdown box border, Progress bar fill, Label text-->
-    <Color x:Key="{x:Static adonisUi:Colors.AccentColor}">#ff0000</Color>
-
-    <!--Basic text-->
-    <Color x:Key="{x:Static adonisUi:Colors.ForegroundColor}">#000000</Color>
-
-    <!--Button interaction text-->
-    <Color x:Key="{x:Static adonisUi:Colors.AccentForegroundColor}">#ffa90000</Color>
-
-    <!--Minimise button hover colour-->
-    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonHighlightColor}">#ff0000</Color>
-    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonInteractionColor}">#ffa90000</Color>
-
-    <!--Background-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer0BackgroundColor}">#ffffff</Color>
-
-    <!--Inactive dropdown menu background, Sliders-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#ffefefef</Color>
-
-    <!--Enable/disable/edit buttons-->
-    <!--Toggle Off-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color>
-    <!--Toggle On-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#ffBB0000</Color>
-    <!--Border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff0000</Color>
-    <!--Text-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color>
-    <!--Hover-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#ffffff</Color>
-    <!--Click-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#ffa90000</Color>
-
-    <!--Dial-->
-    
-    <!--Border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer4BorderColor}">#ababab</Color>
-    <!--Marker/Gauge-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer4HighlightColor}">#ff0000</Color>
 
 </ResourceDictionary>
