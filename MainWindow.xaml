@@ -12,7 +12,8 @@
                              mc:Ignorable="d"
                              Title="TAC/COM"
                              Height="350" Width="600" MinHeight="350" MinWidth="600"
-                             TitleBarForeground="White" TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
+                             TitleBarForeground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
+                             TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              BorderThickness="1" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              ResizeMode="CanMinimize"
                              Icon="/Static/Icons/icon.png">
