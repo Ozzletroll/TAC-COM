@@ -45,12 +45,12 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Margin="0, 5, 0, 5"
-                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"/>
+                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
                         Margin="5">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center"
                        FontSize="12" FontWeight="Normal" Margin="0, 0, 10, 0"
-                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}">
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">
                     PASSTHROUGH
                 </Label>
                 <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"

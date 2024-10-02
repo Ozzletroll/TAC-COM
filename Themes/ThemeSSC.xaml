@@ -9,7 +9,7 @@
     <Color x:Key="{x:Static adonisUi:Colors.ForegroundColor}">#ffffff</Color>
 
     <!--Button interaction text-->
-    <Color x:Key="{x:Static adonisUi:Colors.AccentForegroundColor}">#ffa90000</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.AccentForegroundColor}">#ff0000</Color>
 
     <!--Minimise button hover colour-->
     <Color x:Key="{x:Static adonisUi:Colors.WindowButtonHighlightColor}">#ff0000</Color>
