@@ -18,6 +18,17 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style TargetType="{x:Type Ellipse}" x:Key="CentreDial">
+            <Setter Property="Fill" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer4BackgroundBrush}}"/>
+            <Setter Property="Stroke" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer4BorderBrush}}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Fill" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer4IntenseHighlightBrush}}"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Viewbox>
@@ -74,11 +85,8 @@
 
             <!--Inner Centre Circles-->
             <Ellipse Height="250" Width="250" StrokeThickness="3"
-                     Stroke="{DynamicResource {x:Static adonisUi:Brushes.Layer4BorderBrush}}" 
-                     Fill="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
-                     x:Name="centreDial"
-                     MouseEnter="Ellipse_MouseEnter"
-                     MouseLeave="Ellipse_MouseLeave"/>
+                     Style="{StaticResource CentreDial}"
+                     x:Name="CentreDial"/>
 
             <!--Marker-->
             <Grid Height="150" Width="10" RenderTransformOrigin="0.5,1.23">

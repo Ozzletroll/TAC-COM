@@ -40,5 +40,9 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer4BorderColor}">#ababab</Color>
     <!--Marker/Gauge-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer4HighlightColor}">#ff0000</Color>
-    
+
+    <!--Dial normal/hover-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer4BackgroundColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer4IntenseHighlightColor}">#dadada</Color>
+
 </ResourceDictionary>

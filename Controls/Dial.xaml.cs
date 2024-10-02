@@ -131,44 +131,6 @@ namespace TAC_COM.Controls
             storyboard.Begin(this);
         }
 
-        private void Ellipse_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is Ellipse ellipse)
-            {
-                Cursor = Cursors.Hand;
-
-                var colorAnimation = new ColorAnimation
-                {
-                    From = Colors.White,
-                    To = (Color)ColorConverter.ConvertFromString("#ebebeb"),
-                    Duration = new Duration(TimeSpan.FromMilliseconds(100))
-                };
-
-                var brush = new SolidColorBrush(Colors.White);
-                ellipse.Fill = brush;
-                brush.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimation);
-            }
-        }
-
-        private void Ellipse_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is Ellipse ellipse)
-            {
-                Cursor = null;
-
-                var colorAnimation = new ColorAnimation
-                {
-                    From = (Color)ColorConverter.ConvertFromString("#ebebeb"),
-                    To = Colors.White,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(100))
-                };
-
-                var brush = new SolidColorBrush(Colors.White);
-                ellipse.Fill = brush;
-                brush.BeginAnimation(SolidColorBrush.ColorProperty, colorAnimation);
-            }
-        }
-
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Mouse.Capture(this);
