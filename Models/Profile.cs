@@ -51,15 +51,15 @@ namespace TAC_COM.Models
 
             defaultProfiles.Add(
                 new Profile(
-                    profileName: "IPS-N Itegrated Tactical Network",
-                    fileIdentifier: "IPSN",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute)));
-
-            defaultProfiles.Add(
-                new Profile(
                     profileName: "SSC Hamadryas Stealth Tranceiver",
                     fileIdentifier: "SSC",
                     theme: new Uri("pack://application:,,,/Themes/ThemeSSC.xaml", UriKind.Absolute)));
+
+            defaultProfiles.Add(
+                new Profile(
+                    profileName: "IPS-N Itegrated Tactical Network",
+                    fileIdentifier: "IPSN",
+                    theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute)));
 
             defaultProfiles.Add(
                 new Profile(
