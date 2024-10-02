@@ -21,6 +21,12 @@
     <!--Inactive dropdown menu background, Sliders-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#ffefefef</Color>
 
+    <!--Hover gradient-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#f4f4f4</Color>
+    <!--Dropdown border-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#ff0000</Color>
+
     <!--Enable/disable/edit buttons-->
     <!--Toggle Off-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#ff730000</Color>
