@@ -25,6 +25,8 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#1f1f1f</Color>
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#313131</Color>
     <!--Dropdown border-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#ababab</Color>
+    <!--Dropdown border-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#ff0000</Color>
 
     <!--Enable/disable/edit buttons-->
