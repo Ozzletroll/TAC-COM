@@ -57,7 +57,7 @@ namespace TAC_COM.Models
 
             defaultProfiles.Add(
                 new Profile(
-                    profileName: "IPS-N Itegrated Tactical Network",
+                    profileName: "IPS-N Integrated Tactical Network",
                     fileIdentifier: "IPSN",
                     theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute)));
 
