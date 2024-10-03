@@ -58,6 +58,7 @@
                              VerticalAlignment="Center" HorizontalAlignment="Center"
                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                              Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+                             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}"
                              Value="{Binding AudioManager.InputPeakMeter}"/>
             </StackPanel>
 
@@ -89,6 +90,7 @@
                              VerticalAlignment="Center" HorizontalAlignment="Center"
                              Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                              Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+                             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}"
                              Value="{Binding AudioManager.OutputPeakMeter}"/>
             </StackPanel>
 
