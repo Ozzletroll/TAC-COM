@@ -172,6 +172,7 @@ namespace TAC_COM.ViewModels
                 {
                     audioManager.activeProfile = value;
                     ThemeService.ChangeTheme(targetTheme: value.Theme);
+                    iconService.SetActiveProfileIcon(value.Icon);
                     settingsService.UpdateAppConfig(nameof(ActiveProfile), value);
                 }
             }

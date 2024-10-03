@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -12,6 +14,16 @@ namespace TAC_COM.ViewModels
         public static RelayCommand ExitCommand => new(execute => OnExit());
         public RelayCommand IconDoubleClickCommand => new(execute => OnIconDoubleClick());
         public RelayCommand AlwaysOnTopCommand;
+
+        private System.Windows.Media.ImageSource activeProfileIcon;
+        public System.Windows.Media.ImageSource ActiveProfileIcon
+        {
+            get => activeProfileIcon;
+            set
+            {
+                activeProfileIcon = value;
+            }
+        }
 
         public void ChangeNotifyIcon(string iconPath, string notifyText)
         {

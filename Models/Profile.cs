@@ -1,9 +1,10 @@
 ﻿using CSCore;
+using System.Windows.Media.Imaging;
 using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
 {
-    public class Profile(string profileName, string fileIdentifier, Uri theme)
+    public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon)
     {
         public string ProfileName = profileName;
         public string FileIdentifier = fileIdentifier;
@@ -13,7 +14,8 @@ namespace TAC_COM.Models
         public IWaveSource? CloseSFX;
         private readonly FilePlayer FilePlayer = new();
         public ProfileSettings ProfileSettings = new();
-        
+        public System.Windows.Media.ImageSource Icon = icon;
+
         public void LoadSources()
         {
             if (FileIdentifier != null)
@@ -47,38 +49,43 @@ namespace TAC_COM.Models
                 new Profile(
                     profileName: "GMS Type-4 Datalink",
                     fileIdentifier: "GMS",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeGMS.xaml", UriKind.Absolute)));
+                    theme: new Uri("pack://application:,,,/Themes/ThemeGMS.xaml", UriKind.Absolute),
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/icon.png"))));
 
             defaultProfiles.Add(
                 new Profile(
                     profileName: "SSC Hamadryas Stealth Tranceiver",
                     fileIdentifier: "SSC",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeSSC.xaml", UriKind.Absolute)));
+                    theme: new Uri("pack://application:,,,/Themes/ThemeSSC.xaml", UriKind.Absolute),
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/icon.png"))));
 
             defaultProfiles.Add(
                 new Profile(
                     profileName: "IPS-N Integrated Tactical Network",
                     fileIdentifier: "IPSN",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute)));
+                    theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute),
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/icon.png"))));
 
             defaultProfiles.Add(
                 new Profile(
                     profileName: "HA Hardened Waveform Radio",
                     fileIdentifier: "HA",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeHA.xaml", UriKind.Absolute)));
+                    theme: new Uri("pack://application:,,,/Themes/ThemeHA.xaml", UriKind.Absolute),
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/icon.png"))));
 
             defaultProfiles.Add(
                 new Profile(
                     profileName: "HORUS [UNRECOGNISED DEVICE]",
                     fileIdentifier: "HORUS",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeHORUS.xaml", UriKind.Absolute))
-                { 
+                    theme: new Uri("pack://application:,,,/Themes/ThemeHORUS.xaml", UriKind.Absolute),
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/icon.png")))
+                    { 
                     ProfileSettings = new ProfileSettings()
                     {
                         PitchShiftFactor = 0.98f,
                         ChorusEnabled = true,
                     }
-                });
+                    });
 
             return defaultProfiles;
         }

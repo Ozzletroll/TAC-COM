@@ -20,5 +20,13 @@ namespace TAC_COM.Services
         {
             MainViewModel?.ChangeNotifyIcon("./Static/Icons/standby.ico", "TAC/COM Standby");
         }
+
+        public void SetActiveProfileIcon(System.Windows.Media.ImageSource icon)
+        {
+            if (MainViewModel != null)
+            {
+                MainViewModel.ActiveProfileIcon = icon;
+            }
+        }
     }
 }
