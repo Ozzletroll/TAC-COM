@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Static\Icons\icon.ico</ApplicationIcon>
+    <ApplicationIcon>Static\Icons\Icon-GMS.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <Title>TAC/COM</Title>
     <PackageIcon>icon.png</PackageIcon>
@@ -18,6 +18,10 @@
   <ItemGroup>
     <None Remove="Static\Icons\enabled.ico" />
     <None Remove="Static\Icons\headset-white.png" />
+    <None Remove="Static\Icons\Icon-GMS.ico" />
+    <None Remove="Static\Icons\Icon-HA.ico" />
+    <None Remove="Static\Icons\Icon-HORUS.ico" />
+    <None Remove="Static\Icons\Icon-IPSN.ico" />
     <None Remove="Static\Icons\icon-white.png" />
     <None Remove="Static\Icons\live.ico" />
     <None Remove="Static\Icons\main-icon.png" />
@@ -46,10 +50,19 @@
     <Content Include="Static\Icons\enabled.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\icon.png">
+    <Content Include="Static\Icons\Icon-GMS.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\icon.ico">
+    <Content Include="Static\Icons\Icon-HA.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-HORUS.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-IPSN.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Static\Icons\live.ico">
