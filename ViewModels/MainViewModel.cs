@@ -15,13 +15,14 @@ namespace TAC_COM.ViewModels
         public RelayCommand IconDoubleClickCommand => new(execute => OnIconDoubleClick());
         public RelayCommand AlwaysOnTopCommand;
 
-        private System.Windows.Media.ImageSource activeProfileIcon;
-        public System.Windows.Media.ImageSource ActiveProfileIcon
+        private System.Windows.Media.ImageSource? activeProfileIcon;
+        public System.Windows.Media.ImageSource? ActiveProfileIcon
         {
             get => activeProfileIcon;
             set
             {
                 activeProfileIcon = value;
+                OnPropertyChanged(nameof(ActiveProfileIcon));
             }
         }
 
