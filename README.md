@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Ozzletroll/TAC-COM">
-    <img src="https://github.com/Ozzletroll/TAC-COM/blob/main/Static/Icons/live.ico" alt="Logo" width="30" height="30">
+    <img src="https://github.com/Ozzletroll/TAC-COM/blob/main/App/Static/Icons/live.ico" alt="Logo" width="30" height="30">
   </a>
 <h3 align="center">TAC/COM</h3>
 
