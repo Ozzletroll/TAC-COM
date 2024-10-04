@@ -78,14 +78,15 @@ namespace TAC_COM.Models
                     profileName: "HORUS [UNRECOGNISED DEVICE]",
                     fileIdentifier: "HORUS",
                     theme: new Uri("pack://application:,,,/Themes/ThemeHORUS.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HORUS.ico")))
-                    { 
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HORUS.ico"))
+                )
+                { 
                     ProfileSettings = new ProfileSettings()
                     {
                         PitchShiftFactor = 0.98f,
                         ChorusEnabled = true,
                     }
-                    });
+                });
 
             return defaultProfiles;
         }

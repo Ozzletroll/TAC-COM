@@ -1,0 +1,116 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Static\Icons\enabled.ico" />
+    <None Remove="Static\Icons\Icon-GMS.ico" />
+    <None Remove="Static\Icons\Icon-HA.ico" />
+    <None Remove="Static\Icons\Icon-HORUS.ico" />
+    <None Remove="Static\Icons\Icon-IPSN.ico" />
+    <None Remove="Static\Icons\icon.png" />
+    <None Remove="Static\Icons\live.ico" />
+    <None Remove="Static\Icons\standby.ico" />
+    <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
+    <None Remove="Static\SFX\GateClose\GateCloseHA.wav" />
+    <None Remove="Static\SFX\GateClose\GateCloseHORUS.wav" />
+    <None Remove="Static\SFX\GateClose\GateCloseIPSN.wav" />
+    <None Remove="Static\SFX\GateClose\GateCloseSSC.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenGMS.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenHA.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenHORUS.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenIPSN.wav" />
+    <None Remove="Static\SFX\GateOpen\GateOpenSSC.wav" />
+    <None Remove="Static\SFX\Noise\NoiseGMS.wav" />
+    <None Remove="Static\SFX\Noise\NoiseHA.wav" />
+    <None Remove="Static\SFX\Noise\NoiseHORUS.wav" />
+    <None Remove="Static\SFX\Noise\NoiseIPSN.wav" />
+    <None Remove="Static\SFX\Noise\NoiseSSC.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Static\Icons\enabled.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-GMS.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-HA.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-HORUS.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\Icon-IPSN.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\live.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\Icons\standby.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateClose\GateCloseGMS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateClose\GateCloseHA.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateClose\GateCloseHORUS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateClose\GateCloseIPSN.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateClose\GateCloseSSC.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateOpen\GateOpenGMS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateOpen\GateOpenHA.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateOpen\GateOpenHORUS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateOpen\GateOpenIPSN.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\GateOpen\GateOpenSSC.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseGMS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseHA.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseHORUS.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseIPSN.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Static\SFX\Noise\NoiseSSC.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdonisUI" Version="1.17.1" />
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="CSCore" Version="1.2.1.2" />
+    <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
+  </ItemGroup>
+
+</Project>

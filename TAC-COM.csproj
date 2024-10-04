@@ -16,104 +16,112 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Static\Icons\enabled.ico" />
-    <None Remove="Static\Icons\headset-white.png" />
-    <None Remove="Static\Icons\Icon-GMS.ico" />
-    <None Remove="Static\Icons\Icon-HA.ico" />
-    <None Remove="Static\Icons\Icon-HORUS.ico" />
-    <None Remove="Static\Icons\Icon-IPSN.ico" />
-    <None Remove="Static\Icons\icon-white.png" />
-    <None Remove="Static\Icons\live.ico" />
-    <None Remove="Static\Icons\main-icon.png" />
-    <None Remove="Static\Icons\mic.ico" />
-    <None Remove="Static\Icons\standby.ico" />
-    <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseHA.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseHORUS.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseIPSN.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseSSC.wav" />
-    <None Remove="Static\SFX\GateClose\gate_close_1.mp3" />
-    <None Remove="Static\SFX\GateOpen\GateOpenGMS.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenHA.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenHORUS.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenIPSN.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenSSC.wav" />
-    <None Remove="Static\SFX\Noise\NoiseGMS.wav" />
-    <None Remove="Static\SFX\Noise\NoiseHA.wav" />
-    <None Remove="Static\SFX\Noise\NoiseHORUS.wav" />
-    <None Remove="Static\SFX\Noise\NoiseIPSN.wav" />
-    <None Remove="Static\SFX\Noise\NoiseSSC.wav" />
-    <None Remove="Static\SFX\Noise\Noise_GMS.wav" />
+    <None Remove="App\Static\Icons\enabled.ico" />
+    <None Remove="App\Static\Icons\headset-white.png" />
+    <None Remove="App\Static\Icons\Icon-GMS.ico" />
+    <None Remove="App\Static\Icons\Icon-HA.ico" />
+    <None Remove="App\Static\Icons\Icon-HORUS.ico" />
+    <None Remove="App\Static\Icons\Icon-IPSN.ico" />
+    <None Remove="App\Static\Icons\icon-white.png" />
+    <None Remove="App\Static\Icons\live.ico" />
+    <None Remove="App\Static\Icons\main-icon.png" />
+    <None Remove="App\Static\Icons\mic.ico" />
+    <None Remove="App\Static\Icons\standby.ico" />
+    <None Remove="App\Static\SFX\GateClose\GateCloseGMS.wav" />
+    <None Remove="App\Static\SFX\GateClose\GateCloseHA.wav" />
+    <None Remove="App\Static\SFX\GateClose\GateCloseHORUS.wav" />
+    <None Remove="App\Static\SFX\GateClose\GateCloseIPSN.wav" />
+    <None Remove="App\Static\SFX\GateClose\GateCloseSSC.wav" />
+    <None Remove="App\Static\SFX\GateClose\gate_close_1.mp3" />
+    <None Remove="App\Static\SFX\GateOpen\GateOpenGMS.wav" />
+    <None Remove="App\Static\SFX\GateOpen\GateOpenHA.wav" />
+    <None Remove="App\Static\SFX\GateOpen\GateOpenHORUS.wav" />
+    <None Remove="App\Static\SFX\GateOpen\GateOpenIPSN.wav" />
+    <None Remove="App\Static\SFX\GateOpen\GateOpenSSC.wav" />
+    <None Remove="App\Static\SFX\Noise\NoiseGMS.wav" />
+    <None Remove="App\Static\SFX\Noise\NoiseHA.wav" />
+    <None Remove="App\Static\SFX\Noise\NoiseHORUS.wav" />
+    <None Remove="App\Static\SFX\Noise\NoiseIPSN.wav" />
+    <None Remove="App\Static\SFX\Noise\NoiseSSC.wav" />
+    <None Remove="App\Static\SFX\Noise\Noise_GMS.wav" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Static\Icons\enabled.ico">
+    <Page Remove="App\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="App\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App\Static\Icons\enabled.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\Icon-GMS.ico">
+    <Content Include="App\Static\Icons\Icon-GMS.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\Icon-HA.ico">
+    <Content Include="App\Static\Icons\Icon-HA.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\Icon-HORUS.ico">
+    <Content Include="App\Static\Icons\Icon-HORUS.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\Icon-IPSN.ico">
+    <Content Include="App\Static\Icons\Icon-IPSN.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\icon.png">
+    <Content Include="App\Static\Icons\icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\live.ico">
+    <Content Include="App\Static\Icons\live.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\Icons\standby.ico">
+    <Content Include="App\Static\Icons\standby.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\GateCloseGMS.wav">
+    <Content Include="App\Static\SFX\GateClose\GateCloseGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\GateCloseHA.wav">
+    <Content Include="App\Static\SFX\GateClose\GateCloseHA.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\GateCloseHORUS.wav">
+    <Content Include="App\Static\SFX\GateClose\GateCloseHORUS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\GateCloseIPSN.wav">
+    <Content Include="App\Static\SFX\GateClose\GateCloseIPSN.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateClose\GateCloseSSC.wav">
+    <Content Include="App\Static\SFX\GateClose\GateCloseSSC.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateOpen\GateOpenGMS.wav">
+    <Content Include="App\Static\SFX\GateOpen\GateOpenGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateOpen\GateOpenHA.wav">
+    <Content Include="App\Static\SFX\GateOpen\GateOpenHA.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateOpen\GateOpenHORUS.wav">
+    <Content Include="App\Static\SFX\GateOpen\GateOpenHORUS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateOpen\GateOpenIPSN.wav">
+    <Content Include="App\Static\SFX\GateOpen\GateOpenIPSN.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\GateOpen\GateOpenSSC.wav">
+    <Content Include="App\Static\SFX\GateOpen\GateOpenSSC.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\NoiseGMS.wav">
+    <Content Include="App\Static\SFX\Noise\NoiseGMS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\NoiseHA.wav">
+    <Content Include="App\Static\SFX\Noise\NoiseHA.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\NoiseHORUS.wav">
+    <Content Include="App\Static\SFX\Noise\NoiseHORUS.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\NoiseIPSN.wav">
+    <Content Include="App\Static\SFX\Noise\NoiseIPSN.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Static\SFX\Noise\NoiseSSC.wav">
+    <Content Include="App\Static\SFX\Noise\NoiseSSC.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -126,7 +134,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Static\Icons\icon.png">
+    <None Update="App\Static\Icons\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
