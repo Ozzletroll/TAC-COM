@@ -62,7 +62,7 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
 4. Set your chosen Push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
 
 <p align="center">
-  <img src="/Static/Images/setup.png" alt="Screenshot of the TAC/COM window setup with a microphone input device and 'CABLE Input Input (VB-Audio Virtual Cable)' as the output device.">
+  <img src="/App/Static/Images/setup.png" alt="Screenshot of the TAC/COM window setup with a microphone input device and 'CABLE Input Input (VB-Audio Virtual Cable)' as the output device.">
 </p>
 
 ## Discord Setup
@@ -74,13 +74,13 @@ Whilst instructions here are given for Discord, setup should be largely identica
 3. Set input device to your virtual audio cable output device.
 
 <p align="center">
-  <img src="/Static/Images/discord-setup-1.png" alt="Screenshot of Discord's Voice & Video settings, with the input device set to 'CABLE Output (VB-Audio Virtual Cable)'.">
+  <img src="/App/Static/Images/discord-setup-1.png" alt="Screenshot of Discord's Voice & Video settings, with the input device set to 'CABLE Output (VB-Audio Virtual Cable)'.">
 </p>
 
 4. Disable Discord's noise suppression.
 
 <p align="center">
-  <img src="/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
+  <img src="/App/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
 </p>
 
 > **Unless disabled, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
