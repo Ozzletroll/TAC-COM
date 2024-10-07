@@ -8,7 +8,7 @@ namespace TAC_COM.Models
         public Type EffectType = type;
         public Dictionary<string, object>? Parameters;
 
-        public ISampleSource CreateInstance(ISampleSource? sourceParameter)
+        public ISampleSource CreateInstance(ISampleSource sourceParameter)
         {
             if (EffectType != null)
             {
