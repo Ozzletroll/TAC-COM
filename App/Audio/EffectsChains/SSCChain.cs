@@ -1,13 +1,23 @@
 ﻿using App.Audio.DSP.NWaves;
+using App.Audio.EffectsChains;
 using TAC_COM.Models;
 
 namespace App.Audio.SignalChains
 {
-    public static class SSCChain
+    public class SSCChain : IBaseChain
     {
         public static List<EffectReference> GetPreDistortionEffects()
         {
-            return [];
+            EffectReference whisperEffect = new(typeof(WhisperWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
+                }
+            };
+
+            return [whisperEffect];
         }
 
         public static List<EffectReference> GetPostDistortionEffects()
@@ -17,21 +27,12 @@ namespace App.Audio.SignalChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.4f },
-                    { "Dry", 0.6f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                 }
             };
 
-            EffectReference whisperEffect = new(typeof(WhisperWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                }
-            };
-
-            return [robotEffect, whisperEffect];
+            return [robotEffect];
         }
     }
 }
