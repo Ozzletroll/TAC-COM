@@ -1,10 +1,9 @@
-﻿using CSCore.CoreAudioAPI;
+﻿using App.Models;
+using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using TAC_COM.Models;
 using TAC_COM.Services;
-using TAC_COM.Views;
 
 namespace TAC_COM.ViewModels
 {

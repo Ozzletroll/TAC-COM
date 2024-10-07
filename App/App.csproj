@@ -111,6 +111,7 @@
     <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
     <PackageReference Include="CSCore" Version="1.2.1.2" />
     <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
+    <PackageReference Include="NWaves" Version="0.9.6" />
   </ItemGroup>
 
 </Project>

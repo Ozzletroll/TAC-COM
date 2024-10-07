@@ -5,6 +5,8 @@ using CSCore.SoundIn;
 using CSCore.DSP;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Models;
+using App.Audio.DSP.NWaves;
+using NWaves.Effects;
 
 namespace TAC_COM.Audio
 {
@@ -226,9 +228,10 @@ namespace TAC_COM.Audio
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
             peakFiltered.Filter = new PeakFilter(SampleRate, 2000, 500, 2);
 
+            // Apply pitchshift depending of ActiveProfile settings
             var pitchShifted = peakFiltered.AppendSource(x => new PitchShifter(x)
             {
-                PitchShiftFactor = ActiveProfile?.ProfileSettings?.PitchShiftFactor ?? 1f,
+                PitchShiftFactor = ActiveProfile?.Settings?.PitchShiftFactor ?? 1f,
             }, out PitchShifter);
 
             // Convert back to WaveSource
@@ -252,7 +255,7 @@ namespace TAC_COM.Audio
                     Depth = chorusDepthLevel,
                     Feedback = chorusFeedbackLevel,
                     WetDryMix = chorusMixLevel,
-                    IsEnabled = ActiveProfile?.ProfileSettings?.ChorusEnabled ?? false,
+                    IsEnabled = ActiveProfile?.Settings?.ChorusEnabled ?? false,
                 }, out Chorus);
 
             // Compression
@@ -267,25 +270,50 @@ namespace TAC_COM.Audio
                     Threshold = -20
                 });
 
-            // Distortion
-            filteredSource =
-                filteredSource.AppendSource(x => new DmoDistortionEffect(x)
-                {
-                    Gain = -60,
-                    Edge = DistortionLevel,
-                    PostEQCenterFrequency = 3000,
-                    PostEQBandwidth = 2400,
-                    PreLowpassCutoff = 8000
-                }, out Distortion);
-
+            // Apply regular distortion, depending on ActiveProfile settings
+            if (ActiveProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
+            {
+                // Distortion
+                filteredSource =
+                    filteredSource.AppendSource(x => new DmoDistortionEffect(x)
+                    {
+                        Gain = -60,
+                        Edge = DistortionLevel,
+                        PostEQCenterFrequency = 3000,
+                        PostEQBandwidth = 2400,
+                        PreLowpassCutoff = 8000
+                    }, out Distortion);
+            }
+            
             // Convert to SampleSource
             var outputSampleSource = filteredSource.ToSampleSource();
+
+            if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper))
+            {
+                outputSampleSource 
+                    = outputSampleSource.AppendSource(x => new DistortionWrapper(x, DistortionMode.HardClipping)
+                    {
+                        InputGainDB = 50,
+                        OutputGainDB = 38,
+                        Wet = 0.6f,
+                        Dry = 0.4f,
+                    });
+            }
 
             // Reduce gain to compensate for compression/distortion
             PostDistortionGainReduction = new Gain(outputSampleSource)
             {
                 GainDB = DistortionCompensation,
             };
+
+            // Apply profile specific effects
+            if (ActiveProfile?.Settings.SignalChain != null)
+            {
+                foreach (EffectReference effect in ActiveProfile.Settings.SignalChain)
+                {
+                    sampleSource = sampleSource.AppendSource(x => effect.CreateInstance(x));
+                }
+            }
 
             // User gain control
             UserGainControl = new Gain(PostDistortionGainReduction)
@@ -301,9 +329,10 @@ namespace TAC_COM.Audio
         /// </summary>
         internal ISampleSource DrySignalChain()
         {
+            var sampleSource = passthroughSource.ToSampleSource();
 
             // Noise gate
-            var sampleSource = passthroughSource.ToSampleSource().AppendSource(x => new Gate(x)
+            sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
                 Attack = 5,
