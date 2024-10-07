@@ -1,10 +1,13 @@
 ﻿using App.Audio.DSP.NWaves;
+using App.Audio.SignalChains;
+using CSCore.Streams.Effects;
+using NWaves.Effects;
 using System.Windows.Media.Imaging;
 using TAC_COM.Models;
 
-namespace App.Services
+namespace App.Models
 {
-    public static class ProfileService
+    public class ProfileManager
     {
         public static List<Profile> GetAllProfiles()
         {
@@ -15,14 +18,41 @@ namespace App.Services
                     profileName: "GMS Type-4 Datalink",
                     fileIdentifier: "GMS",
                     theme: new Uri("pack://application:,,,/Themes/ThemeGMS.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico"))));
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico")))
+                {
+                    Settings = new AudioSettings()
+                    {
+                        DistortionType = typeof(DmoDistortionEffect),
+                        PreDistortionSignalChain = [],
+                        PostDistortionSignalChain = [],
+                        HighpassFrequency = 800,
+                        LowpassFrequency = 7000,
+                        PeakFrequency = 2000,
+                    }
+                });
 
             defaultProfiles.Add(
                 new Profile(
                     profileName: "SSC Hamadryas Stealth Tranceiver",
                     fileIdentifier: "SSC",
                     theme: new Uri("pack://application:,,,/Themes/ThemeSSC.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico"))));
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico")))
+                {
+                    Settings = new AudioSettings()
+                    {
+                        DistortionType = typeof(DistortionWrapper),
+                        DistortionMode = DistortionMode.SoftClipping,
+                        DistortionInput = 34,
+                        DistortionOutput = 55,
+                        DistortionWet = 0.3f,
+                        DistortionDry = 0.7f,
+                        PreDistortionSignalChain = SSCChain.GetPreDistortionEffects(),
+                        PostDistortionSignalChain = SSCChain.GetPostDistortionEffects(),
+                        HighpassFrequency = 400,
+                        LowpassFrequency = 5000,
+                        PeakFrequency = 1500,
+                    }
+                });
 
             defaultProfiles.Add(
                 new Profile(
@@ -34,6 +64,16 @@ namespace App.Services
                     Settings = new AudioSettings()
                     {
                         DistortionType = typeof(DistortionWrapper),
+                        DistortionMode = DistortionMode.HardClipping,
+                        DistortionInput = 30,
+                        DistortionOutput = 42,
+                        DistortionWet = 0.6f,
+                        DistortionDry = 0.4f,
+                        PreDistortionSignalChain = [],
+                        PostDistortionSignalChain = [],
+                        HighpassFrequency = 400,
+                        LowpassFrequency = 6000,
+                        PeakFrequency = 1300,
                     }
                 });
 
@@ -42,7 +82,21 @@ namespace App.Services
                     profileName: "HA Hardened Waveform Radio",
                     fileIdentifier: "HA",
                     theme: new Uri("pack://application:,,,/Themes/ThemeHA.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HA.ico"))));
+                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HA.ico")))
+                {
+                    Settings = new AudioSettings()
+                    {
+                        DistortionType = typeof(DmoDistortionEffect),
+                        DistortionMode = null,
+                        DistortionInput = 50,
+                        DistortionOutput = 42,
+                        PreDistortionSignalChain = [],
+                        PostDistortionSignalChain = [],
+                        HighpassFrequency = 450,
+                        LowpassFrequency = 6000,
+                        PeakFrequency = 2000,
+                    }
+                });
 
             defaultProfiles.Add(
                 new Profile(
@@ -53,8 +107,15 @@ namespace App.Services
                 {
                     Settings = new AudioSettings()
                     {
-                        PitchShiftFactor = 0.98f,
-                        ChorusEnabled = true,
+                        DistortionType = typeof(DmoDistortionEffect),
+                        DistortionMode = null,
+                        DistortionInput = 50,
+                        DistortionOutput = 42,
+                        PreDistortionSignalChain = [],
+                        PostDistortionSignalChain = [],
+                        HighpassFrequency = 800,
+                        LowpassFrequency = 7000,
+                        PeakFrequency = 2000,
                     }
                 });
 

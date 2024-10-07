@@ -1,4 +1,4 @@
-﻿using App.Services;
+﻿using App.Models;
 using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -152,7 +152,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private List<Profile> profiles = ProfileService.GetAllProfiles();
+        private List<Profile> profiles = [];
         public List<Profile> Profiles
         {
             get => profiles;
@@ -248,6 +248,8 @@ namespace TAC_COM.ViewModels
 
         public AudioInterfaceViewModel(MainViewModel mainViewModel)
         {
+            Profiles = ProfileManager.GetAllProfiles();
+
             audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
 

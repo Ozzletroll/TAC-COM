@@ -28,10 +28,8 @@ namespace TAC_COM.Audio
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
         private Gate? DryNoiseGate;
-        private PitchShifter? PitchShifter;
         private DmoResampler? DownSampler;
         private DmoResampler? UpSampler;
-        private DmoChorusEffect? Chorus;
         private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
@@ -83,7 +81,6 @@ namespace TAC_COM.Audio
                 userNoiseLevel = value;
                 DistortionLevel = value;
                 QualityLevel = (int)(value * 100);
-                ChorusLevel = value;
                 DistortionCompensation = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
@@ -129,27 +126,6 @@ namespace TAC_COM.Audio
                         UpSampler.Quality = value;
                     }
                     
-                }
-            }
-        }
-
-        private const float MinimumChorus = 0;
-        private float chorusDepthLevel;
-        private float chorusFeedbackLevel;
-        private float chorusMixLevel;
-        public float ChorusLevel
-        {
-            set
-            {
-                chorusDepthLevel = MinimumChorus + (value * (100 - MinimumChorus));
-                chorusFeedbackLevel = MinimumChorus + (value * (50 - MinimumChorus));
-                chorusMixLevel = MinimumChorus + (value * (75 - MinimumChorus));
-
-                if (HasInitialised && Chorus != null)
-                {
-                    Chorus.Depth = chorusDepthLevel;
-                    Chorus.Feedback = chorusFeedbackLevel;
-                    Chorus.WetDryMix = chorusMixLevel;
                 }
             }
         }
@@ -204,6 +180,8 @@ namespace TAC_COM.Audio
         /// </summary>
         internal ISampleSource InputSignalChain()
         {
+            if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
+
             // Conver to SampleSource
             var sampleSource = inputSource.ToSampleSource();
 
@@ -218,24 +196,18 @@ namespace TAC_COM.Audio
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(SampleRate, 800);
+            removedLowEnd.Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency);
 
             // Lowpass filter
             var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(SampleRate, 7000);
+            removedHighEnd.Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency);
 
             // Peak filter
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(SampleRate, 2000, 500, 2);
-
-            // Apply pitchshift depending of ActiveProfile settings
-            var pitchShifted = peakFiltered.AppendSource(x => new PitchShifter(x)
-            {
-                PitchShiftFactor = ActiveProfile?.Settings?.PitchShiftFactor ?? 1f,
-            }, out PitchShifter);
+            peakFiltered.Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2);
 
             // Convert back to WaveSource
-            var filteredSource = pitchShifted.ToWaveSource();
+            var filteredSource = peakFiltered.ToWaveSource();
 
             // Downsample and resample back to target sample rate
             var bitcrushed = filteredSource.AppendSource(x => new DmoResampler(x, 6000)
@@ -247,20 +219,20 @@ namespace TAC_COM.Audio
                 Quality = QualityLevel
             }, out UpSampler);
 
-            // Chorus
-            filteredSource = 
-                resampled
-                .AppendSource(x => new DmoChorusEffect(x)
+            // Apply profile specific pre-distortion effects
+            var preDistortionSampleSource = resampled.ToSampleSource();
+
+            if (ActiveProfile?.Settings.PreDistortionSignalChain != null)
+            {
+                foreach (EffectReference effect in ActiveProfile.Settings.PreDistortionSignalChain)
                 {
-                    Depth = chorusDepthLevel,
-                    Feedback = chorusFeedbackLevel,
-                    WetDryMix = chorusMixLevel,
-                    IsEnabled = ActiveProfile?.Settings?.ChorusEnabled ?? false,
-                }, out Chorus);
+                    preDistortionSampleSource = preDistortionSampleSource.AppendSource(x => effect.CreateInstance(x));
+                }
+            }
 
             // Compression
             filteredSource =
-                filteredSource
+                preDistortionSampleSource.ToWaveSource()
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 0.5f,
@@ -270,7 +242,7 @@ namespace TAC_COM.Audio
                     Threshold = -20
                 });
 
-            // Apply regular distortion, depending on ActiveProfile settings
+            // Apply CSCore distortion, depending on ActiveProfile settings
             if (ActiveProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
             {
                 // Distortion
@@ -283,45 +255,55 @@ namespace TAC_COM.Audio
                         PostEQBandwidth = 2400,
                         PreLowpassCutoff = 8000
                     }, out Distortion);
+
+                // Reduce gain to compensate for distortion
+                var filteredWaveSource = filteredSource.ToSampleSource();
+                filteredWaveSource = filteredWaveSource.AppendSource(x => new Gain(x)
+                {
+                    GainDB = DistortionCompensation,
+                }, out PostDistortionGainReduction);
+
+                filteredSource = filteredWaveSource.ToWaveSource();
             }
             
             // Convert to SampleSource
             var outputSampleSource = filteredSource.ToSampleSource();
 
-            if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper))
+            // Apply NWaves distortion, depending on ActiveProfile settings
+            if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper)
+                && ActiveProfile.Settings.DistortionMode != null)
             {
                 outputSampleSource 
-                    = outputSampleSource.AppendSource(x => new DistortionWrapper(x, DistortionMode.HardClipping)
+                    = outputSampleSource.AppendSource(x 
+                    => new DistortionWrapper(x, (DistortionMode)ActiveProfile.Settings.DistortionMode)
                     {
-                        InputGainDB = 50,
-                        OutputGainDB = 38,
-                        Wet = 0.6f,
-                        Dry = 0.4f,
+                        InputGainDB = ActiveProfile.Settings.DistortionInput,
+                        OutputGainDB = ActiveProfile.Settings.DistortionOutput,
+                        Wet = ActiveProfile.Settings.DistortionWet,
+                        Dry = ActiveProfile.Settings.DistortionDry,
                     });
+
+                outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+                {
+                    GainDB = DistortionCompensation,
+                }, out PostDistortionGainReduction);
             }
 
-            // Reduce gain to compensate for compression/distortion
-            PostDistortionGainReduction = new Gain(outputSampleSource)
+            // Apply profile specific post-distortion effects
+            if (ActiveProfile?.Settings.PostDistortionSignalChain != null)
             {
-                GainDB = DistortionCompensation,
-            };
-
-            // Apply profile specific effects
-            if (ActiveProfile?.Settings.SignalChain != null)
-            {
-                foreach (EffectReference effect in ActiveProfile.Settings.SignalChain)
+                foreach (EffectReference effect in ActiveProfile.Settings.PostDistortionSignalChain)
                 {
-                    sampleSource = sampleSource.AppendSource(x => effect.CreateInstance(x));
+                    outputSampleSource = outputSampleSource.AppendSource(x => effect.CreateInstance(x));
                 }
             }
 
-            // User gain control
-            UserGainControl = new Gain(PostDistortionGainReduction)
+            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
             {
                 GainDB = UserGainLevel,
-            };
+            }, out UserGainControl);
 
-            return UserGainControl;
+            return outputSampleSource;
         }
 
         /// <summary>

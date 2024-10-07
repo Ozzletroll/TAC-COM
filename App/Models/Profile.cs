@@ -1,8 +1,6 @@
-﻿using App.Audio.DSP.NWaves;
-using CSCore;
+﻿using CSCore;
 using CSCore.Streams.Effects;
-using System.Reflection;
-using System.Windows.Media.Imaging;
+using NWaves.Effects;
 using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
@@ -37,9 +35,18 @@ namespace TAC_COM.Models
 
     public class AudioSettings
     {
-        public bool ChorusEnabled = false;
-        public float PitchShiftFactor = 1f;
-        public Type DistortionType = typeof(DmoDistortionEffect);
-        public List<EffectReference>? SignalChain;
+        public Type? DistortionType;
+        public DistortionMode? DistortionMode = null;
+        public float DistortionInput = 40;
+        public float DistortionOutput = 40;
+        public float DistortionWet = 0.5f;
+        public float DistortionDry = 0.5f;
+
+        public float HighpassFrequency;
+        public float LowpassFrequency;
+        public float PeakFrequency;
+
+        public List<EffectReference>? PreDistortionSignalChain;
+        public List<EffectReference>? PostDistortionSignalChain;
     }
 }
