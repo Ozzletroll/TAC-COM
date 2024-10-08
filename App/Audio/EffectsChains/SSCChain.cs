@@ -4,35 +4,33 @@ using TAC_COM.Models;
 
 namespace App.Audio.SignalChains
 {
-    public class SSCChain : IBaseChain
+    public class SSCChain : BaseChain
     {
-        public static List<EffectReference> GetPreDistortionEffects()
-        {
-            EffectReference whisperEffect = new(typeof(WhisperWrapper))
+        public static List<EffectReference> PreDistortionEffects { get; } =
+        [
+            new(typeof(WhisperWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Wet", 0.3f },
                     { "Dry", 0.7f },
                 }
-            };
+            }
+        ];
 
-            return [whisperEffect];
-        }
-
-        public static List<EffectReference> GetPostDistortionEffects()
-        {
-
-            EffectReference robotEffect = new(typeof(RobotEffectWrapper))
+        public static List<EffectReference> PostDistortionEffects { get; } =
+        [
+            new(typeof(RobotEffectWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Wet", 0.3f },
                     { "Dry", 0.7f },
                 }
-            };
+            }
+        ];
 
-            return [robotEffect];
-        }
+        public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
+        public override List<EffectReference> GetPostDistortionEffects() => PostDistortionEffects;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using App.Audio.DSP.NWaves;
+using App.Audio.EffectsChains;
 using App.Audio.SignalChains;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
@@ -23,8 +24,8 @@ namespace App.Models
                     Settings = new AudioSettings()
                     {
                         DistortionType = typeof(DmoDistortionEffect),
-                        PreDistortionSignalChain = [],
-                        PostDistortionSignalChain = [],
+                        PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
+                        PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 2000,
@@ -46,8 +47,8 @@ namespace App.Models
                         DistortionOutput = 55,
                         DistortionWet = 0.3f,
                         DistortionDry = 0.7f,
-                        PreDistortionSignalChain = SSCChain.GetPreDistortionEffects(),
-                        PostDistortionSignalChain = SSCChain.GetPostDistortionEffects(),
+                        PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
+                        PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                         HighpassFrequency = 400,
                         LowpassFrequency = 5000,
                         PeakFrequency = 1500,
@@ -69,8 +70,8 @@ namespace App.Models
                         DistortionOutput = 42,
                         DistortionWet = 0.6f,
                         DistortionDry = 0.4f,
-                        PreDistortionSignalChain = [],
-                        PostDistortionSignalChain = [],
+                        PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
+                        PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 1300,
@@ -90,8 +91,8 @@ namespace App.Models
                         DistortionMode = null,
                         DistortionInput = 50,
                         DistortionOutput = 42,
-                        PreDistortionSignalChain = [],
-                        PostDistortionSignalChain = [],
+                        PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
+                        PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                         HighpassFrequency = 450,
                         LowpassFrequency = 6000,
                         PeakFrequency = 2000,
@@ -111,8 +112,8 @@ namespace App.Models
                         DistortionMode = null,
                         DistortionInput = 50,
                         DistortionOutput = 42,
-                        PreDistortionSignalChain = [],
-                        PostDistortionSignalChain = [],
+                        PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
+                        PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 2000,
