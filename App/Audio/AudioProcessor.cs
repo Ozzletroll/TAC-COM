@@ -298,6 +298,13 @@ namespace TAC_COM.Audio
                 }
             }
 
+            // Profile specific gain adjustment
+            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+            {
+                GainDB = ActiveProfile?.Settings.GainAdjust ?? 0,
+            });
+
+            // User gain control
             outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
             {
                 GainDB = UserGainLevel,

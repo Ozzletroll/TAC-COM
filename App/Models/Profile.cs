@@ -1,5 +1,4 @@
 ﻿using CSCore;
-using CSCore.Streams.Effects;
 using NWaves.Effects;
 using TAC_COM.Audio.Utils;
 
@@ -48,5 +47,7 @@ namespace TAC_COM.Models
 
         public List<EffectReference>? PreDistortionSignalChain;
         public List<EffectReference>? PostDistortionSignalChain;
+
+        public float GainAdjust = 0;
     }
 }
