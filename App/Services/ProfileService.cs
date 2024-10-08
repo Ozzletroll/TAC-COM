@@ -8,7 +8,7 @@ using TAC_COM.Models;
 
 namespace App.Models
 {
-    public class ProfileManager
+    public class ProfileService
     {
         public static List<Profile> GetAllProfiles()
         {

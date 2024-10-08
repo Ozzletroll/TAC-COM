@@ -248,7 +248,7 @@ namespace TAC_COM.ViewModels
 
         public AudioInterfaceViewModel(MainViewModel mainViewModel)
         {
-            Profiles = ProfileManager.GetAllProfiles();
+            Profiles = ProfileService.GetAllProfiles();
 
             audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
