@@ -41,17 +41,13 @@ namespace App.Models
                 {
                     Settings = new AudioSettings()
                     {
-                        DistortionType = typeof(DistortionWrapper),
-                        DistortionMode = DistortionMode.SoftClipping,
-                        DistortionInput = 34,
-                        DistortionOutput = 55,
-                        DistortionWet = 0.3f,
-                        DistortionDry = 0.7f,
+                        DistortionType = typeof(DmoDistortionEffect),
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 400,
-                        LowpassFrequency = 5000,
-                        PeakFrequency = 1500,
+                        HighpassFrequency = 700,
+                        LowpassFrequency = 9000,
+                        PeakFrequency = 3500,
+                        GainAdjust = 3,
                     }
                 });
 
@@ -68,13 +64,14 @@ namespace App.Models
                         DistortionMode = DistortionMode.HardClipping,
                         DistortionInput = 30,
                         DistortionOutput = 42,
-                        DistortionWet = 0.6f,
-                        DistortionDry = 0.4f,
+                        DistortionWet = 0.7f,
+                        DistortionDry = 0.3f,
                         PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 1300,
+                        GainAdjust = 1,
                     }
                 });
 
@@ -110,7 +107,7 @@ namespace App.Models
                     {
                         DistortionType = typeof(DmoDistortionEffect),
                         DistortionMode = null,
-                        DistortionInput = 50,
+                        DistortionInput = 40,
                         DistortionOutput = 42,
                         PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
