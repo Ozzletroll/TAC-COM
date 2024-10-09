@@ -310,7 +310,7 @@ namespace TAC_COM.Audio
                 GainDB = UserGainLevel,
             }, out UserGainControl);
 
-            return outputSampleSource;
+            return outputSampleSource ?? throw new InvalidOperationException("Processed SampleSource cannot be null.");
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace TAC_COM.Audio
                 Release = 5,
             }, out DryNoiseGate);
 
-            return sampleSource == null ? throw new InvalidOperationException("Sample source cannot be null.") : (ISampleSource)sampleSource;
+            return sampleSource ?? throw new InvalidOperationException("Dry SampleSource cannot be null.");
         }
 
         /// <summary>

@@ -8,33 +8,27 @@ namespace TAC_COM.Models
         public Type EffectType = type;
         public Dictionary<string, object>? Parameters;
 
-        public ISampleSource CreateInstance(ISampleSource sourceParameter)
+        public ISampleSource CreateInstance(ISampleSource? sourceParameter)
         {
-            if (EffectType != null)
+            ConstructorInfo? constructor = EffectType.GetConstructors()
+                .FirstOrDefault(ctor => ctor.GetParameters().Length == 1 &&
+                                        ctor.GetParameters()[0].ParameterType == typeof(ISampleSource));
+
+            var instance = constructor?.Invoke([sourceParameter]) as ISampleSource;
+
+            if (instance != null && Parameters != null)
             {
-                ConstructorInfo? constructor = EffectType.GetConstructors()
-                    .FirstOrDefault(ctor => ctor.GetParameters().Length == 1 &&
-                                            ctor.GetParameters()[0].ParameterType == typeof(ISampleSource));
-
-                if (constructor != null)
+                foreach (var param in Parameters)
                 {
-                    var instance = constructor.Invoke([sourceParameter]) as ISampleSource;
-
-                    if (instance != null && Parameters != null)
+                    var property = EffectType.GetProperty(param.Key);
+                    if (property != null && property.CanWrite)
                     {
-                        foreach (var param in Parameters)
-                        {
-                            var property = EffectType.GetProperty(param.Key);
-                            if (property != null && property.CanWrite)
-                            {
-                                property.SetValue(instance, param.Value);
-                            }
-                        }
+                        property.SetValue(instance, param.Value);
                     }
-                    if (instance != null) return instance;
                 }
             }
-            throw new InvalidOperationException("Effect failed to instantiate.");
+            if (instance != null) return instance;
+            else throw new InvalidOperationException("Effect failed to instantiate.");
         }
     }
 }
