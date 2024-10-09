@@ -22,6 +22,7 @@ namespace TAC_COM.Audio
         private SoundInSource? passthroughSource;
         public VolumeSource? DryMixLevel;
         public VolumeSource? WetMixLevel;
+        public VolumeSource? EffectsMixLevel;
         private VolumeSource? NoiseMixLevel;
         public VolumeSource? WetNoiseMixLevel;
         public Gain? PostDistortionGainReduction;
@@ -372,8 +373,8 @@ namespace TAC_COM.Audio
                 DivideResult = true,
             };
 
-            WetMixLevel = wetMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
-            NoiseMixLevel = noiseMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+            WetMixLevel = wetMix.AppendSource(x => new VolumeSource(x));
+            NoiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
 
             WetNoiseMixer.AddSource(WetMixLevel);
             WetNoiseMixer.AddSource(NoiseMixLevel);
@@ -388,8 +389,8 @@ namespace TAC_COM.Audio
                 DivideResult = true,
             };
 
-            WetNoiseMixLevel = WetNoiseMixer.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
-            DryMixLevel = dryMix.ToWaveSource().AppendSource(x => new VolumeSource(x.ToSampleSource()));
+            WetNoiseMixLevel = WetNoiseMixer.AppendSource(x => new VolumeSource(x));
+            DryMixLevel = dryMix.AppendSource(x => new VolumeSource(x));
 
             WetDryMixer.AddSource(WetNoiseMixLevel);
             WetDryMixer.AddSource(DryMixLevel);
