@@ -44,7 +44,7 @@ namespace App.Models
                         DistortionType = typeof(DmoDistortionEffect),
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 700,
+                        HighpassFrequency = 400,
                         LowpassFrequency = 9000,
                         PeakFrequency = 3500,
                         GainAdjust = 3,
