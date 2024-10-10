@@ -365,9 +365,19 @@ namespace TAC_COM.Audio
             var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
             peakFiltered.Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 1);
 
+            var distortedSource = peakFiltered.AppendSource(x => new TubeDistortionWrapper(x)
+            {
+                Wet = 0.5f,
+                Dry = 0.5f,
+                InputGainDB = 10,
+                OutputGainDB = -5,
+                Q = -0.2f,
+                Distortion = 5,
+            });
+
             // Compression
             var compressedSource =
-                peakFiltered.ToWaveSource()
+                distortedSource.ToWaveSource()
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 10f,
@@ -379,7 +389,7 @@ namespace TAC_COM.Audio
 
             var outputSource = compressedSource.ToSampleSource().AppendSource(x => new Gain(x)
             {
-                GainDB = 5,
+                GainDB = 3,
             });
 
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");
