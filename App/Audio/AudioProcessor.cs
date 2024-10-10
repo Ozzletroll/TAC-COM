@@ -19,10 +19,10 @@ namespace TAC_COM.Audio
     {
 
         private SoundInSource? inputSource;
+        private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
         public VolumeSource? DryMixLevel;
         public VolumeSource? WetMixLevel;
-        public VolumeSource? EffectsMixLevel;
         private VolumeSource? NoiseMixLevel;
         public VolumeSource? WetNoiseMixLevel;
         public Gain? PostDistortionGainReduction;
@@ -150,9 +150,11 @@ namespace TAC_COM.Audio
         public void Initialise(WasapiCapture input, Profile activeProfile)
         {
             inputSource?.Dispose();
+            parallelSource?.Dispose();
             passthroughSource?.Dispose();
 
             inputSource = new SoundInSource(input) { FillWithZeros = true };
+            parallelSource = new SoundInSource(input) { FillWithZeros = true };
             passthroughSource = new SoundInSource(input) { FillWithZeros = true };
             SampleRate = inputSource.WaveFormat.SampleRate;
             ActiveProfile = activeProfile;
@@ -305,14 +307,86 @@ namespace TAC_COM.Audio
                 GainDB = ActiveProfile?.Settings.GainAdjust ?? 0,
             });
 
+            // Combine parallel processing chain with processed source
+            var effectsSource = outputSampleSource.ToMono().ChangeSampleRate(SampleRate);
+            var drySource = ParallelProcessedSignalChain(parallelSource.ToSampleSource()).ToMono().ChangeSampleRate(SampleRate);
+
+            // Mix wet signal with noise source
+            var wetDryMixer = new Mixer(1, SampleRate)
+            {
+                FillWithZeros = true,
+                DivideResult = true,
+            };
+
+            var wetMixLevel = effectsSource.AppendSource(x => new VolumeSource(x));
+            var dryMixLevel = drySource.AppendSource(x => new VolumeSource(x));
+
+            wetDryMixer.AddSource(wetMixLevel);
+            wetDryMixer.AddSource(dryMixLevel);
+
+            wetMixLevel.Volume = 0.9f;
+            dryMixLevel.Volume = 0.1f;
+
             // User gain control
-            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+            outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
             {
                 GainDB = UserGainLevel,
             }, out UserGainControl);
 
             return outputSampleSource ?? throw new InvalidOperationException("Processed SampleSource cannot be null.");
         }
+
+        /// <summary>
+        /// Returns the assembled parallel processing signal chain, for use in
+        /// the InputSignalChain.
+        /// </summary>
+        internal ISampleSource ParallelProcessedSignalChain(ISampleSource parallelSource)
+        {
+            if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
+
+            // Noise gate
+            var sampleSource = parallelSource.AppendSource(x => new Gate(x)
+            {
+                ThresholdDB = NoiseGateThreshold,
+                Attack = 5,
+                Hold = 30,
+                Release = 5,
+            });
+
+            // Highpass filter
+            var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
+            removedLowEnd.Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency);
+
+            // Lowpass filter
+            var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
+            removedHighEnd.Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency);
+
+            // Peak filter
+            var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
+            peakFiltered.Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 1);
+
+            // Compression
+            var compressedSource =
+                peakFiltered.ToWaveSource()
+                .AppendSource(x => new DmoCompressorEffect(x)
+                {
+                    Attack = 10f,
+                    Gain = 30,
+                    Ratio = 50,
+                    Release = 50,
+                    Threshold = -20
+                });
+
+            var outputSource = compressedSource.ToSampleSource().AppendSource(x => new Gain(x)
+            {
+                GainDB = 5,
+            });
+
+            return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");
+        }
+
+
+
 
         /// <summary>
         /// Returns the assembled unprocessed input signal chain.
