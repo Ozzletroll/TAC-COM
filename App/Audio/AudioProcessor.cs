@@ -381,10 +381,10 @@ namespace TAC_COM.Audio
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 10f,
-                    Gain = 30,
+                    Gain = 40,
                     Ratio = 50,
                     Release = 50,
-                    Threshold = -20
+                    Threshold = -40
                 });
 
             var outputSource = compressedSource.ToSampleSource().AppendSource(x => new Gain(x)

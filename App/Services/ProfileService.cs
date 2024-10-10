@@ -29,6 +29,7 @@ namespace App.Models
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 2000,
+                        GainAdjust = 5
                     }
                 });
 
@@ -44,10 +45,10 @@ namespace App.Models
                         DistortionType = typeof(DmoDistortionEffect),
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 400,
+                        HighpassFrequency = 600,
                         LowpassFrequency = 9000,
-                        PeakFrequency = 3500,
-                        GainAdjust = 3,
+                        PeakFrequency = 5500,
+                        GainAdjust = 7,
                     }
                 });
 
@@ -71,7 +72,7 @@ namespace App.Models
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 1300,
-                        GainAdjust = 1,
+                        GainAdjust = 5,
                     }
                 });
 
@@ -90,9 +91,10 @@ namespace App.Models
                         DistortionOutput = 42,
                         PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 450,
-                        LowpassFrequency = 6000,
-                        PeakFrequency = 2000,
+                        HighpassFrequency = 350,
+                        LowpassFrequency = 5000,
+                        PeakFrequency = 3000,
+                        GainAdjust = 5,
                     }
                 });
 
@@ -114,6 +116,7 @@ namespace App.Models
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 2000,
+                        GainAdjust = 5,
                     }
                 });
 
