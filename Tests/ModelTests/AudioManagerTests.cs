@@ -1,7 +1,9 @@
-namespace Tests
+﻿using TAC_COM;
+
+namespace Tests.ModelTests
 {
     [TestClass]
-    public class UnitTest1
+    public class AudioManagerTests
     {
         [TestMethod]
         public void TestMethod1()
