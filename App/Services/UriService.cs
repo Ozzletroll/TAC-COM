@@ -13,11 +13,17 @@ namespace TAC_COM.Services
         {
             return new BitmapImage(new Uri($"pack://application:,,,/Static/Icons/Icon-{iconName}.ico"));
         }
+
+        public Uri GetResourcesUri()
+        {
+            return new Uri("pack://application:,,,/Resources.xaml");
+        }
     }
 
     public interface IUriService
     {
         Uri GetThemeUri(string themeName);
         BitmapImage GetIconUri(string IconName);
+        Uri GetResourcesUri();
     }
 }

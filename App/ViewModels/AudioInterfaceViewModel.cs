@@ -11,6 +11,7 @@ namespace TAC_COM.ViewModels
         public SettingsService settingsService;
         private readonly IconService iconService;
         private readonly WindowService windowService;
+        private readonly ThemeService themeService;
         private readonly AudioManager audioManager;
         private readonly KeybindManager keybindManager;
 
@@ -169,7 +170,7 @@ namespace TAC_COM.ViewModels
                 if (value != null)
                 {
                     audioManager.activeProfile = value;
-                    ThemeService.ChangeTheme(targetTheme: value.Theme);
+                    themeService.ChangeTheme(targetTheme: value.Theme);
                     iconService.SetActiveProfileIcon(value.Icon);
                     settingsService.UpdateAppConfig(nameof(ActiveProfile), value);
                 }
@@ -245,15 +246,17 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel(IUriService _uriService, IconService _iconService)
+        public AudioInterfaceViewModel(IUriService uriService, IconService _iconService)
         {
-            Profiles = new ProfileService(_uriService).GetAllProfiles();
+            Profiles = new ProfileService(uriService).GetAllProfiles();
 
             audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new();
             iconService = _iconService;
+
+            themeService = new(uriService);
 
             keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
