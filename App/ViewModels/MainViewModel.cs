@@ -7,7 +7,7 @@ namespace TAC_COM.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public ViewModelBase CurrentViewModel { get; set; }
-        private EventAggregator eventAggregator;
+        private readonly EventAggregator eventAggregator;
 
         private System.Windows.Media.ImageSource? activeProfileIcon;
         public System.Windows.Media.ImageSource? ActiveProfileIcon
