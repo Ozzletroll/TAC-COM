@@ -2,7 +2,7 @@
 
 namespace TAC_COM.Services
 {
-    public class ThemeService(IUriService uriService)
+    public class ThemeService(IUriService uriService) : IThemeService
     {
         private readonly IUriService UriService = uriService;
         private static ResourceDictionary? CurrentTheme;
@@ -20,5 +20,10 @@ namespace TAC_COM.Services
 
             CurrentTheme = TargetTheme;
         }
+    }
+
+    public interface IThemeService
+    {
+        public void ChangeTheme(Uri targetTheme);
     }
 }

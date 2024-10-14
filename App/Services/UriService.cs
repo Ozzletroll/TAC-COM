@@ -24,6 +24,6 @@ namespace TAC_COM.Services
     {
         Uri GetThemeUri(string themeName);
         BitmapImage GetIconUri(string IconName);
-        Uri GetResourcesUri();
+        Uri? GetResourcesUri();
     }
 }

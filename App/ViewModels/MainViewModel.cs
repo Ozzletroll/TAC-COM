@@ -64,7 +64,11 @@ namespace TAC_COM.ViewModels
             eventAggregator.Subscribe<ChangeNotifyIconMessage>(OnChangeNotifyIcon);
             eventAggregator.Subscribe<SetActiveProfileIconMessage>(OnSetActiveProfileIcon);
 
-            CurrentViewModel = new AudioInterfaceViewModel(new UriService(), new IconService(eventAggregator));
+            UriService uriService = new();
+            IconService iconService = new(eventAggregator);
+            ThemeService themeService = new(uriService);
+
+            CurrentViewModel = new AudioInterfaceViewModel(uriService, iconService, themeService);
         }
     }
 }
