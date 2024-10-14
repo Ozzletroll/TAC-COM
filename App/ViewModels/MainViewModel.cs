@@ -1,10 +1,13 @@
-﻿using System.Drawing;
+﻿using TAC_COM.Services;
+using TAC_COM.Utilities;
+using System.Drawing;
 
 namespace TAC_COM.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public ViewModelBase CurrentViewModel { get; }
+        public ViewModelBase CurrentViewModel { get; set; }
+        private EventAggregator eventAggregator;
 
         private System.Windows.Media.ImageSource? activeProfileIcon;
         public System.Windows.Media.ImageSource? ActiveProfileIcon
@@ -45,9 +48,23 @@ namespace TAC_COM.ViewModels
             IconText = notifyText;
         }
 
-        public MainViewModel()
+        private void OnChangeNotifyIcon(ChangeNotifyIconMessage message)
         {
-            CurrentViewModel = new AudioInterfaceViewModel(this);
+            ChangeNotifyIcon(message.IconPath, message.Tooltip);
+        }
+
+        private void OnSetActiveProfileIcon(SetActiveProfileIconMessage message)
+        {
+            ActiveProfileIcon = message.Icon;
+        }
+
+        public MainViewModel(EventAggregator _eventAggregator)
+        {
+            eventAggregator = _eventAggregator;
+            eventAggregator.Subscribe<ChangeNotifyIconMessage>(OnChangeNotifyIcon);
+            eventAggregator.Subscribe<SetActiveProfileIconMessage>(OnSetActiveProfileIcon);
+
+            CurrentViewModel = new AudioInterfaceViewModel(new UriService(), new IconService(eventAggregator));
         }
     }
 }

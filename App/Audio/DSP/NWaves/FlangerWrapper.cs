@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Audio.DSP.NWaves
+namespace TAC_COM.Audio.DSP.NWaves
 {
     internal class FlangerWrapper(ISampleSource inputSource) : ISampleSource
     {

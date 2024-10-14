@@ -1,7 +1,7 @@
-﻿using App.Audio.DSP.NWaves;
+﻿using TAC_COM.Audio.DSP.NWaves;
 using TAC_COM.Models;
 
-namespace App.Audio.EffectsChains
+namespace TAC_COM.Audio.EffectsChains
 {
     internal class HAChain : BaseChain
     {

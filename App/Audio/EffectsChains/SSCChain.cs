@@ -1,8 +1,8 @@
-﻿using App.Audio.DSP.NWaves;
-using App.Audio.EffectsChains;
+﻿using TAC_COM.Audio.DSP.NWaves;
+using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 
-namespace App.Audio.SignalChains
+namespace TAC_COM.Audio.SignalChains
 {
     public class SSCChain : BaseChain
     {

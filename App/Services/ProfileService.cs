@@ -1,16 +1,17 @@
-﻿using App.Audio.DSP.NWaves;
-using App.Audio.EffectsChains;
-using App.Audio.SignalChains;
+﻿using TAC_COM.Audio.DSP.NWaves;
+using TAC_COM.Audio.EffectsChains;
+using TAC_COM.Audio.SignalChains;
+using TAC_COM.Services;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
-using System.Windows.Media.Imaging;
-using TAC_COM.Models;
 
-namespace App.Models
+namespace TAC_COM.Models
 {
-    public class ProfileService
+    public class ProfileService(IUriService uriProvider)
     {
-        public static List<Profile> GetAllProfiles()
+        private readonly IUriService UriProvider = uriProvider;
+
+        public List<Profile> GetAllProfiles()
         {
             List<Profile> defaultProfiles = [];
 
@@ -18,8 +19,8 @@ namespace App.Models
                 new Profile(
                     profileName: "GMS Type-4 Datalink",
                     fileIdentifier: "GMS",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeGMS.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico")))
+                    theme: UriProvider.GetThemeUri("GMS"),
+                    icon: UriProvider.GetIconUri("GMS"))
                 {
                     Settings = new AudioSettings()
                     {
@@ -37,8 +38,8 @@ namespace App.Models
                 new Profile(
                     profileName: "SSC Hamadryas Stealth Tranceiver",
                     fileIdentifier: "SSC",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeSSC.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-GMS.ico")))
+                    theme: UriProvider.GetThemeUri("SSC"),
+                    icon: UriProvider.GetIconUri("GMS"))
                 {
                     Settings = new AudioSettings()
                     {
@@ -56,8 +57,8 @@ namespace App.Models
                 new Profile(
                     profileName: "IPS-N Integrated Tactical Network",
                     fileIdentifier: "IPSN",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeIPSN.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-IPSN.ico")))
+                    theme: UriProvider.GetThemeUri("IPSN"),
+                    icon: UriProvider.GetIconUri("IPSN"))
                 {
                     Settings = new AudioSettings()
                     {
@@ -80,8 +81,8 @@ namespace App.Models
                 new Profile(
                     profileName: "HA Hardened Waveform Radio",
                     fileIdentifier: "HA",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeHA.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HA.ico")))
+                    theme: UriProvider.GetThemeUri("HA"),
+                    icon: UriProvider.GetIconUri("HA"))
                 {
                     Settings = new AudioSettings()
                     {
@@ -102,8 +103,8 @@ namespace App.Models
                 new Profile(
                     profileName: "HORUS [UNRECOGNISED DEVICE]",
                     fileIdentifier: "HORUS",
-                    theme: new Uri("pack://application:,,,/Themes/ThemeHORUS.xaml", UriKind.Absolute),
-                    icon: new BitmapImage(new Uri("pack://application:,,,/Static/Icons/Icon-HORUS.ico")))
+                    theme: UriProvider.GetThemeUri("HORUS"),
+                    icon: UriProvider.GetIconUri("HORUS"))
                 {
                     Settings = new AudioSettings()
                     {

@@ -1,7 +1,7 @@
 ﻿using CSCore;
 using NWaves.Effects;
 
-namespace App.Audio.DSP.NWaves
+namespace TAC_COM.Audio.DSP.NWaves
 {
     internal class BitCrusherWrapper(ISampleSource inputSource) : ISampleSource
     {

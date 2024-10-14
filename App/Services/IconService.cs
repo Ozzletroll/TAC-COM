@@ -1,32 +1,29 @@
-﻿using TAC_COM.ViewModels;
+﻿using TAC_COM.Utilities;
 
 namespace TAC_COM.Services
 {
-    internal class IconService(MainViewModel? mainViewModel)
+    public class IconService(EventAggregator _eventAggregator)
     {
-        private readonly MainViewModel? MainViewModel = mainViewModel;
+        private readonly EventAggregator eventAggregator = _eventAggregator;
 
         public void SetLiveIcon()
         {
-            MainViewModel?.ChangeNotifyIcon("./Static/Icons/live.ico", "TAC/COM Live");
+            eventAggregator.Publish(new ChangeNotifyIconMessage("./Static/Icons/live.ico", "TAC/COM Live"));
         }
 
         public void SetEnabledIcon()
         {
-            MainViewModel?.ChangeNotifyIcon("./Static/Icons/enabled.ico", "TAC/COM Enabled");
+            eventAggregator.Publish(new ChangeNotifyIconMessage("./Static/Icons/enabled.ico", "TAC/COM Enabled"));
         }
 
         public void SetStandbyIcon()
         {
-            MainViewModel?.ChangeNotifyIcon("./Static/Icons/standby.ico", "TAC/COM Standby");
+            eventAggregator.Publish(new ChangeNotifyIconMessage("./Static/Icons/standby.ico", "TAC/COM Standby"));
         }
 
         public void SetActiveProfileIcon(System.Windows.Media.ImageSource icon)
         {
-            if (MainViewModel != null)
-            {
-                MainViewModel.ActiveProfileIcon = icon;
-            }
+            eventAggregator.Publish(new SetActiveProfileIconMessage(icon));
         }
     }
 }

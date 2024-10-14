@@ -5,7 +5,7 @@ using CSCore.SoundIn;
 using CSCore.DSP;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Models;
-using App.Audio.DSP.NWaves;
+using TAC_COM.Audio.DSP.NWaves;
 using NWaves.Effects;
 
 namespace TAC_COM.Audio

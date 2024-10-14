@@ -1,4 +1,5 @@
-﻿using App.Models;
+﻿using TAC_COM.Models;
+using TAC_COM.Services;
 using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -246,15 +247,15 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel(MainViewModel mainViewModel)
+        public AudioInterfaceViewModel(IUriService _uriService, IconService _iconService)
         {
-            Profiles = ProfileService.GetAllProfiles();
+            Profiles = new ProfileService(_uriService).GetAllProfiles();
 
             audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new();
-            iconService = new(mainViewModel);
+            iconService = _iconService;
 
             keybindManager = new(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
@@ -271,4 +272,3 @@ namespace TAC_COM.ViewModels
         }
     }
 }
- 

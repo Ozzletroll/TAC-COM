@@ -1,6 +1,6 @@
 ﻿using TAC_COM.Models;
 
-namespace App.Audio.EffectsChains
+namespace TAC_COM.Audio.EffectsChains
 {
     public class GMSChain : BaseChain
     {
