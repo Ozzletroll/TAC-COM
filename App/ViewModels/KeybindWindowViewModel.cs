@@ -3,7 +3,7 @@ using TAC_COM.Models;
 
 namespace TAC_COM.ViewModels
 {
-    internal class KeybindWindowViewModel : ViewModelBase
+    public class KeybindWindowViewModel : ViewModelBase
     {
         private readonly KeybindManager keybindManager;
 

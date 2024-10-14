@@ -7,7 +7,7 @@ using TAC_COM.Audio;
 
 namespace TAC_COM.Models
 {
-    internal class AudioManager : ModelBase
+    public class AudioManager : ModelBase
 
     {
         private MMDevice? activeInputDevice;

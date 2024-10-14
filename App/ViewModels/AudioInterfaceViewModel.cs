@@ -7,7 +7,7 @@ using TAC_COM.Services;
 
 namespace TAC_COM.ViewModels
 {
-    internal class AudioInterfaceViewModel : ViewModelBase
+    public class AudioInterfaceViewModel : ViewModelBase
     {
         public SettingsService settingsService;
         private readonly IconService iconService;

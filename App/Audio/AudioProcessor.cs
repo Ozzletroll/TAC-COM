@@ -395,9 +395,6 @@ namespace TAC_COM.Audio
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");
         }
 
-
-
-
         /// <summary>
         /// Returns the assembled unprocessed input signal chain.
         /// </summary>

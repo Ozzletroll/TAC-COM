@@ -2,7 +2,7 @@
 
 namespace TAC_COM.ViewModels
 {
-    internal class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         public ViewModelBase CurrentViewModel { get; }
 
