@@ -1,41 +1,59 @@
-using System.Windows.Media.Imaging;
 using TAC_COM.ViewModels;
 using TAC_COM.Services;
 using TAC_COM.Utilities;
-using TAC_COM.Models;
+using System.Reflection;
+using Tests.MockServices;
+using Tests.MockModels;
+using TAC_COM.Services.Interfaces;
+using Moq;
+using TAC_COM.Models.Interfaces;
 
 namespace Tests.ViewModelTests
 {
     [TestClass]
-    public class AudioInterfaceViewModelTests
+    public partial class AudioInterfaceViewModelTests
     {
-        public class MockUriProvider : IUriService
+        public EventAggregator eventAggregator = new();
+        public IUriService mockUriService = new MockUriService();
+        public IThemeService mockThemeService = new MockThemeService();
+        public ISettingsService mockSettingsService = new MockSettingsService();
+        public AudioInterfaceViewModel testViewModel;
+
+        private readonly Mock MockInputDevice;
+        private readonly Mock MockOutputDevice;
+
+        public AudioInterfaceViewModelTests() 
         {
-            public Uri GetThemeUri(string themeName) => new("http://mock.uri/" + themeName);
+            testViewModel = new AudioInterfaceViewModel(mockUriService, new IconService(eventAggregator), mockThemeService)
+            {
+                settingsService = mockSettingsService,
+                AudioManager = new MockAudioManager(),
+            };
 
-            public BitmapImage GetIconUri(string iconName) => new(new Uri("http://mock.uri/" + iconName));
+            var mockInputDevice = new Mock<IMMDeviceWrapper>();
+            mockInputDevice.Setup(device => device.FriendlyName).Returns("Test Input Device");
+            MockInputDevice = mockInputDevice;
 
-            public Uri? GetResourcesUri() => null;
+            var mockOutputDevice = new Mock<IMMDeviceWrapper>();
+            mockOutputDevice.Setup(device => device.FriendlyName).Returns("Test Output Device");
+            MockOutputDevice = mockOutputDevice;
+
+            testViewModel.AllInputDevices = [mockInputDevice.Object];
+            testViewModel.AllOutputDevices = [mockOutputDevice.Object];
         }
-
-        public class MockThemeService : IThemeService
-        {
-            public void ChangeTheme(Uri targetTheme) { }
-
-        }
-
 
         [TestMethod]
-        public void TestConstructor()
+        public void TestLoadDeviceSettings()
         {
-            var testEventAggregator = new EventAggregator();
-            var mockUriService = new MockUriProvider();
-            var mockThemeService = new MockThemeService();
-            var testViewModel = new AudioInterfaceViewModel(mockUriService, new IconService(testEventAggregator), mockThemeService);
+            // MockSettingsService stored InputDevice is set to "Test Input Device"
+            // MockSettingsService stored OutputDevice is set to "Test Output Device"
 
-            Assert.IsTrue(testViewModel.Profiles.Count != 0);
-            Assert.IsInstanceOfType(testViewModel.AudioManager, typeof(AudioManager));
-            Assert.IsInstanceOfType(testViewModel.settingsService, typeof(SettingsService));
+            var myClassInstance = testViewModel;
+            var loadDeviceSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadDeviceSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+            loadDeviceSettings?.Invoke(myClassInstance, []);
+
+            Assert.IsTrue(testViewModel.InputDevice == MockInputDevice.Object);
+            Assert.IsTrue(testViewModel.OutputDevice == MockOutputDevice.Object);
         }
     }
 }
