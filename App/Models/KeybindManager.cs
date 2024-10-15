@@ -6,9 +6,9 @@ using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {
-    public class KeybindManager(SettingsService settingsService) : ModelBase
+    public class KeybindManager(ISettingsService settingsService) : ModelBase
     {
-        public SettingsService SettingsService = settingsService;
+        public ISettingsService SettingsService = settingsService;
         private IDisposable? PTTKeybindSubscription;
         private IDisposable? PTTKeybindCatchSubscription;
         private IDisposable? UserKeybindSubscription;

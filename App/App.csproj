@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <None Remove="Static\Icons\enabled.ico" />
     <None Remove="Static\Icons\Icon-GMS.ico" />
     <None Remove="Static\Icons\Icon-HA.ico" />

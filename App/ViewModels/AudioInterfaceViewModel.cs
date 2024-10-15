@@ -8,7 +8,7 @@ namespace TAC_COM.ViewModels
 {
     public class AudioInterfaceViewModel : ViewModelBase
     {
-        public SettingsService settingsService;
+        public ISettingsService settingsService;
         private readonly IconService iconService;
         private readonly WindowService windowService;
         private readonly IThemeService themeService;
@@ -253,7 +253,7 @@ namespace TAC_COM.ViewModels
             audioManager = new();
             audioManager.DeviceListReset += OnDeviceListReset;
 
-            settingsService = new();
+            settingsService = new SettingsService();
             iconService = _iconService;
 
             themeService = _themeService;

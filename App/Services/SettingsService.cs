@@ -3,16 +3,16 @@ using TAC_COM.Settings;
 
 namespace TAC_COM.Services
 {
-    public class SettingsService
+    public class SettingsService : ISettingsService
     {
-        public Configuration AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        public AudioSettings AudioSettings;
-        public KeybindSettings KeybindSettings;
+        public Configuration AppConfig { get; private set; }
+        public AudioSettings AudioSettings { get; set; }
+        public KeybindSettings KeybindSettings { get; set; }
 
         public void UpdateAppConfig(string propertyName, object value)
         {
             // Check if property in settings
-            var property = AudioSettings.GetType().GetProperty(propertyName) 
+            var property = AudioSettings.GetType().GetProperty(propertyName)
                 ?? KeybindSettings.GetType().GetProperty(propertyName);
 
             // Update AppConfig
@@ -20,17 +20,17 @@ namespace TAC_COM.Services
             {
                 if (property.PropertyType == typeof(string))
                 {
-                    property.SetValue(property.DeclaringType 
+                    property.SetValue(property.DeclaringType
                         == typeof(AudioSettings) ? AudioSettings : KeybindSettings, value.ToString());
                 }
                 else if (property.PropertyType == typeof(float))
                 {
-                    property.SetValue(property.DeclaringType 
+                    property.SetValue(property.DeclaringType
                         == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (float)value);
                 }
                 else if (property.PropertyType == typeof(bool))
                 {
-                    property.SetValue(property.DeclaringType 
+                    property.SetValue(property.DeclaringType
                         == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (bool)value);
                 }
                 AppConfig.Save();
@@ -39,6 +39,8 @@ namespace TAC_COM.Services
 
         public SettingsService()
         {
+            AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
             if (AppConfig.Sections["AudioSettings"] is null)
             {
                 AppConfig.Sections.Add("AudioSettings", new AudioSettings());
@@ -51,5 +53,13 @@ namespace TAC_COM.Services
             AudioSettings = (AudioSettings)AppConfig.GetSection("AudioSettings");
             KeybindSettings = (KeybindSettings)AppConfig.GetSection("KeybindSettings");
         }
+    }
+
+    public interface ISettingsService
+    {
+        AudioSettings AudioSettings { get; set; }
+        KeybindSettings KeybindSettings { get; set; }
+        void UpdateAppConfig(string propertyName, object value);
+
     }
 }
