@@ -4,11 +4,10 @@ using CSCore.Streams.Effects;
 using CSCore.SoundIn;
 using CSCore.DSP;
 using TAC_COM.Audio.DSP;
-using TAC_COM.Models;
 using TAC_COM.Audio.DSP.NWaves;
 using NWaves.Effects;
 
-namespace TAC_COM.Audio
+namespace TAC_COM.Models
 {
 
     /// <summary>
@@ -54,7 +53,7 @@ namespace TAC_COM.Audio
         public float NoiseGateThreshold
         {
             get => noiseGateThreshold;
-            set 
+            set
             {
                 noiseGateThreshold = value;
                 if (HasInitialised)
@@ -97,7 +96,7 @@ namespace TAC_COM.Audio
             get => distortionLevel;
             set
             {
-                value = MinimumDistortion + (value * (100 - MinimumDistortion));
+                value = MinimumDistortion + value * (100 - MinimumDistortion);
                 distortionLevel = value;
                 if (HasInitialised && Distortion != null)
                 {
@@ -114,7 +113,7 @@ namespace TAC_COM.Audio
             get => qualityLevel;
             set
             {
-                value = Math.Max(MaximumQuality - (value * (MaximumQuality - MinimumQuality) / 100), 1);
+                value = Math.Max(MaximumQuality - value * (MaximumQuality - MinimumQuality) / 100, 1);
                 qualityLevel = value;
                 if (HasInitialised)
                 {
@@ -126,7 +125,7 @@ namespace TAC_COM.Audio
                     {
                         UpSampler.Quality = value;
                     }
-                    
+
                 }
             }
         }
@@ -139,7 +138,7 @@ namespace TAC_COM.Audio
             get => distortionCompensation;
             set
             {
-                distortionCompensation = MinDistortionCompensation + (value * (MaxDistortionCompensation - MinDistortionCompensation));
+                distortionCompensation = MinDistortionCompensation + value * (MaxDistortionCompensation - MinDistortionCompensation);
                 if (PostDistortionGainReduction != null)
                 {
                     PostDistortionGainReduction.GainDB = distortionCompensation;
@@ -268,7 +267,7 @@ namespace TAC_COM.Audio
 
                 filteredSource = filteredWaveSource.ToWaveSource();
             }
-            
+
             // Convert to SampleSource
             var outputSampleSource = filteredSource.ToSampleSource();
 
@@ -276,8 +275,8 @@ namespace TAC_COM.Audio
             if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper)
                 && ActiveProfile.Settings.DistortionMode != null)
             {
-                outputSampleSource 
-                    = outputSampleSource.AppendSource(x 
+                outputSampleSource
+                    = outputSampleSource.AppendSource(x
                     => new DistortionWrapper(x, (DistortionMode)ActiveProfile.Settings.DistortionMode)
                     {
                         InputGainDB = ActiveProfile.Settings.DistortionInput,

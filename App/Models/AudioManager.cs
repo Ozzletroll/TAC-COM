@@ -3,7 +3,6 @@ using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using TAC_COM.Audio;
 using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
