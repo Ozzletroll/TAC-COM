@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
@@ -18,12 +19,5 @@ namespace TAC_COM.Services
         {
             return new Uri("pack://application:,,,/Resources.xaml");
         }
-    }
-
-    public interface IUriService
-    {
-        Uri GetThemeUri(string themeName);
-        BitmapImage GetIconUri(string IconName);
-        Uri? GetResourcesUri();
     }
 }

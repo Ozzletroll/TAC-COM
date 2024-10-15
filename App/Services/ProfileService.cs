@@ -1,9 +1,9 @@
 ﻿using TAC_COM.Audio.DSP.NWaves;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Audio.SignalChains;
-using TAC_COM.Services;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Models
 {

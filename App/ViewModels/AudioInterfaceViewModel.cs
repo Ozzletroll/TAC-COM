@@ -4,6 +4,8 @@ using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services.Interfaces;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.ViewModels
 {

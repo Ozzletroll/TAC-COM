@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using TAC_COM.Services.Interfaces;
 using TAC_COM.Settings;
 
 namespace TAC_COM.Services
@@ -53,13 +54,5 @@ namespace TAC_COM.Services
             AudioSettings = (AudioSettings)AppConfig.GetSection("AudioSettings");
             KeybindSettings = (KeybindSettings)AppConfig.GetSection("KeybindSettings");
         }
-    }
-
-    public interface ISettingsService
-    {
-        AudioSettings AudioSettings { get; set; }
-        KeybindSettings KeybindSettings { get; set; }
-        void UpdateAppConfig(string propertyName, object value);
-
     }
 }

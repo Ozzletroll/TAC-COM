@@ -1,8 +1,7 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using TAC_COM.Services.Interfaces;
+using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
-using Microsoft.VisualBasic.Logging;
 using System.Text;
-using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {

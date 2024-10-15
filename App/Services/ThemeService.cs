@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
@@ -20,10 +21,5 @@ namespace TAC_COM.Services
 
             CurrentTheme = TargetTheme;
         }
-    }
-
-    public interface IThemeService
-    {
-        public void ChangeTheme(Uri targetTheme);
     }
 }
