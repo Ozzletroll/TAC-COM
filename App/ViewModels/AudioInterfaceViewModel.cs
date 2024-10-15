@@ -1,10 +1,8 @@
 ﻿using TAC_COM.Models;
 using TAC_COM.Services;
-using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
-using TAC_COM.Services.Interfaces;
 using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.ViewModels
@@ -27,18 +25,30 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public ObservableCollection<MMDevice> AllInputDevices
+        private ObservableCollection<IMMDeviceWrapper> allInputDevices;
+        public ObservableCollection<IMMDeviceWrapper> AllInputDevices
         {
-            get => audioManager.InputDevices;
+            get => allInputDevices;
+            set
+            {
+                allInputDevices = value;
+                OnPropertyChanged(nameof(AllInputDevices));
+            }
         }
 
-        public ObservableCollection<MMDevice> AllOutputDevices
+        private ObservableCollection<IMMDeviceWrapper> allOutputDevices;
+        public ObservableCollection<IMMDeviceWrapper> AllOutputDevices
         {
-            get => audioManager.OutputDevices;
+            get => allOutputDevices;
+            set
+            {
+                allOutputDevices = value;
+                OnPropertyChanged(nameof(AllOutputDevices));
+            }
         }
 
-        private MMDevice? inputDevice;
-        public MMDevice? InputDevice
+        private IMMDeviceWrapper? inputDevice;
+        public IMMDeviceWrapper? InputDevice
         {
             get => inputDevice;
             set
@@ -46,15 +56,15 @@ namespace TAC_COM.ViewModels
                 inputDevice = value;
                 if (value != null)
                 {
-                    audioManager.SetInputDevice(value);
+                    audioManager.SetInputDevice(value.Device);
                     OnPropertyChanged(nameof(InputDevice));
-                    settingsService.UpdateAppConfig(nameof(InputDevice), value);
+                    settingsService.UpdateAppConfig(nameof(InputDevice), value.Device);
                 }
             }
         }
 
-        private MMDevice? outputDevice;
-        public MMDevice? OutputDevice
+        private IMMDeviceWrapper? outputDevice;
+        public IMMDeviceWrapper? OutputDevice
         {
             get => outputDevice;
             set 
@@ -62,9 +72,9 @@ namespace TAC_COM.ViewModels
                 outputDevice = value;
                 if (value != null)
                 {
-                    audioManager.SetOutputDevice(value);
+                    audioManager.SetOutputDevice(value.Device);
                     OnPropertyChanged(nameof(OutputDevice));
-                    settingsService.UpdateAppConfig(nameof(OutputDevice), value);
+                    settingsService.UpdateAppConfig(nameof(OutputDevice), value.Device);
                 }
             } 
         }
@@ -195,15 +205,31 @@ namespace TAC_COM.ViewModels
             }
         }
         
+        private void LoadInputDevices()
+        {
+            foreach (var device in audioManager.InputDevices)
+            {
+                AllInputDevices.Add(new MMDeviceWrapper(device));
+            }
+        }
+
+        private void LoadOutputDevices()
+        {
+            foreach (var device in audioManager.OutputDevices)
+            {
+                AllOutputDevices.Add(new MMDeviceWrapper(device));
+            }
+        }
+
         private void LoadDeviceSettings()
         {
             // Load last used values from AppConfig
-            var savedInputDevice = AllInputDevices.FirstOrDefault(device => device.FriendlyName == settingsService.AudioSettings.InputDevice);
+            var savedInputDevice = AllInputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == settingsService.AudioSettings.InputDevice);
             if (savedInputDevice != null)
             {
                 InputDevice = savedInputDevice;
             }
-            var savedOutputDevice = AllOutputDevices.FirstOrDefault(device => device.FriendlyName == settingsService.AudioSettings.OutputDevice);
+            var savedOutputDevice = AllOutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == settingsService.AudioSettings.OutputDevice);
             if (savedOutputDevice != null)
             {
                 OutputDevice = savedOutputDevice;
@@ -270,11 +296,13 @@ namespace TAC_COM.ViewModels
 
             windowService = new(keybindManager);
 
-            if (settingsService.KeybindSettings != null)
-            {
-                keybindManager.LoadKeybindSettings();
-            }
+            keybindManager.LoadKeybindSettings();
 
+            allInputDevices = [];
+            allOutputDevices = [];
+
+            LoadInputDevices();
+            LoadOutputDevices();
             LoadDeviceSettings();
             LoadAudioSettings();
         }
