@@ -1,0 +1,33 @@
+﻿using System.Collections.ObjectModel;
+using CSCore.CoreAudioAPI;
+
+namespace TAC_COM.Models.Interfaces
+{
+    public interface IAudioManager
+    {
+        bool BypassState { get; set; }
+        ObservableCollection<MMDevice> InputDevices { get; set; }
+        ObservableCollection<MMDevice> OutputDevices { get; set; }
+        float InputPeakMeter { get; set; }
+        float NoiseGateThreshold { get; set; }
+        string NoiseGateThresholdString { get; }
+        float NoiseLevel { get; set; }
+        string NoiseLevelString { get; }
+        float OutputGainLevel { get; set; }
+        string OutputGainLevelString { get; }
+        float OutputPeakMeter { get; set; }
+        bool State { get; set; }
+        Profile? ActiveProfile { get; set; }
+
+        event AudioManager.DeviceListResetEventHandler? DeviceListReset;
+
+        void CheckBypassState();
+        void GateClose();
+        void GateOpen();
+        void GetAudioDevices();
+        void SetInputDevice(MMDevice inputDevice);
+        void SetOutputDevice(MMDevice outputDevice);
+        void StartAudio();
+        void ToggleState();
+    }
+}

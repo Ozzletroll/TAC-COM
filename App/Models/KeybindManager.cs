@@ -23,9 +23,9 @@ namespace TAC_COM.Models
                 pttKey = value;
                 OnPropertyChanged(nameof(PTTKey));
 
-                if (value != null )
+                if (value != null)
                 {
-                    foreach (var (key, dictValue) in value.ToDictionary()) 
+                    foreach (var (key, dictValue) in value.ToDictionary())
                     {
                         SettingsService.UpdateAppConfig(key, dictValue);
                     }
@@ -84,7 +84,7 @@ namespace TAC_COM.Models
         public void TogglePTTKeybind(bool state)
         {
             if (state) InitialisePTTKeySubscription();
-            else 
+            else
             {
                 DisposeKeyboardSubscription(PTTKeybindSubscription);
                 DisposeKeyboardSubscription(PTTKeybindCatchSubscription);
@@ -174,7 +174,7 @@ namespace TAC_COM.Models
                 passthrough: SettingsService.KeybindSettings.Passthrough);
         }
     }
-    
+
 
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
     {
@@ -232,7 +232,7 @@ namespace TAC_COM.Models
             }
             else
             {
-                bool[] modifiers = [Shift,  Ctrl, Alt];
+                bool[] modifiers = [Shift, Ctrl, Alt];
                 if (modifiers.Count(m => m) > 1)
                 {
                     List<string> heldKeys = [];
@@ -249,7 +249,7 @@ namespace TAC_COM.Models
                     if (Ctrl) output.Append("Ctrl");
                     if (Alt) output.Append("Alt");
                 }
-                
+
             }
             return output.ToString();
         }

@@ -4,17 +4,15 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
 using TAC_COM.Audio;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
-    public class AudioManager : ModelBase
-
+    public class AudioManager : ModelBase, IAudioManager
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
         private string? lastOutputDeviceID;
-        public ObservableCollection<MMDevice> inputDevices = [];
-        public ObservableCollection<MMDevice> outputDevices = [];
         private AudioMeterInformation? inputMeter;
         private AudioMeterInformation? outputMeter;
         private WasapiCapture? input;
@@ -22,7 +20,36 @@ namespace TAC_COM.Models
         private WasapiOut? sfxOutput;
         private readonly float sfxVolume = 0.5f;
         private readonly AudioProcessor audioProcessor = new();
+
         public Profile? activeProfile;
+        public Profile? ActiveProfile
+        {
+            get => activeProfile;
+            set
+            {
+                activeProfile = value;
+            }
+        }
+
+        public ObservableCollection<MMDevice> inputDevices = [];
+        public ObservableCollection<MMDevice> InputDevices
+        {
+            get => inputDevices;
+            set
+            {
+                inputDevices = value;
+            }
+        }
+
+        public ObservableCollection<MMDevice> outputDevices = [];
+        public ObservableCollection<MMDevice> OutputDevices
+        {
+            get => outputDevices;
+            set
+            {
+                outputDevices = value;
+            }
+        }
 
         private bool state;
         public bool State
@@ -127,9 +154,9 @@ namespace TAC_COM.Models
             }
         }
 
-        private void GetAudioDevices()
+        public void GetAudioDevices()
         {
-            inputDevices.Clear();
+            InputDevices.Clear();
             outputDevices.Clear();
 
             var enumerator = new MMDeviceEnumerator();
@@ -138,7 +165,7 @@ namespace TAC_COM.Models
 
             foreach (var device in allInputDevices)
             {
-                inputDevices.Add(device);
+                InputDevices.Add(device);
             }
             foreach (var device in allOutputDevices)
             {
@@ -170,7 +197,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private void ResetOutputDevice()
+        public void ResetOutputDevice()
         {
             if (activeOutputDevice is null) return;
             if (activeOutputDevice.IsDisposed)
@@ -219,7 +246,7 @@ namespace TAC_COM.Models
             }
         }
 
-        internal void CheckBypassState()
+        public void CheckBypassState()
         {
             if (!state)
             {
@@ -240,10 +267,10 @@ namespace TAC_COM.Models
             }
         }
 
-        void StartAudio()
+        public void StartAudio()
         {
             if (activeInputDevice != null
-                && activeOutputDevice != null 
+                && activeOutputDevice != null
                 && activeProfile != null)
             {
                 // Dispose of any old resources
@@ -266,7 +293,7 @@ namespace TAC_COM.Models
                 input.Initialize();
                 input.DataAvailable += OnDataAvailable;
                 input.Stopped += OnInputStopped;
-                
+
                 // Initiliase signal chain
                 audioProcessor.Initialise(input, activeProfile);
 
@@ -289,17 +316,17 @@ namespace TAC_COM.Models
             micOutput?.Dispose();
         }
 
-        void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
+        private void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
         {
             InputPeakMeter = 0;
         }
 
-        void OnOutputStopped(object? sender, PlaybackStoppedEventArgs e)
+        private void OnOutputStopped(object? sender, PlaybackStoppedEventArgs e)
         {
             OutputPeakMeter = 0;
         }
 
-        void OnDataAvailable(object? sender, DataAvailableEventArgs e)
+        private void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             if (inputMeter != null)
             {

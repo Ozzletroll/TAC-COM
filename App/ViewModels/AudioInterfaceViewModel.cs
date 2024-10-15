@@ -3,6 +3,7 @@ using TAC_COM.Services;
 using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.ViewModels
 {
@@ -12,22 +13,26 @@ namespace TAC_COM.ViewModels
         private readonly IconService iconService;
         private readonly WindowService windowService;
         private readonly IThemeService themeService;
-        private readonly AudioManager audioManager;
         private readonly KeybindManager keybindManager;
 
-        public AudioManager AudioManager
+        private IAudioManager audioManager;
+        public IAudioManager AudioManager
         {
             get => audioManager;
+            set
+            {
+                audioManager = value;
+            }
         }
 
         public ObservableCollection<MMDevice> AllInputDevices
         {
-            get => audioManager.inputDevices;
+            get => audioManager.InputDevices;
         }
 
         public ObservableCollection<MMDevice> AllOutputDevices
         {
-            get => audioManager.outputDevices;
+            get => audioManager.OutputDevices;
         }
 
         private MMDevice? inputDevice;
@@ -164,12 +169,12 @@ namespace TAC_COM.ViewModels
 
         public Profile? ActiveProfile
         {
-            get => audioManager.activeProfile;
+            get => audioManager.ActiveProfile;
             set
             {
                 if (value != null)
                 {
-                    audioManager.activeProfile = value;
+                    audioManager.ActiveProfile = value;
                     themeService.ChangeTheme(targetTheme: value.Theme);
                     iconService.SetActiveProfileIcon(value.Icon);
                     settingsService.UpdateAppConfig(nameof(ActiveProfile), value);
@@ -250,7 +255,7 @@ namespace TAC_COM.ViewModels
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
-            audioManager = new();
+            audioManager = new AudioManager();
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new SettingsService();
