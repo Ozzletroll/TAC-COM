@@ -6,8 +6,8 @@ namespace TAC_COM.Models.Interfaces
     public interface IAudioManager
     {
         bool BypassState { get; set; }
-        ObservableCollection<MMDevice> InputDevices { get; set; }
-        ObservableCollection<MMDevice> OutputDevices { get; set; }
+        ObservableCollection<IMMDeviceWrapper> InputDevices { get; set; }
+        ObservableCollection<IMMDeviceWrapper> OutputDevices { get; set; }
         float InputPeakMeter { get; set; }
         float NoiseGateThreshold { get; set; }
         string NoiseGateThresholdString { get; }

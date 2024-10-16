@@ -210,7 +210,7 @@ namespace TAC_COM.ViewModels
             AllInputDevices.Clear();
             foreach (var device in audioManager.InputDevices)
             {
-                AllInputDevices.Add(new MMDeviceWrapper(device));
+                AllInputDevices.Add(device);
             }
         }
 
@@ -219,7 +219,7 @@ namespace TAC_COM.ViewModels
             AllOutputDevices.Clear();
             foreach (var device in audioManager.OutputDevices)
             {
-                AllOutputDevices.Add(new MMDeviceWrapper(device));
+                AllOutputDevices.Add(device);
             }
         }
 

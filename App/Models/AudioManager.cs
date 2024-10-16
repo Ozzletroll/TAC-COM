@@ -30,8 +30,8 @@ namespace TAC_COM.Models
             }
         }
 
-        public ObservableCollection<MMDevice> inputDevices = [];
-        public ObservableCollection<MMDevice> InputDevices
+        public ObservableCollection<IMMDeviceWrapper> inputDevices = [];
+        public ObservableCollection<IMMDeviceWrapper> InputDevices
         {
             get => inputDevices;
             set
@@ -40,8 +40,8 @@ namespace TAC_COM.Models
             }
         }
 
-        public ObservableCollection<MMDevice> outputDevices = [];
-        public ObservableCollection<MMDevice> OutputDevices
+        public ObservableCollection<IMMDeviceWrapper> outputDevices = [];
+        public ObservableCollection<IMMDeviceWrapper> OutputDevices
         {
             get => outputDevices;
             set
@@ -164,11 +164,11 @@ namespace TAC_COM.Models
 
             foreach (var device in allInputDevices)
             {
-                InputDevices.Add(device);
+                InputDevices.Add(new MMDeviceWrapper(device));
             }
             foreach (var device in allOutputDevices)
             {
-                outputDevices.Add(device);
+                outputDevices.Add(new MMDeviceWrapper(device));
             }
 
             OnPropertyChanged(nameof(inputDevices));
@@ -177,20 +177,20 @@ namespace TAC_COM.Models
 
         public void SetInputDevice(MMDevice inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(device => device.DeviceID == inputDevice.DeviceID);
+            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == inputDevice.DeviceID);
             if (matchingDevice != null)
             {
-                activeInputDevice = matchingDevice;
+                activeInputDevice = matchingDevice.Device;
                 inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
             }
         }
 
         public void SetOutputDevice(MMDevice outputDevice)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(device => device.DeviceID == outputDevice.DeviceID);
+            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == outputDevice.DeviceID);
             if (matchingDevice != null)
             {
-                activeOutputDevice = matchingDevice;
+                activeOutputDevice = matchingDevice.Device;
                 lastOutputDeviceID = outputDevice.DeviceID;
                 outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
             }
@@ -202,10 +202,10 @@ namespace TAC_COM.Models
             if (activeOutputDevice.IsDisposed)
             {
                 GetAudioDevices();
-                var refoundOutputDevice = outputDevices.FirstOrDefault(device => device.DeviceID == lastOutputDeviceID);
+                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == lastOutputDeviceID);
                 if (refoundOutputDevice != null)
                 {
-                    SetOutputDevice(refoundOutputDevice);
+                    SetOutputDevice(refoundOutputDevice.Device);
                     OnPropertyChanged(nameof(inputDevices));
                     OnPropertyChanged(nameof(outputDevices));
                     RaiseDeviceListReset();
