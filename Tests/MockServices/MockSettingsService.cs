@@ -14,8 +14,8 @@ namespace Tests.MockServices
         {
             AudioSettings = new AudioSettings
             {
-                InputDevice = "Test Input Device",
-                OutputDevice = "Test Output Device",
+                InputDevice = "Test Input Device 1",
+                OutputDevice = "Test Output Device 1",
                 NoiseGateThreshold = 50,
                 OutputLevel = 5,
                 InterferenceLevel = 25,
