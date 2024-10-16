@@ -1,6 +1,7 @@
 ﻿using TAC_COM.Services;
 using TAC_COM.Utilities;
 using System.Drawing;
+using TAC_COM.Models;
 
 namespace TAC_COM.ViewModels
 {
@@ -67,8 +68,9 @@ namespace TAC_COM.ViewModels
             UriService uriService = new();
             IconService iconService = new(eventAggregator);
             ThemeService themeService = new(uriService);
+            AudioManager audioManager = new();
 
-            CurrentViewModel = new AudioInterfaceViewModel(uriService, iconService, themeService);
+            CurrentViewModel = new AudioInterfaceViewModel(audioManager, uriService, iconService, themeService);
         }
     }
 }

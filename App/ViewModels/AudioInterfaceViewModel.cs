@@ -207,6 +207,7 @@ namespace TAC_COM.ViewModels
         
         private void LoadInputDevices()
         {
+            AllInputDevices.Clear();
             foreach (var device in audioManager.InputDevices)
             {
                 AllInputDevices.Add(new MMDeviceWrapper(device));
@@ -215,6 +216,7 @@ namespace TAC_COM.ViewModels
 
         private void LoadOutputDevices()
         {
+            AllOutputDevices.Clear();
             foreach (var device in audioManager.OutputDevices)
             {
                 AllOutputDevices.Add(new MMDeviceWrapper(device));
@@ -279,11 +281,11 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel(IUriService _uriService, IconService _iconService, IThemeService _themeService)
+        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IconService _iconService, IThemeService _themeService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
-            audioManager = new AudioManager();
+            audioManager = _audioManager;
             audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new SettingsService();
