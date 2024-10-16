@@ -10,6 +10,12 @@ namespace Tests.MockModels
 
         public override string ToString() => FriendlyName;
 
-        public MMDevice Device { get; set; }
+        private MMDevice? device;
+        public MMDevice Device
+        {
+            get => device!;
+            set => device = value;
+        }
+
     }
 }
