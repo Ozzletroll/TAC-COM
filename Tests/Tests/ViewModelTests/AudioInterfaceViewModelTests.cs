@@ -5,7 +5,6 @@ using System.Reflection;
 using Tests.MockServices;
 using Tests.MockModels;
 using TAC_COM.Services.Interfaces;
-using Moq;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.ViewModelTests
@@ -19,9 +18,6 @@ namespace Tests.ViewModelTests
         public ISettingsService mockSettingsService = new MockSettingsService();
         public IAudioManager mockAudioManager = new MockAudioManager();
         public AudioInterfaceViewModel testViewModel;
-
-        private Mock? MockInputDevice;
-        private Mock? MockOutputDevice;
 
         public AudioInterfaceViewModelTests() 
         {
@@ -69,22 +65,17 @@ namespace Tests.ViewModelTests
             // MockSettingsService stored InputDevice is set to "Test Input Device 1"
             // MockSettingsService stored OutputDevice is set to "Test Output Device 1"
 
-            var mockInputDevice = new Mock<IMMDeviceWrapper>();
-            mockInputDevice.Setup(device => device.FriendlyName).Returns("Test Input Device 1");
-            MockInputDevice = mockInputDevice;
+            var mockInputDevice = new MockMMDeviceWrapper("Test Input Device 1");
+            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
 
-            var mockOutputDevice = new Mock<IMMDeviceWrapper>();
-            mockOutputDevice.Setup(device => device.FriendlyName).Returns("Test Output Device 1");
-            MockOutputDevice = mockOutputDevice;
-
-            testViewModel.AllInputDevices = [mockInputDevice.Object];
-            testViewModel.AllOutputDevices = [mockOutputDevice.Object];
+            testViewModel.AllInputDevices = [mockInputDevice];
+            testViewModel.AllOutputDevices = [mockOutputDevice];
 
             var loadDeviceSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadDeviceSettings", BindingFlags.NonPublic | BindingFlags.Instance);
             loadDeviceSettings?.Invoke(testViewModel, []);
 
-            Assert.IsTrue(testViewModel.InputDevice == MockInputDevice.Object);
-            Assert.IsTrue(testViewModel.OutputDevice == MockOutputDevice.Object);
+            Assert.IsTrue(testViewModel.InputDevice?.FriendlyName == mockInputDevice.FriendlyName);
+            Assert.IsTrue(testViewModel.OutputDevice?.FriendlyName == mockOutputDevice.FriendlyName);
         }
     }
 }

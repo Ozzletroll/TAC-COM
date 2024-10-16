@@ -10,6 +10,6 @@ namespace Tests.MockModels
 
         public override string ToString() => FriendlyName;
 
-        public MMDevice Device { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public MMDevice Device { get; set; }
     }
 }
