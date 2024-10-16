@@ -1,6 +1,6 @@
 ﻿using TAC_COM;
 
-namespace Tests.ModelTests
+namespace Tests.Tests.ModelTests
 {
     [TestClass]
     public class AudioManagerTests
