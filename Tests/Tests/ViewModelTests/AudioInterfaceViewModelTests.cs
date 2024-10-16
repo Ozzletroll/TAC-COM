@@ -48,6 +48,22 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestLoadOutputDevices()
+        {
+            var mockDevice1 = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockDevice2 = new MockMMDeviceWrapper("Test Output Device 2");
+
+            testViewModel.AudioManager.OutputDevices = [mockDevice1, mockDevice2];
+
+            var loadOutputDevices = typeof(AudioInterfaceViewModel).GetMethod("LoadOutputDevices", BindingFlags.NonPublic | BindingFlags.Instance);
+            loadOutputDevices?.Invoke(testViewModel, []);
+
+            Assert.IsTrue(testViewModel.AllOutputDevices.Count == 2);
+            Assert.IsTrue(testViewModel.AllOutputDevices[0].FriendlyName == "Test Output Device 1");
+            Assert.IsTrue(testViewModel.AllOutputDevices[1].FriendlyName == "Test Output Device 2");
+        }
+
+        [TestMethod]
         public void TestLoadDeviceSettings()
         {
             // MockSettingsService stored InputDevice is set to "Test Input Device 1"
