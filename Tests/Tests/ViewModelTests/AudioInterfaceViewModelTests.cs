@@ -84,6 +84,17 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestStateProperty()
+        {
+            TestPropertyChange(testViewModel, "State", true);
+            Assert.IsTrue(testViewModel.IsSelectable == false);
+
+            TestPropertyChange(testViewModel, "State", false);
+            Assert.IsTrue(testViewModel.IsSelectable == true);
+            Assert.IsTrue(testViewModel.BypassState == true);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
