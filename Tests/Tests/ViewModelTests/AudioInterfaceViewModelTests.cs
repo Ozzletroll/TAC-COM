@@ -7,7 +7,6 @@ using Tests.MockModels;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Settings;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 
 namespace Tests.ViewModelTests
@@ -51,14 +50,22 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestAllInputDevicesProperty()
         {
-            var viewModel = testViewModel;
             var mockDevice = new MockMMDeviceWrapper("Test Input Device");
             ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
 
-            TestPropertyChange(viewModel, "AllInputDevices", newPropertyValue);
+            TestPropertyChange(testViewModel, "AllInputDevices", newPropertyValue);
         }
 
-            [TestMethod]
+        [TestMethod]
+        public void TestAllOutputDevicesProperty()
+        {
+            var mockDevice = new MockMMDeviceWrapper("Test Output Device");
+            ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
+
+            TestPropertyChange(testViewModel, "AllOutputDevices", newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
