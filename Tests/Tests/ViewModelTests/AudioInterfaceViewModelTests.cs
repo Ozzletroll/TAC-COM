@@ -75,6 +75,15 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestOutputDeviceProperty()
+        {
+            var mockDevice = new MockMMDeviceWrapper("Test Output Device");
+
+            TestPropertyChange(testViewModel, "OutputDevice", mockDevice);
+            Assert.IsTrue(mockSettingsService.AudioSettings.OutputDevice == mockDevice.FriendlyName);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
