@@ -53,7 +53,7 @@ namespace Tests.ViewModelTests
             var mockDevice = new MockMMDeviceWrapper("Test Input Device");
             ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
 
-            TestPropertyChange(testViewModel, "AllInputDevices", newPropertyValue);
+            TestPropertyChange(testViewModel, nameof(testViewModel.AllInputDevices), newPropertyValue);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Tests.ViewModelTests
             var mockDevice = new MockMMDeviceWrapper("Test Output Device");
             ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
 
-            TestPropertyChange(testViewModel, "AllOutputDevices", newPropertyValue);
+            TestPropertyChange(testViewModel, nameof(testViewModel.AllOutputDevices), newPropertyValue);
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Tests.ViewModelTests
         {
             var mockDevice = new MockMMDeviceWrapper("Test Input Device");
 
-            TestPropertyChange(testViewModel, "InputDevice", mockDevice);
+            TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
             Assert.IsTrue(mockSettingsService.AudioSettings.InputDevice == mockDevice.FriendlyName);
         }
 
@@ -79,17 +79,17 @@ namespace Tests.ViewModelTests
         {
             var mockDevice = new MockMMDeviceWrapper("Test Output Device");
 
-            TestPropertyChange(testViewModel, "OutputDevice", mockDevice);
+            TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
             Assert.IsTrue(mockSettingsService.AudioSettings.OutputDevice == mockDevice.FriendlyName);
         }
 
         [TestMethod]
         public void TestStateProperty()
         {
-            TestPropertyChange(testViewModel, "State", true);
+            TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
             Assert.IsTrue(testViewModel.IsSelectable == false);
 
-            TestPropertyChange(testViewModel, "State", false);
+            TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
             Assert.IsTrue(testViewModel.IsSelectable == true);
             Assert.IsTrue(testViewModel.BypassState == true);
         }
@@ -97,7 +97,7 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestIsSelectableProperty()
         {
-            TestPropertyChange(testViewModel, "IsSelectable", !testViewModel.IsSelectable);
+            TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
         }
 
         [TestMethod]
