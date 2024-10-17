@@ -6,6 +6,7 @@ using Tests.MockServices;
 using Tests.MockModels;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Settings;
 
 namespace Tests.ViewModelTests
 {
@@ -76,6 +77,30 @@ namespace Tests.ViewModelTests
 
             Assert.IsTrue(testViewModel.InputDevice?.FriendlyName == mockInputDevice.FriendlyName);
             Assert.IsTrue(testViewModel.OutputDevice?.FriendlyName == mockOutputDevice.FriendlyName);
+        }
+
+        [TestMethod]
+        public void TestLoadAudioSettings()
+        {
+            var testAudioSettings = new AudioSettings
+            {
+                InputDevice = "Test Input Device 1",
+                OutputDevice = "Test Output Device 1",
+                NoiseGateThreshold = 70,
+                OutputLevel = -1,
+                InterferenceLevel = 45,
+                ActiveProfile = "GMS Type-4 Datalink"
+            };
+
+            testViewModel.settingsService.AudioSettings = testAudioSettings;
+
+            var loadAudioSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadAudioSettings", BindingFlags.NonPublic | BindingFlags.Instance);
+            loadAudioSettings?.Invoke(testViewModel, []);
+
+            Assert.IsTrue(testViewModel.NoiseGateThreshold == testAudioSettings.NoiseGateThreshold);
+            Assert.IsTrue(testViewModel.OutputLevel == testAudioSettings.OutputLevel);
+            Assert.IsTrue(testViewModel.InterferenceLevel == testAudioSettings.InterferenceLevel);
+            Assert.IsTrue(testViewModel.ActiveProfile?.ProfileName == testAudioSettings.ActiveProfile);
         }
     }
 }
