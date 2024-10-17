@@ -95,6 +95,12 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestIsSelectableProperty()
+        {
+            TestPropertyChange(testViewModel, "IsSelectable", !testViewModel.IsSelectable);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
