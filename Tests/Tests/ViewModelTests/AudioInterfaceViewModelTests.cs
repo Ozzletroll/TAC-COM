@@ -7,6 +7,8 @@ using Tests.MockModels;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Settings;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace Tests.ViewModelTests
 {
@@ -28,10 +30,38 @@ namespace Tests.ViewModelTests
             };
         }
 
+        public static void TestPropertyChange<T>(ViewModelBase viewModel, string propertyName, T newValue)
+        {
+            bool propertyChangedRaised = false;
+
+            viewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == propertyName)
+                {
+                    propertyChangedRaised = true;
+                }
+            };
+
+            var propertyInfo = viewModel.GetType().GetProperty(propertyName);
+            propertyInfo?.SetValue(viewModel, newValue);
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+        }
+
         [TestMethod]
+        public void TestAllInputDevicesProperty()
+        {
+            var viewModel = testViewModel;
+            var mockDevice = new MockMMDeviceWrapper("Test Input Device");
+            ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
+
+            TestPropertyChange(viewModel, "AllInputDevices", newPropertyValue);
+        }
+
+            [TestMethod]
         public void TestLoadInputDevices()
         {
-            var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1") ;
+            var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
             var mockDevice2 = new MockMMDeviceWrapper("Test Input Device 2");
 
             testViewModel.AudioManager.InputDevices = [mockDevice1, mockDevice2];
