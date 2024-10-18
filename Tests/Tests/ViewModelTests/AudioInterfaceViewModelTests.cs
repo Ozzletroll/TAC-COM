@@ -113,12 +113,30 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestStateProperty()
         {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.Setup(audioManager => audioManager.ToggleState());
+
+            var mockIconService = new Mock<IIconService>();
+            mockIconService.Setup(iconService => iconService.SetStandbyIcon()).Verifiable();
+            mockIconService.Setup(iconService => iconService.SetEnabledIcon()).Verifiable();
+
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybind(true));
+            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybind(false));
+
+            testViewModel.IconService = mockIconService.Object;
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
             TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
             Assert.IsTrue(testViewModel.IsSelectable == false);
+            mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybind(true), Times.Once);
 
             TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
             Assert.IsTrue(testViewModel.IsSelectable == true);
             Assert.IsTrue(testViewModel.BypassState == true);
+            mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybind(false), Times.Once);
         }
 
         [TestMethod]
