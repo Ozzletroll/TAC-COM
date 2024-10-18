@@ -18,7 +18,7 @@ namespace Tests.ViewModelTests
         public EventAggregator eventAggregator = new();
         public IUriService mockUriService = new MockUriService();
         public IThemeService mockThemeService = new MockThemeService();
-        public ISettingsService mockSettingsService = new MockSettingsService();
+        public ISettingsService settingsService = new MockSettingsService();
         public IAudioManager mockAudioManager = new MockAudioManager();
         public AudioInterfaceViewModel testViewModel;
 
@@ -26,7 +26,7 @@ namespace Tests.ViewModelTests
         {
             testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(eventAggregator), mockThemeService)
             {
-                settingsService = mockSettingsService,
+                settingsService = settingsService,
             };
         }
 
@@ -71,8 +71,15 @@ namespace Tests.ViewModelTests
         {
             var mockDevice = new MockMMDeviceWrapper("Test Input Device");
 
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device)).Verifiable();
+
+            testViewModel.settingsService = mockSettingsService.Object;
+
             TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
-            Assert.IsTrue(mockSettingsService.AudioSettings.InputDevice == mockDevice.FriendlyName);
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device), Times.Once);
         }
 
         [TestMethod]
@@ -81,7 +88,7 @@ namespace Tests.ViewModelTests
             var mockDevice = new MockMMDeviceWrapper("Test Output Device");
 
             TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
-            Assert.IsTrue(mockSettingsService.AudioSettings.OutputDevice == mockDevice.FriendlyName);
+            Assert.IsTrue(settingsService.AudioSettings.OutputDevice == mockDevice.FriendlyName);
         }
 
         [TestMethod]
