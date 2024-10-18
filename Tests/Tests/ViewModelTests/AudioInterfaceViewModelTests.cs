@@ -8,6 +8,7 @@ using TAC_COM.Services.Interfaces;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Settings;
 using System.Collections.ObjectModel;
+using Moq;
 
 namespace Tests.ViewModelTests
 {
@@ -98,6 +99,29 @@ namespace Tests.ViewModelTests
         public void TestIsSelectableProperty()
         {
             TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
+        }
+
+        [TestMethod]
+        public void TestBypassStateProperty()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.BypassState);
+            mockAudioManager.Setup(audioManager => audioManager.CheckBypassState()).Verifiable();
+
+            var mockIconService = new Mock<IIconService>();
+            mockIconService.Setup(iconService => iconService.SetLiveIcon()).Verifiable();
+            mockIconService.Setup(iconService => iconService.SetEnabledIcon()).Verifiable();
+
+            testViewModel.AudioManager = mockAudioManager.Object;
+            testViewModel.IconService = mockIconService.Object;
+
+            TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), true);
+            mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Once);
+            mockIconService.Verify(iconService => iconService.SetLiveIcon(), Times.Once);
+
+            TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), false);
+            mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Exactly(2));
+            mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
         }
 
         [TestMethod]
