@@ -1,8 +1,9 @@
-﻿using TAC_COM.Utilities;
+﻿using TAC_COM.Services.Interfaces;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.Services
 {
-    public class IconService(EventAggregator _eventAggregator)
+    public class IconService(EventAggregator _eventAggregator) : IIconService
     {
         private readonly EventAggregator eventAggregator = _eventAggregator;
 

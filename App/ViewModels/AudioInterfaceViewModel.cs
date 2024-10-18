@@ -10,10 +10,19 @@ namespace TAC_COM.ViewModels
     public class AudioInterfaceViewModel : ViewModelBase
     {
         public ISettingsService settingsService;
-        private readonly IconService iconService;
         private readonly WindowService windowService;
         private readonly IThemeService themeService;
         private readonly KeybindManager keybindManager;
+
+        private IIconService iconService;
+        public IIconService IconService
+        {
+            get => iconService;
+            set
+            {
+                iconService = value;
+            }
+        }
 
         private IAudioManager audioManager;
         public IAudioManager AudioManager
@@ -281,7 +290,7 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IconService _iconService, IThemeService _themeService)
+        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
