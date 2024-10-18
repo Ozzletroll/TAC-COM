@@ -75,11 +75,17 @@ namespace Tests.ViewModelTests
             mockSettingsService.Setup(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device)).Verifiable();
 
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.Setup(audioManager => audioManager.SetInputDevice(mockDevice.Device));
+
             testViewModel.settingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
 
             TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device), Times.Once);
+            mockAudioManager.Verify(
+                audioManager => audioManager.SetInputDevice(mockDevice.Device), Times.Once);
         }
 
         [TestMethod]
