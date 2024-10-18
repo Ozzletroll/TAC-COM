@@ -9,10 +9,45 @@ namespace TAC_COM.ViewModels
 {
     public class AudioInterfaceViewModel : ViewModelBase
     {
-        public ISettingsService settingsService;
-        private readonly WindowService windowService;
-        private readonly IThemeService themeService;
-        private readonly KeybindManager keybindManager;
+        private ISettingsService settingsService;
+        public ISettingsService SettingsService
+        {
+            get => settingsService;
+            set
+            {
+                settingsService = value;
+            }
+        }
+
+        private IWindowService windowService;
+        public IWindowService WindowService
+        {
+            get => windowService;
+            set
+            {
+                windowService = value;
+            }
+        }
+
+        private IThemeService themeService;
+        public IThemeService ThemeService
+        {
+            get => themeService;
+            set
+            {
+                themeService = value;
+            }
+        }
+
+        private IKeybindManager keybindManager;
+        public IKeybindManager KeybindManager
+        {
+            get => keybindManager;
+            set
+            {
+                keybindManager = value;
+            }
+        }
 
         private IIconService iconService;
         public IIconService IconService
@@ -302,10 +337,10 @@ namespace TAC_COM.ViewModels
 
             themeService = _themeService;
 
-            keybindManager = new(settingsService);
+            keybindManager = new KeybindManager(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
 
-            windowService = new(keybindManager);
+            windowService = new WindowService(keybindManager);
 
             keybindManager.LoadKeybindSettings();
 

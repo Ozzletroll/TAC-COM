@@ -2,10 +2,11 @@
 using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using System.Text;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
-    public class KeybindManager(ISettingsService settingsService) : ModelBase
+    public class KeybindManager(ISettingsService settingsService) : ModelBase, IKeybindManager
     {
         public ISettingsService SettingsService = settingsService;
         private IDisposable? PTTKeybindSubscription;
@@ -156,13 +157,13 @@ namespace TAC_COM.Models
             subscription?.Dispose();
         }
 
-        internal void UpdateKeybind()
+        public void UpdateKeybind()
         {
             if (NewPTTKeybind != null) NewPTTKeybind.Passthrough = PassthroughState;
             PTTKey = NewPTTKeybind;
         }
 
-        internal void LoadKeybindSettings()
+        public void LoadKeybindSettings()
         {
             PTTKey = new Keybind(
                 keyCode: (VirtualKeyCode)Enum.Parse(typeof(VirtualKeyCode), SettingsService.KeybindSettings.KeyCode),
