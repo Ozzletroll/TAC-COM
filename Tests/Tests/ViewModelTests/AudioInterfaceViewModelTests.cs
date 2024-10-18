@@ -93,8 +93,21 @@ namespace Tests.ViewModelTests
         {
             var mockDevice = new MockMMDeviceWrapper("Test Output Device");
 
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputDevice), mockDevice.Device)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.Setup(audioManager => audioManager.SetOutputDevice(mockDevice.Device));
+
+            testViewModel.settingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
             TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
-            Assert.IsTrue(settingsService.AudioSettings.OutputDevice == mockDevice.FriendlyName);
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputDevice), mockDevice.Device), Times.Once);
+            mockAudioManager.Verify(
+                audioManager => audioManager.SetOutputDevice(mockDevice.Device), Times.Once);
         }
 
         [TestMethod]
