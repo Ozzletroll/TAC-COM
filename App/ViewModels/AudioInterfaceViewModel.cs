@@ -269,7 +269,6 @@ namespace TAC_COM.ViewModels
 
         private void LoadDeviceSettings()
         {
-            // Load last used values from AppConfig
             var savedInputDevice = AllInputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == settingsService.AudioSettings.InputDevice);
             if (savedInputDevice != null)
             {
