@@ -26,7 +26,7 @@ namespace Tests.ViewModelTests
         {
             testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(eventAggregator), mockThemeService)
             {
-                settingsService = settingsService,
+                SettingsService = settingsService,
             };
         }
 
@@ -78,7 +78,7 @@ namespace Tests.ViewModelTests
             var mockAudioManager = new Mock<IAudioManager>();
             mockAudioManager.Setup(audioManager => audioManager.SetInputDevice(mockDevice.Device));
 
-            testViewModel.settingsService = mockSettingsService.Object;
+            testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
             TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
@@ -100,7 +100,7 @@ namespace Tests.ViewModelTests
             var mockAudioManager = new Mock<IAudioManager>();
             mockAudioManager.Setup(audioManager => audioManager.SetOutputDevice(mockDevice.Device));
 
-            testViewModel.settingsService = mockSettingsService.Object;
+            testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
             TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
@@ -214,7 +214,7 @@ namespace Tests.ViewModelTests
                 ActiveProfile = "GMS Type-4 Datalink"
             };
 
-            testViewModel.settingsService.AudioSettings = testAudioSettings;
+            testViewModel.SettingsService.AudioSettings = testAudioSettings;
 
             var loadAudioSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadAudioSettings", BindingFlags.NonPublic | BindingFlags.Instance);
             loadAudioSettings?.Invoke(testViewModel, []);
