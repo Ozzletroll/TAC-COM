@@ -9,6 +9,7 @@ using TAC_COM.Models.Interfaces;
 using TAC_COM.Settings;
 using System.Collections.ObjectModel;
 using Moq;
+using TAC_COM.Models;
 
 namespace Tests.ViewModelTests
 {
@@ -229,6 +230,18 @@ namespace Tests.ViewModelTests
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testInterferenceLevelValue);
+        }
+
+        [TestMethod]
+        public void TestProfilesProperty()
+        {
+            var mockProfile1 = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID1"));
+            var mockProfile2 = new Profile("Profile 2", "ID2", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID2"));
+
+            List<Profile> testProfiles = [mockProfile1, mockProfile2];
+            testViewModel.Profiles = testProfiles;
+
+            Assert.AreEqual(testViewModel.Profiles, testProfiles);
         }
 
         [TestMethod]
