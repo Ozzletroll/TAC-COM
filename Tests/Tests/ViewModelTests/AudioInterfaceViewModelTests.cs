@@ -190,6 +190,27 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestOutputLevelProperty()
+        {
+            float testOutputLevelValue = 2;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputLevel), testOutputLevelValue)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.OutputGainLevel);
+
+            testViewModel.SettingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            TestPropertyChange(testViewModel, nameof(testViewModel.OutputLevel), testOutputLevelValue);
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputLevel), testOutputLevelValue), Times.Once);
+            mockAudioManager.VerifySet(audioManager => audioManager.OutputGainLevel = testOutputLevelValue);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
