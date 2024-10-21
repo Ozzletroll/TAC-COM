@@ -13,7 +13,7 @@ namespace TAC_COM.Models
         public IWaveSource? OpenSFX;
         public IWaveSource? CloseSFX;
         private readonly FilePlayer FilePlayer = new();
-        public AudioSettings Settings = new();
+        public EffectSettings Settings = new();
         public System.Windows.Media.ImageSource Icon = icon;
 
         public void LoadSources()
@@ -32,7 +32,7 @@ namespace TAC_COM.Models
         }
     }
 
-    public class AudioSettings
+    public class EffectSettings
     {
         public Type? DistortionType;
         public DistortionMode? DistortionMode = null;
