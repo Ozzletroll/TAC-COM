@@ -11,7 +11,7 @@ namespace Tests.ViewModelTests
 
             public BitmapImage GetIconUri(string iconName) => new(new Uri("http://mock.uri/" + iconName));
 
-            public Uri? GetResourcesUri() => null;
+            public Uri GetResourcesUri() => new("http://mock.uri/");
         }
     }
 }

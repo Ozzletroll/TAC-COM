@@ -6,6 +6,6 @@ namespace TAC_COM.Services.Interfaces
     {
         Uri GetThemeUri(string themeName);
         BitmapImage GetIconUri(string IconName);
-        Uri? GetResourcesUri();
+        Uri GetResourcesUri();
     }
 }
