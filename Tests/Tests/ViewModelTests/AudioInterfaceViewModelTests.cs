@@ -169,6 +169,27 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestNoiseGateThresholdProperty()
+        {
+            float testThresholdValue = -75;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseGateThreshold), testThresholdValue)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.NoiseGateThreshold);
+
+            testViewModel.SettingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            TestPropertyChange(testViewModel, nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseGateThreshold), testThresholdValue), Times.Once);
+            mockAudioManager.VerifySet(audioManager => audioManager.NoiseGateThreshold = testThresholdValue);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
