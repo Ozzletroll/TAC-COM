@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
 using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.ViewModels
 {
     public class KeybindWindowViewModel : ViewModelBase
     {
-        private readonly KeybindManager keybindManager;
+        private readonly IKeybindManager keybindManager;
 
         public delegate void CloseEventHandler(object sender, EventArgs e);
         public event CloseEventHandler? Close;
@@ -52,7 +53,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public KeybindWindowViewModel(KeybindManager _keybindManager)
+        public KeybindWindowViewModel(IKeybindManager _keybindManager)
         {
             keybindManager = _keybindManager;
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
