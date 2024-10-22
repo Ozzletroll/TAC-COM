@@ -277,6 +277,15 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestKeybindNameProperty()
+        {
+            string testKeybindNameValue = "Shift + V";
+
+            TestPropertyChange(testViewModel, nameof(testViewModel.KeybindName), testKeybindNameValue);
+            Assert.IsTrue(testViewModel.KeybindName == "[ Shift + V ]");
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
