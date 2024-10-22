@@ -22,7 +22,7 @@ namespace TAC_COM.ViewModels
             set
             {
                 newKeybindName = "[ " + value + " ]";
-                OnPropertyChanged(nameof(newKeybindName));
+                OnPropertyChanged(nameof(NewKeybindName));
             }
         }
 
