@@ -1,6 +1,5 @@
 using TAC_COM.ViewModels;
 using TAC_COM.Services;
-using TAC_COM.Utilities;
 using System.Reflection;
 using Tests.MockServices;
 using Tests.MockModels;
@@ -10,6 +9,7 @@ using TAC_COM.Settings;
 using System.Collections.ObjectModel;
 using Moq;
 using TAC_COM.Models;
+using TAC_COM.Utilities;
 
 namespace Tests.ViewModelTests
 {
@@ -31,31 +31,13 @@ namespace Tests.ViewModelTests
             };
         }
 
-        public static void TestPropertyChange<T>(ViewModelBase viewModel, string propertyName, T newValue)
-        {
-            bool propertyChangedRaised = false;
-
-            viewModel.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == propertyName)
-                {
-                    propertyChangedRaised = true;
-                }
-            };
-
-            var propertyInfo = viewModel.GetType().GetProperty(propertyName);
-            propertyInfo?.SetValue(viewModel, newValue);
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-        }
-
         [TestMethod]
         public void TestAllInputDevicesProperty()
         {
             var mockDevice = new MockMMDeviceWrapper("Test Input Device");
             ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.AllInputDevices), newPropertyValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.AllInputDevices), newPropertyValue);
         }
 
         [TestMethod]
@@ -64,7 +46,7 @@ namespace Tests.ViewModelTests
             var mockDevice = new MockMMDeviceWrapper("Test Output Device");
             ObservableCollection<IMMDeviceWrapper> newPropertyValue = [mockDevice];
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.AllOutputDevices), newPropertyValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.AllOutputDevices), newPropertyValue);
         }
 
         [TestMethod]
@@ -82,7 +64,7 @@ namespace Tests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.InputDevice), mockDevice);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device), Times.Once);
             mockAudioManager.Verify(
@@ -104,7 +86,7 @@ namespace Tests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.OutputDevice), mockDevice);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputDevice), mockDevice.Device), Times.Once);
             mockAudioManager.Verify(
@@ -128,12 +110,12 @@ namespace Tests.ViewModelTests
             testViewModel.IconService = mockIconService.Object;
             testViewModel.KeybindManager = mockKeybindManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
             Assert.IsTrue(testViewModel.IsSelectable == false);
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybind(true), Times.Once);
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
             Assert.IsTrue(testViewModel.IsSelectable == true);
             Assert.IsTrue(testViewModel.BypassState == true);
             mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
@@ -143,7 +125,7 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestIsSelectableProperty()
         {
-            TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
         }
 
         [TestMethod]
@@ -160,11 +142,11 @@ namespace Tests.ViewModelTests
             testViewModel.AudioManager = mockAudioManager.Object;
             testViewModel.IconService = mockIconService.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), true);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), true);
             mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Once);
             mockIconService.Verify(iconService => iconService.SetLiveIcon(), Times.Once);
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), false);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), false);
             mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Exactly(2));
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
         }
@@ -184,7 +166,7 @@ namespace Tests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseGateThreshold), testThresholdValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseGateThreshold = testThresholdValue);
@@ -205,7 +187,7 @@ namespace Tests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.OutputLevel), testOutputLevelValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.OutputLevel), testOutputLevelValue);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputLevel), testOutputLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.OutputGainLevel = testOutputLevelValue);
@@ -226,7 +208,7 @@ namespace Tests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue);
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testInterferenceLevelValue);
@@ -281,7 +263,7 @@ namespace Tests.ViewModelTests
         {
             string testKeybindNameValue = "Shift + V";
 
-            TestPropertyChange(testViewModel, nameof(testViewModel.KeybindName), testKeybindNameValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.KeybindName), testKeybindNameValue);
             Assert.IsTrue(testViewModel.KeybindName == "[ Shift + V ]");
         }
 
