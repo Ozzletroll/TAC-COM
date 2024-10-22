@@ -245,6 +245,38 @@ namespace Tests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestActiveProfileProperty()
+        {
+            Profile testActiveProfile = new("Test Profile", "ID1", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID1"));
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.ActiveProfile), testActiveProfile)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.ActiveProfile);
+
+            var mockThemeService = new Mock<IThemeService>();
+            mockThemeService.Setup(themeService => themeService.ChangeTheme(testActiveProfile.Theme)).Verifiable();
+
+            var mockIconService = new Mock<IIconService>();
+            mockIconService.Setup(iconService => iconService.SetActiveProfileIcon(testActiveProfile.Icon)).Verifiable();
+
+            testViewModel.SettingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
+            testViewModel.ThemeService = mockThemeService.Object;
+            testViewModel.IconService = mockIconService.Object;
+
+            testViewModel.ActiveProfile = testActiveProfile;
+
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.ActiveProfile), testActiveProfile), Times.Once);
+            mockAudioManager.VerifySet(audioManager => audioManager.ActiveProfile = testActiveProfile);
+            mockThemeService.Verify(themeService => themeService.ChangeTheme(testActiveProfile.Theme), Times.Once);
+            mockIconService.Verify(iconService => iconService.SetActiveProfileIcon(testActiveProfile.Icon), Times.Once);
+        }
+
+        [TestMethod]
         public void TestLoadInputDevices()
         {
             var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
