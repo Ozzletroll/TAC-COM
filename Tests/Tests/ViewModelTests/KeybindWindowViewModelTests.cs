@@ -27,5 +27,12 @@ namespace Tests.ViewModelTests
             Assert.IsTrue(testViewModel.NewKeybindName == "[ Shift + V ]");
         }
 
+        [TestMethod]
+        public void TestPassthroughStateProperty()
+        {
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.PassthroughState), true);
+            Assert.IsTrue(testViewModel.PassthroughState == true);
+        }
+
     }
 }
