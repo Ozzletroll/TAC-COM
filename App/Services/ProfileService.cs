@@ -73,7 +73,7 @@ namespace TAC_COM.Models
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 1300,
-                        GainAdjust = 5,
+                        GainAdjust = 3,
                     }
                 });
 
