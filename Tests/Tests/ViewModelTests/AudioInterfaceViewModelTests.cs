@@ -353,5 +353,17 @@ namespace Tests.ViewModelTests
             testViewModel.ShowKeybindDialog.Execute(null);
             mockWindowService.Verify(windowService => windowService.OpenKeybindWindow(), Times.Once);
         }
+
+        [TestMethod]
+        public void TestConfirmKeybindChangeCommand()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.UpdateKeybind()).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            testViewModel.ConfirmKeybindChange.Execute(null);
+            mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
+        }
     }
 }
