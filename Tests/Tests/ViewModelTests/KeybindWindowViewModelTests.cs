@@ -1,4 +1,5 @@
-﻿using TAC_COM.Models.Interfaces;
+﻿using Moq;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
 using Tests.MockModels;
@@ -30,8 +31,14 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestPassthroughStateProperty()
         {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.SetupProperty(keybindManager => keybindManager.PassthroughState);
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.PassthroughState), true);
             Assert.IsTrue(testViewModel.PassthroughState == true);
+            mockKeybindManager.VerifySet(keybindManager => keybindManager.PassthroughState = true);
         }
 
     }
