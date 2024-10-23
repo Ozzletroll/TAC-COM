@@ -341,5 +341,17 @@ namespace Tests.ViewModelTests
             Assert.IsTrue(testViewModel.InterferenceLevel == testAudioSettings.InterferenceLevel);
             Assert.IsTrue(testViewModel.ActiveProfile?.ProfileName == testAudioSettings.ActiveProfile);
         }
+
+        [TestMethod]
+        public void TestShowKeybindDialogCommand()
+        {
+            var mockWindowService = new Mock<IWindowService>();
+            mockWindowService.Setup(windowService => windowService.OpenKeybindWindow()).Verifiable();
+
+            testViewModel.WindowService = mockWindowService.Object;
+
+            testViewModel.ShowKeybindDialog.Execute(null);
+            mockWindowService.Verify(windowService => windowService.OpenKeybindWindow(), Times.Once);
+        }
     }
 }
