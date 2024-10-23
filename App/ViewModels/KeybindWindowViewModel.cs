@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
-using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.ViewModels
 {
     public class KeybindWindowViewModel : ViewModelBase
     {
-        private readonly IKeybindManager keybindManager;
+        public IKeybindManager KeybindManager { get; set; }
 
         public delegate void CloseEventHandler(object sender, EventArgs e);
         public event CloseEventHandler? Close;
@@ -28,10 +27,10 @@ namespace TAC_COM.ViewModels
 
         public bool PassthroughState
         {
-            get => keybindManager.PassthroughState;
+            get => KeybindManager.PassthroughState;
             set
             {
-                keybindManager.PassthroughState = value;
+                KeybindManager.PassthroughState = value;
                 OnPropertyChanged(nameof(PassthroughState));
             }
         }
@@ -40,24 +39,24 @@ namespace TAC_COM.ViewModels
 
         private void ExecuteCloseKeybindDialog()
         {
-            keybindManager.ToggleUserKeybind(false);
-            keybindManager.UpdateKeybind();
+            KeybindManager.ToggleUserKeybind(false);
+            KeybindManager.UpdateKeybind();
             RaiseClose();
         }
 
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(KeybindManager.NewPTTKeybind))
+            if (e.PropertyName == nameof(Models.KeybindManager.NewPTTKeybind))
             {
-                NewKeybindName = keybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
+                NewKeybindName = KeybindManager.NewPTTKeybind?.ToString().ToUpper() ?? "";
             }
         }
 
         public KeybindWindowViewModel(IKeybindManager _keybindManager)
         {
-            keybindManager = _keybindManager;
-            keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
-            keybindManager.ToggleUserKeybind(true);
+            KeybindManager = _keybindManager;
+            KeybindManager.PropertyChanged += KeybindManager_PropertyChanged;
+            KeybindManager.ToggleUserKeybind(true);
         }
     }
 }
