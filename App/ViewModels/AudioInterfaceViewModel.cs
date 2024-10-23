@@ -319,7 +319,7 @@ namespace TAC_COM.ViewModels
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
 
-        public void ExecuteKeybindChange() 
+        private void ExecuteKeybindChange() 
         {
             keybindManager.UpdateKeybind();
         }
