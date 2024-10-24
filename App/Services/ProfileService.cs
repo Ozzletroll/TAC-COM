@@ -22,7 +22,7 @@ namespace TAC_COM.Models
                     theme: UriProvider.GetThemeUri("GMS"),
                     icon: UriProvider.GetIconUri("GMS"))
                 {
-                    Settings = new EffectSettings()
+                    Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DmoDistortionEffect),
                         PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
@@ -41,7 +41,7 @@ namespace TAC_COM.Models
                     theme: UriProvider.GetThemeUri("SSC"),
                     icon: UriProvider.GetIconUri("GMS"))
                 {
-                    Settings = new EffectSettings()
+                    Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DmoDistortionEffect),
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
@@ -60,7 +60,7 @@ namespace TAC_COM.Models
                     theme: UriProvider.GetThemeUri("IPSN"),
                     icon: UriProvider.GetIconUri("IPSN"))
                 {
-                    Settings = new EffectSettings()
+                    Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DistortionWrapper),
                         DistortionMode = DistortionMode.HardClipping,
@@ -84,7 +84,7 @@ namespace TAC_COM.Models
                     theme: UriProvider.GetThemeUri("HA"),
                     icon: UriProvider.GetIconUri("HA"))
                 {
-                    Settings = new EffectSettings()
+                    Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DmoDistortionEffect),
                         DistortionMode = null,
@@ -106,7 +106,7 @@ namespace TAC_COM.Models
                     theme: UriProvider.GetThemeUri("HORUS"),
                     icon: UriProvider.GetIconUri("HORUS"))
                 {
-                    Settings = new EffectSettings()
+                    Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DmoDistortionEffect),
                         DistortionMode = null,

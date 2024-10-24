@@ -1,5 +1,4 @@
 ﻿using CSCore;
-using NWaves.Effects;
 using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Models
@@ -13,7 +12,7 @@ namespace TAC_COM.Models
         public IWaveSource? OpenSFX;
         public IWaveSource? CloseSFX;
         private readonly FilePlayer FilePlayer = new();
-        public EffectSettings Settings = new();
+        public EffectParameters Settings = new();
         public System.Windows.Media.ImageSource Icon = icon;
 
         public void LoadSources()
@@ -30,24 +29,5 @@ namespace TAC_COM.Models
         {
             return ProfileName ?? string.Empty;
         }
-    }
-
-    public class EffectSettings
-    {
-        public Type? DistortionType;
-        public DistortionMode? DistortionMode = null;
-        public float DistortionInput = 40;
-        public float DistortionOutput = 40;
-        public float DistortionWet = 0.5f;
-        public float DistortionDry = 0.5f;
-
-        public float HighpassFrequency;
-        public float LowpassFrequency;
-        public float PeakFrequency;
-
-        public List<EffectReference>? PreDistortionSignalChain;
-        public List<EffectReference>? PostDistortionSignalChain;
-
-        public float GainAdjust = 0;
     }
 }
