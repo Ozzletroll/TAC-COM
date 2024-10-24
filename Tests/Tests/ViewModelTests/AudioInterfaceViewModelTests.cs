@@ -97,7 +97,7 @@ namespace Tests.ViewModelTests
         public void TestStateProperty()
         {
             var mockAudioManager = new Mock<IAudioManager>();
-            mockAudioManager.Setup(audioManager => audioManager.ToggleState());
+            mockAudioManager.Setup(audioManager => audioManager.ToggleStateAsync());
 
             var mockIconService = new Mock<IIconService>();
             mockIconService.Setup(iconService => iconService.SetStandbyIcon()).Verifiable();

@@ -214,7 +214,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void ToggleState()
+        public async Task ToggleStateAsync()
         {
             if (state)
             {
@@ -223,11 +223,11 @@ namespace TAC_COM.Models
                     State = false;
                     return;
                 }
-                StartAudio();
+                await StartAudioAsync();
             }
             else
             {
-                StopAudio();
+                await StopAudio();
             }
         }
 
@@ -267,53 +267,53 @@ namespace TAC_COM.Models
             }
         }
 
-        public void StartAudio()
+        public async Task StartAudioAsync()
         {
-            if (activeInputDevice != null
-                && activeOutputDevice != null
-                && activeProfile != null)
+            if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
             {
-                // Dispose of any old resources
-                input?.Dispose();
-                micOutput?.Dispose();
-
-                // Initialise profile sfx sources
-                activeProfile.LoadSources();
-
-                input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                micOutput = new WasapiOut()
+                await Task.Run(() =>
                 {
-                    Latency = 5,
-                };
+                    // Dispose of any old resources
+                    input?.Dispose();
+                    micOutput?.Dispose();
 
-                ResetOutputDevice();
+                    // Initialise profile sfx sources
+                    activeProfile.LoadSources();
+                    input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
+                    micOutput = new WasapiOut() { Latency = 5 };
 
-                // Initialise input
-                input.Device = activeInputDevice;
-                input.Initialize();
-                input.DataAvailable += OnDataAvailable;
-                input.Stopped += OnInputStopped;
+                    ResetOutputDevice();
 
-                // Initiliase signal chain
-                audioProcessor.Initialise(input, activeProfile);
+                    // Initialise input
+                    input.Device = activeInputDevice;
+                    input.Initialize();
+                    input.DataAvailable += OnDataAvailable;
+                    input.Stopped += OnInputStopped;
 
-                // Initialise output
-                micOutput.Device = activeOutputDevice;
-                micOutput.Initialize(audioProcessor.Output());
-                micOutput.Stopped += OnOutputStopped;
+                    // Initiliase signal chain
+                    audioProcessor.Initialise(input, activeProfile);
 
-                // Start audio
-                input.Start();
-                micOutput.Play();
+                    // Initialise output
+                    micOutput.Device = activeOutputDevice;
+                    micOutput.Initialize(audioProcessor.Output());
+                    micOutput.Stopped += OnOutputStopped;
+
+                    // Start audio
+                    input.Start();
+                    micOutput.Play();
+                });
             }
         }
 
-        private void StopAudio()
+        private async Task StopAudio()
         {
-            input?.Stop();
-            input?.Dispose();
-            micOutput?.Stop();
-            micOutput?.Dispose();
+            await Task.Run(() =>
+            {
+                input?.Stop();
+                input?.Dispose();
+                micOutput?.Stop();
+                micOutput?.Dispose();
+            });
         }
 
         private void OnInputStopped(object? sender, RecordingStoppedEventArgs e)

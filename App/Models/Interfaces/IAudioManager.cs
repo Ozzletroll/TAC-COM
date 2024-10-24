@@ -27,7 +27,7 @@ namespace TAC_COM.Models.Interfaces
         void GetAudioDevices();
         void SetInputDevice(MMDevice inputDevice);
         void SetOutputDevice(MMDevice outputDevice);
-        void StartAudio();
-        void ToggleState();
+        Task StartAudioAsync();
+        Task ToggleStateAsync();
     }
 }

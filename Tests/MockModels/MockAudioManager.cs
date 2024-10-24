@@ -2,6 +2,8 @@
 using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using TAC_COM.Models;
+using Dapplo.Windows.Input.Structs;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 
 namespace Tests.MockModels
 {
@@ -35,9 +37,15 @@ namespace Tests.MockModels
 
         public void SetOutputDevice(MMDevice outputDevice) { }
 
-        public void StartAudio() { }
+        public async Task StartAudioAsync() 
+        {
+            await Task.Run(() => {});
+        }
 
-        public void ToggleState() { }
+        public async Task ToggleStateAsync() 
+        {
+            await Task.Run(() => { });
+        }
 
         public MockAudioManager()
         {
