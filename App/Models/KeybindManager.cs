@@ -3,10 +3,11 @@ using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using System.Text;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.Models
 {
-    public class KeybindManager(ISettingsService settingsService) : ModelBase, IKeybindManager
+    public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager
     {
         public ISettingsService SettingsService = settingsService;
         private IDisposable? PTTKeybindSubscription;

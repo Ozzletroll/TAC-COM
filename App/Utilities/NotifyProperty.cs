@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace TAC_COM.Models
+namespace TAC_COM.Utilities
 {
-    public class ModelBase : INotifyPropertyChanged
+    public class NotifyProperty : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

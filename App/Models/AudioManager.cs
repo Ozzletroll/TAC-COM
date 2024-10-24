@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using TAC_COM.Utilities;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
@@ -7,7 +8,7 @@ using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
-    public class AudioManager : ModelBase, IAudioManager
+    public class AudioManager : NotifyProperty, IAudioManager
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
