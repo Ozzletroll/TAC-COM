@@ -81,7 +81,7 @@ namespace TAC_COM.Models
             set
             {
                 inputPeakMeter = value;
-                OnPropertyChanged(nameof(inputPeakMeter));
+                OnPropertyChanged(nameof(InputPeakMeter));
             }
         }
 
@@ -92,7 +92,7 @@ namespace TAC_COM.Models
             set
             {
                 outputPeakMeter = value;
-                OnPropertyChanged(nameof(outputPeakMeter));
+                OnPropertyChanged(nameof(OutputPeakMeter));
             }
         }
 
