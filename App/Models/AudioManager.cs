@@ -81,7 +81,7 @@ namespace TAC_COM.Models
             set
             {
                 inputPeakMeter = value;
-                OnPropertyChanged(nameof(inputPeakMeter));
+                OnPropertyChanged(nameof(InputPeakMeter));
             }
         }
 
@@ -92,7 +92,7 @@ namespace TAC_COM.Models
             set
             {
                 outputPeakMeter = value;
-                OnPropertyChanged(nameof(outputPeakMeter));
+                OnPropertyChanged(nameof(OutputPeakMeter));
             }
         }
 
@@ -214,7 +214,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void ToggleState()
+        public async Task ToggleStateAsync()
         {
             if (state)
             {
@@ -223,11 +223,11 @@ namespace TAC_COM.Models
                     State = false;
                     return;
                 }
-                StartAudio();
+                await StartAudioAsync();
             }
             else
             {
-                StopAudio();
+                await StopAudioAsync();
             }
         }
 
@@ -246,7 +246,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void CheckBypassState()
+        public async Task CheckBypassState()
         {
             if (!state)
             {
@@ -257,63 +257,63 @@ namespace TAC_COM.Models
             {
                 if (bypassState)
                 {
-                    GateOpen();
+                    await GateOpenAsync();
                 }
                 else
                 {
-                    GateClose();
+                    await GateCloseAsync();
                 }
                 SetMixerLevels();
             }
         }
 
-        public void StartAudio()
+        public async Task StartAudioAsync()
         {
-            if (activeInputDevice != null
-                && activeOutputDevice != null
-                && activeProfile != null)
+            if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
             {
-                // Dispose of any old resources
-                input?.Dispose();
-                micOutput?.Dispose();
-
-                // Initialise profile sfx sources
-                activeProfile.LoadSources();
-
-                input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                micOutput = new WasapiOut()
+                await Task.Run(() =>
                 {
-                    Latency = 5,
-                };
+                    // Dispose of any old resources
+                    input?.Dispose();
+                    micOutput?.Dispose();
 
-                ResetOutputDevice();
+                    // Initialise profile sfx sources
+                    activeProfile.LoadSources();
+                    input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
+                    micOutput = new WasapiOut() { Latency = 5 };
 
-                // Initialise input
-                input.Device = activeInputDevice;
-                input.Initialize();
-                input.DataAvailable += OnDataAvailable;
-                input.Stopped += OnInputStopped;
+                    ResetOutputDevice();
 
-                // Initiliase signal chain
-                audioProcessor.Initialise(input, activeProfile);
+                    // Initialise input
+                    input.Device = activeInputDevice;
+                    input.Initialize();
+                    input.DataAvailable += OnDataAvailable;
+                    input.Stopped += OnInputStopped;
 
-                // Initialise output
-                micOutput.Device = activeOutputDevice;
-                micOutput.Initialize(audioProcessor.Output());
-                micOutput.Stopped += OnOutputStopped;
+                    // Initiliase signal chain
+                    audioProcessor.Initialise(input, activeProfile);
 
-                // Start audio
-                input.Start();
-                micOutput.Play();
+                    // Initialise output
+                    micOutput.Device = activeOutputDevice;
+                    micOutput.Initialize(audioProcessor.Output());
+                    micOutput.Stopped += OnOutputStopped;
+
+                    // Start audio
+                    input.Start();
+                    micOutput.Play();
+                });
             }
         }
 
-        private void StopAudio()
+        private async Task StopAudioAsync()
         {
-            input?.Stop();
-            input?.Dispose();
-            micOutput?.Stop();
-            micOutput?.Dispose();
+            await Task.Run(() =>
+            {
+                input?.Stop();
+                input?.Dispose();
+                micOutput?.Stop();
+                micOutput?.Dispose();
+            });
         }
 
         private void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
@@ -339,7 +339,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void GateOpen()
+        public async Task GateOpenAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -349,11 +349,11 @@ namespace TAC_COM.Models
                 var file = activeProfile.OpenSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                if (file != null) PlaySFX(file);
+                if (file != null) await PlaySFXAsync(file);
             }
         }
 
-        public void GateClose()
+        public async Task GateCloseAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -363,21 +363,24 @@ namespace TAC_COM.Models
                 var file = activeProfile.CloseSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                if (file != null) PlaySFX(file);
+                if (file != null) await PlaySFXAsync(file);
             }
         }
 
-        private void PlaySFX(IWaveSource file)
+        private async Task PlaySFXAsync(IWaveSource file)
         {
-            sfxOutput?.Dispose();
-
-            sfxOutput = new()
+            await Task.Run(() =>
             {
-                Device = activeOutputDevice
-            };
-            sfxOutput.Initialize(file);
-            sfxOutput.Volume = sfxVolume;
-            sfxOutput.Play();
+                sfxOutput?.Dispose();
+
+                sfxOutput = new()
+                {
+                    Device = activeOutputDevice
+                };
+                sfxOutput.Initialize(file);
+                sfxOutput.Volume = sfxVolume;
+                sfxOutput.Play();
+            });
         }
 
         public delegate void DeviceListResetEventHandler(object sender, EventArgs e);

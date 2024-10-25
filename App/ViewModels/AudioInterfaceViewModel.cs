@@ -129,7 +129,7 @@ namespace TAC_COM.ViewModels
             set
             {
                 AudioManager.State = value;
-                AudioManager.ToggleState();
+                AudioManager.ToggleStateAsync();
                 IsSelectable = !AudioManager.State;
                 keybindManager.TogglePTTKeybind(State);
                 OnPropertyChanged(nameof(AudioManager.State));
