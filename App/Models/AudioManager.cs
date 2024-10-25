@@ -227,7 +227,7 @@ namespace TAC_COM.Models
             }
             else
             {
-                await StopAudio();
+                await StopAudioAsync();
             }
         }
 
@@ -246,7 +246,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void CheckBypassState()
+        public async Task CheckBypassState()
         {
             if (!state)
             {
@@ -257,11 +257,11 @@ namespace TAC_COM.Models
             {
                 if (bypassState)
                 {
-                    GateOpen();
+                    await GateOpenAsync();
                 }
                 else
                 {
-                    GateClose();
+                    await GateCloseAsync();
                 }
                 SetMixerLevels();
             }
@@ -305,7 +305,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private async Task StopAudio()
+        private async Task StopAudioAsync()
         {
             await Task.Run(() =>
             {
@@ -339,7 +339,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void GateOpen()
+        public async Task GateOpenAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -349,11 +349,11 @@ namespace TAC_COM.Models
                 var file = activeProfile.OpenSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                if (file != null) PlaySFX(file);
+                if (file != null) await PlaySFXAsync(file);
             }
         }
 
-        public void GateClose()
+        public async Task GateCloseAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -363,21 +363,24 @@ namespace TAC_COM.Models
                 var file = activeProfile.CloseSFX;
                 file.SetPosition(new TimeSpan(0));
 
-                if (file != null) PlaySFX(file);
+                if (file != null) await PlaySFXAsync(file);
             }
         }
 
-        private void PlaySFX(IWaveSource file)
+        private async Task PlaySFXAsync(IWaveSource file)
         {
-            sfxOutput?.Dispose();
-
-            sfxOutput = new()
+            await Task.Run(() =>
             {
-                Device = activeOutputDevice
-            };
-            sfxOutput.Initialize(file);
-            sfxOutput.Volume = sfxVolume;
-            sfxOutput.Play();
+                sfxOutput?.Dispose();
+
+                sfxOutput = new()
+                {
+                    Device = activeOutputDevice
+                };
+                sfxOutput.Initialize(file);
+                sfxOutput.Volume = sfxVolume;
+                sfxOutput.Play();
+            });
         }
 
         public delegate void DeviceListResetEventHandler(object sender, EventArgs e);

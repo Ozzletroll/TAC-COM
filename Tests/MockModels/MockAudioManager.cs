@@ -2,8 +2,6 @@
 using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using TAC_COM.Models;
-using Dapplo.Windows.Input.Structs;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 
 namespace Tests.MockModels
 {
@@ -25,12 +23,6 @@ namespace Tests.MockModels
 
         public event AudioManager.DeviceListResetEventHandler? DeviceListReset;
 
-        public void CheckBypassState() { }
-
-        public void GateClose() { }
-
-        public void GateOpen() { }
-
         public void GetAudioDevices() { }
 
         public void SetInputDevice(MMDevice inputDevice) { }
@@ -43,6 +35,21 @@ namespace Tests.MockModels
         }
 
         public async Task ToggleStateAsync() 
+        {
+            await Task.Run(() => { });
+        }
+
+        public async Task CheckBypassState()
+        {
+            await Task.Run(() => { });
+        }
+
+        public async Task GateCloseAsync()
+        {
+            await Task.Run(() => { });
+        }
+
+        public async Task GateOpenAsync()
         {
             await Task.Run(() => { });
         }
