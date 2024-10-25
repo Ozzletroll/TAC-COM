@@ -269,9 +269,9 @@ namespace TAC_COM.Models
 
         public async Task StartAudioAsync()
         {
-            if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
+                if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
                 {
                     // Dispose of any old resources
                     input?.Dispose();
@@ -301,8 +301,8 @@ namespace TAC_COM.Models
                     // Start audio
                     input.Start();
                     micOutput.Play();
-                });
-            }
+                }
+            });
         }
 
         private async Task StopAudioAsync()
