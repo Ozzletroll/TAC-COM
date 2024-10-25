@@ -29,27 +29,12 @@ namespace Tests.MockModels
 
         public void SetOutputDevice(MMDevice outputDevice) { }
 
-        public async Task StartAudioAsync() 
-        {
-            await Task.Run(() => {});
-        }
-
         public async Task ToggleStateAsync() 
         {
             await Task.Run(() => { });
         }
 
         public async Task CheckBypassState()
-        {
-            await Task.Run(() => { });
-        }
-
-        public async Task GateCloseAsync()
-        {
-            await Task.Run(() => { });
-        }
-
-        public async Task GateOpenAsync()
         {
             await Task.Run(() => { });
         }

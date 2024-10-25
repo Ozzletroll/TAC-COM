@@ -22,12 +22,9 @@ namespace TAC_COM.Models.Interfaces
         event AudioManager.DeviceListResetEventHandler? DeviceListReset;
 
         Task CheckBypassState();
-        Task GateCloseAsync();
-        Task GateOpenAsync();
         void GetAudioDevices();
         void SetInputDevice(MMDevice inputDevice);
         void SetOutputDevice(MMDevice outputDevice);
-        Task StartAudioAsync();
         Task ToggleStateAsync();
     }
 }

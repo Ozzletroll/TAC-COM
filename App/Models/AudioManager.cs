@@ -267,7 +267,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public async Task StartAudioAsync()
+        private async Task StartAudioAsync()
         {
             await Task.Run(() =>
             {
@@ -339,7 +339,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public async Task GateOpenAsync()
+        private async Task GateOpenAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -353,7 +353,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public async Task GateCloseAsync()
+        private async Task GateCloseAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -394,6 +394,5 @@ namespace TAC_COM.Models
         {
             GetAudioDevices();
         }
-
     }
 }
