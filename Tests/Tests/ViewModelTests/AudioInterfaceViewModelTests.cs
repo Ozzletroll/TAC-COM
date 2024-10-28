@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Utilities;
+using System.ComponentModel;
 
 namespace Tests.ViewModelTests
 {
@@ -29,6 +30,31 @@ namespace Tests.ViewModelTests
             {
                 SettingsService = settingsService,
             };
+        }
+
+        [TestMethod]
+        public void TestConstructor()
+        {
+            var mockTestAudioManager = new Mock<IAudioManager>();
+            mockTestAudioManager.SetupProperty(audioManager => audioManager.InputDevices, []);
+            mockTestAudioManager.SetupProperty(audioManager => audioManager.OutputDevices, []);
+            var mockUriService = new Mock<IUriService>();
+            var mockIconService = new Mock<IIconService>();
+            var mockThemeService = new Mock<IThemeService>();
+
+            bool deviceListResetSubscribed = false;
+            mockTestAudioManager.SetupAdd(audioManager => audioManager.DeviceListReset += It.IsAny<AudioManager.DeviceListResetEventHandler>())
+                            .Callback<AudioManager.DeviceListResetEventHandler>(handler => deviceListResetSubscribed = true);
+
+            var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService.Object, mockIconService.Object, mockThemeService.Object);
+
+            Assert.IsNotNull(viewModel.AudioManager);
+            Assert.IsNotNull(viewModel.SettingsService);
+            Assert.IsNotNull(viewModel.IconService);
+            Assert.IsNotNull(viewModel.ThemeService);
+            Assert.IsNotNull(viewModel.KeybindManager);
+
+            Assert.IsTrue(deviceListResetSubscribed, "DeviceListReset event is not subscribed.");
         }
 
         [TestMethod]
