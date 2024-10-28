@@ -41,5 +41,22 @@ namespace Tests.ViewModelTests
             mockKeybindManager.VerifySet(keybindManager => keybindManager.PassthroughState = true);
         }
 
+        [TestMethod]
+        public void TestExecuteCloseKeybindDialogCommand()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybind(false)).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.UpdateKeybind()).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            bool closeEventRaised = false;
+            testViewModel.Close += (sender, e) => closeEventRaised = true;
+
+            testViewModel.CloseKeybindDialog.Execute(null);
+            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybind(false), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
+            Assert.IsTrue(closeEventRaised, "The Close event was not raised.");
+        }
     }
 }
