@@ -1,4 +1,5 @@
 ﻿using Moq;
+using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
@@ -19,6 +20,24 @@ namespace Tests.ViewModelTests
             settingsService = new MockSettingsService();
             keybindManager = new MockKeybindManager();
             testViewModel = new KeybindWindowViewModel(keybindManager);
+        }
+
+        [TestMethod]
+        public void TestConstructor()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybind(true)).Verifiable();
+
+            bool propertyChangedSubscribed = false;
+            mockKeybindManager
+                .SetupAdd(keybindManager => keybindManager.PropertyChanged += It.IsAny<PropertyChangedEventHandler>())
+                .Callback<PropertyChangedEventHandler>(handler => propertyChangedSubscribed = true);
+
+            var viewModel = new KeybindWindowViewModel(mockKeybindManager.Object);
+
+            Assert.IsNotNull(viewModel.KeybindManager);
+            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybind(true), Times.Once);
+            Assert.IsTrue(propertyChangedSubscribed, "PropertyChanged event is not subscribed.");
         }
 
         [TestMethod]
