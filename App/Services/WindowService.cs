@@ -20,7 +20,8 @@ namespace TAC_COM.Services
             {
                 DataContext = viewModel,
                 Owner = Application.Current.MainWindow,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Icon = Application.Current.MainWindow.Icon,
             };
             viewModel.Close += (s, e) => keybindWindow.Close();
 
