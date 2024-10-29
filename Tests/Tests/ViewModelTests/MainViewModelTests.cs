@@ -1,8 +1,8 @@
 ﻿using Moq;
 using TAC_COM.ViewModels;
 using TAC_COM.Services.Interfaces;
-using static Tests.ViewModelTests.AudioInterfaceViewModelTests;
 using Tests.MockModels;
+using Tests.MockServices;
 
 namespace Tests.ViewModelTests
 {

@@ -1,13 +1,10 @@
 ﻿using TAC_COM.Services.Interfaces;
 
-namespace Tests.ViewModelTests
+namespace Tests.MockServices
 {
-    public partial class AudioInterfaceViewModelTests
+    public class MockThemeService : IThemeService
     {
-        public class MockThemeService : IThemeService
-        {
-            public void ChangeTheme(Uri targetTheme) { }
+        public void ChangeTheme(Uri targetTheme) { }
 
-        }
     }
 }
