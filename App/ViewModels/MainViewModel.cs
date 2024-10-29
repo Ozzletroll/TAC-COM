@@ -1,5 +1,4 @@
 ﻿using TAC_COM.Services;
-using TAC_COM.Utilities;
 using System.Drawing;
 using TAC_COM.Models;
 
@@ -8,7 +7,6 @@ namespace TAC_COM.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public ViewModelBase CurrentViewModel { get; set; }
-        private readonly EventAggregator eventAggregator;
 
         private System.Windows.Media.ImageSource? activeProfileIcon;
         public System.Windows.Media.ImageSource? ActiveProfileIcon
@@ -43,30 +41,28 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public void ChangeNotifyIcon(string iconPath, string notifyText)
+        public void OnChangeSystemTrayIcon(object? sender, EventArgs e)
         {
-            NotifyIconImage = new Icon(@iconPath);
-            IconText = notifyText;
+            if (e is IconChangeEventArgs f)
+            {
+                NotifyIconImage = new Icon(@f.IconPath);
+                IconText = f.Tooltip;
+            }
         }
 
-        private void OnChangeNotifyIcon(ChangeNotifyIconMessage message)
+        private void OnSetActiveProfileIcon(object? sender, EventArgs e)
         {
-            ChangeNotifyIcon(message.IconPath, message.Tooltip);
+            ProfileChangeEventArgs? f = e as ProfileChangeEventArgs;
+            ActiveProfileIcon = f?.Icon;
         }
 
-        private void OnSetActiveProfileIcon(SetActiveProfileIconMessage message)
+        public MainViewModel()
         {
-            ActiveProfileIcon = message.Icon;
-        }
-
-        public MainViewModel(EventAggregator _eventAggregator)
-        {
-            eventAggregator = _eventAggregator;
-            eventAggregator.Subscribe<ChangeNotifyIconMessage>(OnChangeNotifyIcon);
-            eventAggregator.Subscribe<SetActiveProfileIconMessage>(OnSetActiveProfileIcon);
-
             UriService uriService = new();
-            IconService iconService = new(eventAggregator);
+            IconService iconService = new();
+            iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
+            iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
+
             ThemeService themeService = new(uriService);
             AudioManager audioManager = new();
 

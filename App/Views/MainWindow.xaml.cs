@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using TAC_COM.ViewModels;
-using TAC_COM.Utilities;
 
 namespace TAC_COM
 {
@@ -65,7 +64,7 @@ namespace TAC_COM
         {
             InitializeComponent();
 
-            var viewModel = new MainViewModel(new EventAggregator());
+            var viewModel = new MainViewModel();
             DataContext = viewModel;
 
             contextMenuStrip = new ContextMenuStrip();

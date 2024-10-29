@@ -9,15 +9,12 @@ using TAC_COM.Settings;
 using System.Collections.ObjectModel;
 using Moq;
 using TAC_COM.Models;
-using TAC_COM.Utilities;
-using System.ComponentModel;
 
 namespace Tests.ViewModelTests
 {
     [TestClass]
     public partial class AudioInterfaceViewModelTests
     {
-        public EventAggregator eventAggregator = new();
         public IUriService mockUriService = new MockUriService();
         public IThemeService mockThemeService = new MockThemeService();
         public ISettingsService settingsService = new MockSettingsService();
@@ -26,7 +23,7 @@ namespace Tests.ViewModelTests
 
         public AudioInterfaceViewModelTests() 
         {
-            testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(eventAggregator), mockThemeService)
+            testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(), mockThemeService)
             {
                 SettingsService = settingsService,
             };
