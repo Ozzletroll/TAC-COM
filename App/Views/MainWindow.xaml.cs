@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
+using TAC_COM.Models;
 using TAC_COM.Services;
 using TAC_COM.ViewModels;
 
@@ -64,8 +65,8 @@ namespace TAC_COM
         public MainWindow()
         {
             InitializeComponent();
-
-            var viewModel = new MainViewModel(new UriService(), new IconService());
+            var uriService = new UriService();
+            var viewModel = new MainViewModel(new AudioManager(), uriService, new IconService(), new ThemeService(uriService));
             DataContext = viewModel;
 
             contextMenuStrip = new ContextMenuStrip();

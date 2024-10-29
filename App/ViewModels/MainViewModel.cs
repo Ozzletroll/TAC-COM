@@ -2,6 +2,7 @@
 using System.Drawing;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.ViewModels
 {
@@ -57,13 +58,9 @@ namespace TAC_COM.ViewModels
             ActiveProfileIcon = f?.Icon;
         }
 
-        public MainViewModel(IUriService _uriService, IIconService _iconService)
+        public MainViewModel(IAudioManager audioManager, IUriService uriService, IIconService _iconService, IThemeService themeService)
         {
-            UriService uriService = (UriService)_uriService;
-            IconService iconService = (IconService)_iconService;
-            ThemeService themeService = new(uriService);
-            AudioManager audioManager = new();
-
+            IIconService iconService = _iconService;
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 
