@@ -67,5 +67,14 @@ namespace Tests.ViewModelTests
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NotifyIconImage), newPropertyValue);
             Assert.IsTrue(testViewModel.NotifyIconImage == mockImageSource);
         }
+
+        [TestMethod]
+        public void TestIconTextProperty()
+        {
+            string newPropertyValue = "Icon Text";
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IconText), newPropertyValue);
+            Assert.IsTrue(testViewModel.IconText == "Icon Text");
+        }
     }
 }
