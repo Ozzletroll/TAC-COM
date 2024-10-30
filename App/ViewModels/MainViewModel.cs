@@ -43,7 +43,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public void OnChangeSystemTrayIcon(object? sender, EventArgs e)
+        private void OnChangeSystemTrayIcon(object? sender, EventArgs e)
         {
             if (e is IconChangeEventArgs f)
             {
