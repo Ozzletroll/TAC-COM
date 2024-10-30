@@ -4,6 +4,7 @@ using TAC_COM.Services.Interfaces;
 using Tests.MockModels;
 using Tests.MockServices;
 using System.Windows.Media.Imaging;
+using System.Drawing;
 
 namespace Tests.ViewModelTests
 {
@@ -55,6 +56,16 @@ namespace Tests.ViewModelTests
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.ActiveProfileIcon), newPropertyValue);
             Assert.IsTrue(testViewModel.ActiveProfileIcon == mockImageSource);
+        }
+
+        [TestMethod]
+        public void TestNotifyIconImageProperty()
+        {
+            var mockImageSource = SystemIcons.WinLogo;
+            Icon newPropertyValue = mockImageSource;
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NotifyIconImage), newPropertyValue);
+            Assert.IsTrue(testViewModel.NotifyIconImage == mockImageSource);
         }
     }
 }
