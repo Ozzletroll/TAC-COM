@@ -29,5 +29,22 @@ namespace Tests.ServiceTests
             Assert.AreEqual("./Static/Icons/live.ico", raisedEventArgs?.IconPath);
             Assert.AreEqual("TAC/COM Live", raisedEventArgs?.Tooltip);
         }
+
+        [TestMethod]
+        public void TestSetEnabledIcon()
+        {
+            IconChangeEventArgs? raisedEventArgs = null;
+
+            testIconService.ChangeSystemTrayIcon += (sender, e) =>
+            {
+                raisedEventArgs = e as IconChangeEventArgs;
+            };
+
+            testIconService.SetEnabledIcon();
+
+            Assert.IsNotNull(raisedEventArgs);
+            Assert.AreEqual("./Static/Icons/enabled.ico", raisedEventArgs?.IconPath);
+            Assert.AreEqual("TAC/COM Enabled", raisedEventArgs?.Tooltip);
+        }
     }
 }
