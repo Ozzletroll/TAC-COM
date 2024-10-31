@@ -1,4 +1,5 @@
-﻿using TAC_COM.Services;
+﻿using System.Windows.Media.Imaging;
+using TAC_COM.Services;
 
 namespace Tests.ServiceTests
 {
@@ -62,6 +63,24 @@ namespace Tests.ServiceTests
             Assert.IsNotNull(raisedEventArgs);
             Assert.AreEqual("./Static/Icons/standby.ico", raisedEventArgs?.IconPath);
             Assert.AreEqual("TAC/COM Standby", raisedEventArgs?.Tooltip);
+        }
+
+        [TestMethod]
+        public void TestSetActiveProfileIcon()
+        {
+            ProfileChangeEventArgs? raisedEventArgs = null;
+
+            var mockImageSource = new BitmapImage(new Uri("http://image.com/100x100.png", UriKind.Absolute));
+
+            testIconService.ChangeProfileIcon += (sender, e) =>
+            {
+                raisedEventArgs = e as ProfileChangeEventArgs;
+            };
+
+            testIconService.SetActiveProfileIcon(mockImageSource);
+
+            Assert.IsNotNull(raisedEventArgs);
+            Assert.AreEqual(mockImageSource, raisedEventArgs?.Icon);
         }
     }
 }
