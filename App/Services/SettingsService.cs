@@ -12,11 +12,9 @@ namespace TAC_COM.Services
 
         public void UpdateAppConfig(string propertyName, object value)
         {
-            // Check if property in settings
             var property = AudioSettings.GetType().GetProperty(propertyName)
                 ?? KeybindSettings.GetType().GetProperty(propertyName);
 
-            // Update AppConfig
             if (property != null)
             {
                 if (property.PropertyType == typeof(string))
