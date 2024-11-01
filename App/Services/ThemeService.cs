@@ -6,7 +6,7 @@ namespace TAC_COM.Services
     public class ThemeService(IUriService uriService) : IThemeService
     {
         private readonly IUriService UriService = uriService;
-        private static ResourceDictionary? CurrentTheme;
+        private ResourceDictionary? CurrentTheme;
 
         public void ChangeTheme(Uri targetTheme)
         {
