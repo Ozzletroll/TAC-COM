@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-using TAC_COM.Services;
-using TAC_COM.Services.Interfaces;
+﻿using TAC_COM.Services;
 
 namespace Tests.ServiceTests
 {
