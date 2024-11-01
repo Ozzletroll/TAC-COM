@@ -45,5 +45,29 @@ namespace Tests.ServiceTests
 
             Assert.AreEqual(testFloatValue, floatPropertyValue);
         }
+
+        [TestMethod]
+        public void TestUpdateAppConfig_KeybindSettings()
+        {
+            var testStringProperty = "KeyCode";
+            var testStringValue = "KeyF";
+
+            testSettingsService.UpdateAppConfig(testStringProperty, testStringValue);
+
+            var stringPropertyInfo = testSettingsService.KeybindSettings.GetType().GetProperty(testStringProperty);
+            var stringPropertyValue = stringPropertyInfo?.GetValue(testSettingsService.KeybindSettings);
+
+            Assert.AreEqual(testStringValue, stringPropertyValue);
+
+            var testBoolProperty = "Ctrl";
+            var testBoolValue = true;
+
+            testSettingsService.UpdateAppConfig(testBoolProperty, testBoolValue);
+
+            var boolPropertyInfo = testSettingsService.KeybindSettings.GetType().GetProperty(testBoolProperty);
+            var boolPropertyValue = boolPropertyInfo?.GetValue(testSettingsService.KeybindSettings);
+
+            Assert.AreEqual(testBoolValue, boolPropertyValue);
+        }
     }
 }
