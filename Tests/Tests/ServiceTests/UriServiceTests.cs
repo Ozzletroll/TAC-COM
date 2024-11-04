@@ -11,7 +11,7 @@ namespace Tests.Tests.ServiceTests
         public UriServiceTests()
         {
             string[] themeDirectoryFolders = ["Folder1", "Folder2"];
-            string[] iconDirectoryFolders = ["FolderA", "Folder2"];
+            string[] iconDirectoryFolders = ["FolderA", "FolderB"];
 
             uriService = new UriService(themeDirectoryFolders, iconDirectoryFolders);
 
@@ -26,6 +26,16 @@ namespace Tests.Tests.ServiceTests
             string expectedRelativePath = "Folder1/Folder2/ThemeTEST.xaml";
             Uri expectedUri = new($"pack://application:,,,/{expectedRelativePath}", UriKind.Absolute);
             Uri resultUri = uriService.GetThemeUri("TEST");
+
+            Assert.AreEqual(expectedUri, resultUri);
+        }
+
+        [TestMethod]
+        public void TestGetIconUri()
+        {
+            string expectedRelativePath = "FolderA/FolderB/Icon-Test.ico";
+            Uri expectedUri = new($"pack://application:,,,/{expectedRelativePath}", UriKind.Absolute);
+            Uri resultUri = uriService.GetIconUri("Test");
 
             Assert.AreEqual(expectedUri, resultUri);
         }
