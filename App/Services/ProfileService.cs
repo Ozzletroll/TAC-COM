@@ -4,6 +4,7 @@ using TAC_COM.Audio.SignalChains;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
 using TAC_COM.Services.Interfaces;
+using System.Windows.Media.Imaging;
 
 namespace TAC_COM.Models
 {
@@ -20,7 +21,7 @@ namespace TAC_COM.Models
                     profileName: "GMS Type-4 Datalink",
                     fileIdentifier: "GMS",
                     theme: UriProvider.GetThemeUri("GMS"),
-                    icon: UriProvider.GetIconUri("GMS"))
+                    icon: new BitmapImage(UriProvider.GetIconUri("GMS")))
                 {
                     Settings = new EffectParameters()
                     {
@@ -39,7 +40,7 @@ namespace TAC_COM.Models
                     profileName: "SSC Hamadryas Stealth Tranceiver",
                     fileIdentifier: "SSC",
                     theme: UriProvider.GetThemeUri("SSC"),
-                    icon: UriProvider.GetIconUri("GMS"))
+                    icon: new BitmapImage(UriProvider.GetIconUri("GMS")))
                 {
                     Settings = new EffectParameters()
                     {
@@ -58,7 +59,7 @@ namespace TAC_COM.Models
                     profileName: "IPS-N Integrated Tactical Network",
                     fileIdentifier: "IPSN",
                     theme: UriProvider.GetThemeUri("IPSN"),
-                    icon: UriProvider.GetIconUri("IPSN"))
+                    icon: new BitmapImage(UriProvider.GetIconUri("IPSN")))
                 {
                     Settings = new EffectParameters()
                     {
@@ -82,7 +83,7 @@ namespace TAC_COM.Models
                     profileName: "HA Hardened Waveform Radio",
                     fileIdentifier: "HA",
                     theme: UriProvider.GetThemeUri("HA"),
-                    icon: UriProvider.GetIconUri("HA"))
+                    icon: new BitmapImage(UriProvider.GetIconUri("HA")))
                 {
                     Settings = new EffectParameters()
                     {
@@ -104,7 +105,7 @@ namespace TAC_COM.Models
                     profileName: "HORUS [UNRECOGNISED DEVICE]",
                     fileIdentifier: "HORUS",
                     theme: UriProvider.GetThemeUri("HORUS"),
-                    icon: UriProvider.GetIconUri("HORUS"))
+                    icon: new BitmapImage(UriProvider.GetIconUri("HORUS")))
                 {
                     Settings = new EffectParameters()
                     {

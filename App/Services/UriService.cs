@@ -1,18 +1,22 @@
-﻿using System.Windows.Media.Imaging;
-using TAC_COM.Services.Interfaces;
+﻿using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
-    public class UriService : IUriService
+    public class UriService(string[] themeFolders, string[] iconFolders) : IUriService
     {
+        private readonly string[] themeDirectoryFolders = themeFolders;
+        private readonly string[] iconDirectoryFolders = iconFolders;
+
         public Uri GetThemeUri(string themeName)
         {
-            return new Uri($"pack://application:,,,/Themes/Theme{themeName}.xaml", UriKind.Absolute);
+            string relativePath = $"{string.Join("/", themeDirectoryFolders)}/Theme{themeName}.xaml";
+            return new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
         }
 
-        public BitmapImage GetIconUri(string iconName)
+        public Uri GetIconUri(string iconName)
         {
-            return new BitmapImage(new Uri($"pack://application:,,,/Static/Icons/Icon-{iconName}.ico"));
+            string relativePath = $"{string.Join("/", iconDirectoryFolders)}/Icon-{iconName}.ico";
+            return new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
         }
 
         public Uri GetResourcesUri()

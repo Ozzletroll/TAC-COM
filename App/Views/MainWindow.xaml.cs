@@ -65,7 +65,11 @@ namespace TAC_COM
         public MainWindow()
         {
             InitializeComponent();
-            var uriService = new UriService();
+
+            string[] themeDirectoryFolders = ["Themes"];
+            string[] iconDirectoryFolders = ["Static", "Icons"];
+            var uriService = new UriService(themeDirectoryFolders, iconDirectoryFolders);
+
             var viewModel = new MainViewModel(new AudioManager(), uriService, new IconService(), new ThemeService(uriService));
             DataContext = viewModel;
 
