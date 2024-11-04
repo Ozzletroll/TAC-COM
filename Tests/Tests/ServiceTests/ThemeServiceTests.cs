@@ -20,7 +20,7 @@ namespace Tests.ServiceTests
         {
             _ = new Application();
 
-            var newThemeUri = mockUriService.GetThemeUri("MockThemeName"); 
+            var newThemeUri = mockUriService.GetThemeUri("TEST"); 
             themeService.ChangeTheme(newThemeUri); 
 
             var rootResourceDictionary = Application.Current.Resources; 

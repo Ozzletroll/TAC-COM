@@ -7,11 +7,11 @@ namespace Tests.MockServices
     {
         public Uri GetThemeUri(string themeName)
         {
-            string relativePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MockResources", "MockTheme.xaml");
+            string relativePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MockResources", "ThemeTEST.xaml");
             return new Uri(relativePath, UriKind.Absolute); 
         }
 
-        public BitmapImage GetIconUri(string iconName) => new(new Uri("http://mock.uri/" + iconName));
+        public Uri GetIconUri(string iconName) => new("http://mock.uri/" + iconName);
 
         public Uri GetResourcesUri()
         {
