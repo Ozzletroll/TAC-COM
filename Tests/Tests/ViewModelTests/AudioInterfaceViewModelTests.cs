@@ -9,6 +9,7 @@ using TAC_COM.Settings;
 using System.Collections.ObjectModel;
 using Moq;
 using TAC_COM.Models;
+using System.Windows.Media.Imaging;
 
 namespace Tests.ViewModelTests
 {
@@ -240,8 +241,8 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestProfilesProperty()
         {
-            var mockProfile1 = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID1"));
-            var mockProfile2 = new Profile("Profile 2", "ID2", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID2"));
+            var mockProfile1 = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
+            var mockProfile2 = new Profile("Profile 2", "ID2", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID2")));
 
             List<Profile> testProfiles = [mockProfile1, mockProfile2];
             testViewModel.Profiles = testProfiles;
@@ -252,7 +253,7 @@ namespace Tests.ViewModelTests
         [TestMethod]
         public void TestActiveProfileProperty()
         {
-            Profile testActiveProfile = new("Test Profile", "ID1", mockUriService.GetResourcesUri(), mockUriService.GetIconUri("ID1"));
+            Profile testActiveProfile = new("Test Profile", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
 
             var mockSettingsService = new Mock<ISettingsService>();
             mockSettingsService.Setup(
