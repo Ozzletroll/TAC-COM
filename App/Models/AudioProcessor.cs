@@ -238,10 +238,10 @@ namespace TAC_COM.Models
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 0.5f,
-                    Gain = 15,
-                    Ratio = 30,
-                    Release = 200,
-                    Threshold = -20
+                    Gain = 40,
+                    Ratio = 100,
+                    Release = 150,
+                    Threshold = -60
                 });
 
             // Apply CSCore distortion, depending on ActiveProfile settings
@@ -253,7 +253,7 @@ namespace TAC_COM.Models
                     {
                         Gain = -60,
                         Edge = DistortionLevel,
-                        PostEQCenterFrequency = 3000,
+                        PostEQCenterFrequency = 3500,
                         PostEQBandwidth = 2400,
                         PreLowpassCutoff = 8000
                     }, out Distortion);

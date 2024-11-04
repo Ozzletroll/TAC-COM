@@ -18,7 +18,7 @@ namespace TAC_COM.Models
         private WasapiCapture? input;
         private WasapiOut? micOutput;
         private WasapiOut? sfxOutput;
-        private readonly float sfxVolume = 0.5f;
+        private readonly float sfxVolume = 0.3f;
         private readonly AudioProcessor audioProcessor = new();
 
         public Profile? activeProfile;

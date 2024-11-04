@@ -29,8 +29,8 @@ namespace TAC_COM.Models
                         PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                         HighpassFrequency = 800,
-                        LowpassFrequency = 7000,
-                        PeakFrequency = 2000,
+                        LowpassFrequency = 2900,
+                        PeakFrequency = 3500,
                         GainAdjust = 5
                     }
                 });
