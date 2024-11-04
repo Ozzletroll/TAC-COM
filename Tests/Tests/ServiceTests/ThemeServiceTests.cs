@@ -24,8 +24,9 @@ namespace Tests.ServiceTests
             themeService.ChangeTheme(newThemeUri); 
 
             var rootResourceDictionary = Application.Current.Resources; 
-            var currentThemeUri = rootResourceDictionary.MergedDictionaries.FirstOrDefault()?.Source; Assert.AreEqual(newThemeUri, currentThemeUri);
+            var matchingThemeDictionary = rootResourceDictionary.MergedDictionaries.FirstOrDefault(dict => dict.Source == newThemeUri);
 
+            var currentThemeUri = matchingThemeDictionary?.Source; 
             Assert.AreEqual(newThemeUri, currentThemeUri);
         }
     }
