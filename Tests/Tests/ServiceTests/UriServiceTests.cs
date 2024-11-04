@@ -39,5 +39,14 @@ namespace Tests.Tests.ServiceTests
 
             Assert.AreEqual(expectedUri, resultUri);
         }
+
+        [TestMethod]
+        public void TestGetResourcesUri()
+        {
+            Uri expectedUri = new($"pack://application:,,,/Resources.xaml", UriKind.Absolute);
+            Uri resultUri = uriService.GetResourcesUri();
+
+            Assert.AreEqual(expectedUri, resultUri);
+        }
     }
 }
