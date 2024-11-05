@@ -19,8 +19,7 @@
              TitleBarForeground="White" 
              TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
              BorderThickness="1" 
-             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
-             Icon="/Static/Icons/icon.png">
+             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
