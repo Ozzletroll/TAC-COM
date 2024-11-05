@@ -20,12 +20,12 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                    { "LfoFrequency", 6000f },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "LfoFrequency", 50f },
                     { "Width", 0.05f },
                     { "Depth", 0.5f },
-                    { "Feedback", 0.5f }
+                    { "Feedback", 0.2f }
                 }
             },
         ];

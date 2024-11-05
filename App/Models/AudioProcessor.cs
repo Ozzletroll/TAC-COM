@@ -323,8 +323,8 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.9f;
-            dryMixLevel.Volume = 0.1f;
+            wetMixLevel.Volume = 0.8f;
+            dryMixLevel.Volume = 0.2f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -388,7 +388,7 @@ namespace TAC_COM.Models
 
             var outputSource = compressedSource.ToSampleSource().AppendSource(x => new Gain(x)
             {
-                GainDB = 3,
+                GainDB = 5,
             });
 
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");
