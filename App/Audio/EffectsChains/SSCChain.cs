@@ -12,8 +12,8 @@ namespace TAC_COM.Audio.SignalChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                 }
             }
         ];
@@ -24,8 +24,8 @@ namespace TAC_COM.Audio.SignalChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.3f },
-                    { "Dry", 0.7f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                 }
             }
         ];

@@ -238,7 +238,7 @@ namespace TAC_COM.Models
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
                     Attack = 0.5f,
-                    Gain = 40,
+                    Gain = 50,
                     Ratio = 100,
                     Release = 150,
                     Threshold = -60
