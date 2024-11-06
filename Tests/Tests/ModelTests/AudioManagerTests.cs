@@ -38,5 +38,17 @@ namespace Tests.ModelTests
             audioManager.InputDevices = newPropertyValue;
             Assert.AreEqual(audioManager.InputDevices, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestOutputDevicesProperty()
+        {
+            ObservableCollection<IMMDeviceWrapper> newPropertyValue =
+                [
+                    new MockMMDeviceWrapper("Test Output Device 1"),
+                    new MockMMDeviceWrapper("Test Output Device 2")
+                ];
+            audioManager.OutputDevices = newPropertyValue;
+            Assert.AreEqual(audioManager.OutputDevices, newPropertyValue);
+        }
     }
 }
