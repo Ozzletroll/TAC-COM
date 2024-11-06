@@ -50,5 +50,13 @@ namespace Tests.ModelTests
             audioManager.OutputDevices = newPropertyValue;
             Assert.AreEqual(audioManager.OutputDevices, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestStateProperty()
+        {
+            var newPropertyValue = true;
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.State), newPropertyValue);
+            Assert.AreEqual(audioManager.State, newPropertyValue);
+        }
     }
 }
