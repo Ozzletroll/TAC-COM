@@ -8,38 +8,33 @@ using TAC_COM.Views;
 
 namespace Tests.ServiceTests
 {
-    [STATestClass]
+    [TestClass]
     public partial class WindowServiceTests
     {
         private readonly WindowService windowService;
         private readonly Mock<Window> mockMainWindow;
 
-        public WindowServiceTests() 
+        public WindowServiceTests()
         {
             _ = new Application();
-            
+
             // Create and configure a mock MainWindow
             mockMainWindow = new Mock<Window>();
             mockMainWindow.SetupAllProperties();
 
-            // Show the mockMainWindow non-blocking,
-            // so that it may be set as the KeybindWindow's owner
-            var thread = new Thread(() =>
-            {
-                Application.Current.MainWindow = mockMainWindow.Object;
-                Application.Current.MainWindow.Show();
-                System.Windows.Threading.Dispatcher.Run();
-            });
-
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
+            Application.Current.MainWindow = mockMainWindow.Object;
+            Application.Current.MainWindow.Show();
 
             SettingsService settingsService = new();
             KeybindManager keybindManager = new(settingsService);
-            windowService = new WindowService(keybindManager);
+            windowService = new WindowService(keybindManager)
+            {
+                ShowWindow = false
+            };
         }
 
-        [TestMethod]
+        [STATestMethod]
         public void TestOpenKeybindWindow()
         {
             windowService.OpenKeybindWindow();
@@ -62,6 +57,17 @@ namespace Tests.ServiceTests
 
             viewModel.CloseKeybindDialog.Execute(null);
             Assert.IsTrue(closeEventTriggered);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            foreach (Window window in Application.Current.Windows) 
+            { 
+                window.Close(); 
+            }
+            Application.Current.Dispatcher.InvokeShutdown();
+            Application.Current.Shutdown();
         }
     }
 }

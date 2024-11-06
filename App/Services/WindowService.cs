@@ -11,6 +11,7 @@ namespace TAC_COM.Services
     {
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
         private KeybindWindowView? keybindWindow;
+        public bool ShowWindow = true;
 
         public void OpenKeybindWindow()
         {
@@ -25,7 +26,7 @@ namespace TAC_COM.Services
             };
             viewModel.Close += (s, e) => keybindWindow.Close();
 
-            keybindWindow.ShowDialog();
+            if (ShowWindow) keybindWindow.ShowDialog();
         }
     }
 }
