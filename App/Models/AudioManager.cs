@@ -21,7 +21,7 @@ namespace TAC_COM.Models
         private readonly float sfxVolume = 0.3f;
         private readonly AudioProcessor audioProcessor = new();
 
-        public Profile? activeProfile;
+        private Profile? activeProfile;
         public Profile? ActiveProfile
         {
             get => activeProfile;
@@ -31,7 +31,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public ObservableCollection<IMMDeviceWrapper> inputDevices = [];
+        private ObservableCollection<IMMDeviceWrapper> inputDevices = [];
         public ObservableCollection<IMMDeviceWrapper> InputDevices
         {
             get => inputDevices;
@@ -41,7 +41,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public ObservableCollection<IMMDeviceWrapper> outputDevices = [];
+        private ObservableCollection<IMMDeviceWrapper> outputDevices = [];
         public ObservableCollection<IMMDeviceWrapper> OutputDevices
         {
             get => outputDevices;
