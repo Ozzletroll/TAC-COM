@@ -1,5 +1,8 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
 using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
+using Tests.MockModels;
 using Tests.MockServices;
 
 namespace Tests.ModelTests
@@ -15,12 +18,25 @@ namespace Tests.ModelTests
             audioManager = new AudioManager();
             mockUriService = new MockUriService();
         }
+
         [TestMethod]
         public void TestActiveProfileProperty()
         {
             var newPropertyValue = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
             audioManager.ActiveProfile = newPropertyValue;
             Assert.AreEqual(audioManager.ActiveProfile, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestInputDevicesProperty()
+        {
+            ObservableCollection<IMMDeviceWrapper> newPropertyValue = 
+                [
+                    new MockMMDeviceWrapper("Test Input Device 1"), 
+                    new MockMMDeviceWrapper("Test Input Device 2")
+                ];
+            audioManager.InputDevices = newPropertyValue;
+            Assert.AreEqual(audioManager.InputDevices, newPropertyValue);
         }
     }
 }
