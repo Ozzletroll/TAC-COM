@@ -1,14 +1,14 @@
-﻿using TAC_COM.ViewModels;
+﻿using TAC_COM.Utilities;
 
 namespace Tests
 {
     public class Utils
     {
-        public static void TestPropertyChange<T>(ViewModelBase viewModel, string propertyName, T newValue)
+        public static void TestPropertyChange<T>(NotifyProperty testObject, string propertyName, T newValue)
         {
             bool propertyChangedRaised = false;
 
-            viewModel.PropertyChanged += (sender, e) =>
+            testObject.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == propertyName)
                 {
@@ -16,8 +16,8 @@ namespace Tests
                 }
             };
 
-            var propertyInfo = viewModel.GetType().GetProperty(propertyName);
-            propertyInfo?.SetValue(viewModel, newValue);
+            var propertyInfo = testObject.GetType().GetProperty(propertyName);
+            propertyInfo?.SetValue(testObject, newValue);
 
             Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
         }
