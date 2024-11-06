@@ -36,7 +36,6 @@ namespace Tests.ViewModelTests
             var mockTestAudioManager = new Mock<IAudioManager>();
             mockTestAudioManager.SetupProperty(audioManager => audioManager.InputDevices, []);
             mockTestAudioManager.SetupProperty(audioManager => audioManager.OutputDevices, []);
-            var mockUriService = new Mock<IUriService>();
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new Mock<IThemeService>();
 
@@ -44,7 +43,7 @@ namespace Tests.ViewModelTests
             mockTestAudioManager.SetupAdd(audioManager => audioManager.DeviceListReset += It.IsAny<AudioManager.DeviceListResetEventHandler>())
                             .Callback<AudioManager.DeviceListResetEventHandler>(handler => deviceListResetSubscribed = true);
 
-            var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService.Object, mockIconService.Object, mockThemeService.Object);
+            var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object);
 
             Assert.IsNotNull(viewModel.AudioManager);
             Assert.IsNotNull(viewModel.SettingsService);
