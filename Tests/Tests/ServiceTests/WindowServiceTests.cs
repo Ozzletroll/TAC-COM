@@ -16,15 +16,21 @@ namespace Tests.ServiceTests
 
         public WindowServiceTests()
         {
-            _ = new Application();
+            if (Application.Current == null)
+            {
+                _ = new Application();
+            }
 
             // Create and configure a mock MainWindow
             mockMainWindow = new Mock<Window>();
             mockMainWindow.SetupAllProperties();
 
             // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
-            Application.Current.MainWindow = mockMainWindow.Object;
-            Application.Current.MainWindow.Show();
+            if (Application.Current != null)
+            {
+                Application.Current.MainWindow = mockMainWindow.Object;
+                Application.Current.MainWindow.Show();
+            }
 
             SettingsService settingsService = new();
             KeybindManager keybindManager = new(settingsService);
@@ -57,17 +63,6 @@ namespace Tests.ServiceTests
 
             viewModel.CloseKeybindDialog.Execute(null);
             Assert.IsTrue(closeEventTriggered);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            foreach (Window window in Application.Current.Windows) 
-            { 
-                window.Close(); 
-            }
-            Application.Current.Dispatcher.InvokeShutdown();
-            Application.Current.Shutdown();
         }
     }
 }

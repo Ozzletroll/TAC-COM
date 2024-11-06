@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Page Include="MockResources\ThemeTEST.xaml">
+	  <None Update="MockResources\ThemeTEST.xaml">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Page>
+	  </None>
   </ItemGroup>
 
 	<ItemGroup>

@@ -10,7 +10,7 @@ namespace Tests.ServiceTests
         private readonly ThemeService themeService;
         private readonly MockUriService mockUriService = new();
 
-        public ThemeServiceTests() 
+        public ThemeServiceTests()
         {
             themeService = new ThemeService(mockUriService);
         }
@@ -18,15 +18,18 @@ namespace Tests.ServiceTests
         [TestMethod]
         public void TestChangeTheme()
         {
-            _ = new Application();
+            if (Application.Current == null)
+            {
+                _ = new Application();
+            }
 
-            var newThemeUri = mockUriService.GetThemeUri("TEST"); 
-            themeService.ChangeTheme(newThemeUri); 
+            var newThemeUri = mockUriService.GetThemeUri("TEST");
+            themeService.ChangeTheme(newThemeUri);
 
-            var rootResourceDictionary = Application.Current.Resources; 
-            var matchingThemeDictionary = rootResourceDictionary.MergedDictionaries.FirstOrDefault(dict => dict.Source == newThemeUri);
+            var rootResourceDictionary = Application.Current?.Resources;
+            var matchingThemeDictionary = rootResourceDictionary?.MergedDictionaries.FirstOrDefault(dict => dict.Source == newThemeUri);
 
-            var currentThemeUri = matchingThemeDictionary?.Source; 
+            var currentThemeUri = matchingThemeDictionary?.Source;
             Assert.AreEqual(newThemeUri, currentThemeUri);
         }
     }
