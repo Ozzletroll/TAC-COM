@@ -9,14 +9,12 @@ using NWaves.Effects;
 
 namespace TAC_COM.Models
 {
-
     /// <summary>
     /// Class <c>AudioProcessor</c> assembles and mixes the signal chains used by
     /// the <c>AudioManager</c> Model class.
     /// </summary>
-    internal class AudioProcessor
+    public class AudioProcessor
     {
-
         private SoundInSource? inputSource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
@@ -163,7 +161,7 @@ namespace TAC_COM.Models
         /// <summary>
         /// Returns the full combined signal chain for initialisation with the CSCore soundOut.
         /// </summary>
-        internal IWaveSource? Output()
+        public IWaveSource? ReturnCompleteSignalChain()
         {
             if (HasInitialised)
             {
@@ -180,7 +178,7 @@ namespace TAC_COM.Models
         /// <summary>
         /// Returns the assembled processed microphone input signal chain.
         /// </summary>
-        internal ISampleSource InputSignalChain()
+        private ISampleSource InputSignalChain()
         {
             if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
 
@@ -339,7 +337,7 @@ namespace TAC_COM.Models
         /// Returns the assembled parallel processing signal chain, for use in
         /// the InputSignalChain.
         /// </summary>
-        internal ISampleSource ParallelProcessedSignalChain(ISampleSource parallelSource)
+        private ISampleSource ParallelProcessedSignalChain(ISampleSource parallelSource)
         {
             if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
 
@@ -397,7 +395,7 @@ namespace TAC_COM.Models
         /// <summary>
         /// Returns the assembled unprocessed input signal chain.
         /// </summary>
-        internal ISampleSource DrySignalChain()
+        private ISampleSource DrySignalChain()
         {
             var sampleSource = passthroughSource.ToSampleSource();
 
@@ -416,7 +414,7 @@ namespace TAC_COM.Models
         /// <summary>
         /// Returns the assembled noise signal chain.
         /// </summary>
-        internal ISampleSource NoiseSignalChain()
+        private ISampleSource NoiseSignalChain()
         {
             if (ActiveProfile != null)
             {
@@ -439,7 +437,7 @@ namespace TAC_COM.Models
         /// Combines the microphone, noise and dry signal input
         /// sources using two <c>Mixer</c> classes.
         /// </summary>
-        internal IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
+        private IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
             // Ensure all sources are mono and same sample rate
             wetMix = wetMix.ToMono().ChangeSampleRate(SampleRate);
@@ -492,16 +490,6 @@ namespace TAC_COM.Models
                 });
 
             return compressedOutput;
-        }
-
-        /// <summary>
-        /// Disposes of the input and passthrough <c>SoundInSource</c>s.
-        /// </summary>
-        internal void Dispose()
-        {
-            inputSource?.Dispose();
-            passthroughSource?.Dispose();
-            HasInitialised = false;
         }
 
         public void SetActiveProfile(Profile activeProfile)

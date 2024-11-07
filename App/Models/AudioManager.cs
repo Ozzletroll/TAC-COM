@@ -295,7 +295,7 @@ namespace TAC_COM.Models
 
                     // Initialise output
                     micOutput.Device = activeOutputDevice;
-                    micOutput.Initialize(audioProcessor.Output());
+                    micOutput.Initialize(audioProcessor.ReturnCompleteSignalChain());
                     micOutput.Stopped += OnOutputStopped;
 
                     // Start audio

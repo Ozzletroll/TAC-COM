@@ -3,7 +3,7 @@ using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.DSP
 {
-    internal class Gain(ISampleSource inputSource) : ISampleSource
+    public class Gain(ISampleSource inputSource) : ISampleSource
     {
         readonly ISampleSource source = inputSource;
 
