@@ -84,5 +84,13 @@ namespace Tests.ModelTests
             Assert.IsTrue(mockAudioProcessor.Object.WetNoiseMixLevel.Volume == 1);
             Assert.IsTrue(mockAudioProcessor.Object.DryMixLevel.Volume == 0);
         }
+
+        [TestMethod]
+        public void TestInputPeakMeterProperty()
+        {
+            var newPropertyValue = 0.5f;
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputPeakMeter), newPropertyValue);
+            Assert.AreEqual(audioManager.InputPeakMeter, newPropertyValue);
+        }
     }
 }
