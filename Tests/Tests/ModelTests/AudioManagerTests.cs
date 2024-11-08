@@ -92,5 +92,13 @@ namespace Tests.ModelTests
             Utils.TestPropertyChange(audioManager, nameof(audioManager.InputPeakMeter), newPropertyValue);
             Assert.AreEqual(audioManager.InputPeakMeter, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestOutputPeakMeterProperty()
+        {
+            var newPropertyValue = 0.5f;
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.OutputPeakMeter), newPropertyValue);
+            Assert.AreEqual(audioManager.OutputPeakMeter, newPropertyValue);
+        }
     }
 }
