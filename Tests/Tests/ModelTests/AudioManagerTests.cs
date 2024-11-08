@@ -150,5 +150,30 @@ namespace Tests.ModelTests
             Assert.AreEqual(audioManager.NoiseGateThreshold, newPropertyValue);
             Assert.AreEqual(audioManager.AudioProcessor.NoiseGateThreshold, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestNoiseGateThresholdStringProperty()
+        {
+            bool propertyChangedRaised = false;
+            var propertyName = nameof(audioManager.NoiseGateThresholdString);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == propertyName)
+                {
+                    propertyChangedRaised = true;
+                }
+            };
+
+            audioManager.NoiseGateThreshold = -55f;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.NoiseGateThresholdString == "-55dB");
+
+            audioManager.NoiseGateThreshold = 0;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.NoiseGateThresholdString == "+0dB");
+        }
     }
 }
