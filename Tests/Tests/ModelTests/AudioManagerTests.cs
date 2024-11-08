@@ -100,5 +100,17 @@ namespace Tests.ModelTests
             Utils.TestPropertyChange(audioManager, nameof(audioManager.OutputPeakMeter), newPropertyValue);
             Assert.AreEqual(audioManager.OutputPeakMeter, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestOutputGainLevelProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = 20f;
+            audioManager.OutputGainLevel = newPropertyValue;
+            Assert.AreEqual(audioManager.OutputGainLevel, newPropertyValue);
+            Assert.AreEqual(audioManager.AudioProcessor.UserGainLevel, newPropertyValue);
+        }
     }
 }
