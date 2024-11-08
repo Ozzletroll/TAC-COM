@@ -2,6 +2,7 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
@@ -111,6 +112,31 @@ namespace Tests.ModelTests
             audioManager.OutputGainLevel = newPropertyValue;
             Assert.AreEqual(audioManager.OutputGainLevel, newPropertyValue);
             Assert.AreEqual(audioManager.AudioProcessor.UserGainLevel, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestOutputGainLevelStringProperty()
+        {
+            bool propertyChangedRaised = false;
+            var propertyName = nameof(audioManager.OutputGainLevelString);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == propertyName)
+                {
+                    propertyChangedRaised = true;
+                }
+            };
+
+            audioManager.OutputGainLevel = 25f;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.OutputGainLevelString == "+25dB");
+
+            audioManager.OutputGainLevel = -50;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.OutputGainLevelString == "-50dB");
         }
     }
 }
