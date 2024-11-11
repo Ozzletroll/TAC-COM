@@ -140,7 +140,7 @@ namespace Tests.ModelTests
         }
 
         [TestMethod]
-        public void TestNoiseGateThreshold()
+        public void TestNoiseGateThresholdProperty()
         {
             var mockAudioProcessor = new Mock<AudioProcessor>();
             audioManager.AudioProcessor = mockAudioProcessor.Object;
@@ -174,6 +174,18 @@ namespace Tests.ModelTests
 
             Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
             Assert.IsTrue(audioManager.NoiseGateThresholdString == "+0dB");
+        }
+
+        [TestMethod]
+        public void TestNoiseLevelProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = 0.45f;
+            audioManager.NoiseLevel = newPropertyValue;
+            Assert.AreEqual(audioManager.NoiseLevel, newPropertyValue);
+            Assert.AreEqual(audioManager.AudioProcessor.UserNoiseLevel, newPropertyValue);
         }
     }
 }
