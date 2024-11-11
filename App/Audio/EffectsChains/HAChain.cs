@@ -7,7 +7,15 @@ namespace TAC_COM.Audio.EffectsChains
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [
-
+            new(typeof(BitCrusherWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.8f },
+                    { "Dry", 0.2f },
+                    { "BitDepth", 8 }
+                }
+            },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =

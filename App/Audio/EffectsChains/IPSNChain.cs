@@ -11,16 +11,16 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                    { "BitDepth", 6 }
+                    { "Wet", 0.8f },
+                    { "Dry", 0.2f },
+                    { "BitDepth", 5 }
                 }
             },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
-            
+
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;

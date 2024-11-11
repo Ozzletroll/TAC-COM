@@ -67,8 +67,8 @@ namespace TAC_COM.Models
                         DistortionMode = DistortionMode.HardClipping,
                         DistortionInput = 30,
                         DistortionOutput = 42,
-                        DistortionWet = 0.6f,
-                        DistortionDry = 0.4f,
+                        DistortionWet = 0.8f,
+                        DistortionDry = 0.2f,
                         PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
                         HighpassFrequency = 400,
@@ -87,16 +87,16 @@ namespace TAC_COM.Models
                 {
                     Settings = new EffectParameters()
                     {
-                        DistortionType = typeof(DmoDistortionEffect),
-                        DistortionMode = null,
-                        DistortionInput = 50,
-                        DistortionOutput = 42,
+                        DistortionType = typeof(DistortionWrapper),
+                        DistortionMode = DistortionMode.HalfWaveRectify,
+                        DistortionInput = 40,
+                        DistortionOutput = 35,
                         PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 450,
+                        HighpassFrequency = 350,
                         LowpassFrequency = 5000,
-                        PeakFrequency = 3000,
-                        GainAdjust = 3,
+                        PeakFrequency = 2400,
+                        GainAdjust = -4,
                     }
                 });
 
