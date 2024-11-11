@@ -207,5 +207,36 @@ namespace Tests.ModelTests
             Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
             Assert.IsTrue(audioManager.NoiseLevelString == "25%");
         }
+
+        [TestMethod]
+        public void TestGetAudioDevices()
+        {
+
+            bool inputPropertyChangeRaised = false;
+            var inputDevicesProperty = nameof(audioManager.InputDevices);
+
+            bool outputPropertyChangeRaised = false;
+            var outputDevicesProperty = nameof(audioManager.OutputDevices);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == inputDevicesProperty)
+                {
+                    inputPropertyChangeRaised = true;
+                }
+                if (e.PropertyName ==  outputDevicesProperty)
+                {
+                    outputPropertyChangeRaised = true;
+                }
+            };
+
+            audioManager.GetAudioDevices();
+
+            Assert.IsTrue(audioManager.InputDevices.Count > 0);
+            Assert.IsTrue(audioManager.OutputDevices.Count > 0);
+
+            Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
+            Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
+        }
     }
 }
