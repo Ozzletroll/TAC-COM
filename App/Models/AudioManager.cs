@@ -181,8 +181,8 @@ namespace TAC_COM.Models
                 outputDevices.Add(new MMDeviceWrapper(device));
             }
 
-            OnPropertyChanged(nameof(inputDevices));
-            OnPropertyChanged(nameof(outputDevices));
+            OnPropertyChanged(nameof(InputDevices));
+            OnPropertyChanged(nameof(OutputDevices));
         }
 
         public void SetInputDevice(MMDevice inputDevice)
