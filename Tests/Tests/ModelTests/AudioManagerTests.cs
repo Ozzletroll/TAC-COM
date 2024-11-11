@@ -187,5 +187,25 @@ namespace Tests.ModelTests
             Assert.AreEqual(audioManager.NoiseLevel, newPropertyValue);
             Assert.AreEqual(audioManager.AudioProcessor.UserNoiseLevel, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestNoiseLevelStringProperty()
+        {
+            bool propertyChangedRaised = false;
+            var propertyName = nameof(audioManager.NoiseLevelString);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == propertyName)
+                {
+                    propertyChangedRaised = true;
+                }
+            };
+
+            audioManager.NoiseLevel = 0.25f;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.NoiseLevelString == "25%");
+        }
     }
 }
