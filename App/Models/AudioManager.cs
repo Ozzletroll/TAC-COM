@@ -13,8 +13,6 @@ namespace TAC_COM.Models
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
         private string? lastOutputDeviceID;
-        private AudioMeterInformation? inputMeter;
-        private AudioMeterInformation? outputMeter;
         private WasapiCapture? input;
         private WasapiOut? micOutput;
         private WasapiOut? sfxOutput;
@@ -83,25 +81,45 @@ namespace TAC_COM.Models
             }
         }
 
-        private float inputPeakMeter;
-        public float InputPeakMeter
+        private IPeakMeterWrapper inputMeter = new PeakMeterWrapper();
+        public IPeakMeterWrapper InputMeter
         {
-            get => inputPeakMeter;
+            get => inputMeter;
             set
             {
-                inputPeakMeter = value;
-                OnPropertyChanged(nameof(InputPeakMeter));
+                inputMeter = value;
             }
         }
 
-        private float outputPeakMeter;
-        public float OutputPeakMeter
+        private float inputPeakMeterValue;
+        public float InputPeakMeterValue
         {
-            get => outputPeakMeter;
+            get => inputPeakMeterValue;
             set
             {
-                outputPeakMeter = value;
-                OnPropertyChanged(nameof(OutputPeakMeter));
+                inputPeakMeterValue = value;
+                OnPropertyChanged(nameof(InputPeakMeterValue));
+            }
+        }
+
+        private IPeakMeterWrapper outputMeter = new PeakMeterWrapper();
+        public IPeakMeterWrapper OutputMeter
+        {
+            get => outputMeter;
+            set
+            {
+                outputMeter = value;
+            }
+        }
+
+        private float outputPeakMeterValue;
+        public float OutputPeakMeterValue
+        {
+            get => outputPeakMeterValue;
+            set
+            {
+                outputPeakMeterValue = value;
+                OnPropertyChanged(nameof(OutputPeakMeterValue));
             }
         }
 
@@ -166,7 +184,7 @@ namespace TAC_COM.Models
         public void GetAudioDevices()
         {
             InputDevices.Clear();
-            outputDevices.Clear();
+            OutputDevices.Clear();
 
             var enumerator = new MMDeviceEnumerator();
             var allInputDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
@@ -191,7 +209,7 @@ namespace TAC_COM.Models
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice.Device;
-                inputMeter = AudioMeterInformation.FromDevice(activeInputDevice);
+                InputMeter.Create(activeInputDevice);
             }
         }
 
@@ -202,7 +220,7 @@ namespace TAC_COM.Models
             {
                 activeOutputDevice = matchingDevice.Device;
                 lastOutputDeviceID = outputDeviceWrapper.Device.DeviceID;
-                outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
+                OutputMeter.Create(activeOutputDevice);
             }
         }
 
@@ -327,25 +345,18 @@ namespace TAC_COM.Models
 
         private void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
         {
-            InputPeakMeter = 0;
+            InputPeakMeterValue = 0;
         }
 
         private void OnOutputStopped(object? sender, PlaybackStoppedEventArgs e)
         {
-            OutputPeakMeter = 0;
+            OutputPeakMeterValue = 0;
         }
 
         private void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
-            if (inputMeter != null)
-            {
-                InputPeakMeter = inputMeter.PeakValue * 100;
-            }
-
-            if (outputMeter != null)
-            {
-                OutputPeakMeter = outputMeter.PeakValue * 100;
-            }
+            InputPeakMeterValue = inputMeter.GetValue();
+            OutputPeakMeterValue = outputMeter.GetValue();
         }
 
         private async Task GateOpenAsync()
