@@ -82,7 +82,7 @@ namespace Tests.ViewModelTests
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device)).Verifiable();
 
             var mockAudioManager = new Mock<IAudioManager>();
-            mockAudioManager.Setup(audioManager => audioManager.SetInputDevice(mockDevice.Device));
+            mockAudioManager.Setup(audioManager => audioManager.SetInputDevice(mockDevice));
 
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
@@ -91,7 +91,7 @@ namespace Tests.ViewModelTests
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InputDevice), mockDevice.Device), Times.Once);
             mockAudioManager.Verify(
-                audioManager => audioManager.SetInputDevice(mockDevice.Device), Times.Once);
+                audioManager => audioManager.SetInputDevice(mockDevice), Times.Once);
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace Tests.ViewModelTests
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputDevice), mockDevice.Device)).Verifiable();
 
             var mockAudioManager = new Mock<IAudioManager>();
-            mockAudioManager.Setup(audioManager => audioManager.SetOutputDevice(mockDevice.Device));
+            mockAudioManager.Setup(audioManager => audioManager.SetOutputDevice(mockDevice));
 
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
@@ -113,7 +113,7 @@ namespace Tests.ViewModelTests
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputDevice), mockDevice.Device), Times.Once);
             mockAudioManager.Verify(
-                audioManager => audioManager.SetOutputDevice(mockDevice.Device), Times.Once);
+                audioManager => audioManager.SetOutputDevice(mockDevice), Times.Once);
         }
 
         [TestMethod]

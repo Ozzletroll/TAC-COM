@@ -25,9 +25,9 @@ namespace Tests.MockModels
 
         public void GetAudioDevices() { }
 
-        public void SetInputDevice(MMDevice inputDevice) { }
+        public void SetInputDevice(IMMDeviceWrapper inputDevice) { }
 
-        public void SetOutputDevice(MMDevice outputDevice) { }
+        public void SetOutputDevice(IMMDeviceWrapper outputDevice) { }
 
         public async Task ToggleStateAsync() 
         {

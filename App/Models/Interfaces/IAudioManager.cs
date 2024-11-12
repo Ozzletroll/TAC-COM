@@ -23,8 +23,8 @@ namespace TAC_COM.Models.Interfaces
 
         Task CheckBypassState();
         void GetAudioDevices();
-        void SetInputDevice(MMDevice inputDevice);
-        void SetOutputDevice(MMDevice outputDevice);
+        void SetInputDevice(IMMDeviceWrapper inputDevice);
+        void SetOutputDevice(IMMDeviceWrapper outputDevice);
         Task ToggleStateAsync();
     }
 }

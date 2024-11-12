@@ -185,9 +185,9 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(OutputDevices));
         }
 
-        public void SetInputDevice(MMDevice inputDevice)
+        public void SetInputDevice(IMMDeviceWrapper inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == inputDevice.DeviceID);
+            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device == inputDevice.Device);
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice.Device;
@@ -195,13 +195,13 @@ namespace TAC_COM.Models
             }
         }
 
-        public void SetOutputDevice(MMDevice outputDevice)
+        public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == outputDevice.DeviceID);
+            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device == outputDeviceWrapper.Device);
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
-                lastOutputDeviceID = outputDevice.DeviceID;
+                lastOutputDeviceID = outputDeviceWrapper.Device.DeviceID;
                 outputMeter = AudioMeterInformation.FromDevice(activeOutputDevice);
             }
         }
@@ -215,7 +215,8 @@ namespace TAC_COM.Models
                 var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == lastOutputDeviceID);
                 if (refoundOutputDevice != null)
                 {
-                    SetOutputDevice(refoundOutputDevice.Device);
+                    MMDeviceWrapper refoundMMDeviceWrapper = new(refoundOutputDevice.Device);
+                    SetOutputDevice(refoundMMDeviceWrapper);
                     OnPropertyChanged(nameof(inputDevices));
                     OnPropertyChanged(nameof(outputDevices));
                     RaiseDeviceListReset();

@@ -5,9 +5,12 @@ using CSCore.Streams;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows.Media.Imaging;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
+using TAC_COM.Views;
 using Tests.MockModels;
 using Tests.MockServices;
 
@@ -238,5 +241,6 @@ namespace Tests.ModelTests
             Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
+
     }
 }

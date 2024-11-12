@@ -100,7 +100,7 @@ namespace TAC_COM.ViewModels
                 inputDevice = value;
                 if (value != null)
                 {
-                    audioManager.SetInputDevice(value.Device);
+                    audioManager.SetInputDevice(value);
                     OnPropertyChanged(nameof(InputDevice));
                     settingsService.UpdateAppConfig(nameof(InputDevice), value.Device);
                 }
@@ -116,7 +116,7 @@ namespace TAC_COM.ViewModels
                 outputDevice = value;
                 if (value != null)
                 {
-                    audioManager.SetOutputDevice(value.Device);
+                    audioManager.SetOutputDevice(value);
                     OnPropertyChanged(nameof(OutputDevice));
                     settingsService.UpdateAppConfig(nameof(OutputDevice), value.Device);
                 }
