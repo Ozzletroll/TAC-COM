@@ -93,16 +93,16 @@ namespace Tests.ModelTests
         public void TestInputPeakMeterProperty()
         {
             var newPropertyValue = 0.5f;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputPeakMeter), newPropertyValue);
-            Assert.AreEqual(audioManager.InputPeakMeter, newPropertyValue);
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputPeakMeterValue), newPropertyValue);
+            Assert.AreEqual(audioManager.InputPeakMeterValue, newPropertyValue);
         }
 
         [TestMethod]
         public void TestOutputPeakMeterProperty()
         {
             var newPropertyValue = 0.5f;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.OutputPeakMeter), newPropertyValue);
-            Assert.AreEqual(audioManager.OutputPeakMeter, newPropertyValue);
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.OutputPeakMeterValue), newPropertyValue);
+            Assert.AreEqual(audioManager.OutputPeakMeterValue, newPropertyValue);
         }
 
         [TestMethod]
@@ -242,5 +242,27 @@ namespace Tests.ModelTests
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
 
+        [TestMethod]
+        public void TestSetInputDevice()
+        {
+            var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
+            var mockDevice2 = new MockMMDeviceWrapper("Test Input Device 2");
+
+            audioManager.InputDevices = [mockDevice1, mockDevice2];
+
+            var mockInputMeter = new Mock<IPeakMeterWrapper>();
+            mockInputMeter.Setup(meter => meter.Create(mockDevice1.Device)).Verifiable();
+
+            audioManager.InputMeter = mockInputMeter.Object;
+
+            audioManager.SetInputDevice(mockDevice1);
+
+            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            MMDevice? activeInputDevice = (MMDevice?)fieldInfo?.GetValue(audioManager);
+
+            Assert.IsNotNull(activeInputDevice);
+            Assert.AreEqual(activeInputDevice.ToString(), mockDevice1.FriendlyName);
+            mockInputMeter.Verify(meter => meter.Create(mockDevice1.Device), Times.Once());
+        }
     }
 }
