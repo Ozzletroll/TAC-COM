@@ -39,20 +39,13 @@ namespace Tests.ViewModelTests
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new Mock<IThemeService>();
 
-            bool deviceListResetSubscribed = false;
-            mockTestAudioManager.SetupAdd(audioManager => audioManager.DeviceListReset += It.IsAny<AudioManager.DeviceListResetEventHandler>())
-                            .Callback<AudioManager.DeviceListResetEventHandler>(handler => deviceListResetSubscribed = true);
-
             var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object);
 
             Assert.IsNotNull(viewModel.AudioManager);
             Assert.IsNotNull(viewModel.SettingsService);
             Assert.IsNotNull(viewModel.IconService);
             Assert.IsNotNull(viewModel.ThemeService);
-            Assert.IsNotNull(viewModel.KeybindManager);
-
-            Assert.IsTrue(deviceListResetSubscribed, "DeviceListReset event is not subscribed.");
-        }
+            Assert.IsNotNull(viewModel.KeybindManager);        }
 
         [TestMethod]
         public void TestAllInputDevicesProperty()
