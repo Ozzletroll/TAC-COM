@@ -8,20 +8,18 @@ namespace Tests.MockModels
     internal class MockAudioManager : IAudioManager
     {
         public bool BypassState { get; set; }
-        public float InputPeakMeter { get; set; }
+        public float InputPeakMeterValue { get; set; }
         public float NoiseGateThreshold { get; set; }
         public string NoiseGateThresholdString => NoiseGateThreshold.ToString();
         public float NoiseLevel { get; set; }
         public string NoiseLevelString => NoiseLevel.ToString();
         public float OutputGainLevel { get; set; }
         public string OutputGainLevelString => OutputGainLevel.ToString();
-        public float OutputPeakMeter { get; set; }
+        public float OutputPeakMeterValue { get; set; }
         public bool State { get; set; }
         public ObservableCollection<IMMDeviceWrapper> InputDevices { get; set; } = [];
         public ObservableCollection<IMMDeviceWrapper> OutputDevices { get; set; } = [];
         public Profile? ActiveProfile { get; set; }
-
-        public event AudioManager.DeviceListResetEventHandler? DeviceListReset;
 
         public void GetAudioDevices() { }
 

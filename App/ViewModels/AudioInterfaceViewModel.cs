@@ -293,11 +293,6 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private void OnDeviceListReset(object sender, EventArgs e)
-        {
-            LoadDeviceSettings();
-        }
-
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(KeybindManager.ToggleState))
@@ -329,7 +324,6 @@ namespace TAC_COM.ViewModels
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
             audioManager = _audioManager;
-            audioManager.DeviceListReset += OnDeviceListReset;
 
             settingsService = new SettingsService();
             iconService = _iconService;

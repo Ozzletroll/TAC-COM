@@ -217,9 +217,8 @@ namespace TAC_COM.Models
                 {
                     MMDeviceWrapper refoundMMDeviceWrapper = new(refoundOutputDevice.Device);
                     SetOutputDevice(refoundMMDeviceWrapper);
-                    OnPropertyChanged(nameof(inputDevices));
-                    OnPropertyChanged(nameof(outputDevices));
-                    RaiseDeviceListReset();
+                    OnPropertyChanged(nameof(InputDevices));
+                    OnPropertyChanged(nameof(OutputDevices));
                 }
             }
         }
@@ -354,7 +353,10 @@ namespace TAC_COM.Models
             if (activeOutputDevice != null
                 && activeProfile != null)
             {
-                if (activeOutputDevice.IsDisposed) return;
+                if (activeOutputDevice.IsDisposed)
+                {
+                    ResetOutputDevice();
+                };
 
                 var file = activeProfile.OpenSFX;
                 file.SetPosition(new TimeSpan(0));
@@ -368,7 +370,10 @@ namespace TAC_COM.Models
             if (activeOutputDevice != null
                 && activeProfile != null)
             {
-                if (activeOutputDevice.IsDisposed) return;
+                if (activeOutputDevice.IsDisposed)
+                {
+                    ResetOutputDevice();
+                };
 
                 var file = activeProfile.CloseSFX;
                 file.SetPosition(new TimeSpan(0));
@@ -391,13 +396,6 @@ namespace TAC_COM.Models
                 sfxOutput.Volume = sfxVolume;
                 sfxOutput.Play();
             });
-        }
-
-        public delegate void DeviceListResetEventHandler(object sender, EventArgs e);
-        public event DeviceListResetEventHandler? DeviceListReset;
-        protected virtual void RaiseDeviceListReset()
-        {
-            DeviceListReset?.Invoke(this, EventArgs.Empty);
         }
 
         public AudioManager()
