@@ -91,6 +91,16 @@ namespace TAC_COM.Models
             }
         }
 
+        private IPeakMeterWrapper outputMeter = new PeakMeterWrapper();
+        public IPeakMeterWrapper OutputMeter
+        {
+            get => outputMeter;
+            set
+            {
+                outputMeter = value;
+            }
+        }
+
         private float inputPeakMeterValue;
         public float InputPeakMeterValue
         {
@@ -99,16 +109,6 @@ namespace TAC_COM.Models
             {
                 inputPeakMeterValue = value;
                 OnPropertyChanged(nameof(InputPeakMeterValue));
-            }
-        }
-
-        private IPeakMeterWrapper outputMeter = new PeakMeterWrapper();
-        public IPeakMeterWrapper OutputMeter
-        {
-            get => outputMeter;
-            set
-            {
-                outputMeter = value;
             }
         }
 
@@ -219,7 +219,7 @@ namespace TAC_COM.Models
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
-                lastOutputDeviceID = outputDeviceWrapper.Device.DeviceID;
+                lastOutputDeviceID = activeOutputDevice.DeviceID;
                 OutputMeter.Create(activeOutputDevice);
             }
         }
