@@ -12,7 +12,7 @@ namespace TAC_COM.Models
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
-        private string? lastOutputDeviceID;
+        private string? lastOutputDeviceName;
         private WasapiCapture? input;
         private WasapiOut? micOutput;
         private WasapiOut? sfxOutput;
@@ -219,7 +219,7 @@ namespace TAC_COM.Models
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
-                lastOutputDeviceID = matchingDevice.FriendlyName;
+                lastOutputDeviceName = matchingDevice.FriendlyName;
                 OutputMeter.Initialise(activeOutputDevice);
             }
         }
@@ -230,7 +230,7 @@ namespace TAC_COM.Models
             if (activeOutputDevice.IsDisposed)
             {
                 GetAudioDevices();
-                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.DeviceID == lastOutputDeviceID);
+                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.FriendlyName == lastOutputDeviceName);
                 if (refoundOutputDevice != null)
                 {
                     MMDeviceWrapper refoundMMDeviceWrapper = new(refoundOutputDevice.Device);
