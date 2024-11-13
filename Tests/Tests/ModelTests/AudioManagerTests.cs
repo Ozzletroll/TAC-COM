@@ -1,4 +1,5 @@
-﻿using CSCore;
+﻿using TAC_COM.Services.Interfaces;
+using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
@@ -286,6 +287,65 @@ namespace Tests.ModelTests
             Assert.IsNotNull(activeOutputDevice);
             Assert.AreEqual(activeOutputDevice.ToString(), mockDevice2.FriendlyName);
             mockOutputMeter.Verify(meter => meter.Initialise(mockDevice2.Device), Times.Once());
+        }
+
+        [TestMethod]
+        public void TestResetOutputDevice()
+        {
+            var mockDevice1 = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockDevice2 = new MockMMDeviceWrapper("Test Output Device 2");
+
+            // Mock the enumerator service to return the test devices when GetAudioDevices is called
+            var mockDeviceEnumeratorService = new Mock<IMMDeviceEnumeratorService>();
+            ObservableCollection<IMMDeviceWrapper> mockDeviceCollection = [mockDevice1, mockDevice2];
+            mockDeviceEnumeratorService.Setup(enumerator => enumerator.GetOutputDevices()).Returns(mockDeviceCollection);
+
+            audioManager.EnumeratorService = mockDeviceEnumeratorService.Object;
+            audioManager.OutputDevices = [mockDevice1, mockDevice2];
+
+            var mockOutputMeter = new Mock<IPeakMeterWrapper>();
+            mockOutputMeter.Setup(meter => meter.Initialise(mockDevice1.Device)).Verifiable();
+            audioManager.OutputMeter = mockOutputMeter.Object;
+
+            // Dispose of the active device to simulate system output change/sample rate change
+            var mockDisposedDevice = new MockMMDeviceWrapper("Test Output Device 1");
+            mockDisposedDevice.SetDisposedState(true);
+
+            // Set disposed device as active output device
+            FieldInfo? activeOutputDeviceField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputDeviceField?.SetValue(audioManager, mockDisposedDevice.Device);
+
+            FieldInfo? lastOutputDeviceNameField = typeof(AudioManager).GetField("lastOutputDeviceName", BindingFlags.NonPublic | BindingFlags.Instance);
+            lastOutputDeviceNameField?.SetValue(audioManager, mockDisposedDevice.FriendlyName);
+            
+            bool inputPropertyChangeRaised = false;
+            var inputDevicesProperty = nameof(audioManager.InputDevices);
+
+            bool outputPropertyChangeRaised = false;
+            var outputDevicesProperty = nameof(audioManager.OutputDevices);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == inputDevicesProperty)
+                {
+                    inputPropertyChangeRaised = true;
+                }
+                if (e.PropertyName == outputDevicesProperty)
+                {
+                    outputPropertyChangeRaised = true;
+                }
+            };
+
+            audioManager.ResetOutputDevice();
+
+            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            MMDevice? activeOutputDevice = (MMDevice?)activeOutputDeviceField?.GetValue(audioManager);
+
+            Assert.AreEqual(activeOutputDevice?.ToString(), mockDevice1.FriendlyName);
+            Assert.IsTrue(activeOutputDevice?.IsDisposed == false);
+            mockOutputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
+            Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
+            Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
     }
 }
