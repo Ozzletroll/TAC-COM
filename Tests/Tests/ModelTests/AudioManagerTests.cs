@@ -251,7 +251,7 @@ namespace Tests.ModelTests
             audioManager.InputDevices = [mockDevice1, mockDevice2];
 
             var mockInputMeter = new Mock<IPeakMeterWrapper>();
-            mockInputMeter.Setup(meter => meter.Create(mockDevice1.Device)).Verifiable();
+            mockInputMeter.Setup(meter => meter.Initialise(mockDevice1.Device)).Verifiable();
 
             audioManager.InputMeter = mockInputMeter.Object;
 
@@ -262,7 +262,7 @@ namespace Tests.ModelTests
 
             Assert.IsNotNull(activeInputDevice);
             Assert.AreEqual(activeInputDevice.ToString(), mockDevice1.FriendlyName);
-            mockInputMeter.Verify(meter => meter.Create(mockDevice1.Device), Times.Once());
+            mockInputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
         }
     }
 }

@@ -4,7 +4,7 @@ namespace TAC_COM.Models.Interfaces
 {
     public interface IPeakMeterWrapper
     {
-        void Create(MMDevice device);
+        void Initialise(MMDevice device);
         float GetValue();
     }
 }

@@ -209,7 +209,7 @@ namespace TAC_COM.Models
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice.Device;
-                InputMeter.Create(activeInputDevice);
+                InputMeter.Initialise(activeInputDevice);
             }
         }
 
@@ -219,8 +219,8 @@ namespace TAC_COM.Models
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
-                lastOutputDeviceID = activeOutputDevice.DeviceID;
-                OutputMeter.Create(activeOutputDevice);
+                lastOutputDeviceID = matchingDevice.FriendlyName;
+                OutputMeter.Initialise(activeOutputDevice);
             }
         }
 
