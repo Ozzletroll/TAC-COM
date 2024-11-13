@@ -5,6 +5,8 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services.Interfaces;
+using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {
@@ -25,6 +27,16 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor = value;
+            }
+        }
+
+        private IMMDeviceEnumeratorService enumeratorService = new MMDeviceEnumeratorService();
+        public IMMDeviceEnumeratorService EnumeratorService
+        {
+            get => enumeratorService;
+            set
+            {
+                enumeratorService = value;
             }
         }
 
@@ -186,18 +198,8 @@ namespace TAC_COM.Models
             InputDevices.Clear();
             OutputDevices.Clear();
 
-            var enumerator = new MMDeviceEnumerator();
-            var allInputDevices = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
-            var allOutputDevices = enumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active);
-
-            foreach (var device in allInputDevices)
-            {
-                InputDevices.Add(new MMDeviceWrapper(device));
-            }
-            foreach (var device in allOutputDevices)
-            {
-                outputDevices.Add(new MMDeviceWrapper(device));
-            }
+            InputDevices = enumeratorService.GetInputDevices();
+            OutputDevices = enumeratorService.GetOutputDevices();
 
             OnPropertyChanged(nameof(InputDevices));
             OnPropertyChanged(nameof(OutputDevices));
@@ -230,11 +232,10 @@ namespace TAC_COM.Models
             if (activeOutputDevice.IsDisposed)
             {
                 GetAudioDevices();
-                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device.FriendlyName == lastOutputDeviceName);
+                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == lastOutputDeviceName);
                 if (refoundOutputDevice != null)
                 {
-                    MMDeviceWrapper refoundMMDeviceWrapper = new(refoundOutputDevice.Device);
-                    SetOutputDevice(refoundMMDeviceWrapper);
+                    SetOutputDevice(refoundOutputDevice);
                     OnPropertyChanged(nameof(InputDevices));
                     OnPropertyChanged(nameof(OutputDevices));
                 }
