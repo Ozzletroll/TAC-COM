@@ -1,4 +1,5 @@
 ﻿using CSCore.CoreAudioAPI;
+using System.Reflection;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
@@ -20,5 +21,10 @@ namespace Tests.MockModels
             }
         }
 
+        public void SetDisposedState(bool state)
+        {
+            var field = typeof(CSCore.Win32.ComObject).GetField("_disposed", BindingFlags.NonPublic | BindingFlags.Instance);
+            field?.SetValue(Device, state);
+        }
     }
 }
