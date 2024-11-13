@@ -264,5 +264,28 @@ namespace Tests.ModelTests
             Assert.AreEqual(activeInputDevice.ToString(), mockDevice1.FriendlyName);
             mockInputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
         }
+
+        [TestMethod]
+        public void TestSetOutputDevice()
+        {
+            var mockDevice1 = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockDevice2 = new MockMMDeviceWrapper("Test Output Device 2");
+
+            audioManager.OutputDevices = [mockDevice1, mockDevice2];
+
+            var mockOutputMeter = new Mock<IPeakMeterWrapper>();
+            mockOutputMeter.Setup(meter => meter.Initialise(mockDevice2.Device)).Verifiable();
+
+            audioManager.OutputMeter = mockOutputMeter.Object;
+
+            audioManager.SetOutputDevice(mockDevice2);
+
+            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            MMDevice? activeOutputDevice = (MMDevice?)fieldInfo?.GetValue(audioManager);
+
+            Assert.IsNotNull(activeOutputDevice);
+            Assert.AreEqual(activeOutputDevice.ToString(), mockDevice2.FriendlyName);
+            mockOutputMeter.Verify(meter => meter.Initialise(mockDevice2.Device), Times.Once());
+        }
     }
 }
