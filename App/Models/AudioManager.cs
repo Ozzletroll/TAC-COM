@@ -207,7 +207,7 @@ namespace TAC_COM.Models
 
         public void SetInputDevice(IMMDeviceWrapper inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device == inputDevice.Device);
+            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == inputDevice.FriendlyName);
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice.Device;
@@ -217,7 +217,7 @@ namespace TAC_COM.Models
 
         public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.Device == outputDeviceWrapper.Device);
+            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == outputDeviceWrapper.FriendlyName);
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
