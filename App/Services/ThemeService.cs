@@ -6,7 +6,7 @@ namespace TAC_COM.Services
 {
     public class ThemeService(IApplicationContextWrapper _applicationContext, IUriService _uriService) : IThemeService
     {
-        private IApplicationContextWrapper applicationContext = _applicationContext;
+        private readonly IApplicationContextWrapper applicationContext = _applicationContext;
         private readonly IUriService uriService = _uriService;
         private ResourceDictionary? currentTheme;
 

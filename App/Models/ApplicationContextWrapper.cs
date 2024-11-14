@@ -5,7 +5,14 @@ namespace App.Models
 {
     public class ApplicationContextWrapper : IApplicationContextWrapper
     {
-        public Window MainWindow => Application.Current.MainWindow;
+        public Window MainWindow
+        {
+            get => Application.Current.MainWindow;
+            set
+            {
+                Application.Current.MainWindow = value;
+            }
+        }
 
         public ResourceDictionary Resources { 
             get => Application.Current.Resources;
