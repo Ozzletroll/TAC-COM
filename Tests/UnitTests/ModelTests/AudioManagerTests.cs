@@ -1,21 +1,18 @@
 ﻿using TAC_COM.Services.Interfaces;
 using CSCore;
 using CSCore.CoreAudioAPI;
-using CSCore.SoundIn;
 using CSCore.Streams;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
-using TAC_COM.Services;
-using TAC_COM.Views;
 using Tests.MockModels;
 using Tests.MockServices;
+using Tests.Utilities;
 
-namespace Tests.ModelTests
+namespace Tests.UnitTests.ModelTests
 {
     [TestClass]
     public class AudioManagerTests
@@ -23,7 +20,7 @@ namespace Tests.ModelTests
         private readonly AudioManager audioManager;
         private readonly MockUriService mockUriService;
 
-        public AudioManagerTests ()
+        public AudioManagerTests()
         {
             audioManager = new AudioManager();
             mockUriService = new MockUriService();
@@ -40,9 +37,9 @@ namespace Tests.ModelTests
         [TestMethod]
         public void TestInputDevicesProperty()
         {
-            ObservableCollection<IMMDeviceWrapper> newPropertyValue = 
+            ObservableCollection<IMMDeviceWrapper> newPropertyValue =
                 [
-                    new MockMMDeviceWrapper("Test Input Device 1"), 
+                    new MockMMDeviceWrapper("Test Input Device 1"),
                     new MockMMDeviceWrapper("Test Input Device 2")
                 ];
             audioManager.InputDevices = newPropertyValue;
@@ -228,7 +225,7 @@ namespace Tests.ModelTests
                 {
                     inputPropertyChangeRaised = true;
                 }
-                if (e.PropertyName ==  outputDevicesProperty)
+                if (e.PropertyName == outputDevicesProperty)
                 {
                     outputPropertyChangeRaised = true;
                 }
@@ -317,7 +314,7 @@ namespace Tests.ModelTests
 
             FieldInfo? lastOutputDeviceNameField = typeof(AudioManager).GetField("lastOutputDeviceName", BindingFlags.NonPublic | BindingFlags.Instance);
             lastOutputDeviceNameField?.SetValue(audioManager, mockDisposedDevice.FriendlyName);
-            
+
             bool inputPropertyChangeRaised = false;
             var inputDevicesProperty = nameof(audioManager.InputDevices);
 

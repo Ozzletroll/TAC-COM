@@ -2,7 +2,7 @@
 using TAC_COM.Services.Interfaces;
 using Tests.MockServices;
 
-namespace Tests.ServiceTests
+namespace Tests.UnitTests.ServiceTests
 {
 
     [TestClass]
@@ -20,7 +20,7 @@ namespace Tests.ServiceTests
         [TestMethod]
         public void TestGetAllProfiles()
         {
-           var profiles = testProfileService.GetAllProfiles();
+            var profiles = testProfileService.GetAllProfiles();
 
             Assert.IsTrue(profiles.Count == 5);
 

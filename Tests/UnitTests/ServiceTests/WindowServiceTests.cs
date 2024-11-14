@@ -6,7 +6,7 @@ using TAC_COM.Services;
 using TAC_COM.ViewModels;
 using TAC_COM.Views;
 
-namespace Tests.ServiceTests
+namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
     public partial class WindowServiceTests

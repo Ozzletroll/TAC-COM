@@ -10,8 +10,9 @@ using System.Collections.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using System.Windows.Media.Imaging;
+using Tests.Utilities;
 
-namespace Tests.ViewModelTests
+namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
     public partial class AudioInterfaceViewModelTests
@@ -22,7 +23,7 @@ namespace Tests.ViewModelTests
         public IAudioManager mockAudioManager = new MockAudioManager();
         public AudioInterfaceViewModel testViewModel;
 
-        public AudioInterfaceViewModelTests() 
+        public AudioInterfaceViewModelTests()
         {
             testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(), mockThemeService)
             {
@@ -45,7 +46,8 @@ namespace Tests.ViewModelTests
             Assert.IsNotNull(viewModel.SettingsService);
             Assert.IsNotNull(viewModel.IconService);
             Assert.IsNotNull(viewModel.ThemeService);
-            Assert.IsNotNull(viewModel.KeybindManager);        }
+            Assert.IsNotNull(viewModel.KeybindManager);
+        }
 
         [TestMethod]
         public void TestAllInputDevicesProperty()

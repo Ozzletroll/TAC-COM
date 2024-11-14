@@ -1,5 +1,4 @@
 ﻿using TAC_COM.Models.Interfaces;
-using CSCore.CoreAudioAPI;
 using System.Collections.ObjectModel;
 using TAC_COM.Models;
 

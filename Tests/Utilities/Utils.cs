@@ -1,6 +1,6 @@
 ﻿using TAC_COM.Utilities;
 
-namespace Tests
+namespace Tests.Utilities
 {
     public class Utils
     {

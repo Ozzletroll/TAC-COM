@@ -2,7 +2,7 @@
 using TAC_COM.Services;
 using Tests.MockServices;
 
-namespace Tests.ServiceTests
+namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
     public partial class ThemeServiceTests

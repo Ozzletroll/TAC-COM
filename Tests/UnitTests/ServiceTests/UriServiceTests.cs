@@ -1,7 +1,7 @@
 ﻿using System.IO.Packaging;
 using TAC_COM.Services;
 
-namespace Tests.ServiceTests
+namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
     public partial class UriServiceTests

@@ -5,15 +5,16 @@ using Tests.MockModels;
 using Tests.MockServices;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using Tests.Utilities;
 
-namespace Tests.ViewModelTests
+namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
     public partial class MainViewModelTests
     {
         public MainViewModel testViewModel;
 
-        public MainViewModelTests() 
+        public MainViewModelTests()
         {
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new MockThemeService();

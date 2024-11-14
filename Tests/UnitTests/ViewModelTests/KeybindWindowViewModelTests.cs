@@ -5,8 +5,9 @@ using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
 using Tests.MockModels;
 using Tests.MockServices;
+using Tests.Utilities;
 
-namespace Tests.ViewModelTests
+namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
     public partial class KeybindWindowViewModelTests
