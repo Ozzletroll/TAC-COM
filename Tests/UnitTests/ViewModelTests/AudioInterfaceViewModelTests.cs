@@ -11,21 +11,23 @@ using Moq;
 using TAC_COM.Models;
 using System.Windows.Media.Imaging;
 using Tests.Utilities;
+using App.Models.Interfaces;
 
 namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
     public partial class AudioInterfaceViewModelTests
     {
-        public IUriService mockUriService = new MockUriService();
-        public IThemeService mockThemeService = new MockThemeService();
-        public ISettingsService settingsService = new MockSettingsService();
-        public IAudioManager mockAudioManager = new MockAudioManager();
-        public AudioInterfaceViewModel testViewModel;
+        private readonly IUriService mockUriService = new MockUriService();
+        private readonly IThemeService mockThemeService = new MockThemeService();
+        private readonly ISettingsService settingsService = new MockSettingsService();
+        private readonly IAudioManager mockAudioManager = new MockAudioManager();
+        private readonly Mock<IApplicationContextWrapper> mockApplication = new();
+        private readonly AudioInterfaceViewModel testViewModel;
 
         public AudioInterfaceViewModelTests()
         {
-            testViewModel = new AudioInterfaceViewModel(mockAudioManager, mockUriService, new IconService(), mockThemeService)
+            testViewModel = new AudioInterfaceViewModel(mockApplication.Object, mockAudioManager, mockUriService, new IconService(), mockThemeService)
             {
                 SettingsService = settingsService,
             };
@@ -40,7 +42,7 @@ namespace Tests.UnitTests.ViewModelTests
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new Mock<IThemeService>();
 
-            var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object);
+            var viewModel = new AudioInterfaceViewModel(mockApplication.Object, mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object);
 
             Assert.IsNotNull(viewModel.AudioManager);
             Assert.IsNotNull(viewModel.SettingsService);
