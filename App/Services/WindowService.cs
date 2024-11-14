@@ -4,11 +4,13 @@ using TAC_COM.Models;
 using TAC_COM.ViewModels;
 using TAC_COM.Views;
 using TAC_COM.Models.Interfaces;
+using App.Models.Interfaces;
 
 namespace TAC_COM.Services
 {
-    public class WindowService(IKeybindManager _keybindManager) : IWindowService
+    public class WindowService(IApplicationContextWrapper _applicationContext, IKeybindManager _keybindManager) : IWindowService
     {
+        private readonly IApplicationContextWrapper applicationContext = _applicationContext;
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
         private KeybindWindowView? keybindWindow;
         public bool ShowWindow = true;
@@ -20,9 +22,9 @@ namespace TAC_COM.Services
             keybindWindow = new KeybindWindowView()
             {
                 DataContext = viewModel,
-                Owner = Application.Current.MainWindow,
+                Owner = applicationContext.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Icon = Application.Current.MainWindow.Icon,
+                Icon = applicationContext.MainWindow.Icon,
             };
             viewModel.Close += (s, e) => keybindWindow.Close();
 

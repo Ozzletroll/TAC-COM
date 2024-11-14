@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
+using App.Models.Interfaces;
+using App.Models;
 
 namespace TAC_COM.ViewModels
 {
@@ -319,7 +321,7 @@ namespace TAC_COM.ViewModels
             keybindManager.UpdateKeybind();
         }
 
-        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService)
+        public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
@@ -333,7 +335,7 @@ namespace TAC_COM.ViewModels
             keybindManager = new KeybindManager(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
 
-            windowService = new WindowService(keybindManager);
+            windowService = new WindowService(applicationContext, keybindManager);
 
             keybindManager.LoadKeybindSettings();
 

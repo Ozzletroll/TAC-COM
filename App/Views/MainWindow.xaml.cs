@@ -1,4 +1,5 @@
 ﻿using AdonisUI.Controls;
+using App.Models;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
@@ -71,9 +72,10 @@ namespace TAC_COM
             var uriService = new UriService(themeDirectoryFolders, iconDirectoryFolders);
             var audioManager = new AudioManager();
             var iconService = new IconService();
-            var themeService = new ThemeService(uriService);
+            var applicationContext = new ApplicationContextWrapper();
+            var themeService = new ThemeService(applicationContext, uriService);
 
-            var viewModel = new MainViewModel(audioManager, uriService, iconService, themeService);
+            var viewModel = new MainViewModel(applicationContext, audioManager, uriService, iconService, themeService);
             DataContext = viewModel;
 
             contextMenuStrip = new ContextMenuStrip();
