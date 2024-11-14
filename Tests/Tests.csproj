@@ -19,16 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <None Update="MockResources\ThemeTEST.xaml">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <None Update="MockResources\MockResources.xaml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="MockResources\ThemeTEST.xaml">
+         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
   </ItemGroup>
-
-	<ItemGroup>
-		<None Update="MockResources\MockResources.xaml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\App\App.csproj" />

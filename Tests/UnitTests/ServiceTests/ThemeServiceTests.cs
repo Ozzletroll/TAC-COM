@@ -1,32 +1,31 @@
-﻿using System.Windows;
+﻿using Moq;
+using System.Windows;
 using TAC_COM.Services;
+using Tests.MockModels;
 using Tests.MockServices;
 
 namespace Tests.UnitTests.ServiceTests
 {
-    [TestClass]
+    [STATestClass]
     public partial class ThemeServiceTests
     {
         private readonly ThemeService themeService;
         private readonly MockUriService mockUriService = new();
+        private readonly MockApplicationContextWrapper mockApplication;
 
         public ThemeServiceTests()
         {
-            themeService = new ThemeService(mockUriService);
+            mockApplication = new MockApplicationContextWrapper(new Mock<Window>().Object);
+            themeService = new ThemeService(mockApplication, mockUriService);
         }
 
         [TestMethod]
         public void TestChangeTheme()
         {
-            if (Application.Current == null)
-            {
-                _ = new Application();
-            }
-
             var newThemeUri = mockUriService.GetThemeUri("TEST");
             themeService.ChangeTheme(newThemeUri);
 
-            var rootResourceDictionary = Application.Current?.Resources;
+            var rootResourceDictionary = mockApplication.Resources;
             var matchingThemeDictionary = rootResourceDictionary?.MergedDictionaries.FirstOrDefault(dict => dict.Source == newThemeUri);
 
             var currentThemeUri = matchingThemeDictionary?.Source;

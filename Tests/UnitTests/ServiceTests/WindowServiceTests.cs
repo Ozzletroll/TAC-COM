@@ -5,6 +5,7 @@ using TAC_COM.Models;
 using TAC_COM.Services;
 using TAC_COM.ViewModels;
 using TAC_COM.Views;
+using Tests.MockModels;
 
 namespace Tests.UnitTests.ServiceTests
 {
@@ -13,28 +14,24 @@ namespace Tests.UnitTests.ServiceTests
     {
         private readonly WindowService windowService;
         private readonly Mock<Window> mockMainWindow;
+        private readonly MockApplicationContextWrapper mockApplication;
 
         public WindowServiceTests()
         {
-            if (Application.Current == null)
-            {
-                _ = new Application();
-            }
-
             // Create and configure a mock MainWindow
             mockMainWindow = new Mock<Window>();
             mockMainWindow.SetupAllProperties();
 
-            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
-            if (Application.Current != null)
+            mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
             {
-                Application.Current.MainWindow = mockMainWindow.Object;
-                Application.Current.MainWindow.Show();
-            }
+                MainWindow = mockMainWindow.Object
+            };
+            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
+            mockApplication.MainWindow.Show();
 
             SettingsService settingsService = new();
             KeybindManager keybindManager = new(settingsService);
-            windowService = new WindowService(keybindManager)
+            windowService = new WindowService(mockApplication, keybindManager)
             {
                 ShowWindow = false
             };
@@ -54,9 +51,9 @@ namespace Tests.UnitTests.ServiceTests
             var viewModel = keybindWindow.DataContext as KeybindWindowViewModel;
             Assert.IsNotNull(viewModel);
             Assert.AreEqual(viewModel, keybindWindow.DataContext);
-            Assert.AreEqual(Application.Current.MainWindow, keybindWindow.Owner);
+            Assert.AreEqual(mockApplication.MainWindow, keybindWindow.Owner);
             Assert.AreEqual(WindowStartupLocation.CenterOwner, keybindWindow.WindowStartupLocation);
-            Assert.AreEqual(Application.Current.MainWindow.Icon, keybindWindow.Icon);
+            Assert.AreEqual(mockApplication.MainWindow.Icon, keybindWindow.Icon);
 
             bool closeEventTriggered = false;
             viewModel.Close += (s, e) => closeEventTriggered = true;
