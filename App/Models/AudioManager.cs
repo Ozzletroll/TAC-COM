@@ -301,32 +301,26 @@ namespace App.Models
             {
                 if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
                 {
-                    // Dispose of any old resources
                     input?.Dispose();
                     micOutput?.Dispose();
 
-                    // Initialise profile sfx sources
                     activeProfile.LoadSources();
                     input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
                     micOutput = new WasapiOut() { Latency = 5 };
 
                     ResetOutputDevice();
 
-                    // Initialise input
                     input.Device = activeInputDevice;
                     input.Initialize();
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;
 
-                    // Initiliase signal chain
                     audioProcessor.Initialise(input, activeProfile);
 
-                    // Initialise output
                     micOutput.Device = activeOutputDevice;
                     micOutput.Initialize(audioProcessor.ReturnCompleteSignalChain());
                     micOutput.Stopped += OnOutputStopped;
 
-                    // Start audio
                     input.Start();
                     micOutput.Play();
                 }
