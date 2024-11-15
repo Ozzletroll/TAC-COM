@@ -27,6 +27,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestAudioProcessorProperty()
+        {
+            var newPropertyValue = new AudioProcessor();
+            audioManager.AudioProcessor = newPropertyValue;
+            Assert.AreEqual(audioManager.AudioProcessor, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestActiveProfileProperty()
         {
             var newPropertyValue = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
