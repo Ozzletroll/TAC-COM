@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using App.Models;
 using App.Models.Interfaces;
+using App.Services;
 using App.Services.Interfaces;
 using CSCore;
 using CSCore.CoreAudioAPI;
@@ -32,6 +33,14 @@ namespace Tests.UnitTests.ModelTests
             var newPropertyValue = new AudioProcessor();
             audioManager.AudioProcessor = newPropertyValue;
             Assert.AreEqual(audioManager.AudioProcessor, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestEnumeratorServiceProperty()
+        {
+            var newPropertyValue = new MMDeviceEnumeratorService();
+            audioManager.EnumeratorService = newPropertyValue;
+            Assert.AreEqual(audioManager.EnumeratorService, newPropertyValue);
         }
 
         [TestMethod]
