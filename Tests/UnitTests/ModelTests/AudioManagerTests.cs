@@ -121,7 +121,7 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestInputPeakMeterProperty()
+        public void TestInputPeakMeterValueProperty()
         {
             var newPropertyValue = 0.5f;
             Utils.TestPropertyChange(audioManager, nameof(audioManager.InputPeakMeterValue), newPropertyValue);
@@ -129,7 +129,7 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestOutputPeakMeterProperty()
+        public void TestOutputPeakMeterValueProperty()
         {
             var newPropertyValue = 0.5f;
             Utils.TestPropertyChange(audioManager, nameof(audioManager.OutputPeakMeterValue), newPropertyValue);
