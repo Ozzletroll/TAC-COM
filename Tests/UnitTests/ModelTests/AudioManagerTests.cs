@@ -105,6 +105,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestInputMeterProperty()
+        {
+            var newPropertyValue = new PeakMeterWrapper();
+            audioManager.InputMeter = newPropertyValue;
+            Assert.AreEqual(audioManager.InputMeter, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestInputPeakMeterProperty()
         {
             var newPropertyValue = 0.5f;
