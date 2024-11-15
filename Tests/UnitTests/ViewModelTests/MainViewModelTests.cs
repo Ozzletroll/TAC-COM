@@ -1,12 +1,12 @@
-﻿using Moq;
-using TAC_COM.ViewModels;
-using TAC_COM.Services.Interfaces;
+﻿using System.Drawing;
+using System.Windows.Media.Imaging;
+using App.Models.Interfaces;
+using App.Services.Interfaces;
+using App.ViewModels;
+using Moq;
 using Tests.MockModels;
 using Tests.MockServices;
-using System.Windows.Media.Imaging;
-using System.Drawing;
 using Tests.Utilities;
-using App.Models.Interfaces;
 
 namespace Tests.UnitTests.ViewModelTests
 {

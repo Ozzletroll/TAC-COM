@@ -1,5 +1,5 @@
-﻿using TAC_COM.Models;
-using TAC_COM.Services.Interfaces;
+﻿using App.Models;
+using App.Services.Interfaces;
 using Tests.MockServices;
 
 namespace Tests.UnitTests.ServiceTests

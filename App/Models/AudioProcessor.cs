@@ -1,13 +1,13 @@
-﻿using CSCore;
+﻿using App.Audio.DSP;
+using App.Audio.DSP.NWaves;
+using CSCore;
+using CSCore.DSP;
+using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
-using CSCore.SoundIn;
-using CSCore.DSP;
-using TAC_COM.Audio.DSP;
-using TAC_COM.Audio.DSP.NWaves;
 using NWaves.Effects;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     /// <summary>
     /// Class <c>AudioProcessor</c> assembles and mixes the signal chains used by

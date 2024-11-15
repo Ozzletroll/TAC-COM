@@ -1,5 +1,4 @@
-﻿using System.Windows.Media.Imaging;
-using TAC_COM.Services.Interfaces;
+﻿using App.Services.Interfaces;
 
 namespace Tests.MockServices
 {
@@ -8,7 +7,7 @@ namespace Tests.MockServices
         public Uri GetThemeUri(string themeName)
         {
             string relativePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MockResources", "ThemeTEST.xaml");
-            return new Uri(relativePath, UriKind.Absolute); 
+            return new Uri(relativePath, UriKind.Absolute);
         }
 
         public Uri GetIconUri(string iconName) => new("http://mock.uri/" + iconName);

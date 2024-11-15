@@ -1,6 +1,6 @@
 ﻿using NWaves.Effects;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class EffectParameters
     {

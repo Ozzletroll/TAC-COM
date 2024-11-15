@@ -1,17 +1,16 @@
-using TAC_COM.ViewModels;
-using TAC_COM.Services;
-using System.Reflection;
-using Tests.MockServices;
-using Tests.MockModels;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Models.Interfaces;
-using TAC_COM.Settings;
 using System.Collections.ObjectModel;
-using Moq;
-using TAC_COM.Models;
+using System.Reflection;
 using System.Windows.Media.Imaging;
-using Tests.Utilities;
+using App.Models;
 using App.Models.Interfaces;
+using App.Services;
+using App.Services.Interfaces;
+using App.Settings;
+using App.ViewModels;
+using Moq;
+using Tests.MockModels;
+using Tests.MockServices;
+using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
 {

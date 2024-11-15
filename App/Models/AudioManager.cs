@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
-using TAC_COM.Utilities;
+using App.Models.Interfaces;
+using App.Services;
+using App.Services.Interfaces;
+using App.Utilities;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using TAC_COM.Models.Interfaces;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Services;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class AudioManager : NotifyProperty, IAudioManager
     {

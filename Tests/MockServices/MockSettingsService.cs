@@ -1,5 +1,5 @@
-﻿using TAC_COM.Services.Interfaces;
-using TAC_COM.Settings;
+﻿using App.Services.Interfaces;
+using App.Settings;
 
 namespace Tests.MockServices
 {
@@ -8,7 +8,7 @@ namespace Tests.MockServices
         public AudioSettings AudioSettings { get; set; }
         public KeybindSettings KeybindSettings { get; set; }
 
-        public void UpdateAppConfig(string propertyName, object value) 
+        public void UpdateAppConfig(string propertyName, object value)
         {
             var property = AudioSettings.GetType().GetProperty(propertyName)
                 ?? KeybindSettings.GetType().GetProperty(propertyName);

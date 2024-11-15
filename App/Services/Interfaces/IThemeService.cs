@@ -1,4 +1,4 @@
-﻿namespace TAC_COM.Services.Interfaces
+﻿namespace App.Services.Interfaces
 {
     public interface IThemeService
     {

@@ -1,5 +1,5 @@
-﻿using App.Models.Interfaces;
-using System.Windows;
+﻿using System.Windows;
+using App.Models.Interfaces;
 
 namespace Tests.MockModels
 {
@@ -8,13 +8,13 @@ namespace Tests.MockModels
         public Window MainWindow { get; set; } = mainWindow;
 
         private ResourceDictionary resources = [];
-        public ResourceDictionary Resources 
-        { 
-            get => resources; 
+        public ResourceDictionary Resources
+        {
+            get => resources;
             set
             {
                 resources = value;
-            } 
+            }
         }
     }
 }

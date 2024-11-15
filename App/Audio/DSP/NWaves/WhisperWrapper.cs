@@ -1,7 +1,7 @@
 ﻿using CSCore;
 using NWaves.Effects;
 
-namespace TAC_COM.Audio.DSP.NWaves
+namespace App.Audio.DSP.NWaves
 {
     internal class WhisperWrapper(ISampleSource inputSource) : ISampleSource
     {

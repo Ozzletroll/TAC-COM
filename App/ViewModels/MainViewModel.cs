@@ -1,11 +1,9 @@
-﻿using TAC_COM.Services;
-using System.Drawing;
-using TAC_COM.Models;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Models.Interfaces;
+﻿using System.Drawing;
 using App.Models.Interfaces;
+using App.Services;
+using App.Services.Interfaces;
 
-namespace TAC_COM.ViewModels
+namespace App.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {

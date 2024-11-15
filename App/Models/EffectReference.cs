@@ -1,7 +1,7 @@
-﻿using CSCore;
-using System.Reflection;
+﻿using System.Reflection;
+using CSCore;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class EffectReference(Type type)
     {

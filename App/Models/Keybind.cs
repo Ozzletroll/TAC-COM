@@ -1,8 +1,8 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using System.Text;
+using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
-using System.Text;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
     {

@@ -1,7 +1,7 @@
-﻿using AdonisUI.Controls;
-using System.Windows.Interop;
+﻿using System.Windows.Interop;
+using AdonisUI.Controls;
 
-namespace TAC_COM.Views
+namespace App.Views
 {
     /// <summary>
     /// Interaction logic for KeybindWindow.xaml

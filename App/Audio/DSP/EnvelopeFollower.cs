@@ -1,5 +1,5 @@
 ﻿
-namespace TAC_COM.Audio.DSP
+namespace App.Audio.DSP
 {
     internal class EnveloperFollower(int sampleRate)
     {
@@ -30,13 +30,13 @@ namespace TAC_COM.Audio.DSP
 
         private float attack_coefficient;
         private float release_coefficient;
-        
+
         public float Process(float sample)
         {
             sample = Math.Abs(sample);
 
-            envelope = 
-                envelope < sample ? attack_coefficient * envelope + (1 - attack_coefficient) * sample 
+            envelope =
+                envelope < sample ? attack_coefficient * envelope + (1 - attack_coefficient) * sample
                 : release_coefficient * envelope + (1 - release_coefficient) * sample;
 
             return envelope;

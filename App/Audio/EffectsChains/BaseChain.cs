@@ -1,6 +1,6 @@
-﻿using TAC_COM.Models;
+﻿using App.Models;
 
-namespace TAC_COM.Audio.EffectsChains
+namespace App.Audio.EffectsChains
 {
     public abstract class BaseChain
     {

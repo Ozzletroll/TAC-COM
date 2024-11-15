@@ -1,6 +1,6 @@
-﻿using TAC_COM.Models.Interfaces;
-using System.Collections.ObjectModel;
-using TAC_COM.Models;
+﻿using System.Collections.ObjectModel;
+using App.Models;
+using App.Models.Interfaces;
 
 namespace Tests.MockModels
 {
@@ -26,7 +26,7 @@ namespace Tests.MockModels
 
         public void SetOutputDevice(IMMDeviceWrapper outputDevice) { }
 
-        public async Task ToggleStateAsync() 
+        public async Task ToggleStateAsync()
         {
             await Task.Run(() => { });
         }

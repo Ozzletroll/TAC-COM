@@ -1,7 +1,7 @@
-﻿using Dapplo.Windows.Input.Keyboard;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Dapplo.Windows.Input.Keyboard;
 
-namespace TAC_COM.Models.Interfaces
+namespace App.Models.Interfaces
 {
     public interface IKeybindManager : INotifyPropertyChanged
     {

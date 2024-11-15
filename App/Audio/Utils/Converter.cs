@@ -1,5 +1,5 @@
 ﻿
-namespace TAC_COM.Audio.Utils
+namespace App.Audio.Utils
 {
     internal class LinearDBConverter
     {

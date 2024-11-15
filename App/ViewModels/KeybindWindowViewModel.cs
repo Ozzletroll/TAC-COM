@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using TAC_COM.Models.Interfaces;
+using App.Models.Interfaces;
 
-namespace TAC_COM.ViewModels
+namespace App.ViewModels
 {
     public class KeybindWindowViewModel : ViewModelBase
     {

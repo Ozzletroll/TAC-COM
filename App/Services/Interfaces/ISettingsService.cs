@@ -1,6 +1,6 @@
-﻿using TAC_COM.Settings;
+﻿using App.Settings;
 
-namespace TAC_COM.Services.Interfaces
+namespace App.Services.Interfaces
 {
     public interface ISettingsService
     {

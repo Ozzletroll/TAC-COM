@@ -1,7 +1,7 @@
-﻿using CSCore;
-using TAC_COM.Audio.Utils;
+﻿using App.Audio.Utils;
+using CSCore;
 
-namespace TAC_COM.Audio.DSP
+namespace App.Audio.DSP
 {
     public class Gain(ISampleSource inputSource) : ISampleSource
     {

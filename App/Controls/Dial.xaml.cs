@@ -3,9 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
-namespace TAC_COM.Controls
+namespace App.Controls
 {
     /// <summary>
     /// Interaction logic for Dial.xaml
@@ -20,25 +19,25 @@ namespace TAC_COM.Controls
 
         private Point initialPosition;
 
-        public static readonly DependencyProperty MinProperty 
+        public static readonly DependencyProperty MinProperty
             = DependencyProperty.Register("Min", typeof(float), typeof(Dial));
         public float Min
         {
-            get => (float)GetValue(MinProperty); 
-            set 
-            { 
-                SetValue(MinProperty, value); 
+            get => (float)GetValue(MinProperty);
+            set
+            {
+                SetValue(MinProperty, value);
             }
         }
 
-        public static readonly DependencyProperty MaxProperty 
+        public static readonly DependencyProperty MaxProperty
             = DependencyProperty.Register("Max", typeof(float), typeof(Dial));
         public float Max
         {
             get => (float)GetValue(MaxProperty);
-            set 
-            { 
-                SetValue(MaxProperty, value); 
+            set
+            {
+                SetValue(MaxProperty, value);
             }
         }
 
@@ -61,12 +60,12 @@ namespace TAC_COM.Controls
             }
         }
 
-        public static readonly DependencyProperty ValueProperty 
+        public static readonly DependencyProperty ValueProperty
             = DependencyProperty.Register("Value", typeof(float), typeof(Dial), new FrameworkPropertyMetadata(0f, new PropertyChangedCallback(OnValuePropertyChanged)));
         public float Value
         {
             get => (float)GetValue(ValueProperty);
-            set 
+            set
             {
                 SetValue(ValueProperty, Math.Clamp(value, Min, Max));
             }

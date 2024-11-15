@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TAC_COM.Utilities
+namespace App.Utilities
 {
     public class NotifyProperty : INotifyPropertyChanged
     {

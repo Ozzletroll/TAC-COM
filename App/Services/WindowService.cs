@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Models;
-using TAC_COM.ViewModels;
-using TAC_COM.Views;
-using TAC_COM.Models.Interfaces;
+using App.Models;
 using App.Models.Interfaces;
+using App.Services.Interfaces;
+using App.ViewModels;
+using App.Views;
 
-namespace TAC_COM.Services
+namespace App.Services
 {
     public class WindowService(IApplicationContextWrapper _applicationContext, IKeybindManager _keybindManager) : IWindowService
     {

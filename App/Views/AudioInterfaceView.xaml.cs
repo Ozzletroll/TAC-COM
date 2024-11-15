@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace TAC_COM.Views
+namespace App.Views
 {
     /// <summary>
     /// Interaction logic for AudioInterfaceView.xaml

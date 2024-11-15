@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace TAC_COM.Settings
+namespace App.Settings
 {
     public class KeybindSettings : ConfigurationSection
     {

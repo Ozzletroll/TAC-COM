@@ -1,8 +1,8 @@
-﻿using App.Models.Interfaces;
-using System.Windows;
-using TAC_COM.Services.Interfaces;
+﻿using System.Windows;
+using App.Models.Interfaces;
+using App.Services.Interfaces;
 
-namespace TAC_COM.Services
+namespace App.Services
 {
     public class ThemeService(IApplicationContextWrapper _applicationContext, IUriService _uriService) : IThemeService
     {
@@ -17,7 +17,7 @@ namespace TAC_COM.Services
 
             ResourceDictionary rootResourceDictionary = applicationContext.Resources;
             rootResourceDictionary.MergedDictionaries.Remove(currentTheme);
-            
+
             ResourceDictionary TargetTheme = new() { Source = targetTheme };
             rootResourceDictionary.MergedDictionaries.Add(TargetTheme);
 

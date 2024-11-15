@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Media;
 
-namespace TAC_COM.Services.Interfaces
+namespace App.Services.Interfaces
 {
     public interface IIconService
     {

@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Settings;
+using App.Services.Interfaces;
+using App.Settings;
 
-namespace TAC_COM.Services
+namespace App.Services
 {
     public class SettingsService : ISettingsService
     {

@@ -1,8 +1,8 @@
-﻿using CSCore;
+﻿using System.IO;
+using CSCore;
 using CSCore.Codecs;
-using System.IO;
 
-namespace TAC_COM.Audio.Utils
+namespace App.Audio.Utils
 {
     internal class FilePlayer
     {

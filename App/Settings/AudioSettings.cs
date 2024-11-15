@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace TAC_COM.Settings
+namespace App.Settings
 {
     public class AudioSettings : ConfigurationSection
     {
@@ -8,7 +8,7 @@ namespace TAC_COM.Settings
         public string InputDevice
         {
             get => (string)this["inputDevice"];
-            set 
+            set
             {
                 this["inputDevice"] = value;
             }

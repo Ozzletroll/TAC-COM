@@ -1,13 +1,11 @@
-﻿using TAC_COM.Models;
-using TAC_COM.Services;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using TAC_COM.Models.Interfaces;
-using TAC_COM.Services.Interfaces;
-using App.Models.Interfaces;
 using App.Models;
+using App.Models.Interfaces;
+using App.Services;
+using App.Services.Interfaces;
 
-namespace TAC_COM.ViewModels
+namespace App.ViewModels
 {
     public class AudioInterfaceViewModel : ViewModelBase
     {
@@ -113,7 +111,7 @@ namespace TAC_COM.ViewModels
         public IMMDeviceWrapper? OutputDevice
         {
             get => outputDevice;
-            set 
+            set
             {
                 outputDevice = value;
                 if (value != null)
@@ -122,7 +120,7 @@ namespace TAC_COM.ViewModels
                     OnPropertyChanged(nameof(OutputDevice));
                     settingsService.UpdateAppConfig(nameof(OutputDevice), value.Device);
                 }
-            } 
+            }
         }
 
         public bool State
@@ -250,7 +248,7 @@ namespace TAC_COM.ViewModels
                 OnPropertyChanged(nameof(KeybindName));
             }
         }
-        
+
         private void LoadInputDevices()
         {
             AllInputDevices.Clear();
@@ -316,7 +314,7 @@ namespace TAC_COM.ViewModels
 
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
 
-        private void ExecuteKeybindChange() 
+        private void ExecuteKeybindChange()
         {
             keybindManager.UpdateKeybind();
         }

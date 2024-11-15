@@ -1,7 +1,7 @@
 ﻿
 using CSCore.CoreAudioAPI;
 
-namespace TAC_COM.Models.Interfaces
+namespace App.Models.Interfaces
 {
     public interface IMMDeviceWrapper
     {

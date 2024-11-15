@@ -1,5 +1,5 @@
-﻿using App.Models.Interfaces;
-using System.Windows;
+﻿using System.Windows;
+using App.Models.Interfaces;
 
 namespace App.Models
 {
@@ -14,9 +14,10 @@ namespace App.Models
             }
         }
 
-        public ResourceDictionary Resources { 
+        public ResourceDictionary Resources
+        {
             get => Application.Current.Resources;
-            set 
+            set
             {
                 Application.Current.Resources = value;
             }

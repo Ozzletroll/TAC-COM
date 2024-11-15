@@ -1,13 +1,7 @@
 ﻿using CSCore;
 using NWaves.Effects;
-using NWaves.Signals.Builders.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TAC_COM.Audio.DSP.NWaves
+namespace App.Audio.DSP.NWaves
 {
     internal class FlangerWrapper(ISampleSource inputSource) : ISampleSource
     {

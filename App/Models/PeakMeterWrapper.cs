@@ -1,7 +1,7 @@
-﻿using TAC_COM.Models.Interfaces;
+﻿using App.Models.Interfaces;
 using CSCore.CoreAudioAPI;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class PeakMeterWrapper() : IPeakMeterWrapper
     {

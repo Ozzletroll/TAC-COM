@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TAC_COM
+namespace App
 {
     /// <summary>
     /// Interaction logic for App.xaml

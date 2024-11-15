@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using TAC_COM.Models.Interfaces;
+using App.Models.Interfaces;
 
-namespace TAC_COM.Services.Interfaces
+namespace App.Services.Interfaces
 {
     public interface IMMDeviceEnumeratorService
     {

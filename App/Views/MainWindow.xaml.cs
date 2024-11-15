@@ -1,14 +1,13 @@
-﻿using AdonisUI.Controls;
-using App.Models;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
-using TAC_COM.Models;
-using TAC_COM.Services;
-using TAC_COM.ViewModels;
+using AdonisUI.Controls;
+using App.Models;
+using App.Services;
+using App.ViewModels;
 
-namespace TAC_COM
+namespace App
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

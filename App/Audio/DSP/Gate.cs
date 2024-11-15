@@ -1,7 +1,7 @@
-﻿using CSCore;
-using TAC_COM.Audio.Utils;
+﻿using App.Audio.Utils;
+using CSCore;
 
-namespace TAC_COM.Audio.DSP
+namespace App.Audio.DSP
 {
     public class Gate : ISampleSource
     {
@@ -82,7 +82,7 @@ namespace TAC_COM.Audio.DSP
         {
             var absSample = Math.Abs(sample);
 
-            envelope = releaseCoefficient * envelope + (1 - attackCoefficient) 
+            envelope = releaseCoefficient * envelope + (1 - attackCoefficient)
                 * ((absSample - envelope > 0) ? absSample - envelope : 0);
 
             if (envelope < thresholdLinear)

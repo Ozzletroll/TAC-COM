@@ -1,6 +1,6 @@
-﻿using TAC_COM.Utilities;
+﻿using App.Utilities;
 
-namespace TAC_COM.ViewModels
+namespace App.ViewModels
 {
     public class ViewModelBase : NotifyProperty { }
 }

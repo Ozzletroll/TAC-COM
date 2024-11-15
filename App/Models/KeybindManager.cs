@@ -1,10 +1,10 @@
-﻿using TAC_COM.Services.Interfaces;
+﻿using App.Models.Interfaces;
+using App.Services.Interfaces;
+using App.Utilities;
 using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
-using TAC_COM.Models.Interfaces;
-using TAC_COM.Utilities;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager
     {

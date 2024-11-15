@@ -1,6 +1,6 @@
-﻿using TAC_COM.Services.Interfaces;
+﻿using App.Services.Interfaces;
 
-namespace TAC_COM.Services
+namespace App.Services
 {
     public class UriService(string[] themeFolders, string[] iconFolders) : IUriService
     {

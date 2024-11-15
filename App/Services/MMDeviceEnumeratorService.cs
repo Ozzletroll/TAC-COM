@@ -1,10 +1,10 @@
-﻿using TAC_COM.Models.Interfaces;
+﻿using System.Collections.ObjectModel;
+using App.Models;
+using App.Models.Interfaces;
+using App.Services.Interfaces;
 using CSCore.CoreAudioAPI;
-using System.Collections.ObjectModel;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Models;
 
-namespace TAC_COM.Services
+namespace App.Services
 {
     public class MMDeviceEnumeratorService : IMMDeviceEnumeratorService
     {

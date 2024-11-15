@@ -1,12 +1,12 @@
-﻿using TAC_COM.Audio.DSP.NWaves;
-using TAC_COM.Audio.EffectsChains;
-using TAC_COM.Audio.SignalChains;
+﻿using System.Windows.Media.Imaging;
+using App.Audio.DSP.NWaves;
+using App.Audio.EffectsChains;
+using App.Audio.SignalChains;
+using App.Services.Interfaces;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
-using TAC_COM.Services.Interfaces;
-using System.Windows.Media.Imaging;
 
-namespace TAC_COM.Models
+namespace App.Models
 {
     public class ProfileService(IUriService uriProvider)
     {

@@ -1,6 +1,6 @@
 ﻿using CSCore;
 
-namespace TAC_COM.Audio.DSP
+namespace App.Audio.DSP
 {
     public class Mixer : ISampleSource
     {
@@ -35,7 +35,7 @@ namespace TAC_COM.Audio.DSP
             lock (lockObj)
             {
                 if (!Contains(source))
-                    {
+                {
                     sampleSources.Add(source);
                 }
             }
@@ -99,7 +99,7 @@ namespace TAC_COM.Audio.DSP
                         {
                             // Raise event here
                             // Remove the input to make sure that the event gets only raised once.
-                            RemoveSource(sampleSource); 
+                            RemoveSource(sampleSource);
                         }
                     }
 

@@ -1,13 +1,13 @@
-﻿using Dapplo.Windows.Input.Keyboard;
-using System.ComponentModel;
-using TAC_COM.Models;
-using TAC_COM.Models.Interfaces;
+﻿using System.ComponentModel;
+using App.Models;
+using App.Models.Interfaces;
+using Dapplo.Windows.Input.Keyboard;
 
 namespace Tests.MockModels
 {
     internal class MockKeybindManager : IKeybindManager
     {
-        public Keybind? NewPTTKeybind {  get; set; }
+        public Keybind? NewPTTKeybind { get; set; }
         public bool PassthroughState { get; set; }
         public Keybind? PTTKey { get; set; }
         public bool ToggleState { get; set; }
