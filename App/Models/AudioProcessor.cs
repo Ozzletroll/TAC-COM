@@ -25,6 +25,7 @@ namespace App.Models
         public Gain? PostDistortionGainReduction;
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
+        private Gate? ParallelNoiseGate;
         private Gate? DryNoiseGate;
         private DmoResampler? DownSampler;
         private DmoResampler? UpSampler;
@@ -59,6 +60,10 @@ namespace App.Models
                     if (ProcessedNoiseGate != null)
                     {
                         ProcessedNoiseGate.ThresholdDB = value;
+                    }
+                    if (ParallelNoiseGate != null)
+                    {
+                        ParallelNoiseGate.ThresholdDB = value;
                     }
                     if (DryNoiseGate != null)
                     {
@@ -131,6 +136,7 @@ namespace App.Models
         private const float MinDistortionCompensation = -45;
         private const float MaxDistortionCompensation = -48;
         private float distortionCompensation;
+
         public float DistortionCompensation
         {
             get => distortionCompensation;
@@ -230,16 +236,27 @@ namespace App.Models
                 }
             }
 
-            // Compression
+            // Limiter
             filteredSource =
                 preDistortionSampleSource.ToWaveSource()
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
-                    Attack = 0.5f,
-                    Gain = 50,
+                    Attack = 0.15f,
+                    Gain = 0,
                     Ratio = 100,
-                    Release = 150,
-                    Threshold = -60
+                    Release = 100,
+                    Threshold = -20
+                });
+
+            // Compression
+            filteredSource =
+                filteredSource.AppendSource(x => new DmoCompressorEffect(x)
+                {
+                    Attack = 0.5f,
+                    Gain = 40,
+                    Ratio = 40,
+                    Release = 100,
+                    Threshold = -50
                 });
 
             // Apply CSCore distortion, depending on ActiveProfile settings
@@ -348,7 +365,7 @@ namespace App.Models
                 Attack = 5,
                 Hold = 30,
                 Release = 5,
-            });
+            }, out ParallelNoiseGate);
 
             // Highpass filter
             var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
