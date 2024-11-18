@@ -4,9 +4,10 @@ using NWaves.Effects;
 using TAC_COM.Audio.DSP.NWaves;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Audio.SignalChains;
+using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
 
-namespace TAC_COM.Models
+namespace TAC_COM.Services
 {
     public class ProfileService(IUriService uriProvider)
     {
@@ -30,8 +31,8 @@ namespace TAC_COM.Models
                         PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                         HighpassFrequency = 800,
                         LowpassFrequency = 2900,
-                        PeakFrequency = 3500,
-                        GainAdjust = 3
+                        PeakFrequency = 2800,
+                        GainAdjust = 0,
                     }
                 });
 
@@ -50,7 +51,7 @@ namespace TAC_COM.Models
                         HighpassFrequency = 600,
                         LowpassFrequency = 9000,
                         PeakFrequency = 5500,
-                        GainAdjust = 5,
+                        GainAdjust = 0,
                     }
                 });
 
@@ -65,7 +66,7 @@ namespace TAC_COM.Models
                     {
                         DistortionType = typeof(DistortionWrapper),
                         DistortionMode = DistortionMode.HardClipping,
-                        DistortionInput = 30,
+                        DistortionInput = 26,
                         DistortionOutput = 42,
                         DistortionWet = 0.8f,
                         DistortionDry = 0.2f,
@@ -74,7 +75,7 @@ namespace TAC_COM.Models
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 3800,
-                        GainAdjust = 2,
+                        GainAdjust = -5,
                     }
                 });
 
@@ -90,13 +91,13 @@ namespace TAC_COM.Models
                         DistortionType = typeof(DistortionWrapper),
                         DistortionMode = DistortionMode.HalfWaveRectify,
                         DistortionInput = 40,
-                        DistortionOutput = 35,
+                        DistortionOutput = 23,
                         PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                         HighpassFrequency = 350,
-                        LowpassFrequency = 5000,
-                        PeakFrequency = 2400,
-                        GainAdjust = -4,
+                        LowpassFrequency = 2000,
+                        PeakFrequency = 2000,
+                        GainAdjust = -9,
                     }
                 });
 
@@ -118,7 +119,7 @@ namespace TAC_COM.Models
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 3000,
-                        GainAdjust = 3,
+                        GainAdjust = -1,
                     }
                 });
 

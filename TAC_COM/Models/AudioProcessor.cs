@@ -215,19 +215,8 @@ namespace TAC_COM.Models
             // Convert back to WaveSource
             var filteredSource = peakFiltered.ToWaveSource();
 
-            // Downsample and resample back to target sample rate
-            var bitcrushed = filteredSource.AppendSource(x => new DmoResampler(x, 6000)
-            {
-                Quality = QualityLevel
-            }, out DownSampler);
-            var resampled = bitcrushed.AppendSource(x => new DmoResampler(x, SampleRate)
-            {
-                Quality = QualityLevel
-            }, out UpSampler);
-
             // Apply profile specific pre-distortion effects
-            var preDistortionSampleSource = resampled.ToSampleSource();
-
+            var preDistortionSampleSource = filteredSource.ToSampleSource();
             if (ActiveProfile?.Settings.PreDistortionSignalChain != null)
             {
                 foreach (EffectReference effect in ActiveProfile.Settings.PreDistortionSignalChain)
@@ -254,7 +243,7 @@ namespace TAC_COM.Models
                 {
                     Attack = 0.5f,
                     Gain = 40,
-                    Ratio = 40,
+                    Ratio = 10,
                     Release = 100,
                     Threshold = -50
                 });
