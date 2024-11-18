@@ -1,13 +1,13 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
+using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Settings;
 using TAC_COM.ViewModels;
-using Moq;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;

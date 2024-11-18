@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using CSCore.CoreAudioAPI;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
-using CSCore.CoreAudioAPI;
 
 namespace TAC_COM.Services
 {

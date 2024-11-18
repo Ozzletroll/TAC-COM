@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
+using Moq;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
-using Moq;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;

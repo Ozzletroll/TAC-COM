@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using AdonisUI.Controls;
-using Models;
 using TAC_COM.Models;
 using TAC_COM.Services;
 using TAC_COM.ViewModels;

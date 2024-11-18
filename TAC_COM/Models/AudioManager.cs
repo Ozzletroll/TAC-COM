@@ -1,13 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using TAC_COM.Models.Interfaces;
-using TAC_COM.Services;
-using TAC_COM.Services.Interfaces;
-using TAC_COM.Utilities;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using Models;
+using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.Models
 {

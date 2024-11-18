@@ -1,10 +1,10 @@
 ﻿using System.Windows.Media.Imaging;
+using CSCore.Streams.Effects;
+using NWaves.Effects;
 using TAC_COM.Audio.DSP.NWaves;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Audio.SignalChains;
 using TAC_COM.Services.Interfaces;
-using CSCore.Streams.Effects;
-using NWaves.Effects;
 
 namespace TAC_COM.Models
 {

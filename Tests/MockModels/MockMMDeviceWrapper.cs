@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using TAC_COM.Models.Interfaces;
 using CSCore.CoreAudioAPI;
+using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {

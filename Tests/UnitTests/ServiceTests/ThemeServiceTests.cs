@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-using TAC_COM.Services;
 using Moq;
+using TAC_COM.Services;
 using Tests.MockModels;
 using Tests.MockServices;
 
