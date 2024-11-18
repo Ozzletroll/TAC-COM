@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using App.Models;
-using App.Models.Interfaces;
 using Dapplo.Windows.Input.Keyboard;
+using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {

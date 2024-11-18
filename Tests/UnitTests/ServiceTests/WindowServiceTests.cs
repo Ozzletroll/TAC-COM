@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using System.Windows;
-using App.Models;
-using App.Services;
-using App.ViewModels;
-using App.Views;
 using Moq;
+using TAC_COM.Models;
+using TAC_COM.Services;
+using TAC_COM.ViewModels;
+using TAC_COM.Views;
 using Tests.MockModels;
 
 namespace Tests.UnitTests.ServiceTests

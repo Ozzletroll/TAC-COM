@@ -1,0 +1,101 @@
+﻿<adonisControls:AdonisWindow  
+             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI" 
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             x:Class="TAC_COM.Views.KeybindWindowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TAC_COM.Views"
+             xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:KeybindWindowViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="185" d:DesignWidth="260"
+             Height="185" Width="260"
+             ResizeMode="NoResize"
+             Topmost="True"
+             Title="SET NEW KEYBIND"
+             TitleBarForeground="White" 
+             TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
+             BorderThickness="1" 
+             BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="2" Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock FontSize="14">
+                PRESS NEW KEYBIND
+            </TextBlock>
+            <Label Height="20" Content="{Binding NewKeybindName}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="0, 5, 0, 5"
+                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Margin="5">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="12" FontWeight="Normal" Margin="0, 0, 10, 0"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">
+                    PASSTHROUGH
+                </Label>
+                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Margin="4"
+                          IsChecked="{Binding PassthroughState}"/>
+            </StackPanel>
+            <Button DockPanel.Dock="Right" Width="80" Height="24" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
+                    Command="{Binding CloseKeybindDialog}" FontSize="14"
+                    BorderThickness="0"
+                    adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                    adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
+                CONFIRM
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"
+                                    BorderThickness="1" CornerRadius="1">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</adonisControls:AdonisWindow>
