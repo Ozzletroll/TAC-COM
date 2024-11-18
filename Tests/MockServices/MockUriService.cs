@@ -1,4 +1,4 @@
-﻿using App.Services.Interfaces;
+﻿using TAC_COM.Services.Interfaces;
 
 namespace Tests.MockServices
 {

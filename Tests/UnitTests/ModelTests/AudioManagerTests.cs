@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
-using App.Models;
-using App.Models.Interfaces;
-using App.Services;
-using App.Services.Interfaces;
+using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.Streams;
@@ -12,6 +12,7 @@ using Moq;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;
+using Models;
 
 namespace Tests.UnitTests.ModelTests
 {

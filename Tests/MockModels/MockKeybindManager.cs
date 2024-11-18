@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
-using App.Models;
-using App.Models.Interfaces;
+using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 using Dapplo.Windows.Input.Keyboard;
 
 namespace Tests.MockModels

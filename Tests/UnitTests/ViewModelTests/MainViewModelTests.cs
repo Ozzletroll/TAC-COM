@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Media.Imaging;
-using App.Models.Interfaces;
-using App.Services.Interfaces;
-using App.ViewModels;
+using TAC_COM.Models.Interfaces;
+using TAC_COM.Services.Interfaces;
+using TAC_COM.ViewModels;
 using Moq;
 using Tests.MockModels;
 using Tests.MockServices;

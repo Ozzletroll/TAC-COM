@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using App.Models.Interfaces;
+using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {
