@@ -4,6 +4,7 @@ using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using NWaves.Effects;
+using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.NWaves;
 
@@ -73,8 +74,6 @@ namespace TAC_COM.Models
             }
         }
 
-        // UserNoiseLevel is linked with DistortionLevel and QualityLevel
-        // so that increasing noise increases distortion and lowers resampling quality
         private float userNoiseLevel = 0.5f;
         public float UserNoiseLevel
         {
@@ -82,70 +81,9 @@ namespace TAC_COM.Models
             set
             {
                 userNoiseLevel = value;
-                DistortionLevel = value;
-                QualityLevel = (int)(value * 100);
-                DistortionCompensation = value;
                 if (HasInitialised && NoiseMixLevel != null)
                 {
                     NoiseMixLevel.Volume = value;
-                }
-            }
-        }
-
-        private const float MinimumDistortion = 85;
-        private float distortionLevel = MinimumDistortion;
-        public float DistortionLevel
-        {
-            get => distortionLevel;
-            set
-            {
-                value = MinimumDistortion + value * (100 - MinimumDistortion);
-                distortionLevel = value;
-                if (HasInitialised && Distortion != null)
-                {
-                    Distortion.Edge = value;
-                }
-            }
-        }
-
-        private const int MinimumQuality = 1;
-        private const int MaximumQuality = 60;
-        private int qualityLevel = MinimumQuality;
-        public int QualityLevel
-        {
-            get => qualityLevel;
-            set
-            {
-                value = Math.Max(MaximumQuality - value * (MaximumQuality - MinimumQuality) / 100, 1);
-                qualityLevel = value;
-                if (HasInitialised)
-                {
-                    if (DownSampler != null)
-                    {
-                        DownSampler.Quality = value;
-                    }
-                    if (UpSampler != null)
-                    {
-                        UpSampler.Quality = value;
-                    }
-
-                }
-            }
-        }
-
-        private const float MinDistortionCompensation = -45;
-        private const float MaxDistortionCompensation = -48;
-        private float distortionCompensation;
-
-        public float DistortionCompensation
-        {
-            get => distortionCompensation;
-            set
-            {
-                distortionCompensation = MinDistortionCompensation + value * (MaxDistortionCompensation - MinDistortionCompensation);
-                if (PostDistortionGainReduction != null)
-                {
-                    PostDistortionGainReduction.GainDB = distortionCompensation;
                 }
             }
         }
@@ -200,23 +138,20 @@ namespace TAC_COM.Models
                 Release = 5,
             }, out ProcessedNoiseGate);
 
-            // Highpass filter
-            var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency);
-
-            // Lowpass filter
-            var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency);
-
-            // Peak filter
-            var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2);
-
-            // Convert back to WaveSource
-            var filteredSource = peakFiltered.ToWaveSource();
+            // EQ
+            sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency)
+            }).AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency),
+            }).AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2),
+            });
 
             // Apply profile specific pre-distortion effects
-            var preDistortionSampleSource = filteredSource.ToSampleSource();
+            var preDistortionSampleSource = sampleSource;
             if (ActiveProfile?.Settings.PreDistortionSignalChain != null)
             {
                 foreach (EffectReference effect in ActiveProfile.Settings.PreDistortionSignalChain)
@@ -225,55 +160,56 @@ namespace TAC_COM.Models
                 }
             }
 
+            var dynamicsProcessedSource = preDistortionSampleSource;
+
             // Limiter
-            filteredSource =
-                preDistortionSampleSource.ToWaveSource()
-                .AppendSource(x => new DmoCompressorEffect(x)
-                {
-                    Attack = 0.15f,
-                    Gain = 0,
-                    Ratio = 100,
-                    Release = 100,
-                    Threshold = -20
-                });
+            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Limiter, -120)
+            {
+                Threshold = -20,
+                Ratio = 100,
+                Attack = 10,
+                Release = 300,
+                MakeupGain = 10,
+            });
 
             // Compression
-            filteredSource =
-                filteredSource.AppendSource(x => new DmoCompressorEffect(x)
-                {
-                    Attack = 0.5f,
-                    Gain = 40,
-                    Ratio = 10,
-                    Release = 100,
-                    Threshold = -50
-                });
+            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Compressor, -120)
+            {
+                Threshold = -40,
+                Ratio = 30,
+                Attack = 10,
+                Release = 300,
+                MakeupGain = 45,
+            });
+
+            var distortionSource = dynamicsProcessedSource.ToWaveSource();
 
             // Apply CSCore distortion, depending on ActiveProfile settings
             if (ActiveProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
             {
                 // Distortion
-                filteredSource =
-                    filteredSource.AppendSource(x => new DmoDistortionEffect(x)
+                distortionSource =
+                    distortionSource.AppendSource(x => new DmoDistortionEffect(x)
                     {
                         Gain = -60,
-                        Edge = DistortionLevel,
+                        Edge = 85,
                         PostEQCenterFrequency = 3500,
                         PostEQBandwidth = 2400,
                         PreLowpassCutoff = 8000
                     }, out Distortion);
 
                 // Reduce gain to compensate for distortion
-                var filteredWaveSource = filteredSource.ToSampleSource();
-                filteredWaveSource = filteredWaveSource.AppendSource(x => new Gain(x)
+                var gainAdjustedDistortionSource = distortionSource.ToSampleSource();
+                gainAdjustedDistortionSource = gainAdjustedDistortionSource.AppendSource(x => new Gain(x)
                 {
-                    GainDB = DistortionCompensation,
+                    GainDB = -45,
                 }, out PostDistortionGainReduction);
 
-                filteredSource = filteredWaveSource.ToWaveSource();
+                distortionSource = gainAdjustedDistortionSource.ToWaveSource();
             }
 
             // Convert to SampleSource
-            var outputSampleSource = filteredSource.ToSampleSource();
+            var outputSampleSource = distortionSource.ToSampleSource();
 
             // Apply NWaves distortion, depending on ActiveProfile settings
             if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper)
@@ -291,7 +227,7 @@ namespace TAC_COM.Models
 
                 outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
                 {
-                    GainDB = DistortionCompensation,
+                    GainDB = -45,
                 }, out PostDistortionGainReduction);
             }
 
@@ -347,8 +283,10 @@ namespace TAC_COM.Models
         {
             if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
 
+            var sampleSource = parallelSource;
+
             // Noise gate
-            var sampleSource = parallelSource.AppendSource(x => new Gate(x)
+            sampleSource = parallelSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
                 Attack = 5,
@@ -356,19 +294,19 @@ namespace TAC_COM.Models
                 Release = 5,
             }, out ParallelNoiseGate);
 
-            // Highpass filter
-            var removedLowEnd = sampleSource.AppendSource(x => new BiQuadFilterSource(x));
-            removedLowEnd.Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency);
+            // EQ
+            sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency)
+            }).AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency),
+            }).AppendSource(x => new BiQuadFilterSource(x)
+            {
+                Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2),
+            });
 
-            // Lowpass filter
-            var removedHighEnd = removedLowEnd.AppendSource(x => new BiQuadFilterSource(x));
-            removedHighEnd.Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency);
-
-            // Peak filter
-            var peakFiltered = removedHighEnd.AppendSource(x => new BiQuadFilterSource(x));
-            peakFiltered.Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 1);
-
-            var distortedSource = peakFiltered.AppendSource(x => new TubeDistortionWrapper(x)
+            var distortedSource = sampleSource.AppendSource(x => new TubeDistortionWrapper(x)
             {
                 Wet = 0.5f,
                 Dry = 0.5f,
@@ -380,17 +318,16 @@ namespace TAC_COM.Models
 
             // Compression
             var compressedSource =
-                distortedSource.ToWaveSource()
-                .AppendSource(x => new DmoCompressorEffect(x)
+                distortedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Compressor, -120)
                 {
-                    Attack = 10f,
-                    Gain = 40,
-                    Ratio = 50,
-                    Release = 50,
-                    Threshold = -40
+                    Threshold = -10,
+                    Ratio = 10,
+                    Attack = 10,
+                    Release = 300,
+                    MakeupGain = 25,
                 });
 
-            var outputSource = compressedSource.ToSampleSource().AppendSource(x => new Gain(x)
+            var outputSource = compressedSource.AppendSource(x => new Gain(x)
             {
                 GainDB = 5,
             });
