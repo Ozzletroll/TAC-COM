@@ -1,8 +1,7 @@
 ﻿using TAC_COM.Audio.DSP.NWaves;
-using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 
-namespace TAC_COM.Audio.SignalChains
+namespace TAC_COM.Audio.EffectsChains
 {
     public class SSCChain : BaseChain
     {
@@ -24,8 +23,8 @@ namespace TAC_COM.Audio.SignalChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.3f },
-                    { "Dry", 0.7f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                 }
             }
         ];

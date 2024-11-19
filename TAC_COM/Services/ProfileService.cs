@@ -3,7 +3,6 @@ using CSCore.Streams.Effects;
 using NWaves.Effects;
 using TAC_COM.Audio.DSP.NWaves;
 using TAC_COM.Audio.EffectsChains;
-using TAC_COM.Audio.SignalChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
 
@@ -49,9 +48,9 @@ namespace TAC_COM.Services
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                         HighpassFrequency = 600,
-                        LowpassFrequency = 9000,
-                        PeakFrequency = 5500,
-                        GainAdjust = 0,
+                        LowpassFrequency = 4000,
+                        PeakFrequency = 3500,
+                        GainAdjust = 3,
                     }
                 });
 
@@ -75,7 +74,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 3800,
-                        GainAdjust = -5,
+                        GainAdjust = -4,
                     }
                 });
 
@@ -97,7 +96,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 350,
                         LowpassFrequency = 2000,
                         PeakFrequency = 2000,
-                        GainAdjust = -9,
+                        GainAdjust = -6,
                     }
                 });
 
@@ -119,7 +118,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 3000,
-                        GainAdjust = -1,
+                        GainAdjust = 0,
                     }
                 });
 
