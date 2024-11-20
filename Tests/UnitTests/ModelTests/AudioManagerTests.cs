@@ -368,7 +368,6 @@ namespace Tests.UnitTests.ModelTests
 
             audioManager.ResetOutputDevice();
 
-            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
             MMDevice? activeOutputDevice = (MMDevice?)activeOutputDeviceField?.GetValue(audioManager);
 
             Assert.AreEqual(activeOutputDevice?.ToString(), mockDevice1.FriendlyName);
@@ -376,6 +375,33 @@ namespace Tests.UnitTests.ModelTests
             mockOutputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
             Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
+        }
+
+        [TestMethod]
+        public async Task TestToggleStateAsync_StateTrue_NullDevices()
+        {
+            // State: true
+            FieldInfo? stateField = typeof(AudioManager).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
+            stateField?.SetValue(audioManager, true);
+
+            // activeInputDevice != null
+            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeInputField?.SetValue(audioManager, null);
+
+            // activeOutputDevice != null
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, null);
+
+            await audioManager.ToggleStateAsync();
+
+            Assert.IsTrue(audioManager.State == false);
+            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            var inputValue = inputField?.GetValue(audioManager);
+            Assert.IsNull(inputValue);
+
+            FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            var outputValue = micOutputField?.GetValue(audioManager);
+            Assert.IsNull(outputValue);
         }
     }
 }
