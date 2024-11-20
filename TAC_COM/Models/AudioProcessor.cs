@@ -28,9 +28,6 @@ namespace TAC_COM.Models
         private Gate? ProcessedNoiseGate;
         private Gate? ParallelNoiseGate;
         private Gate? DryNoiseGate;
-        private DmoResampler? DownSampler;
-        private DmoResampler? UpSampler;
-        private DmoDistortionEffect? Distortion;
         public bool HasInitialised;
         private int SampleRate = 48000;
         private Profile? ActiveProfile;
@@ -196,7 +193,7 @@ namespace TAC_COM.Models
                         PostEQCenterFrequency = 3500,
                         PostEQBandwidth = 2400,
                         PreLowpassCutoff = 8000
-                    }, out Distortion);
+                    });
 
                 // Reduce gain to compensate for distortion
                 var gainAdjustedDistortionSource = distortionSource.ToSampleSource();
