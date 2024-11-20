@@ -1,19 +1,92 @@
 ﻿using CSCore;
 using TAC_COM.Audio.Utils;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
-    public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon)
+    public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon) : IProfile
     {
-        public string ProfileName = profileName;
-        public string FileIdentifier = fileIdentifier;
-        public Uri Theme = theme;
-        public IWaveSource? NoiseSource;
-        public IWaveSource? OpenSFX;
-        public IWaveSource? CloseSFX;
         private readonly FilePlayer FilePlayer = new();
-        public EffectParameters Settings = new();
-        public System.Windows.Media.ImageSource Icon = icon;
+
+        private string profileName = profileName;
+        public string ProfileName
+        {
+            get => profileName;
+            set
+            {
+                profileName = value;
+            }
+        }
+
+        private string fileIdentifier = fileIdentifier;
+        public string FileIdentifier
+        {
+            get => fileIdentifier;
+            set
+            {
+                fileIdentifier = value;
+            }
+        }
+
+        private Uri theme = theme;
+        public Uri Theme
+        {
+            get => theme;
+            set
+            {
+                theme = value;
+            }
+        }
+
+        private System.Windows.Media.ImageSource icon = icon;
+        public System.Windows.Media.ImageSource Icon
+        {
+            get => icon;
+            set
+            {
+                icon = value;
+            }
+        }
+
+        private EffectParameters settings = new();
+        public EffectParameters Settings
+        {
+            get => settings;
+            set
+            {
+                settings = value;
+            }
+        }
+
+        private IWaveSource? noiseSource;
+        public IWaveSource? NoiseSource
+        {
+            get => noiseSource;
+            set
+            {
+                noiseSource = value;
+            }
+        }
+
+        private IWaveSource? openSFX;
+        public IWaveSource? OpenSFX
+        {
+            get => openSFX;
+            set
+            {
+                openSFX = value;
+            }
+        }
+
+        private IWaveSource? closeSFX;
+        public IWaveSource? CloseSFX
+        {
+            get => closeSFX;
+            set
+            {
+                closeSFX = value;
+            }
+        }
 
         public void LoadSources()
         {

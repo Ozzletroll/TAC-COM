@@ -223,7 +223,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        public Profile? ActiveProfile
+        public IProfile? ActiveProfile
         {
             get => audioManager.ActiveProfile;
             set

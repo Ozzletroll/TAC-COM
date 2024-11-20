@@ -40,8 +40,8 @@ namespace TAC_COM.Models
             }
         }
 
-        private Profile? activeProfile;
-        public Profile? ActiveProfile
+        private IProfile? activeProfile;
+        public IProfile? ActiveProfile
         {
             get => activeProfile;
             set

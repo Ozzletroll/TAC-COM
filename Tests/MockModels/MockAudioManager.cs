@@ -18,7 +18,7 @@ namespace Tests.MockModels
         public bool State { get; set; }
         public ObservableCollection<IMMDeviceWrapper> InputDevices { get; set; } = [];
         public ObservableCollection<IMMDeviceWrapper> OutputDevices { get; set; } = [];
-        public Profile? ActiveProfile { get; set; }
+        public IProfile? ActiveProfile { get; set; }
 
         public void GetAudioDevices() { }
 

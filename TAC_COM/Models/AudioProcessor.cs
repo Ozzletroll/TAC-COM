@@ -7,6 +7,7 @@ using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.NWaves;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
@@ -30,7 +31,7 @@ namespace TAC_COM.Models
         private Gate? DryNoiseGate;
         public bool HasInitialised;
         private int SampleRate = 48000;
-        private Profile? ActiveProfile;
+        private IProfile? ActiveProfile;
 
         private float userGainLevel = 0;
         public float UserGainLevel
@@ -85,7 +86,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void Initialise(WasapiCapture input, Profile activeProfile)
+        public void Initialise(WasapiCapture input, IProfile activeProfile)
         {
             inputSource?.Dispose();
             parallelSource?.Dispose();

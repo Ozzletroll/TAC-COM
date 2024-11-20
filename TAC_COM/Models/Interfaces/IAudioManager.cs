@@ -16,7 +16,7 @@ namespace TAC_COM.Models.Interfaces
         string OutputGainLevelString { get; }
         float OutputPeakMeterValue { get; set; }
         bool State { get; set; }
-        Profile? ActiveProfile { get; set; }
+        IProfile? ActiveProfile { get; set; }
 
         Task CheckBypassState();
         void GetAudioDevices();
