@@ -3,6 +3,7 @@ using CSCore.DSP;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
+using CSCore.XAudio2;
 using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
@@ -15,23 +16,32 @@ namespace TAC_COM.Models
     /// Class <c>AudioProcessor</c> assembles and mixes the signal chains used by
     /// the <c>AudioManager</c> Model class.
     /// </summary>
-    public class AudioProcessor
+    public class AudioProcessor : IAudioProcessor
     {
         private SoundInSource? inputSource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
-        public VolumeSource? DryMixLevel;
-        public VolumeSource? WetMixLevel;
+        private VolumeSource? DryMixLevel;
+        private VolumeSource? WetMixLevel;
         private VolumeSource? NoiseMixLevel;
-        public VolumeSource? WetNoiseMixLevel;
-        public Gain? PostDistortionGainReduction;
+        private VolumeSource? WetNoiseMixLevel;
+        private Gain? PostDistortionGainReduction;
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
         private Gate? ParallelNoiseGate;
         private Gate? DryNoiseGate;
-        public bool HasInitialised;
         private int SampleRate = 48000;
         private IProfile? ActiveProfile;
+
+        private bool hasInitialised;
+        public bool HasInitialised
+        {
+            get => hasInitialised;
+            set
+            {
+                hasInitialised = value;
+            }
+        }
 
         private float userGainLevel = 0;
         public float UserGainLevel
@@ -201,7 +211,7 @@ namespace TAC_COM.Models
                 gainAdjustedDistortionSource = gainAdjustedDistortionSource.AppendSource(x => new Gain(x)
                 {
                     GainDB = -45,
-                }, out PostDistortionGainReduction);
+                });
 
                 distortionSource = gainAdjustedDistortionSource.ToWaveSource();
             }
@@ -226,7 +236,7 @@ namespace TAC_COM.Models
                 outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
                 {
                     GainDB = -45,
-                }, out PostDistortionGainReduction);
+                });
             }
 
             // Apply profile specific post-distortion effects
@@ -438,5 +448,17 @@ namespace TAC_COM.Models
             ActiveProfile = activeProfile;
         }
 
+        public void SetMixerLevels(bool bypassState)
+        {
+            if (HasInitialised)
+            {
+                if (WetNoiseMixLevel != null &&
+                    DryMixLevel != null)
+                {
+                    WetNoiseMixLevel.Volume = Convert.ToInt32(bypassState);
+                    DryMixLevel.Volume = Convert.ToInt32(!bypassState);
+                }
+            }
+        }
     }
 }

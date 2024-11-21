@@ -86,22 +86,17 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestBypassStateProperty()
         {
-            var mockAudioProcessor = new Mock<AudioProcessor>();
-
-            var mockWetNoiseMix = new VolumeSource(new Mock<ISampleSource>().Object);
-            var mockDryMix = new VolumeSource(new Mock<ISampleSource>().Object);
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(true)).Verifiable();
 
             mockAudioProcessor.Object.HasInitialised = true;
-            mockAudioProcessor.Object.WetNoiseMixLevel = mockWetNoiseMix;
-            mockAudioProcessor.Object.DryMixLevel = mockDryMix;
 
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = true;
             Utils.TestPropertyChange(audioManager, nameof(audioManager.BypassState), newPropertyValue);
             Assert.AreEqual(audioManager.BypassState, newPropertyValue);
-            Assert.IsTrue(mockAudioProcessor.Object.WetNoiseMixLevel.Volume == 1);
-            Assert.IsTrue(mockAudioProcessor.Object.DryMixLevel.Volume == 0);
+            mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(true), Times.Once());
         }
 
         [TestMethod]

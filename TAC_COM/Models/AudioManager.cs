@@ -20,8 +20,8 @@ namespace TAC_COM.Models
         private WasapiOut? sfxOutput;
         private readonly float sfxVolume = 0.3f;
 
-        private AudioProcessor audioProcessor = new();
-        public AudioProcessor AudioProcessor
+        private IAudioProcessor audioProcessor = new AudioProcessor();
+        public IAudioProcessor AudioProcessor
         {
             get => audioProcessor;
             set
@@ -88,7 +88,7 @@ namespace TAC_COM.Models
             set
             {
                 bypassState = value;
-                SetMixerLevels();
+                audioProcessor.SetMixerLevels(value);
                 OnPropertyChanged(nameof(BypassState));
             }
         }
@@ -259,21 +259,6 @@ namespace TAC_COM.Models
             }
         }
 
-        private void SetMixerLevels()
-        {
-            if (audioProcessor.HasInitialised)
-            {
-                if (audioProcessor.WetNoiseMixLevel != null)
-                {
-                    audioProcessor.WetNoiseMixLevel.Volume = Convert.ToInt32(bypassState);
-                }
-                if (audioProcessor.DryMixLevel != null)
-                {
-                    audioProcessor.DryMixLevel.Volume = Convert.ToInt32(!bypassState);
-                }
-            }
-        }
-
         public async Task CheckBypassState()
         {
             if (!state)
@@ -291,7 +276,7 @@ namespace TAC_COM.Models
                 {
                     await GateCloseAsync();
                 }
-                SetMixerLevels();
+                audioProcessor.SetMixerLevels(bypassState);
             }
         }
 
