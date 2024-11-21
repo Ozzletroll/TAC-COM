@@ -1,9 +1,7 @@
 ﻿using CSCore;
 using CSCore.DSP;
-using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
-using CSCore.XAudio2;
 using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
@@ -25,7 +23,6 @@ namespace TAC_COM.Models
         private VolumeSource? WetMixLevel;
         private VolumeSource? NoiseMixLevel;
         private VolumeSource? WetNoiseMixLevel;
-        private Gain? PostDistortionGainReduction;
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
         private Gate? ParallelNoiseGate;
