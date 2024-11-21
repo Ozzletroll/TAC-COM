@@ -1,9 +1,7 @@
 ﻿using CSCore;
 using CSCore.DSP;
-using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
-using CSCore.XAudio2;
 using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
@@ -25,7 +23,6 @@ namespace TAC_COM.Models
         private VolumeSource? WetMixLevel;
         private VolumeSource? NoiseMixLevel;
         private VolumeSource? WetNoiseMixLevel;
-        private Gain? PostDistortionGainReduction;
         private Gain? UserGainControl;
         private Gate? ProcessedNoiseGate;
         private Gate? ParallelNoiseGate;
@@ -96,15 +93,15 @@ namespace TAC_COM.Models
             }
         }
 
-        public void Initialise(WasapiCapture input, IProfile activeProfile)
+        public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile activeProfile)
         {
             inputSource?.Dispose();
             parallelSource?.Dispose();
             passthroughSource?.Dispose();
 
-            inputSource = new SoundInSource(input) { FillWithZeros = true };
-            parallelSource = new SoundInSource(input) { FillWithZeros = true };
-            passthroughSource = new SoundInSource(input) { FillWithZeros = true };
+            inputSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
+            parallelSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
+            passthroughSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             SampleRate = inputSource.WaveFormat.SampleRate;
             ActiveProfile = activeProfile;
             HasInitialised = true;

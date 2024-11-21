@@ -10,7 +10,7 @@ namespace TAC_COM.Models.Interfaces
         float UserGainLevel { get; set; }
         float UserNoiseLevel { get; set; }
 
-        void Initialise(WasapiCapture input, IProfile activeProfile);
+        void Initialise(IWasapiCaptureWrapper input, IProfile activeProfile);
         IWaveSource? ReturnCompleteSignalChain();
         void SetActiveProfile(Profile activeProfile);
         void SetMixerLevels(bool bypassState);
