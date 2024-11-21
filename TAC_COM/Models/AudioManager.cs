@@ -15,8 +15,8 @@ namespace TAC_COM.Models
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
         private string? lastOutputDeviceName;
-        private WasapiCapture? input;
-        private WasapiOut? micOutput;
+        private IWasapiCaptureWrapper? input;
+        private IWasapiOutWrapper? micOutput;
         private WasapiOut? sfxOutput;
         private readonly float sfxVolume = 0.3f;
 
@@ -37,6 +37,16 @@ namespace TAC_COM.Models
             set
             {
                 enumeratorService = value;
+            }
+        }
+
+        private IWasapiService wasapiService = new WasapiService();
+        public IWasapiService WasapiService
+        {
+            get => wasapiService;
+            set
+            {
+                wasapiService = value;
             }
         }
 
@@ -290,8 +300,8 @@ namespace TAC_COM.Models
                     micOutput?.Dispose();
 
                     activeProfile.LoadSources();
-                    input = new WasapiCapture(false, AudioClientShareMode.Shared, 5);
-                    micOutput = new WasapiOut() { Latency = 5 };
+                    input = WasapiService.CreateWasapiCapture();
+                    micOutput = WasapiService.CreateWasapiOut();
 
                     ResetOutputDevice();
 
