@@ -3,7 +3,10 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using CSCore;
 using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
+using CSCore.SoundOut;
 using CSCore.Streams;
+using Dapplo.Windows.Input.Structs;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -397,6 +400,91 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
             var outputValue = micOutputField?.GetValue(audioManager);
             Assert.IsNull(outputValue);
+        }
+
+        [TestMethod]
+        public async Task TestToggleStateAsync_StateTrue_ValidDevices()
+        {
+            var mockInputDevice = new MockMMDeviceWrapper("Test Input Device 1");
+            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
+
+            var mockProfile = new Mock<IProfile>();
+            mockProfile.Setup(profile => profile.LoadSources()).Verifiable();
+
+            var mockWasapiService = new Mock<IWasapiService>();
+
+            var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
+            var inputDataAvailableHandlers = new List<EventHandler<DataAvailableEventArgs>>();
+            var inputStoppedHandlers = new List<EventHandler<RecordingStoppedEventArgs>>();
+
+            mockWasapiInput
+                .SetupAdd(input => input.DataAvailable += It.IsAny<EventHandler<DataAvailableEventArgs>>())
+                .Callback<EventHandler<DataAvailableEventArgs>>(inputDataAvailableHandlers.Add);
+
+            mockWasapiInput
+                .SetupAdd(input => input.Stopped += It.IsAny<EventHandler<RecordingStoppedEventArgs>>())
+                .Callback<EventHandler<RecordingStoppedEventArgs>>(inputStoppedHandlers.Add);
+
+            mockWasapiInput.Setup(input => input.Initialize()).Verifiable();
+            mockWasapiInput.Setup(input => input.Start()).Verifiable();
+
+            var mockWasapiOut = new Mock<IWasapiOutWrapper>();
+            var outputStoppedHandlers = new List<EventHandler<PlaybackStoppedEventArgs>>();
+
+            mockWasapiOut
+                .SetupAdd(output => output.Stopped += It.IsAny<EventHandler<PlaybackStoppedEventArgs>>())
+                .Callback<EventHandler<PlaybackStoppedEventArgs>>(outputStoppedHandlers.Add);
+
+            mockWasapiOut.Setup(output => output.Play()).Verifiable();
+
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture()).Returns(mockWasapiInput.Object);
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiOut()).Returns(mockWasapiOut.Object);
+
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            var mockWaveSource = new Mock<IWaveSource>();
+
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object)).Verifiable();
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.ReturnCompleteSignalChain()).Returns(mockWaveSource.Object);
+
+            audioManager.ActiveProfile = mockProfile.Object;
+            audioManager.WasapiService = mockWasapiService.Object;
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            // State: true
+            FieldInfo? stateField = typeof(AudioManager).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
+            stateField?.SetValue(audioManager, true);
+
+            // activeInputDevice = mockInputDevice
+            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeInputField?.SetValue(audioManager, mockInputDevice.Device);
+
+            // activeOutput = mockOutputDevice
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+
+            await audioManager.ToggleStateAsync();
+
+            Assert.IsTrue(audioManager.State == true);
+
+            mockProfile.Verify(profile => profile.LoadSources(), Times.Once());
+
+            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            var inputValue = inputField?.GetValue(audioManager);
+            Assert.AreEqual(inputValue, mockWasapiInput.Object);
+
+            FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            var outputValue = micOutputField?.GetValue(audioManager);
+            Assert.AreEqual(outputValue, mockWasapiOut.Object);
+
+            mockWasapiInput.Verify(input => input.Initialize(), Times.Once());
+            mockWasapiInput.Verify(input => input.Start(), Times.Once());
+            mockAudioProcessor.Verify(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Play(), Times.Once());
+
+            Assert.AreEqual(1, inputDataAvailableHandlers.Count, "DataAvailable event handler not subscribed");
+            Assert.AreEqual(1, inputStoppedHandlers.Count, "Stopped event handler not subscribed to input");
+            Assert.AreEqual(1, outputStoppedHandlers.Count, "Stopped event handler not subscribed to output");
         }
     }
 }
