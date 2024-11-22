@@ -18,7 +18,7 @@ namespace TAC_COM.Models.Interfaces
         bool State { get; set; }
         IProfile? ActiveProfile { get; set; }
 
-        Task CheckBypassState();
+        Task ToggleBypassState();
         void GetAudioDevices();
         void SetInputDevice(IMMDeviceWrapper inputDevice);
         void SetOutputDevice(IMMDeviceWrapper outputDevice);

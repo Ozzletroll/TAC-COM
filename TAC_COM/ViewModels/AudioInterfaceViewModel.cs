@@ -164,7 +164,7 @@ namespace TAC_COM.ViewModels
                 if (value != AudioManager.BypassState)
                 {
                     AudioManager.BypassState = value;
-                    AudioManager.CheckBypassState();
+                    AudioManager.ToggleBypassState();
                     OnPropertyChanged(nameof(AudioManager.BypassState));
 
                     if (BypassState)

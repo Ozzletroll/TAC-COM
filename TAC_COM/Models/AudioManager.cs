@@ -269,7 +269,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public async Task CheckBypassState()
+        public async Task ToggleBypassState()
         {
             if (!state)
             {
