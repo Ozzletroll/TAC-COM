@@ -486,5 +486,33 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(1, inputStoppedHandlers.Count, "Stopped event handler not subscribed to input");
             Assert.AreEqual(1, outputStoppedHandlers.Count, "Stopped event handler not subscribed to output");
         }
+
+        [TestMethod]
+        public async Task TestToggleStateAsync_StateFalse_ValidDevices()
+        {
+            var mockWasapiService = new Mock<IWasapiService>();
+
+            var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
+            mockWasapiInput.Setup(input => input.Stop()).Verifiable();
+            mockWasapiInput.Setup(input => input.Dispose()).Verifiable();
+
+            var mockWasapiOutput = new Mock<IWasapiOutWrapper>();
+            mockWasapiOutput.Setup(output => output.Stop()).Verifiable();
+            mockWasapiOutput.Setup(output => output.Dispose()).Verifiable();
+
+            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            inputField?.SetValue(audioManager, mockWasapiInput.Object);
+
+            FieldInfo? OutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            OutputField?.SetValue(audioManager, mockWasapiOutput.Object);
+
+            await audioManager.ToggleStateAsync();
+
+            mockWasapiInput.Verify(input => input.Stop(), Times.Once);
+            mockWasapiInput.Verify(input => input.Dispose(), Times.Once);
+
+            mockWasapiOutput.Verify(output => output.Stop(), Times.Once);
+            mockWasapiOutput.Verify(output => output.Dispose(), Times.Once);
+        }
     }
 }
