@@ -31,7 +31,7 @@ namespace Tests.MockModels
             await Task.Run(() => { });
         }
 
-        public async Task CheckBypassState()
+        public async Task ToggleBypassStateAsync()
         {
             await Task.Run(() => { });
         }

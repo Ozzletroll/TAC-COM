@@ -5,8 +5,6 @@ using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using CSCore.Streams;
-using Dapplo.Windows.Input.Structs;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -513,6 +511,21 @@ namespace Tests.UnitTests.ModelTests
 
             mockWasapiOutput.Verify(output => output.Stop(), Times.Once);
             mockWasapiOutput.Verify(output => output.Dispose(), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task TestToggleBypassState_StateFalse()
+        {
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(false)).Verifiable();
+
+            audioManager.State = false;
+
+            await audioManager.ToggleBypassStateAsync();
+
+            Assert.IsTrue(audioManager.State == false);
+            Assert.IsTrue(audioManager.BypassState == false);
+            mockAudioProcessor.Verify(processor => processor.SetMixerLevels(false), Times.Never);
         }
     }
 }

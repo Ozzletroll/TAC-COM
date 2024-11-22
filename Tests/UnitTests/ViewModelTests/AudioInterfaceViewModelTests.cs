@@ -152,7 +152,7 @@ namespace Tests.UnitTests.ViewModelTests
         {
             var mockAudioManager = new Mock<IAudioManager>();
             mockAudioManager.SetupProperty(audioManager => audioManager.BypassState);
-            mockAudioManager.Setup(audioManager => audioManager.CheckBypassState()).Verifiable();
+            mockAudioManager.Setup(audioManager => audioManager.ToggleBypassStateAsync()).Verifiable();
 
             var mockIconService = new Mock<IIconService>();
             mockIconService.Setup(iconService => iconService.SetLiveIcon()).Verifiable();
@@ -162,11 +162,11 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.IconService = mockIconService.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), true);
-            mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Once);
+            mockAudioManager.Verify(audioManager => audioManager.ToggleBypassStateAsync(), Times.Once);
             mockIconService.Verify(iconService => iconService.SetLiveIcon(), Times.Once);
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.BypassState), false);
-            mockAudioManager.Verify(audioManager => audioManager.CheckBypassState(), Times.Exactly(2));
+            mockAudioManager.Verify(audioManager => audioManager.ToggleBypassStateAsync(), Times.Exactly(2));
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
         }
 
