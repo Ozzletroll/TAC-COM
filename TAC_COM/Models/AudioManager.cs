@@ -17,8 +17,8 @@ namespace TAC_COM.Models
         private string? lastOutputDeviceName;
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? micOutput;
-        private WasapiOut? sfxOutput;
-        private readonly float sfxVolume = 0.3f;
+        private IWasapiOutWrapper? sfxOutput;
+        private const float SFXVolume = 0.3f;
 
         private IAudioProcessor audioProcessor = new AudioProcessor();
         public IAudioProcessor AudioProcessor
@@ -278,15 +278,8 @@ namespace TAC_COM.Models
 
             if (audioProcessor.HasInitialised)
             {
-                if (bypassState)
-                {
-                    await GateOpenAsync();
-                }
-                else
-                {
-                    await GateCloseAsync();
-                }
-                audioProcessor.SetMixerLevels(bypassState);
+                await PlayGateSFXAsync();
+                audioProcessor.SetMixerLevels(BypassState);
             }
         }
 
@@ -310,7 +303,7 @@ namespace TAC_COM.Models
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;
 
-                    audioProcessor.Initialise(input, activeProfile);
+                    AudioProcessor.Initialise(input, activeProfile);
 
                     micOutput.Device = activeOutputDevice;
                     micOutput.Initialize(audioProcessor.ReturnCompleteSignalChain());
@@ -349,7 +342,7 @@ namespace TAC_COM.Models
             OutputPeakMeterValue = outputMeter.GetValue();
         }
 
-        private async Task GateOpenAsync()
+        private async Task PlayGateSFXAsync()
         {
             if (activeOutputDevice != null
                 && activeProfile != null)
@@ -359,45 +352,41 @@ namespace TAC_COM.Models
                     ResetOutputDevice();
                 };
 
-                var file = activeProfile.OpenSFX;
-                file.SetPosition(new TimeSpan(0));
-
-                if (file != null) await PlaySFXAsync(file);
-            }
-        }
-
-        private async Task GateCloseAsync()
-        {
-            if (activeOutputDevice != null
-                && activeProfile != null)
-            {
-                if (activeOutputDevice.IsDisposed)
+                IFileSourceWrapper? file;
+                if (bypassState)
                 {
-                    ResetOutputDevice();
-                };
+                    file = activeProfile.OpenSFXSource;
+                }
+                else
+                {
+                    file = activeProfile.CloseSFXSource;
+                }
 
-                var file = activeProfile.CloseSFX;
-                file.SetPosition(new TimeSpan(0));
-
-                if (file != null) await PlaySFXAsync(file);
+                if (file != null)
+                {
+                    file.SetPosition(new TimeSpan(0));
+                    await PlaySFXAsync(file);
+                }  
             }
         }
 
-        private async Task PlaySFXAsync(IWaveSource file)
+        private async Task PlaySFXAsync(IFileSourceWrapper fileSourceWrapper)
         {
             await Task.Run(() =>
             {
-                sfxOutput?.Dispose();
-
-                sfxOutput = new()
+                if (activeOutputDevice != null && fileSourceWrapper.WaveSource != null)
                 {
-                    Device = activeOutputDevice
-                };
-                sfxOutput.Initialize(file);
-                sfxOutput.Volume = sfxVolume;
-                sfxOutput.Play();
+                    sfxOutput?.Dispose();
+                    sfxOutput = WasapiService.CreateWasapiOut();
+
+                    sfxOutput.Device = activeOutputDevice;
+
+                    sfxOutput.Initialize(fileSourceWrapper.WaveSource);
+                    sfxOutput.Volume = SFXVolume;
+                    sfxOutput.Play();
+                }
             });
-        }
+        } 
 
         public AudioManager()
         {

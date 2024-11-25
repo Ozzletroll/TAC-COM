@@ -8,6 +8,7 @@ namespace TAC_COM.Models.Interfaces
     public interface IWasapiOutWrapper
     {
         MMDevice Device { get; set; }
+        float Volume { get; set; }
 
         event EventHandler<PlaybackStoppedEventArgs> Stopped;
 

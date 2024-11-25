@@ -5,11 +5,11 @@ namespace TAC_COM.Models.Interfaces
 {
     public interface IProfile
     {
-        IWaveSource? CloseSFX { get; set; }
+        IFileSourceWrapper? CloseSFXSource { get; set; }
         string FileIdentifier { get; set; }
         ImageSource Icon { get; set; }
-        IWaveSource? NoiseSource { get; set; }
-        IWaveSource? OpenSFX { get; set; }
+        IFileSourceWrapper? NoiseSource { get; set; }
+        IFileSourceWrapper? OpenSFXSource { get; set; }
         string ProfileName { get; set; }
         EffectParameters Settings { get; set; }
         Uri Theme { get; set; }

@@ -366,7 +366,7 @@ namespace TAC_COM.Models
         {
             if (ActiveProfile != null)
             {
-                var loopSource = new LoopStream(ActiveProfile.NoiseSource)
+                var loopSource = new LoopStream(ActiveProfile?.NoiseSource?.WaveSource)
                 {
                     EnableLoop = true,
                 }.ToSampleSource();

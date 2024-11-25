@@ -18,6 +18,15 @@ namespace TAC_COM.Models
             }
         }
 
+        public float Volume
+        {
+            get => wasapiOut.Volume;
+            set
+            {
+                wasapiOut.Volume = value;
+            }
+        }
+
         public event EventHandler<PlaybackStoppedEventArgs> Stopped
         {
             add => wasapiOut.Stopped += value;

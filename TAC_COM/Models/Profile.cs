@@ -58,8 +58,8 @@ namespace TAC_COM.Models
             }
         }
 
-        private IWaveSource? noiseSource;
-        public IWaveSource? NoiseSource
+        private IFileSourceWrapper? noiseSource;
+        public IFileSourceWrapper? NoiseSource
         {
             get => noiseSource;
             set
@@ -68,23 +68,23 @@ namespace TAC_COM.Models
             }
         }
 
-        private IWaveSource? openSFX;
-        public IWaveSource? OpenSFX
+        private IFileSourceWrapper? openSFXSource;
+        public IFileSourceWrapper? OpenSFXSource
         {
-            get => openSFX;
+            get => openSFXSource;
             set
             {
-                openSFX = value;
+                openSFXSource = value;
             }
         }
 
-        private IWaveSource? closeSFX;
-        public IWaveSource? CloseSFX
+        private IFileSourceWrapper? closeSFXSource;
+        public IFileSourceWrapper? CloseSFXSource
         {
-            get => closeSFX;
+            get => closeSFXSource;
             set
             {
-                closeSFX = value;
+                closeSFXSource = value;
             }
         }
 
@@ -92,9 +92,18 @@ namespace TAC_COM.Models
         {
             if (FileIdentifier != null)
             {
-                NoiseSource = FilePlayer.GetNoiseSFX(FileIdentifier);
-                OpenSFX = FilePlayer.GetOpenSFX(FileIdentifier);
-                CloseSFX = FilePlayer.GetCloseSFX(FileIdentifier);
+                NoiseSource = new FileSourceWrapper
+                {
+                    WaveSource = FilePlayer.GetNoiseSFX(FileIdentifier)
+                };
+                OpenSFXSource = new FileSourceWrapper
+                {
+                    WaveSource = FilePlayer.GetOpenSFX(FileIdentifier)
+                }; 
+                CloseSFXSource = new FileSourceWrapper
+                {
+                    WaveSource = FilePlayer.GetCloseSFX(FileIdentifier)
+                }; 
             }
         }
 
