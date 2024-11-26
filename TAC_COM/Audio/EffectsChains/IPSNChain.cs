@@ -13,7 +13,7 @@ namespace TAC_COM.Audio.EffectsChains
                 {
                     { "Wet", 0.5f },
                     { "Dry", 0.5f },
-                    { "BitDepth", 4 }
+                    { "BitDepth", 5 }
                 }
             },
         ];

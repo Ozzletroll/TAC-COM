@@ -16,6 +16,15 @@ namespace TAC_COM.Audio.EffectsChains
                     { "BitDepth", 8 }
                 }
             },
+            new(typeof(VocoderEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.05f },
+                    { "Dry", 0.95f },
+                    { "Shift", 0.95f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =

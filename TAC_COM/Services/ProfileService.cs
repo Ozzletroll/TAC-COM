@@ -31,7 +31,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 800,
                         LowpassFrequency = 2900,
                         PeakFrequency = 2800,
-                        GainAdjust = 0,
+                        GainAdjust = 3,
                     }
                 });
 
@@ -74,7 +74,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 400,
                         LowpassFrequency = 6000,
                         PeakFrequency = 3800,
-                        GainAdjust = -4,
+                        GainAdjust = -3,
                     }
                 });
 
@@ -93,10 +93,10 @@ namespace TAC_COM.Services
                         DistortionOutput = 23,
                         PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 350,
-                        LowpassFrequency = 2000,
+                        HighpassFrequency = 250,
+                        LowpassFrequency = 2300,
                         PeakFrequency = 2000,
-                        GainAdjust = -6,
+                        GainAdjust = -5,
                     }
                 });
 
@@ -118,7 +118,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 3000,
-                        GainAdjust = 0,
+                        GainAdjust = 2,
                     }
                 });
 

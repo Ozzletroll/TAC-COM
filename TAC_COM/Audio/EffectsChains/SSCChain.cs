@@ -14,19 +14,21 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Wet", 0.1f },
                     { "Dry", 0.9f },
                 }
+            },
+
+            new(typeof(RobotEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
+                }
             }
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
-            new(typeof(RobotEffectWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                }
-            }
+            
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
