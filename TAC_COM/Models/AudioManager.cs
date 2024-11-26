@@ -279,7 +279,6 @@ namespace TAC_COM.Models
             if (audioProcessor.HasInitialised)
             {
                 await PlayGateSFXAsync();
-                audioProcessor.SetMixerLevels(BypassState);
             }
         }
 

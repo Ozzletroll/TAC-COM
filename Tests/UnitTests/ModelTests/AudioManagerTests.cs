@@ -560,18 +560,18 @@ namespace Tests.UnitTests.ModelTests
             audioManager.ActiveProfile.OpenSFXSource = mockFileSourceWrapper.Object;
             audioManager.WasapiService = mockWasapiService.Object;
             audioManager.AudioProcessor = mockAudioProcessor.Object;
-
-            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
-
-            mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(false)).Verifiable();
-
             audioManager.State = true;
             audioManager.BypassState = true;
             audioManager.AudioProcessor.HasInitialised = true;
 
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(true)).Verifiable();
+
             await audioManager.ToggleBypassStateAsync();
 
+            mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(true), Times.Once());
             mockFileSourceWrapper.Verify(source => source.SetPosition(new TimeSpan(0)), Times.Once());
             mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
