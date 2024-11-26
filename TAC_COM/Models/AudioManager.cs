@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
@@ -365,7 +364,7 @@ namespace TAC_COM.Models
                 {
                     file.SetPosition(new TimeSpan(0));
                     await PlaySFXAsync(file);
-                }  
+                }
             }
         }
 
@@ -385,7 +384,7 @@ namespace TAC_COM.Models
                     sfxOutput.Play();
                 }
             });
-        } 
+        }
 
         public AudioManager()
         {

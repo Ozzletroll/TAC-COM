@@ -1,6 +1,5 @@
 ﻿using CSCore;
 using CSCore.CoreAudioAPI;
-using CSCore.SoundIn;
 using CSCore.SoundOut;
 
 namespace TAC_COM.Models.Interfaces

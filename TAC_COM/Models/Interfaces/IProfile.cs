@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media;
-using CSCore;
 
 namespace TAC_COM.Models.Interfaces
 {

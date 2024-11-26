@@ -1,5 +1,4 @@
-﻿using CSCore;
-using TAC_COM.Audio.Utils;
+﻿using TAC_COM.Audio.Utils;
 using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
@@ -99,11 +98,11 @@ namespace TAC_COM.Models
                 OpenSFXSource = new FileSourceWrapper
                 {
                     WaveSource = FilePlayer.GetOpenSFX(FileIdentifier)
-                }; 
+                };
                 CloseSFXSource = new FileSourceWrapper
                 {
                     WaveSource = FilePlayer.GetCloseSFX(FileIdentifier)
-                }; 
+                };
             }
         }
 
