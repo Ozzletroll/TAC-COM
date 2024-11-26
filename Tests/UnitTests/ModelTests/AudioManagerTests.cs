@@ -576,5 +576,55 @@ namespace Tests.UnitTests.ModelTests
             mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
         }
+
+        [TestMethod]
+        public async Task TestToggleBypassState_StateTrue_BypassStateFalse()
+        {
+            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
+
+            var mockFileSourceWrapper = new Mock<IFileSourceWrapper>();
+            mockFileSourceWrapper.Setup(source => source.SetPosition(new TimeSpan(0))).Verifiable();
+            mockFileSourceWrapper.SetupAllProperties();
+
+            var mockWaveSource = new Mock<IWaveSource>();
+            mockFileSourceWrapper.Object.WaveSource = mockWaveSource.Object;
+
+            var mockProfile = new Mock<IProfile>();
+            mockProfile.Setup(profile => profile.LoadSources()).Verifiable();
+            mockProfile.SetupAllProperties();
+
+            var mockWasapiService = new Mock<IWasapiService>();
+            var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
+
+            var mockWasapiOut = new Mock<IWasapiOutWrapper>();
+            mockWasapiOut.Setup(output => output.Play()).Verifiable();
+
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture()).Returns(mockWasapiInput.Object);
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiOut()).Returns(mockWasapiOut.Object);
+
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            mockAudioProcessor.SetupAllProperties();
+
+            audioManager.ActiveProfile = mockProfile.Object;
+            audioManager.ActiveProfile.CloseSFXSource = mockFileSourceWrapper.Object;
+            audioManager.WasapiService = mockWasapiService.Object;
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(false)).Verifiable();
+
+            audioManager.State = true;
+            audioManager.BypassState = false;
+            audioManager.AudioProcessor.HasInitialised = true;
+
+            await audioManager.ToggleBypassStateAsync();
+
+            mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(false), Times.Once());
+            mockFileSourceWrapper.Verify(source => source.SetPosition(new TimeSpan(0)), Times.Once());
+            mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Play(), Times.Once());
+        }
     }
 }
