@@ -336,8 +336,8 @@ namespace TAC_COM.Models
 
         private void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
-            InputPeakMeterValue = inputMeter.GetValue();
-            OutputPeakMeterValue = outputMeter.GetValue();
+            InputPeakMeterValue = InputMeter.GetValue();
+            OutputPeakMeterValue = OutputMeter.GetValue();
         }
 
         private async Task PlayGateSFXAsync()
