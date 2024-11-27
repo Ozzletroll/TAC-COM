@@ -1,18 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
-using TAC_COM.ViewModels;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;
@@ -633,14 +630,14 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestOnDataAvailable()
         {
-            var inputMeterMock = new Mock<IPeakMeterWrapper>(); 
-            var outputMeterMock = new Mock<IPeakMeterWrapper>(); 
+            var mockInputMeter = new Mock<IPeakMeterWrapper>(); 
+            var mockOutputMeter = new Mock<IPeakMeterWrapper>(); 
 
-            inputMeterMock.Setup(meter => meter.GetValue()).Returns(42.0f); 
-            outputMeterMock.Setup(meter => meter.GetValue()).Returns(84.0f); 
+            mockInputMeter.Setup(meter => meter.GetValue()).Returns(42.0f); 
+            mockOutputMeter.Setup(meter => meter.GetValue()).Returns(84.0f); 
 
-            audioManager.InputMeter = inputMeterMock.Object;
-            audioManager.OutputMeter = outputMeterMock.Object;
+            audioManager.InputMeter = mockInputMeter.Object;
+            audioManager.OutputMeter = mockOutputMeter.Object;
 
             var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
 
