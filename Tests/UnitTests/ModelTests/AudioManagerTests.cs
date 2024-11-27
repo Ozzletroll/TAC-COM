@@ -628,6 +628,17 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestOnInputStopped()
+        {
+            audioManager.InputPeakMeterValue = 45f;
+
+            var onInputStopped = typeof(AudioManager).GetMethod("OnInputStopped", BindingFlags.NonPublic | BindingFlags.Instance);
+            onInputStopped?.Invoke(audioManager, [null, new RecordingStoppedEventArgs()]);
+
+            Assert.IsTrue(audioManager.InputPeakMeterValue == 0);
+        }
+
+        [TestMethod]
         public void TestOnDataAvailable()
         {
             var mockInputMeter = new Mock<IPeakMeterWrapper>(); 
