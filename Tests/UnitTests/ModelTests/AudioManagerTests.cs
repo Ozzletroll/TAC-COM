@@ -1,15 +1,18 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
+using TAC_COM.ViewModels;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;
@@ -625,6 +628,27 @@ namespace Tests.UnitTests.ModelTests
             mockFileSourceWrapper.Verify(source => source.SetPosition(new TimeSpan(0)), Times.Once());
             mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
+        }
+
+        [TestMethod]
+        public void TestOnDataAvailable()
+        {
+            var inputMeterMock = new Mock<IPeakMeterWrapper>(); 
+            var outputMeterMock = new Mock<IPeakMeterWrapper>(); 
+
+            inputMeterMock.Setup(meter => meter.GetValue()).Returns(42.0f); 
+            outputMeterMock.Setup(meter => meter.GetValue()).Returns(84.0f); 
+
+            audioManager.InputMeter = inputMeterMock.Object;
+            audioManager.OutputMeter = outputMeterMock.Object;
+
+            var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
+
+            var onDataAvailable = typeof(AudioManager).GetMethod("OnDataAvailable", BindingFlags.NonPublic | BindingFlags.Instance);
+            onDataAvailable?.Invoke(audioManager, [null, new DataAvailableEventArgs([0], 0, 1, new WaveFormat())]);
+
+            Assert.AreEqual(42.0, audioManager.InputPeakMeterValue); 
+            Assert.AreEqual(84.0, audioManager.OutputPeakMeterValue);
         }
     }
 }
