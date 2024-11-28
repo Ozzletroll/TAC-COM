@@ -42,5 +42,21 @@ namespace Tests.UnitTests.ModelTests
                     service => service.UpdateAppConfig(key, dictValue), Times.Once); 
             }
          }
+
+        [TestMethod]
+        public void TestNewPTTKeybindProperty()
+        {
+            var newPropertyValue = new Keybind(
+                keyCode: VirtualKeyCode.KeyX,
+                shift: false,
+                ctrl: true,
+                alt: false,
+                isModifier: true,
+                passthrough: false
+            );
+
+            Utils.TestPropertyChange(keybindManager, nameof(keybindManager.NewPTTKeybind), newPropertyValue);
+            Assert.AreEqual(keybindManager.NewPTTKeybind, newPropertyValue);
+        }
     }
 }
