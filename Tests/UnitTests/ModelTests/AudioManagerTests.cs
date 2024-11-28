@@ -17,7 +17,7 @@ using Tests.Utilities;
 namespace Tests.UnitTests.ModelTests
 {
     [TestClass]
-    public class AudioManagerTests
+    public partial class AudioManagerTests
     {
         private readonly AudioManager audioManager;
         private readonly MockUriService mockUriService;

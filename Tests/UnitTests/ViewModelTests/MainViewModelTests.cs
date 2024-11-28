@@ -11,7 +11,7 @@ using Tests.Utilities;
 namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
-    public partial class MainViewModelTests
+    public class MainViewModelTests
     {
         private readonly MainViewModel testViewModel;
 

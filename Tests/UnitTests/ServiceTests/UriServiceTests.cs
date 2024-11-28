@@ -4,7 +4,7 @@ using TAC_COM.Services;
 namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
-    public partial class UriServiceTests
+    public class UriServiceTests
     {
         private readonly UriService uriService;
 

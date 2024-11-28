@@ -7,7 +7,7 @@ namespace Tests.UnitTests.ServiceTests
 {
 
     [TestClass]
-    public partial class ProfileServiceTests
+    public class ProfileServiceTests
     {
         public ProfileService testProfileService;
         private readonly IUriService mockUriService;

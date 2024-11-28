@@ -7,7 +7,7 @@ using Tests.MockServices;
 namespace Tests.UnitTests.ServiceTests
 {
     [STATestClass]
-    public partial class ThemeServiceTests
+    public class ThemeServiceTests
     {
         private readonly ThemeService themeService;
         private readonly MockUriService mockUriService = new();

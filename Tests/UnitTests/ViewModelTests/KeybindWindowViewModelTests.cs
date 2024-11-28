@@ -10,7 +10,7 @@ using Tests.Utilities;
 namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
-    public partial class KeybindWindowViewModelTests
+    public class KeybindWindowViewModelTests
     {
         public ISettingsService settingsService;
         public IKeybindManager keybindManager;

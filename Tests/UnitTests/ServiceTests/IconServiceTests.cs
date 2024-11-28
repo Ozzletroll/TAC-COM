@@ -5,7 +5,7 @@ namespace Tests.UnitTests.ServiceTests
 {
 
     [TestClass]
-    public partial class IconServiceTests
+    public class IconServiceTests
     {
         public IconService testIconService;
 

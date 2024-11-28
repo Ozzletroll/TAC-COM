@@ -3,7 +3,7 @@
 namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
-    public partial class SettingsServiceTests
+    public class SettingsServiceTests
     {
         private readonly SettingsService testSettingsService;
 

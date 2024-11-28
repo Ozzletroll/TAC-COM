@@ -15,7 +15,7 @@ using Tests.Utilities;
 namespace Tests.UnitTests.ViewModelTests
 {
     [TestClass]
-    public partial class AudioInterfaceViewModelTests
+    public class AudioInterfaceViewModelTests
     {
         private readonly IUriService mockUriService = new MockUriService();
         private readonly IThemeService mockThemeService = new MockThemeService();

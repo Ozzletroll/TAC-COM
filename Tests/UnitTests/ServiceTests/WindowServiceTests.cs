@@ -10,7 +10,7 @@ using Tests.MockModels;
 namespace Tests.UnitTests.ServiceTests
 {
     [TestClass]
-    public partial class WindowServiceTests
+    public class WindowServiceTests
     {
         private readonly WindowService windowService;
         private readonly Mock<Window> mockMainWindow;
