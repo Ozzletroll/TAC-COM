@@ -67,5 +67,13 @@ namespace Tests.UnitTests.ModelTests
             keybindManager.ToggleState = newPropertyValue;
             Assert.AreEqual(keybindManager.ToggleState, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestPassthroughStateProperty()
+        {
+            var newPropertyValue = true;
+            keybindManager.PassthroughState = newPropertyValue;
+            Assert.AreEqual(keybindManager.PassthroughState, newPropertyValue);
+        }
     }
 }
