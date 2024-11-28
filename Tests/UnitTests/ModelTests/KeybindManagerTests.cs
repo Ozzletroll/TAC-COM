@@ -1,6 +1,7 @@
 ﻿using Dapplo.Windows.Input.Enums;
 using Moq;
 using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using Tests.Utilities;
 
@@ -57,6 +58,14 @@ namespace Tests.UnitTests.ModelTests
 
             Utils.TestPropertyChange(keybindManager, nameof(keybindManager.NewPTTKeybind), newPropertyValue);
             Assert.AreEqual(keybindManager.NewPTTKeybind, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestToggleStateProperty()
+        {
+            var newPropertyValue = true;
+            keybindManager.ToggleState = newPropertyValue;
+            Assert.AreEqual(keybindManager.ToggleState, newPropertyValue);
         }
     }
 }
