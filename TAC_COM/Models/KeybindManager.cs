@@ -92,7 +92,7 @@ namespace TAC_COM.Models
             };
         }
 
-        public void InitialisePTTKeySubscription()
+        private void InitialisePTTKeySubscription()
         {
             if (PTTKey == null) return;
 
