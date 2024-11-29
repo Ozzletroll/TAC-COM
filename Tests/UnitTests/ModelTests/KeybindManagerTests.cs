@@ -95,5 +95,25 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.IsTrue(keybindManager.ToggleState == true);
         }
+
+        [TestMethod]
+        public void TestTogglePTT_PTTKeyIsReleased()
+        {
+            var mockPTTKey = new Mock<IKeybind>();
+
+            mockPTTKey.Setup(key => key.IsPressed(It.IsAny<KeyboardHookEventArgs>())).Returns(false);
+            mockPTTKey.Setup(key => key.IsReleased(It.IsAny<KeyboardHookEventArgs>())).Returns(true);
+
+            var mockKeyboardHookEventArgs = new Mock<KeyboardHookEventArgs>();
+
+            FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            keybindManager.ToggleState = true;
+
+            keybindManager.TogglePTT(mockKeyboardHookEventArgs.Object);
+
+            Assert.IsTrue(keybindManager.ToggleState == false);
+        }
     }
 }
