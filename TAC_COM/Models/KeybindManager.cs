@@ -81,7 +81,7 @@ namespace TAC_COM.Models
             }
         }
 
-        public void TogglePTTKeybind(bool state)
+        public void TogglePTTKeybindSubscription(bool state)
         {
             if (state) InitialisePTTKeySubscription();
             else
@@ -131,7 +131,7 @@ namespace TAC_COM.Models
             });
         }
 
-        public void ToggleUserKeybind(bool state)
+        public void ToggleUserKeybindSubscription(bool state)
         {
             if (state) InitialiseUserKeybindSubscription();
             else DisposeKeyboardSubscription(UserKeybindSubscription);

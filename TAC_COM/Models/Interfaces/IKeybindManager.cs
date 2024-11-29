@@ -12,8 +12,8 @@ namespace TAC_COM.Models.Interfaces
         void InitialiseUserKeybindSubscription();
         void LoadKeybindSettings();
         void TogglePTT(KeyboardHookEventArgs args);
-        void TogglePTTKeybind(bool state);
-        void ToggleUserKeybind(bool state);
+        void TogglePTTKeybindSubscription(bool state);
+        void ToggleUserKeybindSubscription(bool state);
         void UpdateKeybind();
     }
 }

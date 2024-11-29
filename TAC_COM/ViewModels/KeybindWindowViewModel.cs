@@ -39,7 +39,7 @@ namespace TAC_COM.ViewModels
 
         private void ExecuteCloseKeybindDialog()
         {
-            KeybindManager.ToggleUserKeybind(false);
+            KeybindManager.ToggleUserKeybindSubscription(false);
             KeybindManager.UpdateKeybind();
             RaiseClose();
         }
@@ -56,7 +56,7 @@ namespace TAC_COM.ViewModels
         {
             KeybindManager = _keybindManager;
             KeybindManager.PropertyChanged += KeybindManager_PropertyChanged;
-            KeybindManager.ToggleUserKeybind(true);
+            KeybindManager.ToggleUserKeybindSubscription(true);
         }
     }
 }

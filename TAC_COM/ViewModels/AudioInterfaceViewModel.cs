@@ -131,7 +131,7 @@ namespace TAC_COM.ViewModels
                 AudioManager.State = value;
                 AudioManager.ToggleStateAsync();
                 IsSelectable = !AudioManager.State;
-                keybindManager.TogglePTTKeybind(State);
+                keybindManager.TogglePTTKeybindSubscription(State);
                 OnPropertyChanged(nameof(AudioManager.State));
                 if (AudioManager.State == false)
                 {
