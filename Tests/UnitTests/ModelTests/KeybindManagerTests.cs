@@ -1,4 +1,6 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using System.Reflection;
+using Dapplo.Windows.Input.Enums;
+using Dapplo.Windows.Input.Keyboard;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -74,6 +76,24 @@ namespace Tests.UnitTests.ModelTests
             var newPropertyValue = true;
             keybindManager.PassthroughState = newPropertyValue;
             Assert.AreEqual(keybindManager.PassthroughState, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestTogglePTT_PTTKeyIsPressed()
+        {
+            var mockPTTKey = new Mock<IKeybind>();
+            mockPTTKey.Setup(key => key.IsPressed(It.IsAny<KeyboardHookEventArgs>())).Returns(true);
+
+            var mockKeyboardHookEventArgs = new Mock<KeyboardHookEventArgs>();
+
+            FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            keybindManager.ToggleState = false;
+
+            keybindManager.TogglePTT(mockKeyboardHookEventArgs.Object);
+
+            Assert.IsTrue(keybindManager.ToggleState == true);
         }
     }
 }
