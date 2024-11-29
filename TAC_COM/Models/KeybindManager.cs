@@ -96,17 +96,14 @@ namespace TAC_COM.Models
         {
             if (PTTKey == null) return;
 
-            // Use generic keyboardEvents hook so that key up values are passed.
+            // Use generic keyboardEvents hook so that key up values are passed
             PTTKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
                 {
                     TogglePTT(args);
                 });
 
-            // Use secondary handler to prevent keypresses being passed to other applications
-            // This must be used alongside a generic keyBoardEvents hook as KeyCombinationHandler
-            // does not register key up events.
-
+            // Use secondary KeyCombinationHandler to prevent keypresses being passed to other applications
             if (!PTTKey.Passthrough)
             {
                 var keyCodes = new List<VirtualKeyCode> { PTTKey.KeyCode };
