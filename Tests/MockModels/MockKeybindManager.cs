@@ -11,6 +11,8 @@ namespace Tests.MockModels
         public bool PassthroughState { get; set; }
         public Keybind? PTTKey { get; set; }
         public bool ToggleState { get; set; }
+        IKeybind? IKeybindManager.NewPTTKeybind { get; set; }
+        IKeybind? IKeybindManager.PTTKey { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
