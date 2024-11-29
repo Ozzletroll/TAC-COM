@@ -1,17 +1,71 @@
 ﻿using System.Text;
 using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
 {
-    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough)
+    public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough) : IKeybind
     {
-        public VirtualKeyCode KeyCode = keyCode;
-        public bool IsModifier = isModifier;
-        public bool Shift = shift;
-        public bool Ctrl = ctrl;
-        public bool Alt = alt;
-        public bool Passthrough = passthrough;
+        private VirtualKeyCode keycode = keyCode;
+        public VirtualKeyCode KeyCode
+        {
+            get => keycode;
+            set
+            {
+                keycode = value;
+            }
+        }
+
+        private bool isModifier = isModifier;
+        public bool IsModifier
+        {
+            get => isModifier;
+            set
+            {
+                isModifier = value;
+            }
+        }
+
+        private bool shift = shift;
+        public bool Shift
+        {
+            get => shift;
+            set
+            {
+                shift = value;
+            }
+        }
+
+        private bool ctrl = ctrl;
+        public bool Ctrl
+        {
+            get => ctrl;
+            set
+            {
+                ctrl = value;
+            }
+        }
+
+        private bool alt = alt;
+        public bool Alt
+        {
+            get => alt;
+            set
+            {
+                alt = value;
+            }
+        }
+
+        private bool passthrough = passthrough;
+        public bool Passthrough
+        {
+            get => passthrough;
+            set
+            {
+                passthrough = value;
+            }
+        }
 
         public bool IsPressed(KeyboardHookEventArgs args)
         {

@@ -14,8 +14,8 @@ namespace TAC_COM.Models
         private IDisposable? UserKeybindSubscription;
         private IDisposable? SystemKeybindSubscription;
 
-        private Keybind? pttKey;
-        public Keybind? PTTKey
+        private IKeybind? pttKey;
+        public IKeybind? PTTKey
         {
             get => pttKey;
             set
@@ -33,8 +33,8 @@ namespace TAC_COM.Models
             }
         }
 
-        private Keybind? newPTTKeybind;
-        public Keybind? NewPTTKeybind
+        private IKeybind? newPTTKeybind;
+        public IKeybind? NewPTTKeybind
         {
             get => newPTTKeybind;
             set
@@ -147,7 +147,7 @@ namespace TAC_COM.Models
                 {
                     if (args.IsKeyDown)
                     {
-                        NewPTTKeybind = new(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier, PassthroughState);
+                        NewPTTKeybind = new Keybind(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier, PassthroughState);
                     }
                 });
         }
