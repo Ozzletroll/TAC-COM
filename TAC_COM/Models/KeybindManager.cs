@@ -8,11 +8,20 @@ namespace TAC_COM.Models
 {
     public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager
     {
-        public ISettingsService SettingsService = settingsService;
-        private IDisposable? PTTKeybindSubscription;
-        private IDisposable? PTTKeybindCatchSubscription;
-        private IDisposable? UserKeybindSubscription;
-        private IDisposable? SystemKeybindSubscription;
+        private IDisposable? pttKeybindSubscription;
+        private IDisposable? pttKeybindCatchSubscription;
+        private IDisposable? userKeybindSubscription;
+        private IDisposable? systemKeybindSubscription;
+
+        private ISettingsService settingsService = settingsService;
+        public ISettingsService SettingsService
+        {
+            get => settingsService;
+            set
+            {
+                settingsService = value;
+            }
+        }
 
         private IKeybind? pttKey;
         public IKeybind? PTTKey
@@ -86,9 +95,9 @@ namespace TAC_COM.Models
             if (state) InitialisePTTKeySubscription();
             else
             {
-                DisposeKeyboardSubscription(PTTKeybindSubscription);
-                DisposeKeyboardSubscription(PTTKeybindCatchSubscription);
-                DisposeKeyboardSubscription(SystemKeybindSubscription);
+                DisposeKeyboardSubscription(pttKeybindSubscription);
+                DisposeKeyboardSubscription(pttKeybindCatchSubscription);
+                DisposeKeyboardSubscription(systemKeybindSubscription);
             };
         }
 
@@ -97,7 +106,7 @@ namespace TAC_COM.Models
             if (PTTKey == null) return;
 
             // Use generic keyboardEvents hook so that key up values are passed
-            PTTKeybindSubscription
+            pttKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
                 {
                     TogglePTT(args);
@@ -117,13 +126,13 @@ namespace TAC_COM.Models
                     IsPassThrough = false
                 };
 
-                PTTKeybindCatchSubscription = KeyboardHook.KeyboardEvents.Where(keyHandler).Subscribe();
+                pttKeybindCatchSubscription = KeyboardHook.KeyboardEvents.Where(keyHandler).Subscribe();
             }
 
             // Keyhandler to handle system key combinations (Ctrl + Alt + Del etc.), preventing issues with key up commands not firing
             var systemKeyhandler = new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.Menu, VirtualKeyCode.Delete);
 
-            SystemKeybindSubscription = KeyboardHook.KeyboardEvents.Where(systemKeyhandler).Subscribe(args =>
+            systemKeybindSubscription = KeyboardHook.KeyboardEvents.Where(systemKeyhandler).Subscribe(args =>
             {
                 // Call keyup for Ctrl and Alt, otherwise keyhandlers register them as constantly pressed
                 KeyboardInputGenerator.KeyUp(VirtualKeyCode.Control);
@@ -134,12 +143,12 @@ namespace TAC_COM.Models
         public void ToggleUserKeybindSubscription(bool state)
         {
             if (state) InitialiseUserKeybindSubscription();
-            else DisposeKeyboardSubscription(UserKeybindSubscription);
+            else DisposeKeyboardSubscription(userKeybindSubscription);
         }
 
         public void InitialiseUserKeybindSubscription()
         {
-            UserKeybindSubscription
+            userKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
                 {
                     if (args.IsKeyDown)
