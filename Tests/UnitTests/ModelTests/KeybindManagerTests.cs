@@ -117,7 +117,7 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestTogglePTTKeybindSubscription_StateTrue_PassthroughTrue()
+        public void TestTogglePTTKeybindSubscription_StateTrue()
         {
             var mockPTTKey = new Mock<IKeybind>();
             mockPTTKey.Object.Passthrough = true;
@@ -138,6 +138,42 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(pttKeyValue);
             Assert.IsNotNull(pttKeybingCatchValue);
             Assert.IsNotNull(systemKeybindSubscriptionValue);
+        }
+
+        [TestMethod]
+        public void TestTogglePTTKeybindSubscription_StateFalse()
+        {
+            var mockPTTKey = new Mock<IKeybind>();
+            mockPTTKey.Object.Passthrough = true;
+            FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            var mockKeybindSubscription = new Mock<IDisposable>();
+            mockKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
+            var mockPTTKeybindCatchSubscription = new Mock<IDisposable>();
+            mockPTTKeybindCatchSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
+            var mockSystemKeybindSubscription = new Mock<IDisposable>();
+            mockSystemKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
+            FieldInfo? pttKeybindSubscriptionField = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? pttKeybindCatchSubscriptionField = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? systemKeybindSubscriptionField = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            pttKeybindSubscriptionField?.SetValue(keybindManager, mockKeybindSubscription.Object);
+            pttKeybindCatchSubscriptionField?.SetValue(keybindManager, mockPTTKeybindCatchSubscription.Object);
+            systemKeybindSubscriptionField?.SetValue(keybindManager, mockSystemKeybindSubscription.Object);
+
+            keybindManager.TogglePTTKeybindSubscription(false);
+
+            var pttKeyValue = pttKeybindSubscriptionField?.GetValue(keybindManager);
+            var pttKeybindCatchValue = pttKeybindCatchSubscriptionField?.GetValue(keybindManager);
+            var systemKeybindSubscriptionValue = systemKeybindSubscriptionField?.GetValue(keybindManager);
+
+            mockKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockPTTKeybindCatchSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
     }
 }
