@@ -175,5 +175,17 @@ namespace Tests.UnitTests.ModelTests
             mockPTTKeybindCatchSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
             mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
+
+        public void TestToggleUserKeybindSubscription_StateTrue()
+        {
+            keybindManager.ToggleUserKeybindSubscription(true);
+            KeyboardInputGenerator.KeyCombinationPress(VirtualKeyCode.KeyV);
+
+            FieldInfo? userKeybindSubscriptionField = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var userKeybindSubscriptionValue = userKeybindSubscriptionField?.GetValue(keybindManager);
+
+            Assert.IsNotNull(userKeybindSubscriptionValue);
+            Assert.IsTrue(keybindManager.NewPTTKeybind?.KeyCode == VirtualKeyCode.KeyV);
+        }
     }
 }
