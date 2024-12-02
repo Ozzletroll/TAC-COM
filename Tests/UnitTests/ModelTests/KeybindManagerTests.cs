@@ -115,5 +115,29 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.IsTrue(keybindManager.ToggleState == false);
         }
+
+        [TestMethod]
+        public void TestTogglePTTKeybindSubscription_StateTrue_PassthroughTrue()
+        {
+            var mockPTTKey = new Mock<IKeybind>();
+            mockPTTKey.Object.Passthrough = true;
+            FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            keybindManager.TogglePTTKeybindSubscription(true);
+
+            FieldInfo? pttKeybindSubscription = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var pttKeyValue = pttKeybindSubscription?.GetValue(keybindManager);
+
+            FieldInfo? pttKeybindCatchSubscription = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var pttKeybingCatchValue = pttKeybindCatchSubscription?.GetValue(keybindManager);
+
+            FieldInfo? systemKeybindSubscription = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var systemKeybindSubscriptionValue = systemKeybindSubscription?.GetValue(keybindManager);
+
+            Assert.IsNotNull(pttKeyValue);
+            Assert.IsNotNull(pttKeybingCatchValue);
+            Assert.IsNotNull(systemKeybindSubscriptionValue);
+        }
     }
 }

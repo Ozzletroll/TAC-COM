@@ -27,7 +27,7 @@ namespace Tests.UnitTests.ViewModelTests
         public void TestConstructor()
         {
             var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybind(true)).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybindSubscription(true)).Verifiable();
 
             bool propertyChangedSubscribed = false;
             mockKeybindManager
@@ -37,7 +37,7 @@ namespace Tests.UnitTests.ViewModelTests
             var viewModel = new KeybindWindowViewModel(mockKeybindManager.Object);
 
             Assert.IsNotNull(viewModel.KeybindManager);
-            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybind(true), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybindSubscription(true), Times.Once);
             Assert.IsTrue(propertyChangedSubscribed, "PropertyChanged event is not subscribed.");
         }
 
@@ -65,7 +65,7 @@ namespace Tests.UnitTests.ViewModelTests
         public void TestExecuteCloseKeybindDialogCommand()
         {
             var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybind(false)).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybindSubscription(false)).Verifiable();
             mockKeybindManager.Setup(keybindManager => keybindManager.UpdateKeybind()).Verifiable();
 
             testViewModel.KeybindManager = mockKeybindManager.Object;
@@ -74,7 +74,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.Close += (sender, e) => closeEventRaised = true;
 
             testViewModel.CloseKeybindDialog.Execute(null);
-            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybind(false), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybindSubscription(false), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
             Assert.IsTrue(closeEventRaised, "The Close event was not raised.");
         }

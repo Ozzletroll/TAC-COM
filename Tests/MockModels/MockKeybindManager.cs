@@ -24,9 +24,9 @@ namespace Tests.MockModels
 
         public void TogglePTT(KeyboardHookEventArgs args) { }
 
-        public void TogglePTTKeybind(bool state) { }
+        public void TogglePTTKeybindSubscription(bool state) { }
 
-        public void ToggleUserKeybind(bool state) { }
+        public void ToggleUserKeybindSubscription(bool state) { }
 
         public void UpdateKeybind() { }
     }
