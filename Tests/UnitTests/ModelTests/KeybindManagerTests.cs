@@ -201,5 +201,17 @@ namespace Tests.UnitTests.ModelTests
 
             mockKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
+
+        [TestMethod]
+        public void TestUpdateKeybind()
+        {
+            var mockNewPTTKey = new Mock<IKeybind>();
+            mockNewPTTKey.Setup(keybind => keybind.ToDictionary()).Returns([]);
+            keybindManager.NewPTTKeybind = mockNewPTTKey.Object;
+
+            keybindManager.UpdateKeybind();
+
+            Assert.IsTrue(keybindManager.PTTKey == mockNewPTTKey.Object);
+        }
     }
 }
