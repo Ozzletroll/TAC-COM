@@ -146,7 +146,7 @@ namespace TAC_COM.Models
             else DisposeKeyboardSubscription(userKeybindSubscription);
         }
 
-        public void InitialiseUserKeybindSubscription()
+        private void InitialiseUserKeybindSubscription()
         {
             userKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>

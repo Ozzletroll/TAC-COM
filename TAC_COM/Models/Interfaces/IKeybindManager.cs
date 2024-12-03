@@ -9,7 +9,6 @@ namespace TAC_COM.Models.Interfaces
         bool PassthroughState { get; set; }
         IKeybind? PTTKey { get; set; }
         bool ToggleState { get; set; }
-        void InitialiseUserKeybindSubscription();
         void LoadKeybindSettings();
         void TogglePTT(KeyboardHookEventArgs args);
         void TogglePTTKeybindSubscription(bool state);
