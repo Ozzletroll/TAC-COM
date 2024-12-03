@@ -5,6 +5,7 @@ using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
+using TAC_COM.Settings;
 using Tests.Utilities;
 
 namespace Tests.UnitTests.ModelTests
@@ -212,6 +213,32 @@ namespace Tests.UnitTests.ModelTests
             keybindManager.UpdateKeybind();
 
             Assert.IsTrue(keybindManager.PTTKey == mockNewPTTKey.Object);
+        }
+
+        [TestMethod]
+        public void TestLoadKeybindSettings()
+        {
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.SetupAllProperties();
+            keybindManager.SettingsService = mockSettingsService.Object;
+            keybindManager.SettingsService.KeybindSettings = new KeybindSettings
+            {
+                KeyCode = "KeyF",
+                Shift = true,
+                Ctrl = false,
+                Alt = false,
+                IsModifier = true,
+                Passthrough = false
+            };
+
+            keybindManager.LoadKeybindSettings();
+
+            Assert.IsTrue(keybindManager.PTTKey?.KeyCode == VirtualKeyCode.KeyF);
+            Assert.IsTrue(keybindManager.PTTKey?.Shift == true);
+            Assert.IsTrue(keybindManager.PTTKey?.Ctrl == false);
+            Assert.IsTrue(keybindManager.PTTKey?.Alt == false);
+            Assert.IsTrue(keybindManager.PTTKey?.IsModifier == true);
+            Assert.IsTrue(keybindManager.PTTKey?.Passthrough == false);
         }
     }
 }
