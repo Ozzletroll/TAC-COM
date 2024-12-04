@@ -79,6 +79,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestOpenSFXSourceProperty()
+        {
+            var newPropertyValue = new FileSourceWrapper();
+            testProfile.OpenSFXSource = newPropertyValue;
+            Assert.AreEqual(testProfile.OpenSFXSource, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
