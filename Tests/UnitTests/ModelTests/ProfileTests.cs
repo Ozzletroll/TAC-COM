@@ -71,6 +71,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestNoiseSourceProperty()
+        {
+            var newPropertyValue = new FileSourceWrapper();
+            testProfile.NoiseSource = newPropertyValue;
+            Assert.AreEqual(testProfile.NoiseSource, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
