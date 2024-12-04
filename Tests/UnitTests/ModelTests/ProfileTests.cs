@@ -31,6 +31,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestProfileNameProperty()
+        {
+            var newPropertyValue = "TestName";
+            testProfile.ProfileName = newPropertyValue;
+            Assert.AreEqual(testProfile.ProfileName, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
