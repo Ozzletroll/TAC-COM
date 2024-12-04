@@ -1,26 +1,27 @@
 ﻿using System.IO;
 using CSCore;
 using CSCore.Codecs;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
-    public class SFXFileService
+    public class SFXFileService : ISFXFileService
     {
-        public static IWaveSource GetOpenSFX(string fileSuffix)
+        public IWaveSource GetOpenSFX(string fileSuffix)
         {
             var sfxName = "GateOpen" + fileSuffix;
             var filename = GetFile("Static/SFX/GateOpen", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
-        public static IWaveSource GetCloseSFX(string profile)
+        public IWaveSource GetCloseSFX(string profile)
         {
             var sfxName = "GateClose" + profile;
             var filename = GetFile("Static/SFX/GateClose", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
-        public static IWaveSource GetNoiseSFX(string profile)
+        public IWaveSource GetNoiseSFX(string profile)
         {
             var sfxName = "Noise" + profile;
             var filename = GetFile("Static/SFX/Noise", sfxName);

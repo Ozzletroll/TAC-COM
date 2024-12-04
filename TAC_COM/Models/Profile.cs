@@ -1,10 +1,21 @@
 ﻿using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Models
 {
     public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon) : IProfile
     {
+        private ISFXFileService fileService = new SFXFileService();
+        public ISFXFileService FileService
+        {
+            get => fileService;
+            set
+            {
+                fileService = value;
+            }
+        }
+
         private string profileName = profileName;
         public string ProfileName
         {
@@ -91,15 +102,15 @@ namespace TAC_COM.Models
             {
                 NoiseSource = new FileSourceWrapper
                 {
-                    WaveSource = SFXFileService.GetNoiseSFX(FileIdentifier)
+                    WaveSource = FileService.GetNoiseSFX(FileIdentifier)
                 };
                 OpenSFXSource = new FileSourceWrapper
                 {
-                    WaveSource = SFXFileService.GetOpenSFX(FileIdentifier)
+                    WaveSource = FileService.GetOpenSFX(FileIdentifier)
                 };
                 CloseSFXSource = new FileSourceWrapper
                 {
-                    WaveSource = SFXFileService.GetCloseSFX(FileIdentifier)
+                    WaveSource = FileService.GetCloseSFX(FileIdentifier)
                 };
             }
         }
