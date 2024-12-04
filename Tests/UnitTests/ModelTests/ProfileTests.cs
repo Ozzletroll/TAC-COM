@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models;
+using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using Tests.MockServices;
 
@@ -19,6 +20,14 @@ namespace Tests.UnitTests.ModelTests
                 fileIdentifier: "Test",
                 theme: mockURIService.GetIconUri("TEST"),
                 icon: new BitmapImage());
+        }
+
+        [TestMethod]
+        public void TestFileServiceProperty()
+        {
+            var newPropertyValue = new SFXFileService();
+            testProfile.FileService = newPropertyValue;
+            Assert.AreEqual(testProfile.FileService, newPropertyValue);
         }
 
         [TestMethod]
