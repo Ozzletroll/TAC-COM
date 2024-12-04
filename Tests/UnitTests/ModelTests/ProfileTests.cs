@@ -55,6 +55,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestIconProperty()
+        {
+            var newPropertyValue = new BitmapImage();
+            testProfile.Icon = newPropertyValue;
+            Assert.AreEqual(testProfile.Icon, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
