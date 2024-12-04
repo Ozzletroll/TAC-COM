@@ -63,6 +63,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestSettingsProperty()
+        {
+            var newPropertyValue = new EffectParameters();
+            testProfile.Settings = newPropertyValue;
+            Assert.AreEqual(testProfile.Settings, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
