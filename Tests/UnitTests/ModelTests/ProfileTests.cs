@@ -47,6 +47,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestThemeProperty()
+        {
+            var newPropertyValue = new Uri("http://mock.uri/");
+            testProfile.Theme = newPropertyValue;
+            Assert.AreEqual(testProfile.Theme, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
