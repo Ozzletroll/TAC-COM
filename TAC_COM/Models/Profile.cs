@@ -1,12 +1,10 @@
-﻿using TAC_COM.Audio.Utils;
-using TAC_COM.Models.Interfaces;
+﻿using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {
     public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon) : IProfile
     {
-        private readonly FilePlayer FilePlayer = new();
-
         private string profileName = profileName;
         public string ProfileName
         {
@@ -93,15 +91,15 @@ namespace TAC_COM.Models
             {
                 NoiseSource = new FileSourceWrapper
                 {
-                    WaveSource = FilePlayer.GetNoiseSFX(FileIdentifier)
+                    WaveSource = SFXFileService.GetNoiseSFX(FileIdentifier)
                 };
                 OpenSFXSource = new FileSourceWrapper
                 {
-                    WaveSource = FilePlayer.GetOpenSFX(FileIdentifier)
+                    WaveSource = SFXFileService.GetOpenSFX(FileIdentifier)
                 };
                 CloseSFXSource = new FileSourceWrapper
                 {
-                    WaveSource = FilePlayer.GetCloseSFX(FileIdentifier)
+                    WaveSource = SFXFileService.GetCloseSFX(FileIdentifier)
                 };
             }
         }
