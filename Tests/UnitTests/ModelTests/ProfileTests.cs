@@ -41,5 +41,11 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(testProfile.CloseSFXSource);
             Assert.IsNotNull(testProfile.NoiseSource);
         }
+
+        [TestMethod]
+        public void TestToString()
+        {
+            Assert.AreEqual(testProfile.ToString(), "TestProfile");
+        }
     }
 }
