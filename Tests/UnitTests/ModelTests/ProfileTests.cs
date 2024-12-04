@@ -87,6 +87,14 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestCloseFXSourceProperty()
+        {
+            var newPropertyValue = new FileSourceWrapper();
+            testProfile.CloseSFXSource = newPropertyValue;
+            Assert.AreEqual(testProfile.CloseSFXSource, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestLoadSources()
         {
             var mockSFXFileService = new Mock<ISFXFileService>();
