@@ -42,5 +42,13 @@ namespace Tests.UnitTests.ModelTests
             testKeybind.Shift = newPropertyValue;
             Assert.AreEqual(testKeybind.Shift, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestCtrlProperty()
+        {
+            var newPropertyValue = true;
+            testKeybind.Ctrl = newPropertyValue;
+            Assert.AreEqual(testKeybind.Ctrl, newPropertyValue);
+        }
     }
 }
