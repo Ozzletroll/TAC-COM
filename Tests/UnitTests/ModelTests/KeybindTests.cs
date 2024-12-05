@@ -34,5 +34,13 @@ namespace Tests.UnitTests.ModelTests
             testKeybind.IsModifier = newPropertyValue;
             Assert.AreEqual(testKeybind.IsModifier, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestShiftProperty()
+        {
+            var newPropertyValue = true;
+            testKeybind.Shift = newPropertyValue;
+            Assert.AreEqual(testKeybind.Shift, newPropertyValue);
+        }
     }
 }
