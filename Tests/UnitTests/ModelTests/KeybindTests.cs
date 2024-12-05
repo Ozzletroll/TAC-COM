@@ -20,11 +20,19 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestKeyCode()
+        public void TestKeyCodeProperty()
         {
             var newPropertyValue = VirtualKeyCode.KeyF;
             testKeybind.KeyCode = newPropertyValue;
             Assert.AreEqual(testKeybind.KeyCode, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestIsModifierProperty()
+        {
+            var newPropertyValue = true;
+            testKeybind.IsModifier = newPropertyValue;
+            Assert.AreEqual(testKeybind.IsModifier, newPropertyValue);
         }
     }
 }
