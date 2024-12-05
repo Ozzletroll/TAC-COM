@@ -50,5 +50,13 @@ namespace Tests.UnitTests.ModelTests
             testKeybind.Ctrl = newPropertyValue;
             Assert.AreEqual(testKeybind.Ctrl, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestAltProperty()
+        {
+            var newPropertyValue = true;
+            testKeybind.Alt = newPropertyValue;
+            Assert.AreEqual(testKeybind.Alt, newPropertyValue);
+        }
     }
 }
