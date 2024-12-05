@@ -58,5 +58,13 @@ namespace Tests.UnitTests.ModelTests
             testKeybind.Alt = newPropertyValue;
             Assert.AreEqual(testKeybind.Alt, newPropertyValue);
         }
+
+        [TestMethod]
+        public void TestPassthroughProperty()
+        {
+            var newPropertyValue = true;
+            testKeybind.Passthrough = newPropertyValue;
+            Assert.AreEqual(testKeybind.Passthrough, newPropertyValue);
+        }
     }
 }
