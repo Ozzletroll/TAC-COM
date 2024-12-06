@@ -82,7 +82,7 @@ namespace Tests.UnitTests.ModelTests
             KeyboardHookEventArgs? keyboardCorrectTestArgs = null;
 
             var testCorrectSequenceHandler = new KeySequenceHandler(
-                new KeyCombinationHandler(VirtualKeyCode.Shift, VirtualKeyCode.KeyV) { IgnoreInjected = false });
+                new KeyCombinationHandler(VirtualKeyCode.Shift, VirtualKeyCode.KeyV) { IgnoreInjected = false, IsPassThrough = false });
 
             var testCorrectSubscription = KeyboardHook.KeyboardEvents.Where(testCorrectSequenceHandler).Subscribe(args =>
             {
@@ -92,7 +92,7 @@ namespace Tests.UnitTests.ModelTests
             KeyboardHookEventArgs? keyboardIncorrectTestArgs = null;
 
             var testIncorrectSequenceHandler = new KeySequenceHandler(
-                new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.KeyX) { IgnoreInjected = false });
+                new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.KeyX) { IgnoreInjected = false, IsPassThrough = false });
 
             var testIncorrectSubscription = KeyboardHook.KeyboardEvents.Where(testIncorrectSequenceHandler).Subscribe(args =>
             {
@@ -108,6 +108,35 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.IsTrue(keyboardIncorrectTestArgs != null);
             Assert.IsFalse(testKeybind.IsPressed(keyboardIncorrectTestArgs));
+        }
+
+        [TestMethod]
+        public void TestIsReleased()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.KeyF,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            KeyboardHookEventArgs? keyboardTestArgs = null;
+
+            var testCorrectSubscription = KeyboardHook.KeyboardEvents.Subscribe(args =>
+            {
+                keyboardTestArgs = args;
+            });
+            
+            KeyboardInputGenerator.KeyUp(VirtualKeyCode.KeyF);
+
+            Assert.IsTrue(keyboardTestArgs != null);
+            Assert.IsTrue(testKeybind.IsReleased(keyboardTestArgs));
+
+            KeyboardInputGenerator.KeyDown(VirtualKeyCode.KeyF);
+
+            Assert.IsTrue(keyboardTestArgs != null);
+            Assert.IsFalse(testKeybind.IsReleased(keyboardTestArgs));
         }
     }
 }
