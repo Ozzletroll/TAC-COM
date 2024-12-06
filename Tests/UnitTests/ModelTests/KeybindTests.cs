@@ -165,5 +165,34 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.AreEqual(testKeybind.ToString(), expectedString);
         }
+
+        [TestMethod]
+        public void TestToDictionary()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.KeyV,
+                shift: true,
+                ctrl: true,
+                alt: true,
+                isModifier: false,
+                passthrough: false);
+
+            Dictionary<string, object> expectedDict = new()
+            {
+                { "KeyCode", "KeyV" },
+                { "Shift", true },
+                { "Ctrl", true },
+                { "Alt", true },
+                { "IsModifier", false },
+                { "Passthrough", false }
+            };
+
+            Dictionary<string, object> outputDict = testKeybind.ToDictionary();
+
+            foreach (var (key, value) in expectedDict)
+            {
+                Assert.AreEqual(value, outputDict[key]);
+            }
+        }
     }
 }
