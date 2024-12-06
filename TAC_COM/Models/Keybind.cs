@@ -140,7 +140,7 @@ namespace TAC_COM.Models
         {
             return new Dictionary<string, object>
             {
-                { "KeyCode", KeyCode },
+                { "KeyCode", KeyCode.ToString() },
                 { "Shift", Shift },
                 { "Ctrl", Ctrl },
                 { "Alt", Alt },
