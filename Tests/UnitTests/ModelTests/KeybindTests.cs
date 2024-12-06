@@ -138,5 +138,21 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keyboardTestArgs != null);
             Assert.IsFalse(testKeybind.IsReleased(keyboardTestArgs));
         }
+
+        [TestMethod]
+        public void TestToString()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.KeyV,
+                shift: true,
+                ctrl: true,
+                alt: true,
+                isModifier: false,
+                passthrough: false);
+
+            var expectedString = "Shift + Ctrl + Alt + V";
+
+            Assert.AreEqual(testKeybind.ToString(), expectedString);
+        }
     }
 }
