@@ -1,6 +1,7 @@
 ﻿using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using TAC_COM.Models;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Tests.UnitTests.ModelTests
 {
@@ -121,22 +122,32 @@ namespace Tests.UnitTests.ModelTests
                 isModifier: false,
                 passthrough: false);
 
-            KeyboardHookEventArgs? keyboardTestArgs = null;
+            KeyboardHookEventArgs? keyboardCorrectTestArgs = null;
 
             var testCorrectSubscription = KeyboardHook.KeyboardEvents.Subscribe(args =>
             {
-                keyboardTestArgs = args;
+                keyboardCorrectTestArgs = args;
             });
-            
+
+            KeyboardHookEventArgs? keyboardIncorrectTestArgs = null;
+
+            var testIncorrectSequenceHandler = new KeySequenceHandler(
+                new KeyCombinationHandler(VirtualKeyCode.KeyF) { IgnoreInjected = false, IsPassThrough = false });
+
+            var testIncorrectSubscription = KeyboardHook.KeyboardEvents.Where(testIncorrectSequenceHandler).Subscribe(args =>
+            {
+                keyboardIncorrectTestArgs = args;
+            });
+
             KeyboardInputGenerator.KeyUp(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardTestArgs != null);
-            Assert.IsTrue(testKeybind.IsReleased(keyboardTestArgs));
+            Assert.IsTrue(keyboardCorrectTestArgs != null);
+            Assert.IsTrue(testKeybind.IsReleased(keyboardCorrectTestArgs));
 
             KeyboardInputGenerator.KeyDown(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardTestArgs != null);
-            Assert.IsFalse(testKeybind.IsReleased(keyboardTestArgs));
+            Assert.IsTrue(keyboardIncorrectTestArgs != null);
+            Assert.IsFalse(testKeybind.IsReleased(keyboardIncorrectTestArgs));
         }
 
         [TestMethod]
