@@ -1,4 +1,5 @@
 ﻿using Dapplo.Windows.Input.Enums;
+using Dapplo.Windows.Input.Keyboard;
 using TAC_COM.Models;
 
 namespace Tests.UnitTests.ModelTests
@@ -6,7 +7,7 @@ namespace Tests.UnitTests.ModelTests
     [TestClass]
     public class KeybindTests
     {
-        private readonly Keybind testKeybind;
+        private Keybind testKeybind;
 
         public KeybindTests()
         {
@@ -65,6 +66,48 @@ namespace Tests.UnitTests.ModelTests
             var newPropertyValue = true;
             testKeybind.Passthrough = newPropertyValue;
             Assert.AreEqual(testKeybind.Passthrough, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestIsPressed()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.KeyV,
+                shift: true,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            KeyboardHookEventArgs? keyboardCorrectTestArgs = null;
+
+            var testCorrectSequenceHandler = new KeySequenceHandler(
+                new KeyCombinationHandler(VirtualKeyCode.Shift, VirtualKeyCode.KeyV) { IgnoreInjected = false });
+
+            var testCorrectSubscription = KeyboardHook.KeyboardEvents.Where(testCorrectSequenceHandler).Subscribe(args =>
+            {
+                keyboardCorrectTestArgs = args;
+            });
+
+            KeyboardHookEventArgs? keyboardIncorrectTestArgs = null;
+
+            var testIncorrectSequenceHandler = new KeySequenceHandler(
+                new KeyCombinationHandler(VirtualKeyCode.Control, VirtualKeyCode.KeyX) { IgnoreInjected = false });
+
+            var testIncorrectSubscription = KeyboardHook.KeyboardEvents.Where(testIncorrectSequenceHandler).Subscribe(args =>
+            {
+                keyboardIncorrectTestArgs = args;
+            });
+
+            KeyboardInputGenerator.KeyCombinationPress([VirtualKeyCode.Shift, VirtualKeyCode.KeyV]);
+
+            Assert.IsTrue(keyboardCorrectTestArgs != null);
+            Assert.IsTrue(testKeybind.IsPressed(keyboardCorrectTestArgs));
+
+            KeyboardInputGenerator.KeyCombinationPress([VirtualKeyCode.Control, VirtualKeyCode.KeyX]);
+
+            Assert.IsTrue(keyboardIncorrectTestArgs != null);
+            Assert.IsFalse(testKeybind.IsPressed(keyboardIncorrectTestArgs));
         }
     }
 }
