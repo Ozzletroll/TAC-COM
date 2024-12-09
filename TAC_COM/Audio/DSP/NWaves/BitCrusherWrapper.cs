@@ -6,32 +6,32 @@ namespace TAC_COM.Audio.DSP.NWaves
     public class BitCrusherWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
-        private readonly BitCrusherEffect BitCrusherEffect = new(8);
+        private readonly BitCrusherEffect bitCrusherEffect = new(8);
 
         public float Wet
         {
-            get => BitCrusherEffect.Wet;
+            get => bitCrusherEffect.Wet;
             set
             {
-                BitCrusherEffect.Wet = value;
+                bitCrusherEffect.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => BitCrusherEffect.Dry;
+            get => bitCrusherEffect.Dry;
             set
             {
-                BitCrusherEffect.Dry = value;
+                bitCrusherEffect.Dry = value;
             }
         }
 
         public int BitDepth
         {
-            get => BitCrusherEffect.BitDepth;
+            get => bitCrusherEffect.BitDepth;
             set
             {
-                BitCrusherEffect.BitDepth = value;
+                bitCrusherEffect.BitDepth = value;
             }
         }
 
@@ -40,7 +40,7 @@ namespace TAC_COM.Audio.DSP.NWaves
             int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = BitCrusherEffect.Process(buffer[i]);
+                buffer[i] = bitCrusherEffect.Process(buffer[i]);
             }
             return samples;
         }
