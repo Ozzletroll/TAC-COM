@@ -3,10 +3,10 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class ChorusWrapper(ISampleSource inputSource) : ISampleSource
+    public class ChorusWrapper(ISampleSource inputSource) : ISampleSource
     {
-        readonly ISampleSource Source = inputSource;
-        private readonly ChorusEffect ChorusEffect = new(inputSource.WaveFormat.SampleRate, [800, 3000, 6000], [0.3f, 0.8f, 1.5f])
+        readonly ISampleSource source = inputSource;
+        private readonly ChorusEffect chorusEffect = new(inputSource.WaveFormat.SampleRate, [800, 3000, 6000], [0.3f, 0.8f, 1.5f])
         {
             Wet = 1f,
             Dry = 0f,
@@ -14,76 +14,76 @@ namespace TAC_COM.Audio.DSP.NWaves
 
         public float Wet
         {
-            get => ChorusEffect.Wet;
+            get => chorusEffect.Wet;
             set
             {
-                ChorusEffect.Wet = value;
+                chorusEffect.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => ChorusEffect.Dry;
+            get => chorusEffect.Dry;
             set
             {
-                ChorusEffect.Dry = value;
+                chorusEffect.Dry = value;
             }
         }
 
         public float[] LFOFrequencies
         {
-            get => ChorusEffect.LfoFrequencies;
+            get => chorusEffect.LfoFrequencies;
             set
             {
-                ChorusEffect.LfoFrequencies = value;
+                chorusEffect.LfoFrequencies = value;
             }
         }
 
         public float[] Widths
         {
-            get => ChorusEffect.Widths;
+            get => chorusEffect.Widths;
             set
             {
-                ChorusEffect.Widths = value;
+                chorusEffect.Widths = value;
             }
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
 
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = ChorusEffect.Process(buffer[i]);
+                buffer[i] = chorusEffect.Process(buffer[i]);
             }
             return samples;
         }
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()

@@ -3,100 +3,100 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class TubeDistortionWrapper(ISampleSource inputSource) : ISampleSource
+    public class TubeDistortionWrapper(ISampleSource inputSource) : ISampleSource
     {
-        private readonly ISampleSource Source = inputSource;
-        private readonly TubeDistortionEffect TubeDistortion = new();
+        private readonly ISampleSource source = inputSource;
+        private readonly TubeDistortionEffect tubeDistortion = new();
 
         public float Wet
         {
-            get => TubeDistortion.Wet;
+            get => tubeDistortion.Wet;
             set
             {
-                TubeDistortion.Wet = value;
+                tubeDistortion.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => TubeDistortion.Dry;
+            get => tubeDistortion.Dry;
             set
             {
-                TubeDistortion.Dry = value;
+                tubeDistortion.Dry = value;
             }
         }
 
         public float InputGainDB
         {
-            get => TubeDistortion.InputGain;
+            get => tubeDistortion.InputGain;
             set
             {
-                TubeDistortion.InputGain = value;
+                tubeDistortion.InputGain = value;
             }
         }
 
         public float OutputGainDB
         {
-            get => TubeDistortion.OutputGain;
+            get => tubeDistortion.OutputGain;
             set
             {
-                TubeDistortion.OutputGain = value;
+                tubeDistortion.OutputGain = value;
             }
         }
 
         public float Q
         {
-            get => TubeDistortion.Q;
+            get => tubeDistortion.Q;
             set
             {
-                TubeDistortion.Q = value;
+                tubeDistortion.Q = value;
             }
         }
 
         public float Distortion
         {
-            get => TubeDistortion.Dist;
+            get => tubeDistortion.Dist;
             set
             {
-                TubeDistortion.Dist = value;
+                tubeDistortion.Dist = value;
             }
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = TubeDistortion.Process(buffer[i]);
+                buffer[i] = tubeDistortion.Process(buffer[i]);
             }
             return samples;
         }
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()

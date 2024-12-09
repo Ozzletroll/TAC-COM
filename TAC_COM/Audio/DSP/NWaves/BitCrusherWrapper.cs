@@ -3,9 +3,9 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class BitCrusherWrapper(ISampleSource inputSource) : ISampleSource
+    public class BitCrusherWrapper(ISampleSource inputSource) : ISampleSource
     {
-        private readonly ISampleSource Source = inputSource;
+        private readonly ISampleSource source = inputSource;
         private readonly BitCrusherEffect BitCrusherEffect = new(8);
 
         public float Wet
@@ -37,7 +37,7 @@ namespace TAC_COM.Audio.DSP.NWaves
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
                 buffer[i] = BitCrusherEffect.Process(buffer[i]);
@@ -47,29 +47,29 @@ namespace TAC_COM.Audio.DSP.NWaves
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()

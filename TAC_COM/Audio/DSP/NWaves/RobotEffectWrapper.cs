@@ -3,10 +3,10 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class RobotEffectWrapper(ISampleSource inputSource) : ISampleSource
+    public class RobotEffectWrapper(ISampleSource inputSource) : ISampleSource
     {
-        readonly ISampleSource Source = inputSource;
-        private readonly RobotEffect RobotEffect = new(280, fftSize: 2048)
+        readonly ISampleSource source = inputSource;
+        private readonly RobotEffect robotEffect = new(280, fftSize: 2048)
         {
             Wet = 0.8f,
             Dry = 0.2f,
@@ -14,58 +14,58 @@ namespace TAC_COM.Audio.DSP.NWaves
 
         public float Wet
         {
-            get => RobotEffect.Wet;
+            get => robotEffect.Wet;
             set
             {
-                RobotEffect.Wet = value;
+                robotEffect.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => RobotEffect.Dry;
+            get => robotEffect.Dry;
             set
             {
-                RobotEffect.Dry = value;
+                robotEffect.Dry = value;
             }
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
 
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = RobotEffect.Process(buffer[i]);
+                buffer[i] = robotEffect.Process(buffer[i]);
             }
             return samples;
         }
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()

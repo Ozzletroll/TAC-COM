@@ -3,82 +3,82 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class DistortionWrapper(ISampleSource inputSource, DistortionMode mode) : ISampleSource
+    public class DistortionWrapper(ISampleSource inputSource, DistortionMode mode) : ISampleSource
     {
-        private readonly ISampleSource Source = inputSource;
-        private readonly DistortionEffect DistortionEffect = new(mode);
+        private readonly ISampleSource source = inputSource;
+        private readonly DistortionEffect distortionEffect = new(mode);
 
         public float Wet
         {
-            get => DistortionEffect.Wet;
+            get => distortionEffect.Wet;
             set
             {
-                DistortionEffect.Wet = value;
+                distortionEffect.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => DistortionEffect.Dry;
+            get => distortionEffect.Dry;
             set
             {
-                DistortionEffect.Dry = value;
+                distortionEffect.Dry = value;
             }
         }
 
         public float InputGainDB
         {
-            get => DistortionEffect.InputGain;
+            get => distortionEffect.InputGain;
             set
             {
-                DistortionEffect.InputGain = value;
+                distortionEffect.InputGain = value;
             }
         }
 
         public float OutputGainDB
         {
-            get => DistortionEffect.OutputGain;
+            get => distortionEffect.OutputGain;
             set
             {
-                DistortionEffect.OutputGain = value;
+                distortionEffect.OutputGain = value;
             }
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = DistortionEffect.Process(buffer[i]);
+                buffer[i] = distortionEffect.Process(buffer[i]);
             }
             return samples;
         }
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()

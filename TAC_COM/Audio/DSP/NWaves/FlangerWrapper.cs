@@ -3,10 +3,10 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    internal class FlangerWrapper(ISampleSource inputSource) : ISampleSource
+    public class FlangerWrapper(ISampleSource inputSource) : ISampleSource
     {
-        readonly ISampleSource Source = inputSource;
-        private readonly FlangerEffect Flanger = new(inputSource.WaveFormat.SampleRate)
+        readonly ISampleSource source = inputSource;
+        private readonly FlangerEffect flanger = new(inputSource.WaveFormat.SampleRate)
         {
             Wet = 0.5f,
             Dry = 0.5f,
@@ -14,94 +14,94 @@ namespace TAC_COM.Audio.DSP.NWaves
 
         public float Wet
         {
-            get => Flanger.Wet;
+            get => flanger.Wet;
             set
             {
-                Flanger.Wet = value;
+                flanger.Wet = value;
             }
         }
 
         public float Dry
         {
-            get => Flanger.Dry;
+            get => flanger.Dry;
             set
             {
-                Flanger.Dry = value;
+                flanger.Dry = value;
             }
         }
 
         public float LFOFrequency
         {
-            get => Flanger.LfoFrequency;
+            get => flanger.LfoFrequency;
             set
             {
-                Flanger.LfoFrequency = value;
+                flanger.LfoFrequency = value;
             }
         }
 
         public float Width
         {
-            get => Flanger.Width;
+            get => flanger.Width;
             set
             {
-                Flanger.Width = value;
+                flanger.Width = value;
             }
         }
 
         public float Depth
         {
-            get => Flanger.Depth;
+            get => flanger.Depth;
             set
             {
-                Flanger.Depth = value;
+                flanger.Depth = value;
             }
         }
 
         public float Feedback
         {
-            get => Flanger.Feedback;
+            get => flanger.Feedback;
             set
             {
-                Flanger.Feedback = value;
+                flanger.Feedback = value;
             }
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int samples = Source.Read(buffer, offset, count);
+            int samples = source.Read(buffer, offset, count);
 
             for (int i = offset; i < offset + samples; i++)
             {
-                buffer[i] = Flanger.Process(buffer[i]);
+                buffer[i] = flanger.Process(buffer[i]);
             }
             return samples;
         }
 
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return source.CanSeek; }
         }
 
         public WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return source.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return Source.Position;
+                return source.Position;
             }
             set
             {
-                Source.Position = value;
+                source.Position = value;
             }
         }
 
         public long Length
         {
-            get { return Source.Length; }
+            get { return source.Length; }
         }
 
         public void Dispose()
