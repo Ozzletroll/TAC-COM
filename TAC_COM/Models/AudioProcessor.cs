@@ -174,7 +174,7 @@ namespace TAC_COM.Models
                 MinAmplitude = -120,
                 Threshold = -20,
                 Ratio = 100,
-                Attack = 10,
+                Attack = 30,
                 Release = 300,
                 MakeupGain = 10,
             });
@@ -186,7 +186,7 @@ namespace TAC_COM.Models
                 MinAmplitude = -120,
                 Threshold = -40,
                 Ratio = 30,
-                Attack = 10,
+                Attack = 50,
                 Release = 300,
                 MakeupGain = 45,
             });
@@ -273,7 +273,7 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(dryMixLevel);
 
             wetMixLevel.Volume = 0.8f;
-            dryMixLevel.Volume = 0f;
+            dryMixLevel.Volume = 0.2f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -319,10 +319,10 @@ namespace TAC_COM.Models
             {
                 Wet = 0.5f,
                 Dry = 0.5f,
-                InputGainDB = 10,
+                InputGainDB = 15,
                 OutputGainDB = -5,
                 Q = -0.2f,
-                Distortion = 5,
+                Distortion = 15,
             });
 
             // Compression
