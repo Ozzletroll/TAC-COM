@@ -168,8 +168,10 @@ namespace TAC_COM.Models
             var dynamicsProcessedSource = preDistortionSampleSource;
 
             // Limiter
-            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Limiter, -120)
+            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
             {
+                Mode = DynamicsMode.Limiter,
+                MinAmplitude = -120,
                 Threshold = -20,
                 Ratio = 100,
                 Attack = 10,
@@ -178,8 +180,10 @@ namespace TAC_COM.Models
             });
 
             // Compression
-            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Compressor, -120)
+            dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
             {
+                Mode = DynamicsMode.Compressor,
+                MinAmplitude = -120,
                 Threshold = -40,
                 Ratio = 30,
                 Attack = 10,
@@ -269,7 +273,7 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(dryMixLevel);
 
             wetMixLevel.Volume = 0.8f;
-            dryMixLevel.Volume = 0.2f;
+            dryMixLevel.Volume = 0f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -323,8 +327,10 @@ namespace TAC_COM.Models
 
             // Compression
             var compressedSource =
-                distortedSource.AppendSource(x => new DynamicsProcessorWrapper(x, DynamicsMode.Compressor, -120)
+                distortedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
                 {
+                    Mode = DynamicsMode.Compressor,
+                    MinAmplitude = -120,
                     Threshold = -10,
                     Ratio = 10,
                     Attack = 10,

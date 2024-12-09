@@ -3,10 +3,32 @@ using NWaves.Operations;
 
 namespace TAC_COM.Audio.DSP.NWaves
 {
-    public class DynamicsProcessorWrapper(ISampleSource inputSource, DynamicsMode mode, float minAmplitude) : ISampleSource
+    public class DynamicsProcessorWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
-        private readonly DynamicsProcessor processor = new(mode, inputSource.WaveFormat.SampleRate, 0, 1, minAmplitudeDb: minAmplitude);
+        private DynamicsProcessor processor = new(DynamicsMode.Compressor, inputSource.WaveFormat.SampleRate, 0, 1, -120);
+
+        private DynamicsMode mode;
+        public DynamicsMode Mode
+        {
+            get => mode;
+            set
+            {
+                mode = value;
+                processor = new(mode, source.WaveFormat.SampleRate, Attack, Release, MinAmplitude);
+            }
+        }
+
+        private float minAmplitude = -120;
+        public float MinAmplitude
+        {
+            get => minAmplitude;
+            set
+            {
+                minAmplitude = value;
+                processor = new(mode, source.WaveFormat.SampleRate, Attack, Release, MinAmplitude);
+            }
+        }
 
         public float Threshold
         {
