@@ -11,8 +11,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                     { "Shift", 0.9f },
                 }
             },
@@ -28,11 +28,20 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Feedback", 0.2f }
                 }
             },
+            new(typeof(EchoWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "Delay", 28f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
-
+            
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;

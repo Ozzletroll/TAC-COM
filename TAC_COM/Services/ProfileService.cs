@@ -64,15 +64,15 @@ namespace TAC_COM.Services
                     Settings = new EffectParameters()
                     {
                         DistortionType = typeof(DistortionWrapper),
-                        DistortionMode = DistortionMode.HardClipping,
-                        DistortionInput = 26,
+                        DistortionMode = DistortionMode.SoftClipping,
+                        DistortionInput = 22,
                         DistortionOutput = 42,
-                        DistortionWet = 0.8f,
-                        DistortionDry = 0.2f,
+                        DistortionWet = 0.9f,
+                        DistortionDry = 0.1f,
                         PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 400,
-                        LowpassFrequency = 6000,
+                        HighpassFrequency = 300,
+                        LowpassFrequency = 4000,
                         PeakFrequency = 3800,
                         GainAdjust = -3,
                     }
