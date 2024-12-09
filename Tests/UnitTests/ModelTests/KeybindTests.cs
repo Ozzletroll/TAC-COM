@@ -1,7 +1,6 @@
 ﻿using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using TAC_COM.Models;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Tests.UnitTests.ModelTests
 {
