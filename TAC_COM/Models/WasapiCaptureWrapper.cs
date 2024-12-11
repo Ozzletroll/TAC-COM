@@ -6,10 +6,14 @@ namespace TAC_COM.Models
 {
     public class WasapiCaptureWrapper : IWasapiCaptureWrapper
     {
-        private readonly WasapiCapture wasapiCapture = new(false, AudioClientShareMode.Shared, 5);
+        private WasapiCapture wasapiCapture = new(false, AudioClientShareMode.Shared, 5);
         public WasapiCapture WasapiCapture
         {
             get => wasapiCapture;
+            set
+            {
+                wasapiCapture = value;
+            }
         }
 
         public MMDevice Device

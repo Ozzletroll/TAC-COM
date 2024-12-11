@@ -5,7 +5,7 @@ namespace TAC_COM.Models.Interfaces
 {
     public interface IWasapiCaptureWrapper
     {
-        public WasapiCapture WasapiCapture { get; }
+        public WasapiCapture WasapiCapture { get; set; }
         MMDevice Device { get; set; }
 
         event EventHandler<DataAvailableEventArgs> DataAvailable;

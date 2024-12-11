@@ -12,10 +12,7 @@ namespace Tests.MockModels
 
         public long Length => throw new NotImplementedException();
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+        public void Dispose() { }
 
         public int Read(float[] buffer, int offset, int count)
         {
