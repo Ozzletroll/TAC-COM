@@ -19,16 +19,16 @@ namespace TAC_COM.Models
         private SoundInSource? inputSource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
-        private VolumeSource? DryMixLevel;
-        private VolumeSource? WetMixLevel;
-        private VolumeSource? NoiseMixLevel;
-        private VolumeSource? WetNoiseMixLevel;
-        private Gain? UserGainControl;
-        private Gate? ProcessedNoiseGate;
-        private Gate? ParallelNoiseGate;
-        private Gate? DryNoiseGate;
-        private int SampleRate = 48000;
-        private IProfile? ActiveProfile;
+        private VolumeSource? dryMixLevel;
+        private VolumeSource? wetMixLevel;
+        private VolumeSource? moiseMixLevel;
+        private VolumeSource? wetNoiseMixLevel;
+        private Gain? userGainControl;
+        private Gate? processedNoiseGate;
+        private Gate? parallelNoiseGate;
+        private Gate? dryNoiseGate;
+        private int sampleRate = 48000;
+        private IProfile? activeProfile;
 
         private bool hasInitialised;
         public bool HasInitialised
@@ -47,9 +47,9 @@ namespace TAC_COM.Models
             set
             {
                 userGainLevel = value;
-                if (HasInitialised && UserGainControl != null)
+                if (HasInitialised && userGainControl != null)
                 {
-                    UserGainControl.GainDB = value;
+                    userGainControl.GainDB = value;
                 }
             }
         }
@@ -63,17 +63,17 @@ namespace TAC_COM.Models
                 noiseGateThreshold = value;
                 if (HasInitialised)
                 {
-                    if (ProcessedNoiseGate != null)
+                    if (processedNoiseGate != null)
                     {
-                        ProcessedNoiseGate.ThresholdDB = value;
+                        processedNoiseGate.ThresholdDB = value;
                     }
-                    if (ParallelNoiseGate != null)
+                    if (parallelNoiseGate != null)
                     {
-                        ParallelNoiseGate.ThresholdDB = value;
+                        parallelNoiseGate.ThresholdDB = value;
                     }
-                    if (DryNoiseGate != null)
+                    if (dryNoiseGate != null)
                     {
-                        DryNoiseGate.ThresholdDB = value;
+                        dryNoiseGate.ThresholdDB = value;
                     }
                 }
             }
@@ -86,14 +86,14 @@ namespace TAC_COM.Models
             set
             {
                 userNoiseLevel = value;
-                if (HasInitialised && NoiseMixLevel != null)
+                if (HasInitialised && moiseMixLevel != null)
                 {
-                    NoiseMixLevel.Volume = value;
+                    moiseMixLevel.Volume = value;
                 }
             }
         }
 
-        public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile activeProfile)
+        public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile)
         {
             inputSource?.Dispose();
             parallelSource?.Dispose();
@@ -102,8 +102,8 @@ namespace TAC_COM.Models
             inputSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
-            SampleRate = inputSource.WaveFormat.SampleRate;
-            ActiveProfile = activeProfile;
+            sampleRate = inputSource.WaveFormat.SampleRate;
+            activeProfile = profile;
             HasInitialised = true;
         }
 
@@ -129,9 +129,8 @@ namespace TAC_COM.Models
         /// </summary>
         private ISampleSource InputSignalChain()
         {
-            if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
+            if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
-            // Conver to SampleSource
             var sampleSource = inputSource.ToSampleSource();
 
             // Noise gate
@@ -141,25 +140,25 @@ namespace TAC_COM.Models
                 Attack = 5,
                 Hold = 30,
                 Release = 5,
-            }, out ProcessedNoiseGate);
+            }, out processedNoiseGate);
 
             // EQ
             sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency)
+                Filter = new HighpassFilter(sampleRate, activeProfile.Settings.HighpassFrequency)
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency),
+                Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2),
+                Filter = new PeakFilter(sampleRate, activeProfile.Settings.PeakFrequency, 500, 2),
             });
 
             // Apply profile specific pre-distortion effects
             var preDistortionSampleSource = sampleSource;
-            if (ActiveProfile?.Settings.PreDistortionSignalChain != null)
+            if (activeProfile?.Settings.PreDistortionSignalChain != null)
             {
-                foreach (EffectReference effect in ActiveProfile.Settings.PreDistortionSignalChain)
+                foreach (EffectReference effect in activeProfile.Settings.PreDistortionSignalChain)
                 {
                     preDistortionSampleSource = preDistortionSampleSource.AppendSource(x => effect.CreateInstance(x));
                 }
@@ -194,7 +193,7 @@ namespace TAC_COM.Models
             var distortionSource = dynamicsProcessedSource.ToWaveSource();
 
             // Apply CSCore distortion, depending on ActiveProfile settings
-            if (ActiveProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
+            if (activeProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
             {
                 // Distortion
                 distortionSource =
@@ -221,17 +220,17 @@ namespace TAC_COM.Models
             var outputSampleSource = distortionSource.ToSampleSource();
 
             // Apply NWaves distortion, depending on ActiveProfile settings
-            if (ActiveProfile?.Settings.DistortionType == typeof(DistortionWrapper)
-                && ActiveProfile.Settings.DistortionMode != null)
+            if (activeProfile?.Settings.DistortionType == typeof(DistortionWrapper)
+                && activeProfile.Settings.DistortionMode != null)
             {
                 outputSampleSource
                     = outputSampleSource.AppendSource(x
-                    => new DistortionWrapper(x, (DistortionMode)ActiveProfile.Settings.DistortionMode)
+                    => new DistortionWrapper(x, (DistortionMode)activeProfile.Settings.DistortionMode)
                     {
-                        InputGainDB = ActiveProfile.Settings.DistortionInput,
-                        OutputGainDB = ActiveProfile.Settings.DistortionOutput,
-                        Wet = ActiveProfile.Settings.DistortionWet,
-                        Dry = ActiveProfile.Settings.DistortionDry,
+                        InputGainDB = activeProfile.Settings.DistortionInput,
+                        OutputGainDB = activeProfile.Settings.DistortionOutput,
+                        Wet = activeProfile.Settings.DistortionWet,
+                        Dry = activeProfile.Settings.DistortionDry,
                     });
 
                 outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
@@ -241,9 +240,9 @@ namespace TAC_COM.Models
             }
 
             // Apply profile specific post-distortion effects
-            if (ActiveProfile?.Settings.PostDistortionSignalChain != null)
+            if (activeProfile?.Settings.PostDistortionSignalChain != null)
             {
-                foreach (EffectReference effect in ActiveProfile.Settings.PostDistortionSignalChain)
+                foreach (EffectReference effect in activeProfile.Settings.PostDistortionSignalChain)
                 {
                     outputSampleSource = outputSampleSource.AppendSource(x => effect.CreateInstance(x));
                 }
@@ -252,15 +251,15 @@ namespace TAC_COM.Models
             // Profile specific gain adjustment
             outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
             {
-                GainDB = ActiveProfile?.Settings.GainAdjust ?? 0,
+                GainDB = activeProfile?.Settings.GainAdjust ?? 0,
             });
 
             // Combine parallel processing chain with processed source
-            var effectsSource = outputSampleSource.ToMono().ChangeSampleRate(SampleRate);
-            var drySource = ParallelProcessedSignalChain(parallelSource.ToSampleSource()).ToMono().ChangeSampleRate(SampleRate);
+            var effectsSource = outputSampleSource.ToMono().ChangeSampleRate(sampleRate);
+            var drySource = ParallelProcessedSignalChain(parallelSource.ToSampleSource()).ToMono().ChangeSampleRate(sampleRate);
 
             // Mix wet signal with noise source
-            var wetDryMixer = new Mixer(1, SampleRate)
+            var wetDryMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
@@ -279,7 +278,7 @@ namespace TAC_COM.Models
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
             {
                 GainDB = UserGainLevel,
-            }, out UserGainControl);
+            }, out userGainControl);
 
             return outputSampleSource ?? throw new InvalidOperationException("Processed SampleSource cannot be null.");
         }
@@ -290,7 +289,7 @@ namespace TAC_COM.Models
         /// </summary>
         private ISampleSource ParallelProcessedSignalChain(ISampleSource parallelSource)
         {
-            if (ActiveProfile == null) throw new InvalidOperationException("No profile currently set.");
+            if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
             var sampleSource = parallelSource;
 
@@ -301,18 +300,18 @@ namespace TAC_COM.Models
                 Attack = 5,
                 Hold = 30,
                 Release = 5,
-            }, out ParallelNoiseGate);
+            }, out parallelNoiseGate);
 
             // EQ
             sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new HighpassFilter(SampleRate, ActiveProfile.Settings.HighpassFrequency)
+                Filter = new HighpassFilter(sampleRate, activeProfile.Settings.HighpassFrequency)
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new LowpassFilter(SampleRate, ActiveProfile.Settings.LowpassFrequency),
+                Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
-                Filter = new PeakFilter(SampleRate, ActiveProfile.Settings.PeakFrequency, 500, 2),
+                Filter = new PeakFilter(sampleRate, activeProfile.Settings.PeakFrequency, 500, 2),
             });
 
             var distortedSource = sampleSource.AppendSource(x => new TubeDistortionWrapper(x)
@@ -360,7 +359,7 @@ namespace TAC_COM.Models
                 Attack = 5,
                 Hold = 30,
                 Release = 5,
-            }, out DryNoiseGate);
+            }, out dryNoiseGate);
 
             return sampleSource ?? throw new InvalidOperationException("Dry SampleSource cannot be null.");
         }
@@ -370,9 +369,9 @@ namespace TAC_COM.Models
         /// </summary>
         private ISampleSource NoiseSignalChain()
         {
-            if (ActiveProfile != null)
+            if (activeProfile != null)
             {
-                var loopSource = new LoopStream(ActiveProfile?.NoiseSource?.WaveSource)
+                var loopSource = new LoopStream(activeProfile?.NoiseSource?.WaveSource)
                 {
                     EnableLoop = true,
                 }.ToSampleSource();
@@ -394,42 +393,42 @@ namespace TAC_COM.Models
         private IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
             // Ensure all sources are mono and same sample rate
-            wetMix = wetMix.ToMono().ChangeSampleRate(SampleRate);
-            dryMix = dryMix.ToMono().ChangeSampleRate(SampleRate);
-            noiseMix = noiseMix.ToMono().ChangeSampleRate(SampleRate);
+            wetMix = wetMix.ToMono().ChangeSampleRate(sampleRate);
+            dryMix = dryMix.ToMono().ChangeSampleRate(sampleRate);
+            noiseMix = noiseMix.ToMono().ChangeSampleRate(sampleRate);
 
             // Mix wet signal with noise source
-            var WetNoiseMixer = new Mixer(1, SampleRate)
+            var WetNoiseMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
             };
 
-            WetMixLevel = wetMix.AppendSource(x => new VolumeSource(x));
-            NoiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
+            wetMixLevel = wetMix.AppendSource(x => new VolumeSource(x));
+            moiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
 
-            WetNoiseMixer.AddSource(WetMixLevel);
-            WetNoiseMixer.AddSource(NoiseMixLevel);
+            WetNoiseMixer.AddSource(wetMixLevel);
+            WetNoiseMixer.AddSource(moiseMixLevel);
 
-            WetMixLevel.Volume = 1;
-            NoiseMixLevel.Volume = UserNoiseLevel;
+            wetMixLevel.Volume = 1;
+            moiseMixLevel.Volume = UserNoiseLevel;
 
             // Mix combined wet + noise signal with dry signal
-            var WetDryMixer = new Mixer(1, SampleRate)
+            var WetDryMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
             };
 
-            WetNoiseMixLevel = WetNoiseMixer.AppendSource(x => new VolumeSource(x));
-            DryMixLevel = dryMix.AppendSource(x => new VolumeSource(x));
+            wetNoiseMixLevel = WetNoiseMixer.AppendSource(x => new VolumeSource(x));
+            dryMixLevel = dryMix.AppendSource(x => new VolumeSource(x));
 
-            WetDryMixer.AddSource(WetNoiseMixLevel);
-            WetDryMixer.AddSource(DryMixLevel);
+            WetDryMixer.AddSource(wetNoiseMixLevel);
+            WetDryMixer.AddSource(dryMixLevel);
 
             // Set initial levels
-            WetNoiseMixLevel.Volume = 0;
-            DryMixLevel.Volume = 1;
+            wetNoiseMixLevel.Volume = 0;
+            dryMixLevel.Volume = 1;
 
             // Compress dynamics for final output
             var compressedOutput = WetDryMixer.ToWaveSource();
@@ -448,18 +447,18 @@ namespace TAC_COM.Models
 
         public void SetActiveProfile(Profile activeProfile)
         {
-            ActiveProfile = activeProfile;
+            this.activeProfile = activeProfile;
         }
 
         public void SetMixerLevels(bool bypassState)
         {
             if (HasInitialised)
             {
-                if (WetNoiseMixLevel != null &&
-                    DryMixLevel != null)
+                if (wetNoiseMixLevel != null &&
+                    dryMixLevel != null)
                 {
-                    WetNoiseMixLevel.Volume = Convert.ToInt32(bypassState);
-                    DryMixLevel.Volume = Convert.ToInt32(!bypassState);
+                    wetNoiseMixLevel.Volume = Convert.ToInt32(bypassState);
+                    dryMixLevel.Volume = Convert.ToInt32(!bypassState);
                 }
             }
         }
