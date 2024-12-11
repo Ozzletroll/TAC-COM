@@ -11,7 +11,6 @@ namespace TAC_COM.Models.Interfaces
 
         void Initialise(IWasapiCaptureWrapper input, IProfile activeProfile);
         IWaveSource? ReturnCompleteSignalChain();
-        void SetActiveProfile(Profile activeProfile);
         void SetMixerLevels(bool bypassState);
     }
 }

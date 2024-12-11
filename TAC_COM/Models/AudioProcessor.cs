@@ -445,11 +445,6 @@ namespace TAC_COM.Models
             return compressedOutput;
         }
 
-        public void SetActiveProfile(Profile activeProfile)
-        {
-            this.activeProfile = activeProfile;
-        }
-
         public void SetMixerLevels(bool bypassState)
         {
             if (HasInitialised)
