@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CSCore.Streams;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -63,6 +64,22 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.NoiseGateThreshold, processedNoiseGate.ThresholdDB);
             Assert.AreEqual(audioProcessor.NoiseGateThreshold, parallelNoiseGate.ThresholdDB);
             Assert.AreEqual(audioProcessor.NoiseGateThreshold, dryNoiseGate.ThresholdDB);
+        }
+
+        [TestMethod]
+        public void TestUserNoiseLevelProperty()
+        {
+            audioProcessor.HasInitialised = true;
+
+            var noiseMixLevel = new VolumeSource(new MockSampleSource());
+
+            FieldInfo? noiseMixLevelField = typeof(AudioProcessor).GetField("noiseMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            noiseMixLevelField?.SetValue(audioProcessor, noiseMixLevel);
+
+            var newPropertyValue = -0.25f;
+            audioProcessor.UserNoiseLevel = newPropertyValue;
+            Assert.AreEqual(audioProcessor.UserNoiseLevel, newPropertyValue);
+            Assert.AreEqual(noiseMixLevel.Volume, newPropertyValue);
         }
     }
 }
