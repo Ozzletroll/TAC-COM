@@ -38,5 +38,31 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.UserGainLevel, newPropertyValue);
             Assert.AreEqual(audioProcessor.UserGainLevel, userGainControl.GainDB);
         }
+
+        [TestMethod]
+        public void TestNoiseGateThresholdProperty()
+        {
+            audioProcessor.HasInitialised = true;
+
+            var processedNoiseGate = new Gate(new MockSampleSource());
+            var parallelNoiseGate = new Gate(new MockSampleSource());
+            var dryNoiseGate = new Gate(new MockSampleSource());
+
+            FieldInfo? processedNoiseGateField = typeof(AudioProcessor).GetField("processedNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            processedNoiseGateField?.SetValue(audioProcessor, processedNoiseGate);
+
+            FieldInfo? parallelNoiseGateField = typeof(AudioProcessor).GetField("parallelNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            parallelNoiseGateField?.SetValue(audioProcessor, parallelNoiseGate);
+
+            FieldInfo? dryNoiseGateField = typeof(AudioProcessor).GetField("dryNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            dryNoiseGateField?.SetValue(audioProcessor, dryNoiseGate);
+
+            var newPropertyValue = -65f;
+            audioProcessor.NoiseGateThreshold = newPropertyValue;
+            Assert.AreEqual(audioProcessor.NoiseGateThreshold, newPropertyValue);
+            Assert.AreEqual(audioProcessor.NoiseGateThreshold, processedNoiseGate.ThresholdDB);
+            Assert.AreEqual(audioProcessor.NoiseGateThreshold, parallelNoiseGate.ThresholdDB);
+            Assert.AreEqual(audioProcessor.NoiseGateThreshold, dryNoiseGate.ThresholdDB);
+        }
     }
 }
