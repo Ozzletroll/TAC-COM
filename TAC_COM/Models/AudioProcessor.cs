@@ -21,7 +21,7 @@ namespace TAC_COM.Models
         private SoundInSource? passthroughSource;
         private VolumeSource? dryMixLevel;
         private VolumeSource? wetMixLevel;
-        private VolumeSource? moiseMixLevel;
+        private VolumeSource? noiseMixLevel;
         private VolumeSource? wetNoiseMixLevel;
         private Gain? userGainControl;
         private Gate? processedNoiseGate;
@@ -86,9 +86,9 @@ namespace TAC_COM.Models
             set
             {
                 userNoiseLevel = value;
-                if (HasInitialised && moiseMixLevel != null)
+                if (HasInitialised && noiseMixLevel != null)
                 {
-                    moiseMixLevel.Volume = value;
+                    noiseMixLevel.Volume = value;
                 }
             }
         }
@@ -405,13 +405,13 @@ namespace TAC_COM.Models
             };
 
             wetMixLevel = wetMix.AppendSource(x => new VolumeSource(x));
-            moiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
+            noiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
 
             WetNoiseMixer.AddSource(wetMixLevel);
-            WetNoiseMixer.AddSource(moiseMixLevel);
+            WetNoiseMixer.AddSource(noiseMixLevel);
 
             wetMixLevel.Volume = 1;
-            moiseMixLevel.Volume = UserNoiseLevel;
+            noiseMixLevel.Volume = UserNoiseLevel;
 
             // Mix combined wet + noise signal with dry signal
             var WetDryMixer = new Mixer(1, sampleRate)
