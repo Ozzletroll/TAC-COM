@@ -6,7 +6,7 @@ namespace Tests.MockModels
     {
         public bool CanSeek => throw new NotImplementedException();
 
-        public WaveFormat WaveFormat => throw new NotImplementedException();
+        public WaveFormat WaveFormat => new();
 
         public long Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
