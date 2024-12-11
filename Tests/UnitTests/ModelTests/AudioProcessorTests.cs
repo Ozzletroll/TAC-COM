@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using CSCore.SoundIn;
 using CSCore.Streams;
+using Moq;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -10,7 +12,7 @@ namespace Tests.UnitTests.ModelTests
     [TestClass]
     public class AudioProcessorTests
     {
-        private readonly AudioProcessor audioProcessor;
+        private AudioProcessor audioProcessor;
 
         public AudioProcessorTests()
         {
@@ -80,6 +82,44 @@ namespace Tests.UnitTests.ModelTests
             audioProcessor.UserNoiseLevel = newPropertyValue;
             Assert.AreEqual(audioProcessor.UserNoiseLevel, newPropertyValue);
             Assert.AreEqual(noiseMixLevel.Volume, newPropertyValue);
+        }
+
+        [TestMethod]
+        public void TestInitialise()
+        {
+            audioProcessor = new AudioProcessor();
+
+            var mockInputWrapper = new Mock<IWasapiCaptureWrapper>();
+            mockInputWrapper.SetupAllProperties();
+
+            var wasapiCapture = new WasapiCapture();
+            wasapiCapture.Initialize();
+            mockInputWrapper.Object.WasapiCapture = wasapiCapture;
+            var mockProfile = new Mock<IProfile>();
+
+            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object);
+
+            FieldInfo? inputSourceField = typeof(AudioProcessor).GetField("inputSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            var inputSourceValue = inputSourceField?.GetValue(audioProcessor);
+
+            FieldInfo? parallelSourceField = typeof(AudioProcessor).GetField("parallelSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            var parallelSourceValue = parallelSourceField?.GetValue(audioProcessor);
+
+            FieldInfo? passthroughSourceField = typeof(AudioProcessor).GetField("passthroughSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            var passthroughSourceValue = passthroughSourceField?.GetValue(audioProcessor);
+
+            FieldInfo? sampleRateField = typeof(AudioProcessor).GetField("sampleRate", BindingFlags.NonPublic | BindingFlags.Instance);
+            var sampleRateValue = sampleRateField?.GetValue(audioProcessor);
+
+            FieldInfo? activeProfileField = typeof(AudioProcessor).GetField("activeProfile", BindingFlags.NonPublic | BindingFlags.Instance);
+            var activeProfileValue = activeProfileField?.GetValue(audioProcessor);
+
+            Assert.IsNotNull(inputSourceValue);
+            Assert.IsNotNull(parallelSourceValue);
+            Assert.IsNotNull(passthroughSourceValue);
+            Assert.AreEqual(sampleRateValue, wasapiCapture.WaveFormat.SampleRate);
+            Assert.AreEqual(activeProfileValue, mockProfile.Object);
+            Assert.IsTrue(audioProcessor.HasInitialised == true);
         }
     }
 }
