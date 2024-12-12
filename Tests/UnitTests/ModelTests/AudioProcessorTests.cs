@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
+using CSCore;
 using CSCore.SoundIn;
 using CSCore.Streams;
+using CSCore.Streams.Effects;
 using Moq;
 using TAC_COM.Audio.DSP;
+using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using Tests.MockModels;
@@ -120,6 +123,43 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(sampleRateValue, wasapiCapture.WaveFormat.SampleRate);
             Assert.AreEqual(activeProfileValue, mockProfile.Object);
             Assert.IsTrue(audioProcessor.HasInitialised == true);
+        }
+
+        [TestMethod]
+        public void TestReturnCompleteSignalChain()
+        {
+            audioProcessor = new AudioProcessor();
+
+            var mockInputWrapper = new Mock<IWasapiCaptureWrapper>();
+            mockInputWrapper.SetupAllProperties();
+
+            var wasapiCapture = new WasapiCapture();
+            wasapiCapture.Initialize();
+            mockInputWrapper.Object.WasapiCapture = wasapiCapture;
+
+            var mockProfile = new Mock<IProfile>();
+            mockProfile.SetupAllProperties();
+            mockProfile.Object.Settings = new EffectParameters()
+            {
+                DistortionType = typeof(DmoDistortionEffect),
+                PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
+                PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
+                HighpassFrequency = 800,
+                LowpassFrequency = 2900,
+                PeakFrequency = 2800,
+                GainAdjust = 3,
+            };
+            mockProfile.Object.NoiseSource = new FileSourceWrapper()
+            {
+                WaveSource = new MockWaveSource()
+            };
+
+            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object);
+
+            var output = audioProcessor.ReturnCompleteSignalChain();
+
+            Assert.IsNotNull(output);
+            Assert.IsInstanceOfType(output, typeof(IWaveSource));
         }
     }
 }
