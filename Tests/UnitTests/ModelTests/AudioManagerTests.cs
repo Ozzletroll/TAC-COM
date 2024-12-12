@@ -241,6 +241,11 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestGetAudioDevices()
         {
+            var mockMMDeviceEnumerator = new Mock<IMMDeviceEnumeratorService>();
+            mockMMDeviceEnumerator.Setup(enumerator => enumerator.GetInputDevices()).Verifiable();
+            mockMMDeviceEnumerator.Setup(enumerator => enumerator.GetOutputDevices()).Verifiable();
+
+            audioManager.EnumeratorService = mockMMDeviceEnumerator.Object;
 
             bool inputPropertyChangeRaised = false;
             var inputDevicesProperty = nameof(audioManager.InputDevices);
@@ -262,8 +267,8 @@ namespace Tests.UnitTests.ModelTests
 
             audioManager.GetAudioDevices();
 
-            Assert.IsTrue(audioManager.InputDevices.Count > 0);
-            Assert.IsTrue(audioManager.OutputDevices.Count > 0);
+            mockMMDeviceEnumerator.Verify(enumerator => enumerator.GetInputDevices(), Times.Once);
+            mockMMDeviceEnumerator.Verify(enumerator => enumerator.GetOutputDevices(), Times.Once);
 
             Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
