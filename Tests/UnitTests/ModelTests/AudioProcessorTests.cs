@@ -161,5 +161,34 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(output);
             Assert.IsInstanceOfType(output, typeof(IWaveSource));
         }
+
+        [TestMethod]
+        public void TestSetMixerLevels()
+        {
+            audioProcessor = new AudioProcessor()
+            {
+                HasInitialised = true,
+            };
+
+            var wetNoiseMixLevel = new VolumeSource(new MockSampleSource());
+
+            FieldInfo? wetNoiseMixLevelField = typeof(AudioProcessor).GetField("wetNoiseMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            wetNoiseMixLevelField?.SetValue(audioProcessor, wetNoiseMixLevel);
+
+            var dryMixLevel = new VolumeSource(new MockSampleSource());
+
+            FieldInfo? dryMixLevelField = typeof(AudioProcessor).GetField("dryMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            dryMixLevelField?.SetValue(audioProcessor, dryMixLevel);
+
+            audioProcessor.SetMixerLevels(true);
+
+            Assert.IsTrue(wetNoiseMixLevel.Volume == 1);
+            Assert.IsTrue(dryMixLevel.Volume == 0);
+
+            audioProcessor.SetMixerLevels(false);
+
+            Assert.IsTrue(wetNoiseMixLevel.Volume == 0);
+            Assert.IsTrue(dryMixLevel.Volume == 1);
+        }
     }
 }
