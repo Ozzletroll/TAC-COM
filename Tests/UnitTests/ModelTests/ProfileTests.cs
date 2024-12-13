@@ -25,7 +25,7 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestFileServiceProperty()
         {
-            var newPropertyValue = new SFXFileService();
+            var newPropertyValue = new SFXFileService("Static/SFX");
             testProfile.FileService = newPropertyValue;
             Assert.AreEqual(testProfile.FileService, newPropertyValue);
         }
