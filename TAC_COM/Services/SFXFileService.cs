@@ -5,26 +5,28 @@ using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
-    public class SFXFileService : ISFXFileService
+    public class SFXFileService(string filepath) : ISFXFileService
     {
+        private readonly string sfxFilePath = filepath;
+
         public IWaveSource GetOpenSFX(string fileSuffix)
         {
             var sfxName = "GateOpen" + fileSuffix;
-            var filename = GetFile("Static/SFX/GateOpen", sfxName);
+            var filename = GetFile(sfxFilePath + "/GateOpen", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
         public IWaveSource GetCloseSFX(string profile)
         {
             var sfxName = "GateClose" + profile;
-            var filename = GetFile("Static/SFX/GateClose", sfxName);
+            var filename = GetFile(sfxFilePath + "/GateClose", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 
         public IWaveSource GetNoiseSFX(string profile)
         {
             var sfxName = "Noise" + profile;
-            var filename = GetFile("Static/SFX/Noise", sfxName);
+            var filename = GetFile(sfxFilePath + "/Noise", sfxName);
             return CodecFactory.Instance.GetCodec(filename).ToMono();
         }
 

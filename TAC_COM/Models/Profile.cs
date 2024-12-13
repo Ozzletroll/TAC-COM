@@ -6,7 +6,7 @@ namespace TAC_COM.Models
 {
     public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon) : IProfile
     {
-        private ISFXFileService fileService = new SFXFileService();
+        private ISFXFileService fileService = new SFXFileService("Static/SFX");
         public ISFXFileService FileService
         {
             get => fileService;
