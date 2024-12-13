@@ -27,5 +27,15 @@ namespace Tests.UnitTests.ServiceTests
             Assert.IsInstanceOfType(output, typeof(IWaveSource));
             Assert.IsTrue(output.WaveFormat.Channels == 1);
         }
+
+        [TestMethod]
+        public void TestGetNoiseSFX()
+        {
+            var output = fileService.GetNoiseSFX("TEST");
+
+            Assert.IsNotNull(output);
+            Assert.IsInstanceOfType(output, typeof(IWaveSource));
+            Assert.IsTrue(output.WaveFormat.Channels == 1);
+        }
     }
 }
