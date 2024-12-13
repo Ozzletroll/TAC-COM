@@ -10,6 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MockResources\MockSFX\GateClose\GateCloseTEST.WAV" />
+    <None Remove="MockResources\MockSFX\GateOpen\GateOpenTEST.WAV" />
+    <None Remove="MockResources\MockSFX\Noise\NoiseTEST.WAV" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MockResources\MockSFX\GateClose\GateCloseTEST.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MockResources\MockSFX\GateOpen\GateOpenTEST.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MockResources\MockSFX\Noise\NoiseTEST.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
