@@ -225,8 +225,9 @@ namespace TAC_COM.Models
             {
                 outputSampleSource
                     = outputSampleSource.AppendSource(x
-                    => new DistortionWrapper(x, (DistortionMode)activeProfile.Settings.DistortionMode)
+                    => new DistortionWrapper(x)
                     {
+                        Mode = (DistortionMode)activeProfile.Settings.DistortionMode,
                         InputGainDB = activeProfile.Settings.DistortionInput,
                         OutputGainDB = activeProfile.Settings.DistortionOutput,
                         Wet = activeProfile.Settings.DistortionWet,

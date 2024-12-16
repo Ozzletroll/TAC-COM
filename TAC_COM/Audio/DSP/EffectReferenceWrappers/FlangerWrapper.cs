@@ -30,7 +30,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
-        public float LFOFrequency
+        public float LfoFrequency
         {
             get => flanger.LfoFrequency;
             set
