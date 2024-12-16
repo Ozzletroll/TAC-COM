@@ -6,42 +6,42 @@
     <Color x:Key="{x:Static adonisUi:Colors.AccentColor}">#ff3300</Color>
 
     <!--Basic text-->
-    <Color x:Key="{x:Static adonisUi:Colors.ForegroundColor}">#ffffff</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.ForegroundColor}">#FFFFFF</Color>
 
     <!--Button interaction text-->
     <Color x:Key="{x:Static adonisUi:Colors.AccentForegroundColor}">#ff491b</Color>
 
     <!--Minimise button hover colour-->
-    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonHighlightColor}">#6e2e56</Color>
-    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonInteractionColor}">#63203f</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonHighlightColor}">#ffab24</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.WindowButtonInteractionColor}">#ff4e00</Color>
 
     <!--Background-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer0BackgroundColor}">#1c1a1f</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer0BackgroundColor}">#2C2C2C</Color>
 
     <!--Inactive dropdown menu background, Sliders-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#393144</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#393939</Color>
 
     <!--Hover gradient-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#1f1f1f</Color>
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#313131</Color>
-    <!--Dropdown border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#ff3300</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#6c6c6c</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#4B4B4B</Color>
+    <!--Dropdown background-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#212121</Color>
     <!--Dropdown border-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#ff8717</Color>
 
     <!--Enable/disable/edit buttons-->
     <!--Toggle Off-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#2f233d</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2BackgroundColor}">#2b2b2b</Color>
     <!--Toggle On-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#6e2e56</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2HighlightColor}">#4f4f4f</Color>
     <!--Border-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer2BorderColor}">#ff3300</Color>
     <!--Text-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer2IntenseHighlightColor}">#ffffff</Color>
     <!--Hover-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#ff8717</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer2InteractionColor}">#595959</Color>
     <!--Click-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#6e2e56</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#E06500</Color>
 
     <!--Dial-->
     <!--Border-->
