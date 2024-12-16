@@ -1,5 +1,5 @@
 ﻿using NWaves.Operations;
-using TAC_COM.Audio.DSP.NWaves;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains

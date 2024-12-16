@@ -1,7 +1,7 @@
 ﻿using CSCore;
 using NWaves.Operations;
 
-namespace TAC_COM.Audio.DSP.NWaves
+namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
     public class DynamicsProcessorWrapper(ISampleSource inputSource) : ISampleSource
     {

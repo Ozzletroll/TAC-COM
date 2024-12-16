@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.ViewModels
 {

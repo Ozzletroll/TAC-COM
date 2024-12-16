@@ -1,7 +1,7 @@
 ﻿using CSCore;
 using NWaves.Effects;
 
-namespace TAC_COM.Audio.DSP.NWaves
+namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
     public class RobotEffectWrapper(ISampleSource inputSource) : ISampleSource
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace TAC_COM.ViewModels
+namespace TAC_COM.Utilities
 {
     public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {

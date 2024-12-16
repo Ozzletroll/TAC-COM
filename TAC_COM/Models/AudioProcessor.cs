@@ -5,7 +5,7 @@ using CSCore.Streams.Effects;
 using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
-using TAC_COM.Audio.DSP.NWaves;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Models
