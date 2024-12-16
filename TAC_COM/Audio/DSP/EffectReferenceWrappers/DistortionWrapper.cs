@@ -3,10 +3,19 @@ using NWaves.Effects;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
-    public class DistortionWrapper(ISampleSource inputSource, DistortionMode mode) : ISampleSource
+    public class DistortionWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
-        private readonly DistortionEffect distortionEffect = new(mode);
+        private readonly DistortionEffect distortionEffect = new(DistortionMode.SoftClipping);
+
+        public DistortionMode Mode
+        {
+            get => distortionEffect.Mode;
+            set
+            {
+                distortionEffect.Mode = value;
+            }
+        }
 
         public float Wet
         {
