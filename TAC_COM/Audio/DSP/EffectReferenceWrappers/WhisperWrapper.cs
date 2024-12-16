@@ -65,6 +65,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
         }
     }
 }
