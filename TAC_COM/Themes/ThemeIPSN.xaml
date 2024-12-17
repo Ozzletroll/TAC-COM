@@ -27,7 +27,7 @@
     <!--Dropdown border-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#9af5a4</Color>
     <!--Dropdown hover border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#9af5a4</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#3bff51</Color>
 
     <!--Enable/disable/edit buttons-->
     <!--Toggle Off-->
