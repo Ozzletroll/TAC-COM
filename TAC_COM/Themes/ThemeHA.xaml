@@ -22,7 +22,7 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer1BackgroundColor}">#393939</Color>
 
     <!--Hover gradient-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#6c6c6c</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#363636</Color>
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#4B4B4B</Color>
     <!--Dropdown background-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#212121</Color>
@@ -50,7 +50,7 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer4HighlightColor}">#ff491b</Color>
 
     <!--Dial normal/hover-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer4BackgroundColor}">#1c1a1f</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer4BackgroundColor}">#1f1f1f</Color>
     <Color x:Key="{x:Static adonisUi:Colors.Layer4IntenseHighlightColor}">#3d3d3d</Color>
 
 </ResourceDictionary>
