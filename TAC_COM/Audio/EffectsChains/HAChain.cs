@@ -1,4 +1,5 @@
-﻿using TAC_COM.Audio.DSP.EffectReferenceWrappers;
+﻿using NWaves.Operations;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
@@ -11,18 +12,21 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
-                    { "BitDepth", 8 }
+                    { "Wet", 0.8f },
+                    { "Dry", 0.2f },
+                    { "BitDepth", 6 }
                 }
             },
-            new(typeof(VocoderEffectWrapper))
+            new(typeof(TubeDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.05f },
-                    { "Dry", 0.95f },
-                    { "Shift", 0.95f },
+                    { "Wet", 0.5f },
+                    { "Dry", 0.5f },
+                    { "InputGainDB", 20 },
+                    { "OutputGainDB", 8 },
+                    { "Q", -0.2f },
+                    { "Distortion", 20 }
                 }
             },
         ];
@@ -41,6 +45,19 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Feedback", 0.5f }
                 }
            },
+            new(typeof(DynamicsProcessorWrapper))
+            {
+                 Parameters = new Dictionary<string, object>
+                 {
+                     { "Mode", DynamicsMode.Compressor },
+                     { "MinAmplitude", -120 },
+                     { "Threshold", -10 },
+                     { "Ratio", 100 },
+                     { "Attack", 30 },
+                     { "Release", 300 },
+                     { "MakeupGain", 5 },
+                 }
+            }
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
