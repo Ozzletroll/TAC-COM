@@ -44,7 +44,7 @@
                           SelectedItem="{Binding InputDevice}"
                           IsEnabled="{Binding IsSelectable}"
                           Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="14"
-                          IsReadOnly="True" Cursor="Hand"
+                          Cursor="Hand"
                           VerticalAlignment="Center" HorizontalAlignment="Center"
                           BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}">
                     <ComboBox.ItemContainerStyle>
@@ -77,7 +77,7 @@
                           SelectedItem="{Binding OutputDevice}"
                           IsEnabled="{Binding IsSelectable}"
                           Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="14"
-                          IsReadOnly="True" Cursor="Hand"
+                          Cursor="Hand"
                           VerticalAlignment="Center" HorizontalAlignment="Center"
                           BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}">
                     <ComboBox.ItemContainerStyle>
@@ -110,7 +110,7 @@
                           SelectedItem="{Binding ActiveProfile}"
                           IsEnabled="{Binding IsSelectable}"
                           Text="SELECT MANUFACTURER" FontFamily="Calibri" FontSize="14"
-                          IsReadOnly="True" Cursor="Hand"
+                          Cursor="Hand"
                           VerticalAlignment="Center" HorizontalAlignment="Center"
                           BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}">
                     <ComboBox.ItemContainerStyle>

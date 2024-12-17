@@ -24,10 +24,10 @@
     <!--Hover gradient-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#363636</Color>
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#4B4B4B</Color>
-    <!--Dropdown background-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#212121</Color>
     <!--Dropdown border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#ff8717</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#212121</Color>
+    <!--Dropdown hover border-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#ff3300</Color>
 
     <!--Enable/disable/edit buttons-->
     <!--Toggle Off-->

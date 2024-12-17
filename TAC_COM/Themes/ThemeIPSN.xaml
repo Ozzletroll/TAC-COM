@@ -25,9 +25,9 @@
     <Color x:Key="{x:Static adonisUi:Colors.Layer1HighlightColor}">#1f1f1f</Color>
     <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightColor}">#313131</Color>
     <!--Dropdown border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#9af5a4</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1BorderColor}">#94e197</Color>
     <!--Dropdown hover border-->
-    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#3bff51</Color>
+    <Color x:Key="{x:Static adonisUi:Colors.Layer1IntenseHighlightBorderColor}">#9af5a4</Color>
 
     <!--Enable/disable/edit buttons-->
     <!--Toggle Off-->
