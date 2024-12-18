@@ -3,11 +3,27 @@ using CSCore;
 
 namespace TAC_COM.Models
 {
+    /// <summary>
+    /// Represent a reference to an instantiable <see cref="ISampleSource"/> EffectReferenceWrapper,
+    /// to be instantiated by the <see cref="AudioProcessor"/> as part of the signal chain.
+    /// </summary>
+    /// <remarks>
+    /// All DSP effect wrappers found in "/Audio/DSP/EffectReferenceWrappers"
+    /// may be used as an EffectReference type parameter.
+    /// </remarks>
+    /// <param name="type"> The type of the <see cref="ISampleSource"/> DSP effect wrapper.</param>
     public class EffectReference(Type type)
     {
         public Type EffectType = type;
         public Dictionary<string, object>? Parameters;
 
+        /// <summary>
+        /// Creates an instance of the class of the type <see cref="EffectType"/>,
+        /// using the parameters of <see cref="Parameters"/>.
+        /// </summary>
+        /// <param name="sourceParameter"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"> Thrown if effect fails to instantiate. </exception>
         public ISampleSource CreateInstance(ISampleSource? sourceParameter)
         {
             ConstructorInfo? constructor = EffectType.GetConstructors()
