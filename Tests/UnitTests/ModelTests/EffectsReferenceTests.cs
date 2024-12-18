@@ -155,7 +155,7 @@ namespace Tests.UnitTests.ModelTests
             var allEffectReferences = GetAllEffectReferenceWrappers();
             Assert.IsNotNull(allEffectReferences);
 
-            foreach (EffectReference effectReference in allEffectReferences) 
+            foreach (EffectReference effectReference in allEffectReferences)
             {
                 ISampleSource testSampleSource = new MockSampleSource();
 
@@ -165,17 +165,17 @@ namespace Tests.UnitTests.ModelTests
                 Assert.IsInstanceOfType(outputSampleSource, typeof(ISampleSource));
                 Assert.IsNotNull(effectReference.Parameters, "EffectReference was not created with parameters dictionary.");
 
-                foreach (var (parameterName, parameterValue) in effectReference.Parameters) 
-                { 
+                foreach (var (parameterName, parameterValue) in effectReference.Parameters)
+                {
                     // Find the corresponding property in the outputSampleSource
-                    var outputProperty = outputSampleSource.GetType().GetProperty(parameterName); 
-                    if (outputProperty != null) 
-                    { 
+                    var outputProperty = outputSampleSource.GetType().GetProperty(parameterName);
+                    if (outputProperty != null)
+                    {
                         object? outputValue = outputProperty.GetValue(outputSampleSource);
                         Assert.IsNotNull(outputValue);
-                    } 
-                    else 
-                    { 
+                    }
+                    else
+                    {
                         Assert.Fail($"Property '{parameterName}' not found on outputSampleSource.");
                     }
                 }

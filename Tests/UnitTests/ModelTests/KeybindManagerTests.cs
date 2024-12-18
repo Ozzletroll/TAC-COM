@@ -26,11 +26,11 @@ namespace Tests.UnitTests.ModelTests
         public void TestPTTKeyProperty()
         {
             var newPropertyValue = new Keybind(
-                keyCode: VirtualKeyCode.KeyF, 
-                shift: true, 
-                ctrl: false, 
-                alt: false, 
-                isModifier: true, 
+                keyCode: VirtualKeyCode.KeyF,
+                shift: true,
+                ctrl: false,
+                alt: false,
+                isModifier: true,
                 passthrough: false
             );
 
@@ -40,12 +40,12 @@ namespace Tests.UnitTests.ModelTests
             Utils.TestPropertyChange(keybindManager, nameof(keybindManager.PTTKey), newPropertyValue);
             Assert.AreEqual(keybindManager.PTTKey, newPropertyValue);
 
-            foreach (var (key, dictValue) in newPropertyValue.ToDictionary()) 
-            { 
+            foreach (var (key, dictValue) in newPropertyValue.ToDictionary())
+            {
                 mockSettingsService.Verify(
-                    service => service.UpdateAppConfig(key, dictValue), Times.Once); 
+                    service => service.UpdateAppConfig(key, dictValue), Times.Once);
             }
-         }
+        }
 
         [TestMethod]
         public void TestNewPTTKeybindProperty()

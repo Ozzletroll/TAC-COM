@@ -657,11 +657,11 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestOnDataAvailable()
         {
-            var mockInputMeter = new Mock<IPeakMeterWrapper>(); 
-            var mockOutputMeter = new Mock<IPeakMeterWrapper>(); 
+            var mockInputMeter = new Mock<IPeakMeterWrapper>();
+            var mockOutputMeter = new Mock<IPeakMeterWrapper>();
 
-            mockInputMeter.Setup(meter => meter.GetValue()).Returns(42.0f); 
-            mockOutputMeter.Setup(meter => meter.GetValue()).Returns(84.0f); 
+            mockInputMeter.Setup(meter => meter.GetValue()).Returns(42.0f);
+            mockOutputMeter.Setup(meter => meter.GetValue()).Returns(84.0f);
 
             audioManager.InputMeter = mockInputMeter.Object;
             audioManager.OutputMeter = mockOutputMeter.Object;
@@ -671,7 +671,7 @@ namespace Tests.UnitTests.ModelTests
             var onDataAvailable = typeof(AudioManager).GetMethod("OnDataAvailable", BindingFlags.NonPublic | BindingFlags.Instance);
             onDataAvailable?.Invoke(audioManager, [null, new DataAvailableEventArgs([0], 0, 1, new WaveFormat())]);
 
-            Assert.AreEqual(42.0, audioManager.InputPeakMeterValue); 
+            Assert.AreEqual(42.0, audioManager.InputPeakMeterValue);
             Assert.AreEqual(84.0, audioManager.OutputPeakMeterValue);
         }
     }

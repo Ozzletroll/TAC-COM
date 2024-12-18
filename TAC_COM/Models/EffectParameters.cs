@@ -2,6 +2,9 @@
 
 namespace TAC_COM.Models
 {
+    /// <summary>
+    /// Class that stores a <see cref="Profile"/>'s DSP effect settings.
+    /// </summary>
     public class EffectParameters
     {
         public Type? DistortionType;

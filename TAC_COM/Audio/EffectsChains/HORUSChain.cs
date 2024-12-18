@@ -41,7 +41,7 @@ namespace TAC_COM.Audio.EffectsChains
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
-            
+
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;

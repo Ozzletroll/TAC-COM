@@ -438,7 +438,7 @@ namespace TAC_COM.Models
                 }
             }
         }
-        
+
         /// <summary>
         /// Initialises the <see cref="MMDevice"/> of the <see cref="sfxOutput"/> and begins
         /// playback of the given <see cref="IFileSourceWrapper.WaveSource"/>.

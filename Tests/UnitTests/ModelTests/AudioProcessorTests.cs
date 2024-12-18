@@ -36,7 +36,7 @@ namespace Tests.UnitTests.ModelTests
             audioProcessor.HasInitialised = true;
             var userGainControl = new Gain(new MockSampleSource());
 
-            FieldInfo ? userGainControlField = typeof(AudioProcessor).GetField("userGainControl", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? userGainControlField = typeof(AudioProcessor).GetField("userGainControl", BindingFlags.NonPublic | BindingFlags.Instance);
             userGainControlField?.SetValue(audioProcessor, userGainControl);
 
             var newPropertyValue = 3f;
