@@ -11,8 +11,8 @@ using TAC_COM.Models.Interfaces;
 namespace TAC_COM.Models
 {
     /// <summary>
-    /// Class <c>AudioProcessor</c> assembles and mixes the signal chains used by
-    /// the <c>AudioManager</c> Model class.
+    /// Assembles the <see cref="IWaveSource"/> signal processing chain for use
+    /// in the <see cref="AudioManager"/>.
     /// </summary>
     public class AudioProcessor : IAudioProcessor
     {
@@ -93,6 +93,14 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Initialises the various <see cref="SoundInSource"/>'s for use in
+        /// the other signal chains. This method must be called prior to
+        /// <see cref="ReturnCompleteSignalChain"/>.
+        /// </summary>
+        /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> from 
+        /// which the <see cref="SoundInSource"/> is created.</param>
+        /// <param name="profile">The <see cref="Profile"/> to be set as <see cref="activeProfile"/>.</param>
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile)
         {
             inputSource?.Dispose();
@@ -108,16 +116,23 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Returns the full combined signal chain for initialisation with the CSCore soundOut.
+        /// Returns the full combined <see cref="IWaveSource"/> signal chain for 
+        /// initialisation with the CSCore soundOut in the <see cref="AudioManager"/>.
         /// </summary>
+        /// <remarks>
+        /// Three signal chains are combined here:
+        /// The processed microphone input, the unprocessed microphone input
+        /// and a looping background noise source.
+        /// </remarks>
+        /// <returns>The complete assembled <see cref="IWaveSource"/>.</returns>
         public IWaveSource? ReturnCompleteSignalChain()
         {
             if (HasInitialised)
             {
                 var inputSignalChain = InputSignalChain();
-                var sfxSignalChain = DrySignalChain();
+                var drySignalChain = DrySignalChain();
                 var noiseSignalChain = NoiseSignalChain();
-                var mixerSignalChain = MixerSignalChain(inputSignalChain, sfxSignalChain, noiseSignalChain);
+                var mixerSignalChain = MixerSignalChain(inputSignalChain, drySignalChain, noiseSignalChain);
 
                 return mixerSignalChain;
             }
@@ -125,8 +140,10 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Returns the assembled processed microphone input signal chain.
+        /// Returns the assembled processed <see cref="ISampleSource"/> microphone input signal chain,
+        /// applying various DSP effects based on the current <see cref="activeProfile"/>.
         /// </summary>
+        /// <returns> The assembled <see cref="ISampleSource"/> signal chain. </returns>
         private ISampleSource InputSignalChain()
         {
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
@@ -285,9 +302,13 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Returns the assembled parallel processing signal chain, for use in
-        /// the InputSignalChain.
+        /// Returns the assembled parallel processing <see cref="ISampleSource"/> signal chain, for use in
+        /// <see cref="InputSignalChain"/>. This chain uses less pronounced audio effects, 
+        /// and is blended with the processed signal chain in 
+        /// <see cref="InputSignalChain"/> to improve audio clarity.
         /// </summary>
+        /// <param name="parallelSource"> <see cref="ISampleSource"/> representing the unprocessed microphone input. </param>
+        /// <returns> The complete parallel processed <see cref="ISampleSource"/> signal chain. </returns>
         private ISampleSource ParallelProcessedSignalChain(ISampleSource parallelSource)
         {
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
@@ -338,7 +359,8 @@ namespace TAC_COM.Models
                     MakeupGain = 25,
                 });
 
-            var outputSource = compressedSource.AppendSource(x => new Gain(x)
+            ISampleSource outputSource = compressedSource;
+            outputSource = compressedSource.AppendSource(x => new Gain(x)
             {
                 GainDB = 5,
             });
@@ -347,8 +369,9 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Returns the assembled unprocessed input signal chain.
+        /// Returns the assembled unprocessed <see cref="ISampleSource"/> input signal chain.
         /// </summary>
+        /// <returns> The complete <see cref="ISampleSource"/> dry signal chain. </returns>
         private ISampleSource DrySignalChain()
         {
             var sampleSource = passthroughSource.ToSampleSource();
@@ -366,8 +389,12 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Returns the assembled noise signal chain.
+        /// Returns the assembled <see cref="ISampleSource"/> noise signal chain,
+        /// using the <see cref="IWaveSource"/> from the current
+        /// <see cref="Profile.NoiseSource"/> of
+        /// <see cref="activeProfile"/>.
         /// </summary>
+        /// <returns> The complete looping <see cref="ISampleSource"/> noise sfx source.</returns>
         private ISampleSource NoiseSignalChain()
         {
             if (activeProfile != null)
@@ -377,7 +404,8 @@ namespace TAC_COM.Models
                     EnableLoop = true,
                 }.ToSampleSource();
 
-                var output = new Gain(loopSource)
+                ISampleSource output;
+                output = new Gain(loopSource)
                 {
                     GainDB = 15,
                 };
@@ -389,8 +417,24 @@ namespace TAC_COM.Models
 
         /// <summary>
         /// Combines the microphone, noise and dry signal input
-        /// sources using two <c>Mixer</c> classes.
+        /// sources using two <see cref="Mixer"/> classes, which are set
+        /// as <see cref="wetNoiseMixLevel"/> and <see cref="dryMixLevel"/>
+        /// respectively.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="wetNoiseMixLevel"/> represents the mix between the processed "wet"
+        /// signal and the looping background noise source.
+        /// </para>
+        /// <para>
+        /// <see cref="dryMixLevel"/> represents the mix between the output of the 
+        /// <see cref="wetNoiseMixLevel"/> and the unprocessed "dry" signal.
+        /// </para>
+        /// </remarks>
+        /// <param name="wetMix"> The <see cref="ISampleSource"/> representing the processed "wet" signal. </param>
+        /// <param name="dryMix"> The <see cref="ISampleSource"/> represting the unprocessed "dry" signal. </param>
+        /// <param name="noiseMix"> The <see cref="ISampleSource"/> representing the looping noise source. </param>
+        /// <returns> The complete <see cref="IWaveSource"/> mixed signal chain. </returns>
         private IWaveSource MixerSignalChain(ISampleSource wetMix, ISampleSource dryMix, ISampleSource noiseMix)
         {
             // Ensure all sources are mono and same sample rate
@@ -399,7 +443,7 @@ namespace TAC_COM.Models
             noiseMix = noiseMix.ToMono().ChangeSampleRate(sampleRate);
 
             // Mix wet signal with noise source
-            var WetNoiseMixer = new Mixer(1, sampleRate)
+            var wetNoiseMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
@@ -408,31 +452,31 @@ namespace TAC_COM.Models
             wetMixLevel = wetMix.AppendSource(x => new VolumeSource(x));
             noiseMixLevel = noiseMix.AppendSource(x => new VolumeSource(x));
 
-            WetNoiseMixer.AddSource(wetMixLevel);
-            WetNoiseMixer.AddSource(noiseMixLevel);
+            wetNoiseMixer.AddSource(wetMixLevel);
+            wetNoiseMixer.AddSource(noiseMixLevel);
 
             wetMixLevel.Volume = 1;
             noiseMixLevel.Volume = UserNoiseLevel;
 
             // Mix combined wet + noise signal with dry signal
-            var WetDryMixer = new Mixer(1, sampleRate)
+            var wetDryMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
                 DivideResult = true,
             };
 
-            wetNoiseMixLevel = WetNoiseMixer.AppendSource(x => new VolumeSource(x));
+            wetNoiseMixLevel = wetNoiseMixer.AppendSource(x => new VolumeSource(x));
             dryMixLevel = dryMix.AppendSource(x => new VolumeSource(x));
 
-            WetDryMixer.AddSource(wetNoiseMixLevel);
-            WetDryMixer.AddSource(dryMixLevel);
+            wetDryMixer.AddSource(wetNoiseMixLevel);
+            wetDryMixer.AddSource(dryMixLevel);
 
             // Set initial levels
             wetNoiseMixLevel.Volume = 0;
             dryMixLevel.Volume = 1;
 
             // Compress dynamics for final output
-            var compressedOutput = WetDryMixer.ToWaveSource();
+            var compressedOutput = wetDryMixer.ToWaveSource();
             compressedOutput
                 .AppendSource(x => new DmoCompressorEffect(x)
                 {
@@ -446,6 +490,20 @@ namespace TAC_COM.Models
             return compressedOutput;
         }
 
+        /// <summary>
+        /// Sets the respective volume levels of the <see cref="wetNoiseMixLevel"/> and <see cref="dryMixLevel"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When <paramref name="bypassState"/> is set to true, <see cref="wetNoiseMixLevel"/>'s volume is
+        /// set to 1 and <see cref="dryMixLevel"/> is set to 0, causing only the processed "wet"
+        /// signal to be audible.
+        /// </para>
+        /// When <paramref name="bypassState"/> is set to false, <see cref="wetNoiseMixLevel"/>'s volume is
+        /// set to 0 and <see cref="dryMixLevel"/> is set to 1, causing only the unprocessed "dry"
+        /// signal to be audible.
+        /// </remarks>
+        /// <param name="bypassState"> Boolean representing <see cref="AudioManager.BypassState"/>. </param>
         public void SetMixerLevels(bool bypassState)
         {
             if (HasInitialised)
