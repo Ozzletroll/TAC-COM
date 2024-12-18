@@ -475,7 +475,7 @@ namespace Tests.UnitTests.ModelTests
             var inputValue = inputField?.GetValue(audioManager);
             Assert.AreEqual(inputValue, mockWasapiInput.Object);
 
-            FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? micOutputField = typeof(AudioManager).GetField("output", BindingFlags.NonPublic | BindingFlags.Instance);
             var outputValue = micOutputField?.GetValue(audioManager);
             Assert.AreEqual(outputValue, mockWasapiOut.Object);
 
@@ -506,7 +506,7 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
             inputField?.SetValue(audioManager, mockWasapiInput.Object);
 
-            FieldInfo? OutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? OutputField = typeof(AudioManager).GetField("output", BindingFlags.NonPublic | BindingFlags.Instance);
             OutputField?.SetValue(audioManager, mockWasapiOutput.Object);
 
             await audioManager.ToggleStateAsync();

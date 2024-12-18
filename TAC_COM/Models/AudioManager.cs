@@ -9,15 +9,24 @@ using TAC_COM.Utilities;
 
 namespace TAC_COM.Models
 {
+    /// <summary>
+    /// Class responsible for controlling and exposing audio device state, 
+    /// playback state and various other properties to be exposed to the viewmodel.
+    /// </summary>
     public class AudioManager : NotifyProperty, IAudioManager
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
         private string? lastOutputDeviceName;
         private IWasapiCaptureWrapper? input;
-        private IWasapiOutWrapper? micOutput;
+        private IWasapiOutWrapper? output;
         private IWasapiOutWrapper? sfxOutput;
         private const float SFXVolume = 0.3f;
+
+        public AudioManager()
+        {
+            GetAudioDevices();
+        }
 
         private IAudioProcessor audioProcessor = new AudioProcessor();
         public IAudioProcessor AudioProcessor
@@ -202,21 +211,31 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Uses the <see cref="EnumeratorService"/> to get all
+        /// input and output devices, setting the values of the <see cref="InputDevices"/> 
+        /// and <see cref="OutputDevices"/> properties.
+        /// </summary>
         public void GetAudioDevices()
         {
             InputDevices.Clear();
             OutputDevices.Clear();
 
-            InputDevices = enumeratorService.GetInputDevices();
-            OutputDevices = enumeratorService.GetOutputDevices();
+            InputDevices = EnumeratorService.GetInputDevices();
+            OutputDevices = EnumeratorService.GetOutputDevices();
 
             OnPropertyChanged(nameof(InputDevices));
             OnPropertyChanged(nameof(OutputDevices));
         }
 
+        /// <summary>
+        /// Sets the value of the <see cref="activeInputDevice"/> field to the 
+        /// <see cref="MMDevice"/> of the given (<see cref="IMMDeviceWrapper"/> <paramref name="inputDevice"/>). 
+        /// </summary>
+        /// <param name="inputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetInputDevice(IMMDeviceWrapper inputDevice)
         {
-            var matchingDevice = inputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == inputDevice.FriendlyName);
+            var matchingDevice = InputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == inputDevice.FriendlyName);
             if (matchingDevice != null)
             {
                 activeInputDevice = matchingDevice.Device;
@@ -224,9 +243,14 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Sets the value of the <see cref="activeOutputDevice"/> property to the 
+        /// <see cref="MMDevice"/> of the given (<see cref="IMMDeviceWrapper"/> <paramref name="outputDevice"/>). 
+        /// </summary>
+        /// <param name="outputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            var matchingDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == outputDeviceWrapper.FriendlyName);
+            var matchingDevice = OutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == outputDeviceWrapper.FriendlyName);
             if (matchingDevice != null)
             {
                 activeOutputDevice = matchingDevice.Device;
@@ -235,13 +259,17 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Checks if the <see cref="activeOutputDevice"/> has become disposed, and attempts to reset it 
+        /// to a device matching the <see cref="MMDevice.FriendlyName"/> of <see cref="lastOutputDeviceName"/>.
+        /// </summary>
         public void ResetOutputDevice()
         {
             if (activeOutputDevice is null) return;
             if (activeOutputDevice.IsDisposed)
             {
                 GetAudioDevices();
-                var refoundOutputDevice = outputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == lastOutputDeviceName);
+                var refoundOutputDevice = OutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == lastOutputDeviceName);
                 if (refoundOutputDevice != null)
                 {
                     SetOutputDevice(refoundOutputDevice);
@@ -251,6 +279,12 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Checks the <see cref="state"/> and asynchronously calls
+        /// either <see cref="StartAudioAsync"/> or <see cref="StopAudioAsync"/>,
+        /// starting or ending audio recording/playback.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         public async Task ToggleStateAsync()
         {
             if (state)
@@ -268,6 +302,10 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Checks the current <see cref="state"/> and calls <see cref="PlayGateSFXAsync"/>.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         public async Task ToggleBypassStateAsync()
         {
             if (!state)
@@ -281,6 +319,12 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Starts audio recording and playback. Initialises recording from the <see cref="activeInputDevice"/>,
+        /// constructing the signal processing chain through the <see cref="AudioProcessor"/>, and starting
+        /// playback to the current <see cref="activeOutputDevice"/>.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task StartAudioAsync()
         {
             await Task.Run(() =>
@@ -288,11 +332,11 @@ namespace TAC_COM.Models
                 if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
                 {
                     input?.Dispose();
-                    micOutput?.Dispose();
+                    output?.Dispose();
 
                     activeProfile.LoadSources();
                     input = WasapiService.CreateWasapiCapture();
-                    micOutput = WasapiService.CreateWasapiOut();
+                    output = WasapiService.CreateWasapiOut();
 
                     ResetOutputDevice();
 
@@ -303,47 +347,74 @@ namespace TAC_COM.Models
 
                     AudioProcessor.Initialise(input, activeProfile);
 
-                    micOutput.Device = activeOutputDevice;
-                    micOutput.Initialize(audioProcessor.ReturnCompleteSignalChain());
-                    micOutput.Stopped += OnOutputStopped;
+                    output.Device = activeOutputDevice;
+                    output.Initialize(audioProcessor.ReturnCompleteSignalChain());
+                    output.Stopped += OnOutputStopped;
 
                     input.Start();
-                    micOutput.Play();
+                    output.Play();
                 }
             });
         }
 
+        /// <summary>
+        /// Stops audio recording and playback, disposing of resources manually.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task StopAudioAsync()
         {
             await Task.Run(() =>
             {
                 input?.Stop();
                 input?.Dispose();
-                micOutput?.Stop();
-                micOutput?.Dispose();
+                output?.Stop();
+                output?.Dispose();
             });
         }
 
+        /// <summary>
+        /// Handles the event when the input recording stops,
+        /// resetting the input peak meter value to zero.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the recording stopped event.</param>
         private void OnInputStopped(object? sender, RecordingStoppedEventArgs e)
         {
             InputPeakMeterValue = 0;
         }
 
+        /// <summary>
+        /// Handles the event when the output playback stops,
+        /// resetting the output peak meter value to zero.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the playback stopped event.</param>
         private void OnOutputStopped(object? sender, PlaybackStoppedEventArgs e)
         {
             OutputPeakMeterValue = 0;
         }
 
+        /// <summary>
+        /// Handles the event when data is available, updating the
+        /// input and output peak meter values with the current meter readings.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
         private void OnDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             InputPeakMeterValue = InputMeter.GetValue();
             OutputPeakMeterValue = OutputMeter.GetValue();
         }
 
+        /// <summary>
+        /// Checks the current <see cref="bypassState"/> and loads the appropriate <see cref="IFileSourceWrapper"/> from
+        /// the <see cref="ActiveProfile"/> before calling <see cref="PlaySFXAsync(IFileSourceWrapper)"/>.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task PlayGateSFXAsync()
         {
             if (activeOutputDevice != null
-                && activeProfile != null)
+                && ActiveProfile != null)
             {
                 if (activeOutputDevice.IsDisposed)
                 {
@@ -353,11 +424,11 @@ namespace TAC_COM.Models
                 IFileSourceWrapper? file;
                 if (bypassState)
                 {
-                    file = activeProfile.OpenSFXSource;
+                    file = ActiveProfile.OpenSFXSource;
                 }
                 else
                 {
-                    file = activeProfile.CloseSFXSource;
+                    file = ActiveProfile.CloseSFXSource;
                 }
 
                 if (file != null)
@@ -367,7 +438,13 @@ namespace TAC_COM.Models
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Initialises the <see cref="MMDevice"/> of the <see cref="sfxOutput"/> and begins
+        /// playback of the given <see cref="IFileSourceWrapper.WaveSource"/>.
+        /// </summary>
+        /// <param name="fileSourceWrapper">The <see cref="IFileSourceWrapper"/> to be played.</param>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task PlaySFXAsync(IFileSourceWrapper fileSourceWrapper)
         {
             await Task.Run(() =>
@@ -384,11 +461,6 @@ namespace TAC_COM.Models
                     sfxOutput.Play();
                 }
             });
-        }
-
-        public AudioManager()
-        {
-            GetAudioDevices();
         }
     }
 }
