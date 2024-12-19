@@ -4,7 +4,7 @@ using CSCore;
 namespace TAC_COM.Models
 {
     /// <summary>
-    /// Represent a reference to an instantiable <see cref="ISampleSource"/> EffectReferenceWrapper,
+    /// Represents a reference to an instantiable <see cref="ISampleSource"/> EffectReferenceWrapper,
     /// to be instantiated by the <see cref="AudioProcessor"/> as part of the signal chain.
     /// </summary>
     /// <remarks>
