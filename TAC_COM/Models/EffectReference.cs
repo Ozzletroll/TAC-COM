@@ -22,7 +22,7 @@ namespace TAC_COM.Models
         /// using the parameters of <see cref="Parameters"/>.
         /// </summary>
         /// <param name="sourceParameter"></param>
-        /// <returns></returns>
+        /// <returns> The <see cref="ISampleSource"/> with the instantiated effect applied.</returns>
         /// <exception cref="InvalidOperationException"> Thrown if effect fails to instantiate. </exception>
         public ISampleSource CreateInstance(ISampleSource? sourceParameter)
         {
