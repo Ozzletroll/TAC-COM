@@ -8,7 +8,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     /// <see cref="ISampleSource"/>.
     /// </summary>
     /// <remarks>
-    /// Can be used as an <see cref="Models.EffectReference"/>.
+    /// Can be used as a <see cref="Models.EffectReference"/>.
     /// </remarks>
     /// <param name="inputSource">The <see cref="ISampleSource"/> to which the effect is to be applied.</param>
     public class BitCrusherWrapper(ISampleSource inputSource) : ISampleSource
