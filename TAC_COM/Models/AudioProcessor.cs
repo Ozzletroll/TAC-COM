@@ -31,6 +31,11 @@ namespace TAC_COM.Models
         private IProfile? activeProfile;
 
         private bool hasInitialised;
+
+        /// <summary>
+        /// Gets or sets the value representing if the <see cref="AudioProcessor"/>
+        /// is initialised and ready for playback and recording.
+        /// </summary>
         public bool HasInitialised
         {
             get => hasInitialised;
@@ -41,6 +46,11 @@ namespace TAC_COM.Models
         }
 
         private float userGainLevel = 0;
+
+        /// <summary>
+        /// Gets or sets the value of the user gain level
+        /// adjustment in decibels.
+        /// </summary>
         public float UserGainLevel
         {
             get => userGainLevel;
@@ -55,6 +65,11 @@ namespace TAC_COM.Models
         }
 
         private float noiseGateThreshold = -45;
+
+        /// <summary>
+        /// Gets or sets the value of the noise gate
+        /// threshold level in decibels.
+        /// </summary>
         public float NoiseGateThreshold
         {
             get => noiseGateThreshold;
@@ -80,6 +95,11 @@ namespace TAC_COM.Models
         }
 
         private float userNoiseLevel = 0.5f;
+
+        /// <summary>
+        /// Gets or sets the value of the looping noise sfx
+        /// volume adjustment as a value between 0 and 1.
+        /// </summary>
         public float UserNoiseLevel
         {
             get => userNoiseLevel;
