@@ -6,6 +6,13 @@ using TAC_COM.Utilities;
 
 namespace TAC_COM.Models
 {
+    /// <summary>
+    /// Class responsible for handling keyboard hook subscriptions, 
+    /// comparing them against the active <see cref="IKeybind"/>, 
+    /// and exposing relevent properties for the 
+    /// <see cref="ViewModels.KeybindWindowViewModel"/>.
+    /// </summary>
+    /// <param name="settingsService"> Dependency injection of the <see cref="ISettingsService"/>.</param>
     public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager
     {
         private IDisposable? pttKeybindSubscription;
@@ -14,6 +21,11 @@ namespace TAC_COM.Models
         private IDisposable? systemKeybindSubscription;
 
         private ISettingsService settingsService = settingsService;
+
+        /// <summary>
+        /// Gets or sets the <see cref="ISettingsService"/> to be
+        /// used save and load user settings.
+        /// </summary>
         public ISettingsService SettingsService
         {
             get => settingsService;
@@ -24,6 +36,12 @@ namespace TAC_COM.Models
         }
 
         private IKeybind? pttKey;
+
+        /// <summary>
+        /// Gets or sets the current push-to-talk keybind,
+        /// updating the config file appropriately. Exposed to the
+        /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
+        /// </summary>
         public IKeybind? PTTKey
         {
             get => pttKey;
@@ -43,6 +61,13 @@ namespace TAC_COM.Models
         }
 
         private IKeybind? newPTTKeybind;
+
+        /// <summary>
+        /// Gets or sets the proposed new push-to-talk keybind
+        /// shown when prompting the user to press the desired
+        /// key combination. Exposed to the
+        /// <see cref="ViewModels.KeybindWindowViewModel"/>.
+        /// </summary>
         public IKeybind? NewPTTKeybind
         {
             get => newPTTKeybind;
@@ -54,6 +79,12 @@ namespace TAC_COM.Models
         }
 
         private bool toggleState;
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if the current
+        /// push-to-talk keybind is pressed. Exposed to the
+        /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
+        /// </summary>
         public bool ToggleState
         {
             get => toggleState;
@@ -65,6 +96,13 @@ namespace TAC_COM.Models
         }
 
         private bool passthroughState;
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if the user
+        /// has selected for the chosen keybind to be passed
+        /// to other applications or not. Exposed to the
+        /// <see cref="ViewModels.KeybindWindowViewModel"/>.
+        /// </summary>
         public bool PassthroughState
         {
             get => passthroughState;
@@ -75,6 +113,13 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Method to handle a <see cref="KeyboardHookEventArgs"/>
+        /// subscription and determine the overall push-to-talk
+        /// toggle state.
+        /// </summary>
+        /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> subscription
+        /// to be evaluated.</param>
         public void TogglePTT(KeyboardHookEventArgs args)
         {
             if (PTTKey != null)
@@ -90,6 +135,12 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Method to toggle the main <see cref="KeyboardHook"/>
+        /// subscription on or off.
+        /// </summary>
+        /// <param name="state"> A boolean state representing whether the
+        /// subscription should be active or not.</param>
         public void TogglePTTKeybindSubscription(bool state)
         {
             if (state) InitialisePTTKeySubscription();
@@ -101,6 +152,27 @@ namespace TAC_COM.Models
             };
         }
 
+        /// <summary>
+        /// Method to initialise the three <see cref="KeyboardHook"/>
+        /// subscriptions required to listen for and handle keypresses.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The first generic subscription is to handle both keyup and keydown events,
+        /// evaluated against the <see cref="IKeybind"/>.
+        /// </para>
+        /// <para>
+        /// The conditional second subscription uses a <see cref="KeyCombinationHandler"/>,
+        /// as we do not need to handle keyup events, and allows the prevention of
+        /// keypresses being passed to other applications.
+        /// </para>
+        /// <para>
+        /// The third subscription is to manually trigger keyup events after
+        /// system key combinations, which would otherwise cause keybinds to
+        /// fail to register on key up. Currently, only "Ctrl + Alt + Del"
+        /// is handled here.
+        /// </para>
+        /// </remarks>
         private void InitialisePTTKeySubscription()
         {
             if (PTTKey == null) return;
@@ -140,12 +212,23 @@ namespace TAC_COM.Models
             });
         }
 
+        /// <summary>
+        /// Method to toggle on or off the <see cref="KeyboardHookEventArgs"/>
+        /// subscription that listens for the proposed new keybind.
+        /// </summary>
+        /// <param name="state"> A boolean state representing whether the
+        /// subscription should be active or not.</param>
         public void ToggleUserKeybindSubscription(bool state)
         {
             if (state) InitialiseUserKeybindSubscription();
             else DisposeKeyboardSubscription(userKeybindSubscription);
         }
 
+        /// <summary>
+        /// Method to initialise the <see cref="KeyboardHook"/> that
+        /// listens for the user's proposed new keybind combination,
+        /// setting the <see cref="NewPTTKeybind"/> property.
+        /// </summary>
         private void InitialiseUserKeybindSubscription()
         {
             userKeybindSubscription
@@ -158,17 +241,30 @@ namespace TAC_COM.Models
                 });
         }
 
+        /// <summary>
+        /// Method to manually dispose of an <see cref="IDisposable"/>
+        /// <see cref="KeyboardHook"/> subscription.
+        /// </summary>
+        /// <param name="subscription"></param>
         private static void DisposeKeyboardSubscription(IDisposable? subscription)
         {
             subscription?.Dispose();
         }
 
+        /// <summary>
+        /// Method to update the current <see cref="PTTKey"/>
+        /// to the value of the currently proposed <see cref="NewPTTKeybind"/>.
+        /// </summary>
         public void UpdateKeybind()
         {
             if (NewPTTKeybind != null) NewPTTKeybind.Passthrough = PassthroughState;
             PTTKey = NewPTTKeybind;
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="KeybindManager"/>,
+        /// restoring the previous keybind settings from the <see cref="ISettingsService"/>.
+        /// </summary>
         public void LoadKeybindSettings()
         {
             PTTKey = new Keybind(

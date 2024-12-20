@@ -10,8 +10,9 @@ using TAC_COM.Utilities;
 namespace TAC_COM.Models
 {
     /// <summary>
-    /// Class responsible for controlling and exposing audio device state, 
-    /// playback state and various other properties to be exposed to the viewmodel.
+    /// Class responsible for controlling audio device state, 
+    /// playback state and various other properties to be exposed via
+    /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
     /// </summary>
     public class AudioManager : NotifyProperty, IAudioManager
     {
