@@ -110,8 +110,7 @@ The threshold in dB at which noise attenuation begins. All input below the given
 The level boost in dB for the processed output signal. Used to normalise input/output levels. Ranges from -10dB to +10dB.
 
 ### Interference
-Sets the level of the processed signal's "background noise" effect during transmission, as well as affecting the overall character of the processed signal. 
-Increases signal distortion at high levels. Ranges from 0% to 100%.
+Sets the level of the processed signal's "background noise" effect during transmission. Ranges from 0% to 100%.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
