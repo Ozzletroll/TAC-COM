@@ -3,7 +3,10 @@ using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
 {
-    internal class IPSNChain : BaseChain
+    /// <summary>
+    /// Effect chain for the IPSN <see cref="Profile"/>.
+    /// </summary>
+    public class IPSNChain : BaseChain
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [

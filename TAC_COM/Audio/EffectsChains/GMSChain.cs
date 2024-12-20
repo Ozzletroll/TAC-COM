@@ -3,6 +3,9 @@ using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
 {
+    /// <summary>
+    /// Effect chain for the GMS <see cref="Profile"/>.
+    /// </summary>
     public class GMSChain : BaseChain
     {
         public static List<EffectReference> PreDistortionEffects { get; } =

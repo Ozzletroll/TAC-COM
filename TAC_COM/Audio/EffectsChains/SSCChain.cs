@@ -4,6 +4,9 @@ using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
 {
+    /// <summary>
+    /// Effect chain for the SSC <see cref="Profile"/>.
+    /// </summary>
     public class SSCChain : BaseChain
     {
         public static List<EffectReference> PreDistortionEffects { get; } =

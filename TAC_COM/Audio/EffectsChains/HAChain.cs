@@ -4,7 +4,10 @@ using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
 {
-    internal class HAChain : BaseChain
+    /// <summary>
+    /// Effect chain for the HA <see cref="Profile"/>.
+    /// </summary>
+    public class HAChain : BaseChain
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [

@@ -3,7 +3,10 @@ using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
 {
-    internal class HORUSChain : BaseChain
+    /// <summary>
+    /// Effect chain for the HORUS <see cref="Profile"/>.
+    /// </summary>
+    public class HORUSChain : BaseChain
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [
