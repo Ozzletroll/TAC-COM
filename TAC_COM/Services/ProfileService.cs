@@ -118,7 +118,7 @@ namespace TAC_COM.Services
                         HighpassFrequency = 800,
                         LowpassFrequency = 7000,
                         PeakFrequency = 3000,
-                        GainAdjust = 2,
+                        GainAdjust = 3,
                     }
                 });
 
