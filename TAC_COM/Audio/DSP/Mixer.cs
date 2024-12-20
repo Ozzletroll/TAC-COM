@@ -2,6 +2,10 @@
 
 namespace TAC_COM.Audio.DSP
 {
+    /// <summary>
+    /// Mixer class for mixing multiple <see cref="ISampleSource"/>
+    /// signals.
+    /// </summary>
     public class Mixer : ISampleSource
     {
         private readonly WaveFormat waveFormat;
@@ -9,8 +13,19 @@ namespace TAC_COM.Audio.DSP
         private readonly object lockObj = new();
         private float[]? mixerBuffer;
 
+        /// <summary>
+        /// Gets or sets a value which indicates whether the <see cref="Read"/> 
+        /// method should always provide the requested amount of data.
+        /// For the case that the internal buffer can't offer the requested 
+        /// amount of data, the rest of the requested bytes will be filled up with zeros.
+        /// </summary>
         public bool FillWithZeros { get; set; }
 
+        /// <summary>
+        /// Gets or sets the value representing if the resulting signal
+        /// should be divided, preventing samples exceeding the valid
+        /// range.
+        /// </summary>
         public bool DivideResult { get; set; }
 
         public Mixer(int channelCount, int sampleRate)
@@ -22,6 +37,11 @@ namespace TAC_COM.Audio.DSP
             FillWithZeros = false;
         }
 
+        /// <summary>
+        /// Method to add an <see cref="ISampleSource"/> to the mixer.
+        /// </summary>
+        /// <param name="source">The <see cref="ISampleSource"/> to be added to the mixer.</param>
+        /// <exception cref="ArgumentException"></exception>
         public void AddSource(ISampleSource source)
         {
             ArgumentNullException.ThrowIfNull(source);
@@ -41,6 +61,10 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
+        /// <summary>
+        /// Method to remove an <see cref="ISampleSource"/> from the mixer.
+        /// </summary>
+        /// <param name="source"> The <see cref="ISampleSource"/> to be removed.</param>
         public void RemoveSource(ISampleSource source)
         {
             lock (lockObj)
@@ -52,6 +76,12 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
+        /// <summary>
+        /// Method to check if a given <see cref="ISampleSource"/> is
+        /// currently added to the mixer.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public bool Contains(ISampleSource source)
         {
             if (source == null)
@@ -61,6 +91,14 @@ namespace TAC_COM.Audio.DSP
             return sampleSources.Contains(source);
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> Read method,
+        /// in which the sources are mixed together.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public int Read(float[] buffer, int offset, int count)
         {
             int numberOfStoredSamples = 0;
@@ -141,13 +179,25 @@ namespace TAC_COM.Audio.DSP
             return numberOfStoredSamples;
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> CanSeek
+        /// property.
+        /// </summary>
         public bool CanSeek { get { return false; } }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> WaveFormat
+        /// property.
+        /// </summary>
         public WaveFormat WaveFormat
         {
             get { return waveFormat; }
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> Position
+        /// property.
+        /// </summary>
         public long Position
         {
             get { return 0; }
@@ -157,11 +207,19 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> Length
+        /// property.
+        /// </summary>
         public long Length
         {
             get { return 0; }
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="ISampleSource"/> Dispose
+        /// method.
+        /// </summary>
         public void Dispose()
         {
             lock (lockObj)
@@ -172,6 +230,7 @@ namespace TAC_COM.Audio.DSP
                     sampleSources.Remove(sampleSource);
                 }
             }
+            GC.SuppressFinalize(this);
         }
     }
 }
