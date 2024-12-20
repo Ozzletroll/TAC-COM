@@ -28,6 +28,12 @@ namespace TAC_COM.Audio.DSP
         /// </summary>
         public bool DivideResult { get; set; }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Mixer"/> class
+        /// with the desired number of channels and sample rate.
+        /// </summary>
+        /// <param name="channelCount"> The number of channels to mix.</param>
+        /// <param name="sampleRate"> The sample rate of the input signals.</param>
         public Mixer(int channelCount, int sampleRate)
         {
             ArgumentOutOfRangeException.ThrowIfLessThan(channelCount, 1);

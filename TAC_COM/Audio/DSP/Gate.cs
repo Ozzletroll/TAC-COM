@@ -107,6 +107,12 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Gate"/> class,
+        /// applying the processing to the <see cref="ISampleSource"/>.
+        /// </summary>
+        /// <param name="inputSource"> The <see cref="ISampleSource"/> to which 
+        /// the processing is be applied.</param>
         public Gate(ISampleSource inputSource)
         {
             source = inputSource;

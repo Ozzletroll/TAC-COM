@@ -24,6 +24,10 @@ namespace TAC_COM.Models
         private IWasapiOutWrapper? sfxOutput;
         private const float SFXVolume = 0.3f;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioManager"/>,
+        /// and gets all currently connected input and output devices.
+        /// </summary>
         public AudioManager()
         {
             GetAudioDevices();
