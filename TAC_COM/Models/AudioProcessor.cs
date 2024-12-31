@@ -31,11 +31,6 @@ namespace TAC_COM.Models
         private IProfile? activeProfile;
 
         private bool hasInitialised;
-
-        /// <summary>
-        /// Gets or sets the value representing if the <see cref="AudioProcessor"/>
-        /// is initialised and ready for playback and recording.
-        /// </summary>
         public bool HasInitialised
         {
             get => hasInitialised;
@@ -46,11 +41,6 @@ namespace TAC_COM.Models
         }
 
         private float userGainLevel = 0;
-
-        /// <summary>
-        /// Gets or sets the value of the user gain level
-        /// adjustment in decibels.
-        /// </summary>
         public float UserGainLevel
         {
             get => userGainLevel;
@@ -65,11 +55,6 @@ namespace TAC_COM.Models
         }
 
         private float noiseGateThreshold = -45;
-
-        /// <summary>
-        /// Gets or sets the value of the noise gate
-        /// threshold level in decibels.
-        /// </summary>
         public float NoiseGateThreshold
         {
             get => noiseGateThreshold;
@@ -95,11 +80,6 @@ namespace TAC_COM.Models
         }
 
         private float userNoiseLevel = 0.5f;
-
-        /// <summary>
-        /// Gets or sets the value of the looping noise sfx
-        /// volume adjustment as a value between 0 and 1.
-        /// </summary>
         public float UserNoiseLevel
         {
             get => userNoiseLevel;
@@ -113,14 +93,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Initialises the various <see cref="SoundInSource"/>'s for use in
-        /// the other signal chains. This method must be called prior to
-        /// <see cref="ReturnCompleteSignalChain"/>.
-        /// </summary>
-        /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> from 
-        /// which the <see cref="SoundInSource"/> is created.</param>
-        /// <param name="profile">The <see cref="Profile"/> to be set as <see cref="activeProfile"/>.</param>
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile)
         {
             inputSource?.Dispose();
@@ -135,10 +107,7 @@ namespace TAC_COM.Models
             HasInitialised = true;
         }
 
-        /// <summary>
-        /// Returns the full combined <see cref="IWaveSource"/> signal chain for 
-        /// initialisation with the CSCore soundOut in the <see cref="AudioManager"/>.
-        /// </summary>
+        /// <inheritdoc/>
         /// <remarks>
         /// Three signal chains are combined here:
         /// The processed microphone input, the unprocessed microphone input
@@ -510,9 +479,7 @@ namespace TAC_COM.Models
             return compressedOutput;
         }
 
-        /// <summary>
-        /// Sets the respective volume levels of the <see cref="wetNoiseMixLevel"/> and <see cref="dryMixLevel"/>.
-        /// </summary>
+        /// <inheritdoc/>
         /// <remarks>
         /// <para>
         /// When <paramref name="bypassState"/> is set to true, <see cref="wetNoiseMixLevel"/>'s volume is
