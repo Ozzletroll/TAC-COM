@@ -9,10 +9,6 @@ namespace TAC_COM.Models
     /// </summary>
     public class ApplicationContextWrapper : IApplicationContextWrapper
     {
-        /// <summary>
-        /// Gets or sets the main <see cref="Window"/> of the 
-        /// application context.
-        /// </summary>
         public Window MainWindow
         {
             get => Application.Current.MainWindow;
@@ -22,10 +18,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="ResourceDictionary"/> of the
-        /// application.
-        /// </summary>
         public ResourceDictionary Resources
         {
             get => Application.Current.Resources;

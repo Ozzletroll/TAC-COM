@@ -93,11 +93,6 @@ namespace TAC_COM.Models
         }
 
         private ObservableCollection<IMMDeviceWrapper> inputDevices = [];
-
-        /// <summary>
-        /// Gets or sets all the <see cref="IMMDeviceWrapper"/>s
-        /// representing connected input devices.
-        /// </summary>
         public ObservableCollection<IMMDeviceWrapper> InputDevices
         {
             get => inputDevices;
@@ -108,11 +103,6 @@ namespace TAC_COM.Models
         }
 
         private ObservableCollection<IMMDeviceWrapper> outputDevices = [];
-
-        /// <summary>
-        /// Gets or sets all the <see cref="IMMDeviceWrapper"/>s
-        /// representing connected output devices.
-        /// </summary>
         public ObservableCollection<IMMDeviceWrapper> OutputDevices
         {
             get => outputDevices;
@@ -124,10 +114,7 @@ namespace TAC_COM.Models
 
         private bool state;
 
-        /// <summary>
-        /// Gets or sets the value representing the overall state of the
-        /// <see cref="IAudioManager"/>.
-        /// </summary>
+        /// <inheritdoc/>
         /// <remarks>
         /// <para>
         /// True: Playback and recording enabled.
@@ -148,11 +135,7 @@ namespace TAC_COM.Models
 
         private bool bypassState;
 
-        /// <summary>
-        /// Gets or sets the value representing whether the
-        /// "wet" processed signal or "dry" unprocessed signal 
-        /// is outputted to the selected output device.
-        /// </summary>
+        /// <inheritdoc/>
         /// <remarks>
         /// <para>
         /// True: Audio sfx processing is applied, "wet" signal outputted.
@@ -205,11 +188,6 @@ namespace TAC_COM.Models
         }
 
         private float inputPeakMeterValue;
-
-        /// <summary>
-        /// Gets or sets the value of the input level,
-        /// to be exposed to the viewmodel.
-        /// </summary>
         public float InputPeakMeterValue
         {
             get => inputPeakMeterValue;
@@ -221,11 +199,6 @@ namespace TAC_COM.Models
         }
 
         private float outputPeakMeterValue;
-
-        /// <summary>
-        /// Gets or sets the value of the output level,
-        /// to be exposed to the viewmodel.
-        /// </summary>
         public float OutputPeakMeterValue
         {
             get => outputPeakMeterValue;
@@ -237,11 +210,6 @@ namespace TAC_COM.Models
         }
 
         private float outputGainLevel;
-
-        /// <summary>
-        /// Gets or sets the value of the output gain
-        /// level adjustment in decibels, to be exposed to the viewmodel.
-        /// </summary>
         public float OutputGainLevel
         {
             get => outputGainLevel;
@@ -253,10 +221,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets the formatted string value of the output
-        /// gain level in decibels.
-        /// </summary>
         public string OutputGainLevelString
         {
             get
@@ -266,10 +230,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets or sets the value of the noise gate threshold level 
-        /// in decibels, to be exposed to the viewmodel.
-        /// </summary>
         public float NoiseGateThreshold
         {
             get => audioProcessor.NoiseGateThreshold;
@@ -280,10 +240,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets the formatted string value of the noise gate
-        /// threshold level in decibels.
-        /// </summary>
         public string NoiseGateThresholdString
         {
             get
@@ -293,11 +249,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets or sets the value of the looping background noise
-        /// sfx channel volume as value between 0 and 1,
-        /// to be exposed to the viewmodel.
-        /// </summary>
         public float NoiseLevel
         {
             get => audioProcessor.UserNoiseLevel;
@@ -308,11 +259,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Gets the formatted string value of the looping
-        /// background noise sfx channel volume adjustment
-        /// as a percentage.
-        /// </summary>
         public string NoiseLevelString
         {
             get
@@ -394,7 +340,7 @@ namespace TAC_COM.Models
         /// either <see cref="StartAudioAsync"/> or <see cref="StopAudioAsync"/>,
         /// starting or ending audio recording/playback.
         /// </summary>
-        /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         public async Task ToggleStateAsync()
         {
             if (state)
