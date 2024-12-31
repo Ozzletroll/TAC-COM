@@ -21,10 +21,6 @@ namespace TAC_COM.Models
     public class Keybind(VirtualKeyCode keyCode, bool shift, bool ctrl, bool alt, bool isModifier, bool passthrough) : IKeybind
     {
         private VirtualKeyCode keycode = keyCode;
-
-        /// <summary>
-        /// Gets or sets the desired key value.
-        /// </summary>
         public VirtualKeyCode KeyCode
         {
             get => keycode;
@@ -35,11 +31,6 @@ namespace TAC_COM.Models
         }
 
         private bool isModifier = isModifier;
-
-        /// <summary>
-        /// Gets or sets a value representing if the
-        /// keybind uses any modifier key.
-        /// </summary>
         public bool IsModifier
         {
             get => isModifier;
@@ -50,11 +41,6 @@ namespace TAC_COM.Models
         }
 
         private bool shift = shift;
-
-        /// <summary>
-        /// Gets or sets a value representing if the
-        /// keybind uses the Shift key.
-        /// </summary>
         public bool Shift
         {
             get => shift;
@@ -65,11 +51,6 @@ namespace TAC_COM.Models
         }
 
         private bool ctrl = ctrl;
-
-        /// <summary>
-        /// Gets or sets a value representing if the
-        /// keybind uses the Ctrl key.
-        /// </summary>
         public bool Ctrl
         {
             get => ctrl;
@@ -80,11 +61,6 @@ namespace TAC_COM.Models
         }
 
         private bool alt = alt;
-
-        /// <summary>
-        /// Gets or sets a value representing if the
-        /// keybind uses the Alt key.
-        /// </summary>
         public bool Alt
         {
             get => alt;
@@ -96,10 +72,7 @@ namespace TAC_COM.Models
 
         private bool passthrough = passthrough;
 
-        /// <summary>
-        /// Gets or sets a value representing if the keybind should be allowed
-        /// to reach other applications, or should only be handled by TAC-COM.
-        /// </summary>
+        /// <inheritdoc/>
         /// <remarks>
         /// <para>
         /// True: Allow keybind to reach other applications.
@@ -117,12 +90,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Method to determine if the keybind is currently pressed.
-        /// </summary>
-        /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> to be
-        /// checked against.</param>
-        /// <returns> A boolean representing if the keybind is currently pressed.</returns>
         public bool IsPressed(KeyboardHookEventArgs args)
         {
             if (args.Key != KeyCode) return false;
@@ -140,13 +107,6 @@ namespace TAC_COM.Models
             else return false;
         }
 
-        /// <summary>
-        /// Method to determine if the keybind has been released.
-        /// </summary>
-        /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> to be
-        /// checked against.</param>
-        /// <returns> A boolean representing if the keybind has been
-        /// released.</returns>
         public bool IsReleased(KeyboardHookEventArgs args)
         {
             if (args.Key == KeyCode)
@@ -159,11 +119,6 @@ namespace TAC_COM.Models
             return false;
         }
 
-        /// <summary>
-        /// Method to format and return the keybind name as 
-        /// a string, for display in the View.
-        /// </summary>
-        /// <returns> The formatted keybind name string.</returns>
         public override string ToString()
         {
             var output = new StringBuilder();
@@ -204,11 +159,6 @@ namespace TAC_COM.Models
             return output.ToString();
         }
 
-        /// <summary>
-        /// Method to serialise keybind as a dictionary,
-        /// for storing in the config file.
-        /// </summary>
-        /// <returns> The serialised dictionary.</returns>
         public Dictionary<string, object> ToDictionary()
         {
             return new Dictionary<string, object>
