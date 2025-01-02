@@ -482,7 +482,7 @@ namespace Tests.UnitTests.ModelTests
             mockWasapiInput.Verify(input => input.Initialize(), Times.Once());
             mockWasapiInput.Verify(input => input.Start(), Times.Once());
             mockAudioProcessor.Verify(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object), Times.Once());
-            mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Initialise(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
 
             Assert.AreEqual(1, inputDataAvailableHandlers.Count, "DataAvailable event handler not subscribed");
@@ -578,7 +578,7 @@ namespace Tests.UnitTests.ModelTests
 
             mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(true), Times.Once());
             mockFileSourceWrapper.Verify(source => source.SetPosition(new TimeSpan(0)), Times.Once());
-            mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Initialise(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
         }
 
@@ -628,7 +628,7 @@ namespace Tests.UnitTests.ModelTests
 
             mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(false), Times.Once());
             mockFileSourceWrapper.Verify(source => source.SetPosition(new TimeSpan(0)), Times.Once());
-            mockWasapiOut.Verify(output => output.Initialize(mockWaveSource.Object), Times.Once());
+            mockWasapiOut.Verify(output => output.Initialise(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
         }
 

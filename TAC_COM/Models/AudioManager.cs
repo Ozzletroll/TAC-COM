@@ -404,7 +404,7 @@ namespace TAC_COM.Models
                     AudioProcessor.Initialise(input, activeProfile);
 
                     output.Device = activeOutputDevice;
-                    output.Initialize(audioProcessor.ReturnCompleteSignalChain());
+                    output.Initialise(audioProcessor.ReturnCompleteSignalChain());
                     output.Stopped += OnOutputStopped;
 
                     input.Start();
@@ -512,7 +512,7 @@ namespace TAC_COM.Models
 
                     sfxOutput.Device = activeOutputDevice;
 
-                    sfxOutput.Initialize(fileSourceWrapper.WaveSource);
+                    sfxOutput.Initialise(fileSourceWrapper.WaveSource);
                     sfxOutput.Volume = SFXVolume;
                     sfxOutput.Play();
                 }
