@@ -36,12 +36,6 @@ namespace TAC_COM.Models
         }
 
         private IKeybind? pttKey;
-
-        /// <summary>
-        /// Gets or sets the current push-to-talk keybind,
-        /// updating the config file appropriately. Exposed to the
-        /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
-        /// </summary>
         public IKeybind? PTTKey
         {
             get => pttKey;
@@ -61,13 +55,6 @@ namespace TAC_COM.Models
         }
 
         private IKeybind? newPTTKeybind;
-
-        /// <summary>
-        /// Gets or sets the proposed new push-to-talk keybind
-        /// shown when prompting the user to press the desired
-        /// key combination. Exposed to the
-        /// <see cref="ViewModels.KeybindWindowViewModel"/>.
-        /// </summary>
         public IKeybind? NewPTTKeybind
         {
             get => newPTTKeybind;
@@ -79,12 +66,6 @@ namespace TAC_COM.Models
         }
 
         private bool toggleState;
-
-        /// <summary>
-        /// Gets or sets the boolean value representing if the current
-        /// push-to-talk keybind is pressed. Exposed to the
-        /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
-        /// </summary>
         public bool ToggleState
         {
             get => toggleState;
@@ -96,13 +77,6 @@ namespace TAC_COM.Models
         }
 
         private bool passthroughState;
-
-        /// <summary>
-        /// Gets or sets the boolean value representing if the user
-        /// has selected for the chosen keybind to be passed
-        /// to other applications or not. Exposed to the
-        /// <see cref="ViewModels.KeybindWindowViewModel"/>.
-        /// </summary>
         public bool PassthroughState
         {
             get => passthroughState;
@@ -113,13 +87,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Method to handle a <see cref="KeyboardHookEventArgs"/>
-        /// subscription and determine the overall push-to-talk
-        /// toggle state.
-        /// </summary>
-        /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> subscription
-        /// to be evaluated.</param>
         public void TogglePTT(KeyboardHookEventArgs args)
         {
             if (PTTKey != null)
@@ -135,12 +102,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Method to toggle the main <see cref="KeyboardHook"/>
-        /// subscription on or off.
-        /// </summary>
-        /// <param name="state"> A boolean state representing whether the
-        /// subscription should be active or not.</param>
         public void TogglePTTKeybindSubscription(bool state)
         {
             if (state) InitialisePTTKeySubscription();
@@ -212,12 +173,6 @@ namespace TAC_COM.Models
             });
         }
 
-        /// <summary>
-        /// Method to toggle on or off the <see cref="KeyboardHookEventArgs"/>
-        /// subscription that listens for the proposed new keybind.
-        /// </summary>
-        /// <param name="state"> A boolean state representing whether the
-        /// subscription should be active or not.</param>
         public void ToggleUserKeybindSubscription(bool state)
         {
             if (state) InitialiseUserKeybindSubscription();
@@ -251,20 +206,12 @@ namespace TAC_COM.Models
             subscription?.Dispose();
         }
 
-        /// <summary>
-        /// Method to update the current <see cref="PTTKey"/>
-        /// to the value of the currently proposed <see cref="NewPTTKeybind"/>.
-        /// </summary>
         public void UpdateKeybind()
         {
             if (NewPTTKeybind != null) NewPTTKeybind.Passthrough = PassthroughState;
             PTTKey = NewPTTKeybind;
         }
 
-        /// <summary>
-        /// Initialises a new instance of the <see cref="KeybindManager"/>,
-        /// restoring the previous keybind settings from the <see cref="ISettingsService"/>.
-        /// </summary>
         public void LoadKeybindSettings()
         {
             PTTKey = new Keybind(
