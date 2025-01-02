@@ -11,23 +11,17 @@ namespace TAC_COM.Models
     /// be used.</param>
     public class MMDeviceWrapper(MMDevice device) : IMMDeviceWrapper
     {
-        /// <summary>
-        /// Gets or sets the wrapped <see cref="MMDevice"/>.
-        /// </summary>
         public MMDevice Device { get; set; } = device;
 
-        /// <summary>
-        /// Gets the string FriendlyName of the wrapped
-        /// <see cref="MMDevice"/>.
-        /// </summary>
         public string FriendlyName => Device.FriendlyName;
 
-        /// <summary>
-        /// Method to convert the wrapped <see cref="MMDevice"/>
-        /// name correctly for use in the <see cref="ViewModels.AudioInterfaceViewModel"/>
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This is purely to ensure the name is correctly
+        /// returned for use in the <see cref="ViewModels.AudioInterfaceViewModel"/>
         /// combobox item.
-        /// </summary>
-        /// <returns></returns>
+        /// </remarks>
+        /// <returns> The string friendlyname that represents the device.</returns>
         public override string ToString() => Device.ToString();
     }
 }
