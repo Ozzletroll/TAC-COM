@@ -44,13 +44,18 @@ namespace TAC_COM.Services
                 {
                     Settings = new EffectParameters()
                     {
-                        DistortionType = typeof(DmoDistortionEffect),
+                        DistortionType = typeof(DistortionWrapper),
+                        DistortionMode = DistortionMode.HalfWaveRectify,
+                        DistortionInput = 30,
+                        DistortionOutput = 20,
+                        DistortionWet = 0.6f,
+                        DistortionDry = 0.4f,
                         PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                         HighpassFrequency = 600,
                         LowpassFrequency = 4000,
                         PeakFrequency = 3500,
-                        GainAdjust = 3,
+                        GainAdjust = -5,
                     }
                 });
 

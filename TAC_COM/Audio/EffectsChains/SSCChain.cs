@@ -16,7 +16,7 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "Wet", 0.2f },
-                    { "Dry", 0.8f },
+                    { "Dry", 0.6f },
                 }
             },
 
@@ -24,27 +24,37 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.3f },
-                    { "Dry", 0.7f },
+                    { "Wet", 0.5f },
+                    { "Dry", 0.5f },
                 }
-            }
+            },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
-           new(typeof(DynamicsProcessorWrapper))
-           {
-               Parameters = new Dictionary<string, object>
-               {
-                   { "Mode", DynamicsMode.Compressor },
-                   { "MinAmplitude", -120 },
-                   { "Threshold", -20 },
-                   { "Ratio", 100 },
-                   { "Attack", 30 },
-                   { "Release", 300 },
-                   { "MakeupGain", 10 },
-               }
-           }
+            new(typeof(DynamicsProcessorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Mode", DynamicsMode.Compressor },
+                    { "MinAmplitude", -120 },
+                    { "Threshold", -24 },
+                    { "Ratio", 100 },
+                    { "Attack", 30 },
+                    { "Release", 300 },
+                    { "MakeupGain", 26 },
+                }
+            },
+
+            new(typeof(BitCrusherWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.7f },
+                    { "Dry", 0.3f },
+                    { "BitDepth", 6 }
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
