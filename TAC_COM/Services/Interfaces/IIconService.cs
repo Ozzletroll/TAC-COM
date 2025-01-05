@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.Services.Interfaces
 {

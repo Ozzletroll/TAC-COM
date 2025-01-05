@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using TAC_COM.Services;
+using TAC_COM.Utilities;
 
 namespace Tests.UnitTests.ServiceTests
 {

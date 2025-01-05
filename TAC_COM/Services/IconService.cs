@@ -1,4 +1,5 @@
 ﻿using TAC_COM.Services.Interfaces;
+using TAC_COM.Utilities;
 
 namespace TAC_COM.Services
 {
@@ -35,25 +36,5 @@ namespace TAC_COM.Services
         {
             ChangeProfileIcon?.Invoke(this, new ProfileChangeEventArgs(icon));
         }
-    }
-
-    /// <summary>
-    /// EventArgs class for use with <see cref="IconChangeEventArgs"/>.
-    /// </summary>
-    /// <param name="iconPath"> The string path to the new icon to be used.</param>
-    /// <param name="tooltip"> The string tooltip to display in the sytem tray.</param>
-    public class IconChangeEventArgs(string iconPath, string tooltip) : EventArgs
-    {
-        public string IconPath = iconPath;
-        public string Tooltip = tooltip;
-    }
-
-    /// <summary>
-    /// EventArgs class for use with <see cref="ProfileChangeEventArgs"/>.
-    /// </summary>
-    /// <param name="icon"> The new icon to change to.</param>
-    public class ProfileChangeEventArgs(System.Windows.Media.ImageSource icon) : EventArgs
-    {
-        public System.Windows.Media.ImageSource Icon = icon;
     }
 }
