@@ -2,8 +2,17 @@
 
 namespace TAC_COM.Settings
 {
+    /// <summary>
+    /// Configuration section representing various audio
+    /// device settings, utilised by the
+    /// <see cref="Services.SettingsService"/>.
+    /// </summary>
     public class AudioSettings : ConfigurationSection
     {
+        /// <summary>
+        /// Gets or sets the string value representing the
+        /// stored input device name.
+        /// </summary>
         [ConfigurationProperty("inputDevice")]
         public string InputDevice
         {
@@ -14,6 +23,10 @@ namespace TAC_COM.Settings
             }
         }
 
+        /// <summary>
+        /// Gets or sets the string value representing the
+        /// stored output device name.
+        /// </summary>
         [ConfigurationProperty("outputDevice")]
         public string OutputDevice
         {
@@ -24,6 +37,10 @@ namespace TAC_COM.Settings
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the
+        /// stored noise gate threshold in dB.
+        /// </summary>
         [ConfigurationProperty("noiseGateThreshold", DefaultValue = -75f)]
         public float NoiseGateThreshold
         {
@@ -34,6 +51,10 @@ namespace TAC_COM.Settings
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the
+        /// stored output level adjustment in dB.
+        /// </summary>
         [ConfigurationProperty("outputLevel", DefaultValue = 0f)]
         public float OutputLevel
         {
@@ -44,6 +65,10 @@ namespace TAC_COM.Settings
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the
+        /// stored noise sfx level as a value between 0 and 1.
+        /// </summary>
         [ConfigurationProperty("interferenceLevel", DefaultValue = 0.5f)]
         public float InterferenceLevel
         {
@@ -54,6 +79,10 @@ namespace TAC_COM.Settings
             }
         }
 
+        /// <summary>
+        /// Gets or sets the string value representing the
+        /// stored last active profile name.
+        /// </summary>
         [ConfigurationProperty("activeProfile", DefaultValue = "GMS Type-4 Datalink")]
         public string ActiveProfile
         {
