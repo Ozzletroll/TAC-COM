@@ -76,10 +76,10 @@ namespace TAC_COM.Services
                         DistortionDry = 0.1f,
                         PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                         PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
-                        HighpassFrequency = 300,
-                        LowpassFrequency = 4000,
-                        PeakFrequency = 3800,
-                        GainAdjust = -3,
+                        HighpassFrequency = 1000,
+                        LowpassFrequency = 7000,
+                        PeakFrequency = 5000,
+                        GainAdjust = 1,
                     }
                 });
 
