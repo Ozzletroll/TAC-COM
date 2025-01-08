@@ -429,7 +429,12 @@ namespace TAC_COM.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Method to handle <see cref="NotifyProperty"/> property 
+        /// changes from the <see cref="KeybindManager"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the PropertyChanged event.</param>
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(KeybindManager.ToggleState))
@@ -442,20 +447,46 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// <see cref="RelayCommand"/> to show keybind window.
+        /// Bound to a button in the <see cref="Views.AudioInterfaceView"/>.
+        /// </summary>
         public RelayCommand ShowKeybindDialog => new(execute => ExecuteShowKeybindDialog());
 
+        /// <summary>
+        /// Method to open the keybind window using the
+        /// <see cref="windowService"/>.
+        /// </summary>
         private void ExecuteShowKeybindDialog()
         {
             windowService.OpenKeybindWindow();
         }
 
+        /// <summary>
+        /// <see cref="RelayCommand"/> to confirm the keybind change.
+        /// Bound to a button in the <see cref="Views.KeybindWindowView"/>.
+        /// </summary>
         public RelayCommand ConfirmKeybindChange => new(execute => ExecuteKeybindChange());
 
+        /// <summary>
+        /// Method to confirm and update the keybind change
+        /// using the <see cref="keybindManager"/>.
+        /// </summary>
         private void ExecuteKeybindChange()
         {
             keybindManager.UpdateKeybind();
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioInterfaceViewModel"/>,
+        /// loads all input and output devices, then loads previous settings from
+        /// the config file.
+        /// </summary>
+        /// <param name="applicationContext"> The application context wrapper to use.</param>
+        /// <param name="_audioManager"> The <see cref="IAudioManager"/> to expose to the view.</param>
+        /// <param name="_uriService"> The <see cref="IUriService"/> to pass to the <see cref="ProfileService"/>.</param>
+        /// <param name="_iconService"> The <see cref="IIconService"/> to use.</param>
+        /// <param name="_themeService"> The <see cref="IThemeService"/> to use.</param>
         public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
