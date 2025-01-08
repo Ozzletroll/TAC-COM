@@ -8,9 +8,14 @@ using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
-    public class ProfileService(IUriService uriProvider)
+    /// <summary>
+    /// Class responsible for configuring and returning all 
+    /// <see cref="Profile"/>s.
+    /// </summary>
+    /// <param name="uriService"> The <see cref="IUriService"/> to use.</param>
+    public class ProfileService(IUriService uriService)
     {
-        private readonly IUriService UriProvider = uriProvider;
+        private readonly IUriService UriProvider = uriService;
 
         public List<Profile> GetAllProfiles()
         {
