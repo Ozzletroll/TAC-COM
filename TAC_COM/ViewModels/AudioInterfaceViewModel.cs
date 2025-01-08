@@ -8,9 +8,21 @@ using TAC_COM.Utilities;
 
 namespace TAC_COM.ViewModels
 {
+    /// <summary>
+    /// ViewModel representing the overall audio device state
+    /// and parameters to be exposed to the <see cref="Views.AudioInterfaceView"/>.
+    /// </summary>
+    /// <remarks>
+    /// This is the main ViewModel of the application.
+    /// </remarks>
     public class AudioInterfaceViewModel : ViewModelBase
     {
         private ISettingsService settingsService;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ISettingsService"/>
+        /// to be used for config settings storage.
+        /// </summary>
         public ISettingsService SettingsService
         {
             get => settingsService;
@@ -21,6 +33,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IWindowService windowService;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IWindowService"/>
+        /// to be used for new window creation.
+        /// </summary>
         public IWindowService WindowService
         {
             get => windowService;
@@ -31,6 +48,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IThemeService themeService;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IThemeService"/>
+        /// to be used to change the UI theme.
+        /// </summary>
         public IThemeService ThemeService
         {
             get => themeService;
@@ -41,6 +63,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IKeybindManager keybindManager;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IKeybindManager"/>
+        /// to be used to set, edit and check keybind subscriptions.
+        /// </summary>
         public IKeybindManager KeybindManager
         {
             get => keybindManager;
@@ -51,6 +78,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IIconService iconService;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IIconService"/>
+        /// to be used to change system tray icons.
+        /// </summary>
         public IIconService IconService
         {
             get => iconService;
@@ -61,6 +93,12 @@ namespace TAC_COM.ViewModels
         }
 
         private IAudioManager audioManager;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="IAudioManager"/>
+        /// to be used to control playback and recording state,
+        /// connected audio devices and other properties.
+        /// </summary>
         public IAudioManager AudioManager
         {
             get => audioManager;
@@ -71,6 +109,11 @@ namespace TAC_COM.ViewModels
         }
 
         private ObservableCollection<IMMDeviceWrapper> allInputDevices;
+
+        /// <summary>
+        /// Gets or sets the <see cref="ObservableCollection{T}"/> of
+        /// all connected input devices.
+        /// </summary>
         public ObservableCollection<IMMDeviceWrapper> AllInputDevices
         {
             get => allInputDevices;
@@ -82,6 +125,11 @@ namespace TAC_COM.ViewModels
         }
 
         private ObservableCollection<IMMDeviceWrapper> allOutputDevices;
+
+        /// <summary>
+        /// Gets or sets the <see cref="ObservableCollection{T}"/> of
+        /// all connected output devices.
+        /// </summary>
         public ObservableCollection<IMMDeviceWrapper> AllOutputDevices
         {
             get => allOutputDevices;
@@ -93,6 +141,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IMMDeviceWrapper? inputDevice;
+
+        /// <summary>
+        /// Gets or sets the currently selected input device,
+        /// updating the config appropriately.
+        /// </summary>
         public IMMDeviceWrapper? InputDevice
         {
             get => inputDevice;
@@ -109,6 +162,11 @@ namespace TAC_COM.ViewModels
         }
 
         private IMMDeviceWrapper? outputDevice;
+
+        /// <summary>
+        /// Gets or sets the currently selected output device,
+        /// updating the config appropriately.
+        /// </summary>
         public IMMDeviceWrapper? OutputDevice
         {
             get => outputDevice;
@@ -124,6 +182,17 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the overall state of the application.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// True: Playback and recording enabled.
+        /// </para>
+        /// <para>
+        /// False: Playback and recording disabled.
+        /// </para>
+        /// </remarks>
         public bool State
         {
             get => audioManager.State;
@@ -147,6 +216,15 @@ namespace TAC_COM.ViewModels
         }
 
         private bool isSelectable = true;
+
+        /// <summary>
+        /// Gets or sets the value representing if the audio
+        /// device UI controls are currently selectable.
+        /// </summary>
+        /// <remarks>
+        /// Setting this to false prevents device changes 
+        /// during playback/recording.
+        /// </remarks>
         public bool IsSelectable
         {
             get => isSelectable;
@@ -157,6 +235,18 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing if audio processing
+        /// is applied to the playback signal.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// True: Audio sfx processing is applied, "wet" signal outputted.
+        /// </para>
+        /// <para>
+        /// False: Audio sfx not applied, "dry" signal outputted.
+        /// </para>
+        /// </remarks>
         public bool BypassState
         {
             get => audioManager.BypassState;
@@ -180,6 +270,11 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the noise attenuation
+        /// threshold in dB and updates the config
+        /// appropriately.
+        /// </summary>
         public float NoiseGateThreshold
         {
             get => audioManager.NoiseGateThreshold;
@@ -192,6 +287,11 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the output
+        /// level adjustment in dB and updates the config
+        /// appropriately.
+        /// </summary>
         public float OutputLevel
         {
             get => audioManager.OutputGainLevel;
@@ -203,6 +303,11 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the valuye representing the noise
+        /// sfx level as a value between 0 and 1, and
+        /// updates the config appropriately.
+        /// </summary>
         public float InterferenceLevel
         {
             get => audioManager.NoiseLevel;
@@ -215,6 +320,10 @@ namespace TAC_COM.ViewModels
         }
 
         private List<Profile> profiles = [];
+
+        /// <summary>
+        /// Gets or sets the list of all <see cref="Profile"/>s.
+        /// </summary>
         public List<Profile> Profiles
         {
             get => profiles;
@@ -224,6 +333,11 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current active <see cref="Profile"/>,
+        /// applying the theme and icon, and updating the config
+        /// appropriately.
+        /// </summary>
         public IProfile? ActiveProfile
         {
             get => audioManager.ActiveProfile;
@@ -240,6 +354,11 @@ namespace TAC_COM.ViewModels
         }
 
         private string? keybindName;
+
+        /// <summary>
+        /// Gets or sets the string value representing
+        /// the key combination of the currently PTT keybind.
+        /// </summary>
         public string? KeybindName
         {
             get => keybindName;
@@ -250,6 +369,10 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method to get all input devices and update
+        /// <see cref="AllInputDevices"/>.
+        /// </summary>
         private void LoadInputDevices()
         {
             AllInputDevices.Clear();
@@ -259,6 +382,10 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method to get all output devices and update
+        /// <see cref="AllOutputDevices"/>.
+        /// </summary>
         private void LoadOutputDevices()
         {
             AllOutputDevices.Clear();
@@ -268,6 +395,10 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method to load all audio devices settings from the
+        /// config file.
+        /// </summary>
         private void LoadDeviceSettings()
         {
             var savedInputDevice = AllInputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == settingsService.AudioSettings.InputDevice);
@@ -282,6 +413,10 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method to load all user audio settings from the
+        /// config file.
+        /// </summary>
         private void LoadAudioSettings()
         {
             audioManager.NoiseGateThreshold = settingsService.AudioSettings.NoiseGateThreshold;
@@ -293,6 +428,7 @@ namespace TAC_COM.ViewModels
                 ActiveProfile = savedProfile;
             }
         }
+
 
         private void KeybindManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {

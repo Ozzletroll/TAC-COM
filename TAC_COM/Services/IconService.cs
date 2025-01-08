@@ -11,22 +11,22 @@ namespace TAC_COM.Services
     {
         public event EventHandler? ChangeSystemTrayIcon;
 
-        
+
         public event EventHandler? ChangeProfileIcon;
 
-        
+
         public void SetLiveIcon()
         {
             ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/live.ico", "TAC/COM Live"));
         }
 
-        
+
         public void SetEnabledIcon()
         {
             ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/enabled.ico", "TAC/COM Enabled"));
         }
 
-        
+
         public void SetStandbyIcon()
         {
             ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/standby.ico", "TAC/COM Standby"));

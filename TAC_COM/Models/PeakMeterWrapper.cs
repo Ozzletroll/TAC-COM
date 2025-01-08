@@ -11,7 +11,7 @@ namespace TAC_COM.Models
     {
         private AudioMeterInformation? audioMeterInformation;
 
-        
+
         public void Initialise(MMDevice device)
         {
             audioMeterInformation = AudioMeterInformation.FromDevice(device);

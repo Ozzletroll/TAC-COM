@@ -41,10 +41,10 @@ namespace TAC_COM.Models
             remove => wasapiCapture.Stopped -= value;
         }
 
-        
+
         public void Dispose() => wasapiCapture.Dispose();
 
-        
+
         public void Initialize() => wasapiCapture.Initialize();
 
         public void Start() => wasapiCapture.Start();

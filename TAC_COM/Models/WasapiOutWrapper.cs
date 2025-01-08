@@ -36,13 +36,13 @@ namespace TAC_COM.Models
             remove => wasapiOut.Stopped -= value;
         }
 
-       
+
         public void Dispose() => wasapiOut.Dispose();
 
-        
+
         public void Initialise(IWaveSource? source) => wasapiOut.Initialize(source);
 
-        
+
         public void Play() => wasapiOut.Play();
 
         public void Stop() => wasapiOut.Stop();
