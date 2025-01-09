@@ -17,7 +17,7 @@ namespace Tests.UnitTests.ViewModelTests
     [TestClass]
     public class AudioInterfaceViewModelTests
     {
-        private readonly IUriService mockUriService = new MockUriService();
+        private readonly MockUriService mockUriService = new();
         private readonly IThemeService mockThemeService = new MockThemeService();
         private readonly ISettingsService settingsService = new MockSettingsService();
         private readonly IAudioManager mockAudioManager = new MockAudioManager();
@@ -261,7 +261,7 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestActiveProfileProperty()
         {
-            Profile testActiveProfile = new Profile()
+            Profile testActiveProfile = new()
             {
                 ProfileName = "Test Profile",
                 FileIdentifier = "ID1",
