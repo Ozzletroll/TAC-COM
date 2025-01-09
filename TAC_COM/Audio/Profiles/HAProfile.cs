@@ -7,10 +7,17 @@ using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Audio.Profiles
 {
+    /// <summary>
+    /// Class representing the HA profile configuration.
+    /// </summary>
     public class HAProfile : Profile
     {
         private readonly IUriService UriProvider;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HAProfile"/>.
+        /// </summary>
+        /// <param name="uriService"> The <see cref="IUriService"/> to use to generate <see cref="Uri"/>s.</param>
         public HAProfile(IUriService uriService)
         {
             UriProvider = uriService;
