@@ -1,0 +1,36 @@
+﻿using System.Windows.Media.Imaging;
+using CSCore.Streams.Effects;
+using TAC_COM.Audio.EffectsChains;
+using TAC_COM.Models;
+using TAC_COM.Services.Interfaces;
+
+namespace TAC_COM.Audio.Profiles
+{
+    public class HORUSProfile : Profile
+    {
+        private readonly IUriService UriProvider;
+
+        public HORUSProfile(IUriService uriService)
+        {
+            UriProvider = uriService;
+
+            ProfileName = "HORUS [UNRECOGNISED DEVICE]";
+            FileIdentifier = "HORUS";
+            Theme = UriProvider.GetThemeUri("HORUS");
+            Icon = new BitmapImage(UriProvider.GetIconUri("HORUS"));
+            Settings = new EffectParameters()
+            {
+                DistortionType = typeof(DmoDistortionEffect),
+                DistortionMode = null,
+                DistortionInput = 40,
+                DistortionOutput = 42,
+                PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
+                PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
+                HighpassFrequency = 800,
+                LowpassFrequency = 7000,
+                PeakFrequency = 3000,
+                GainAdjust = 3,
+            };
+        }
+    }
+}

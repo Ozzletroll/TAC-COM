@@ -1,4 +1,6 @@
-﻿using TAC_COM.Models.Interfaces;
+﻿using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 
@@ -12,12 +14,12 @@ namespace TAC_COM.Models
     /// <param name="fileIdentifier">The string file suffix associated with the <see cref="Profile"/>.</param>
     /// <param name="theme">The <see cref="Uri"/> for the associated theme.</param>
     /// <param name="icon">The icon associated with the profile.</param>
-    public class Profile(string profileName, string fileIdentifier, Uri theme, System.Windows.Media.ImageSource icon) : IProfile
+    public class Profile : IProfile
     {
         private ISFXFileService fileService = new SFXFileService("Static/SFX");
 
         /// <summary>
-        /// Gets or sets the <see cref="ISFXFileService"/> used to#
+        /// Gets or sets the <see cref="ISFXFileService"/> used to
         /// load sfx files.
         /// </summary>
         public ISFXFileService FileService
@@ -29,7 +31,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private string profileName = profileName;
+        private string profileName = "Default Profile Name";
         public string ProfileName
         {
             get => profileName;
@@ -39,7 +41,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private string fileIdentifier = fileIdentifier;
+        private string fileIdentifier = "DEFAULT";
 
         /// <inheritdoc/>
         /// <remarks>
@@ -56,7 +58,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private Uri theme = theme;
+        private Uri theme = new("about:blank");
         public Uri Theme
         {
             get => theme;
@@ -66,8 +68,8 @@ namespace TAC_COM.Models
             }
         }
 
-        private System.Windows.Media.ImageSource icon = icon;
-        public System.Windows.Media.ImageSource Icon
+        private ImageSource icon = new BitmapImage();
+        public ImageSource Icon
         {
             get => icon;
             set
@@ -115,7 +117,6 @@ namespace TAC_COM.Models
                 closeSFXSource = value;
             }
         }
-
 
         public void LoadSources()
         {

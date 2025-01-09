@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Drawing;
+using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Services;
@@ -15,11 +16,13 @@ namespace Tests.UnitTests.ModelTests
 
         public ProfileTests()
         {
-            testProfile = new Profile(
-                profileName: "TestProfile",
-                fileIdentifier: "Test",
-                theme: mockURIService.GetIconUri("TEST"),
-                icon: new BitmapImage());
+            testProfile = new Profile()
+            {
+                ProfileName = "TestProfile",
+                FileIdentifier = "Test",
+                Theme = mockURIService.GetIconUri("TEST"),
+                Icon = new BitmapImage()
+            };
         }
 
         [TestMethod]

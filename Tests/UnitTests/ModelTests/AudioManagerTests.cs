@@ -47,7 +47,14 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestActiveProfileProperty()
         {
-            var newPropertyValue = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
+            var newPropertyValue = new Profile()
+            {
+                ProfileName = "Profile 1",
+                FileIdentifier = "ID1",
+                Theme = mockUriService.GetResourcesUri(),
+                Icon = new BitmapImage(mockUriService.GetIconUri("ID1")),
+            };
+
             audioManager.ActiveProfile = newPropertyValue;
             Assert.AreEqual(audioManager.ActiveProfile, newPropertyValue);
         }

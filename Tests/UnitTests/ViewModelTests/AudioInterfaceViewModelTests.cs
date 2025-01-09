@@ -236,8 +236,21 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestProfilesProperty()
         {
-            var mockProfile1 = new Profile("Profile 1", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
-            var mockProfile2 = new Profile("Profile 2", "ID2", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID2")));
+            var mockProfile1 = new Profile()
+            {
+                ProfileName = "Profile 1",
+                FileIdentifier = "ID1",
+                Theme = mockUriService.GetResourcesUri(),
+                Icon = new BitmapImage(mockUriService.GetIconUri("ID1")),
+            }; 
+            
+            var mockProfile2 = new Profile()
+            {
+                ProfileName = "Profile 2",
+                FileIdentifier = "ID2",
+                Theme = mockUriService.GetResourcesUri(),
+                Icon = new BitmapImage(mockUriService.GetIconUri("ID2")),
+            };
 
             List<Profile> testProfiles = [mockProfile1, mockProfile2];
             testViewModel.Profiles = testProfiles;
@@ -248,7 +261,13 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestActiveProfileProperty()
         {
-            Profile testActiveProfile = new("Test Profile", "ID1", mockUriService.GetResourcesUri(), new BitmapImage(mockUriService.GetIconUri("ID1")));
+            Profile testActiveProfile = new Profile()
+            {
+                ProfileName = "Test Profile",
+                FileIdentifier = "ID1",
+                Theme = mockUriService.GetResourcesUri(),
+                Icon = new BitmapImage(mockUriService.GetIconUri("ID1")),
+            };
 
             var mockSettingsService = new Mock<ISettingsService>();
             mockSettingsService.Setup(
