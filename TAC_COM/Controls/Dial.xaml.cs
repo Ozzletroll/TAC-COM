@@ -19,8 +19,16 @@ namespace TAC_COM.Controls
 
         private Point initialPosition;
 
+        /// <summary>
+        /// Dependency property for <see cref="Min"/>
+        /// </summary>
         public static readonly DependencyProperty MinProperty
             = DependencyProperty.Register("Min", typeof(float), typeof(Dial));
+
+        /// <summary>
+        /// Gets or sets the value representing the minimum
+        /// value of the UI dial.
+        /// </summary>
         public float Min
         {
             get => (float)GetValue(MinProperty);
@@ -30,8 +38,16 @@ namespace TAC_COM.Controls
             }
         }
 
+        /// <summary>
+        /// Dependency property for <see cref="Max"/>.
+        /// </summary>
         public static readonly DependencyProperty MaxProperty
             = DependencyProperty.Register("Max", typeof(float), typeof(Dial));
+
+        /// <summary>
+        /// Gets or sets the value representing the maximum
+        /// value of the UI dial.
+        /// </summary>
         public float Max
         {
             get => (float)GetValue(MaxProperty);
@@ -42,6 +58,11 @@ namespace TAC_COM.Controls
         }
 
         private float percentValue;
+
+        /// <summary>
+        /// Gets or sets the value representing the
+        /// value of the dial as a percentage.
+        /// </summary>
         public float PercentValue
         {
             get => percentValue;
@@ -60,8 +81,16 @@ namespace TAC_COM.Controls
             }
         }
 
+        /// <summary>
+        /// Dependency property for <see cref="Value"/>.
+        /// </summary>
         public static readonly DependencyProperty ValueProperty
             = DependencyProperty.Register("Value", typeof(float), typeof(Dial), new FrameworkPropertyMetadata(0f, new PropertyChangedCallback(OnValuePropertyChanged)));
+
+        /// <summary>
+        /// Gets or sets the value representing the
+        /// current value of the dial.
+        /// </summary>
         public float Value
         {
             get => (float)GetValue(ValueProperty);
@@ -70,14 +99,28 @@ namespace TAC_COM.Controls
                 SetValue(ValueProperty, Math.Clamp(value, Min, Max));
             }
         }
+
+        /// <summary>
+        /// Method called when the value property changes on the <see cref="ValueProperty"/>.
+        /// </summary>
+        /// <param name="d">The <see cref="DependencyObject"/> on which the property changed.</param>
+        /// <param name="e">The <see cref="DependencyPropertyChangedEventArgs"/> for the event.</param>
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Dial? f = d as Dial;
             f?.RenderDisplay();
         }
 
+        /// <summary>
+        /// The dependency property for <see cref="Interval"/>.
+        /// </summary>
         public static readonly DependencyProperty IntervalProperty
             = DependencyProperty.Register("Interval", typeof(float), typeof(Dial));
+
+        /// <summary>
+        /// Gets or sets the value representing the interval
+        /// or increment that the dial changes at.
+        /// </summary>
         public float Interval
         {
             get => (float)GetValue(IntervalProperty);
@@ -87,8 +130,16 @@ namespace TAC_COM.Controls
             }
         }
 
+        /// <summary>
+        /// Dependency property for <see cref="Sensitivity"/>.
+        /// </summary>
         public static readonly DependencyProperty SensitivityProperty
             = DependencyProperty.Register("Sensitivity", typeof(float), typeof(Dial));
+
+        /// <summary>
+        /// Gets or sets the value representing the sensitivity
+        /// of the UI dial when rotated with the mouse.
+        /// </summary>
         public float Sensitivity
         {
             get => (float)GetValue(SensitivityProperty);
@@ -98,6 +149,10 @@ namespace TAC_COM.Controls
             }
         }
 
+        /// <summary>
+        /// Method to update the dial UI elements to reflect the
+        /// new values of the control.
+        /// </summary>
         private void RenderDisplay()
         {
             // Draw dial outer ring display
@@ -130,18 +185,39 @@ namespace TAC_COM.Controls
             storyboard.Begin(this);
         }
 
+        /// <summary>
+        /// Method to handle the mouse left click button down event,
+        /// capturing the initial mouse position.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Mouse.Capture(this);
             initialPosition = Mouse.GetPosition(this);
         }
 
+        /// <summary>
+        /// Method to handle the mouse left click button release event,
+        /// ending the mouse capture.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             Cursor = null;
             Mouse.Capture(null);
         }
 
+        /// <summary>
+        /// Method to handle the mouse move event, calculating
+        /// the distance the mouse has travelled from the
+        /// initial position and converting the value to 
+        /// a percentage of the total dial's available
+        /// rotation.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.Captured == this)
@@ -159,12 +235,22 @@ namespace TAC_COM.Controls
             }
         }
 
+
+        /// <summary>
+        /// Method to handle the dial load event, initialising
+        /// the percentage dial value and updating the display.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
         private void OnDialLoaded(object sender, RoutedEventArgs e)
         {
             percentValue = (Value - Min) / (Max - Min) * 100;
             RenderDisplay();
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="Dial"/>.
+        /// </summary>
         public Dial()
         {
             InitializeComponent();
