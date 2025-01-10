@@ -12,9 +12,6 @@ namespace TAC_COM.ViewModels
     /// ViewModel representing the overall audio device state
     /// and parameters to be exposed to the <see cref="Views.AudioInterfaceView"/>.
     /// </summary>
-    /// <remarks>
-    /// This is the main ViewModel of the application.
-    /// </remarks>
     public class AudioInterfaceViewModel : ViewModelBase
     {
         private ISettingsService settingsService;
