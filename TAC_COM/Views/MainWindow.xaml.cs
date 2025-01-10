@@ -14,21 +14,34 @@ namespace TAC_COM
     /// </summary>
     public partial class MainWindow : AdonisWindow
     {
-        public NotifyIcon notifyIcon;
+        private readonly NotifyIcon notifyIcon;
         private readonly ContextMenuStrip contextMenuStrip;
 
+        /// <summary>
+        /// Override method to handle the <see cref="Window.StateChanged"/>
+        /// event, hiding the window to the system tray when minimised.
+        /// </summary>
+        /// <param name="e">The event data for the event.</param>
         protected override void OnStateChanged(EventArgs e)
         {
             if (WindowState == WindowState.Minimized) Hide();
             base.OnStateChanged(e);
         }
 
+        /// <summary>
+        /// Override method to handle the <see cref="Window.Closed"/>
+        /// event, shutting down the application.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
             System.Windows.Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Method to show the window again if minimised to system tray.
+        /// </summary>
         private void ShowWindow()
         {
             if (WindowState == WindowState.Minimized)
@@ -39,17 +52,33 @@ namespace TAC_COM
             Focus();
         }
 
+        /// <summary>
+        /// Method to make the window remain on top when focus is lost.
+        /// </summary>
+        /// <param name="parameter"> The <see cref="ToolStripMenuItem"/>
+        /// that triggered the event.</param>
         private void ToggleAlwaysOnTop(object? parameter)
         {
             var menuItem = parameter as ToolStripMenuItem;
             Topmost = menuItem?.Checked ?? false;
         }
 
+        /// <summary>
+        /// Static method to manually close the application.
+        /// </summary>
         private static void ExitApplication()
         {
             System.Windows.Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Method to handle the <see cref="Utilities.NotifyProperty"/>
+        /// property changes from the viewmodel, updating the
+        /// system tray icon and system tray text to the new
+        /// values.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the event.</param>
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MainViewModel.NotifyIconImage))
@@ -62,6 +91,12 @@ namespace TAC_COM
             }
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MainWindow"/>.
+        /// It is here that the <see cref="MainViewModel"/> is created along
+        /// with any dependencies, as well as where the system tray context
+        /// menu is initialised.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
