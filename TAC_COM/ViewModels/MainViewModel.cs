@@ -69,7 +69,7 @@ namespace TAC_COM.ViewModels
         /// event, updating the notify icon image and text with the new values.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event data for the PropertyChanged event.</param>
+        /// <param name="e">The event data for the event.</param>
         private void OnChangeSystemTrayIcon(object? sender, EventArgs e)
         {
             if (e is IconChangeEventArgs f)
@@ -84,7 +84,7 @@ namespace TAC_COM.ViewModels
         /// event, updating main window icon with the new value.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event data for the PropertyChanged event.</param>
+        /// <param name="e">The event data for the event.</param>
         private void OnSetActiveProfileIcon(object? sender, EventArgs e)
         {
             ProfileChangeEventArgs? f = e as ProfileChangeEventArgs;

@@ -7,6 +7,9 @@ namespace TAC_COM.Views
     /// </summary>
     public partial class AudioInterfaceView : UserControl
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioInterfaceView"/>.
+        /// </summary>
         public AudioInterfaceView()
         {
             InitializeComponent();
