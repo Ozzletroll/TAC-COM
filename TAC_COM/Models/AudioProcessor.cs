@@ -101,11 +101,11 @@ namespace TAC_COM.Models
             get => ringModulationWetDryMix;
             set
             {
-                ringModulationWetDryMix = value;
+                ringModulationWetDryMix = Math.Clamp(value, 0, 1);
                 if (ringModulator != null)
                 {
-                    ringModulator.Wet = Math.Min(value, MaxRingModulationWetMix);
-                    ringModulator.Dry = 1 - Math.Min(ringModulationWetDryMix, 1 - MaxRingModulationWetMix);
+                    ringModulator.Wet = ringModulationWetDryMix * MaxRingModulationWetMix;
+                    ringModulator.Dry = 1 - ringModulator.Wet;
                 }
             }
         }
