@@ -29,17 +29,17 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.HalfWaveRectify,
-                DistortionInput = 30,
-                DistortionOutput = 20,
-                DistortionWet = 0.6f,
-                DistortionDry = 0.4f,
+                DistortionMode = DistortionMode.HardClipping,
+                DistortionInput = 20,
+                DistortionOutput = 40,
+                DistortionWet = 0.5f,
+                DistortionDry = 0.5f,
                 PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                 HighpassFrequency = 600,
                 LowpassFrequency = 4000,
                 PeakFrequency = 3500,
-                GainAdjust = -5,
+                GainAdjust = -8,
             };
         }
     }

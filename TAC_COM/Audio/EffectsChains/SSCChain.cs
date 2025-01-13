@@ -24,8 +24,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                 }
             },
         ];
@@ -43,16 +43,6 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Attack", 30 },
                     { "Release", 300 },
                     { "MakeupGain", 26 },
-                }
-            },
-
-            new(typeof(BitCrusherWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.7f },
-                    { "Dry", 0.3f },
-                    { "BitDepth", 6 }
                 }
             },
         ];

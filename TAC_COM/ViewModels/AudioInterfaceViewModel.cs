@@ -305,12 +305,28 @@ namespace TAC_COM.ViewModels
         /// sfx level as a value between 0 and 1, and
         /// updates the config appropriately.
         /// </summary>
-        public float InterferenceLevel
+        public float NoiseLevel
         {
             get => audioManager.NoiseLevel;
             set
             {
                 audioManager.NoiseLevel = value;
+                OnPropertyChanged(nameof(NoiseLevel));
+                settingsService.UpdateAppConfig(nameof(NoiseLevel), value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value representing the noise
+        /// sfx level as a value between 0 and 1, and
+        /// updates the config appropriately.
+        /// </summary>
+        public float InterferenceLevel
+        {
+            get => audioManager.InterferenceLevel;
+            set
+            {
+                audioManager.InterferenceLevel = value;
                 OnPropertyChanged(nameof(InterferenceLevel));
                 settingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
             }
@@ -418,7 +434,8 @@ namespace TAC_COM.ViewModels
         {
             audioManager.NoiseGateThreshold = settingsService.AudioSettings.NoiseGateThreshold;
             audioManager.OutputGainLevel = settingsService.AudioSettings.OutputLevel;
-            audioManager.NoiseLevel = settingsService.AudioSettings.InterferenceLevel;
+            audioManager.NoiseLevel = settingsService.AudioSettings.NoiseLevel;
+            audioManager.InterferenceLevel = settingsService.AudioSettings.InterferenceLevel;
             var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == settingsService.AudioSettings.ActiveProfile);
             if (savedProfile != null)
             {

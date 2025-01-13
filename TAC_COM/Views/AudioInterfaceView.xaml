@@ -264,9 +264,9 @@
 
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 0, 0">
 
-                <StackPanel Orientation="Vertical" Width="160">
+                <StackPanel Orientation="Vertical" Width="140">
                     <Label x:Name="GateThreshold" Content="NOISE GATE THRESHOLD" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                           Background="Transparent">
@@ -281,7 +281,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Width="160">
+                <StackPanel Orientation="Vertical" Width="140">
                     <Label Content="OUTPUT LEVEL" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                                 Background="Transparent">
@@ -296,17 +296,32 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Width="160">
-                    <Label Content="INTERFERENCE" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
+                <StackPanel Orientation="Vertical" Width="140">
+                    <Label Content="NOISE LEVEL" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
                                            Min="0" Max="1" Interval="0.01" Sensitivity="2"
-                                           Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
+                                           Value="{Binding NoiseLevel, Mode=TwoWay}"/>
                             <Label Content="{Binding AudioManager.NoiseLevelString}" 
                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                    FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Width="140">
+                    <Label Content="INTERFERENCE" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
+                Background="Transparent">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <controls:Dial Height="50" Width="50"
+                           Min="0" Max="1" Interval="0.01" Sensitivity="2"
+                           Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
+                            <Label Content="{Binding AudioManager.InterferenceLevelString}" 
+                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

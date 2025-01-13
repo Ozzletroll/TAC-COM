@@ -267,6 +267,24 @@ namespace TAC_COM.Models
             }
         }
 
+        public float InterferenceLevel
+        {
+            get => audioProcessor.RingModulationWetDryMix;
+            set
+            {
+                audioProcessor.RingModulationWetDryMix = value;
+                OnPropertyChanged(nameof(InterferenceLevelString));
+            }
+        }
+
+        public string InterferenceLevelString
+        {
+            get
+            {
+                return Math.Round(audioProcessor.RingModulationWetDryMix * 100).ToString() + "%";
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 

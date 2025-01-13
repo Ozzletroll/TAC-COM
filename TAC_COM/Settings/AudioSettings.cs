@@ -69,6 +69,20 @@ namespace TAC_COM.Settings
         /// Gets or sets the value representing the
         /// stored noise sfx level as a value between 0 and 1.
         /// </summary>
+        [ConfigurationProperty("noiseLevel", DefaultValue = 0.5f)]
+        public float NoiseLevel
+        {
+            get => (float)this["noiseLevel"];
+            set
+            {
+                this["noiseLevel"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value representing the interference
+        /// level as a percentage.
+        /// </summary>
         [ConfigurationProperty("interferenceLevel", DefaultValue = 0.5f)]
         public float InterferenceLevel
         {

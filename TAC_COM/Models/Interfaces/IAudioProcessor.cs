@@ -34,6 +34,12 @@ namespace TAC_COM.Models.Interfaces
         float UserNoiseLevel { get; set; }
 
         /// <summary>
+        /// Gets or sets the current frequency value of the ring
+        /// modulator as a value between 0 and 1.
+        /// </summary>
+        float RingModulationWetDryMix { get; set; }
+
+        /// <summary>
         /// Initialises the various <see cref="SoundInSource"/>'s for use in
         /// the other signal chains. This method must be called prior to
         /// <see cref="ReturnCompleteSignalChain"/>.

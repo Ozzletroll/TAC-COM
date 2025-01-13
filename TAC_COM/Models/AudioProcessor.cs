@@ -23,6 +23,7 @@ namespace TAC_COM.Models
         private VolumeSource? wetMixLevel;
         private VolumeSource? noiseMixLevel;
         private VolumeSource? wetNoiseMixLevel;
+        private RingModulatorWrapper? ringModulator;
         private Gain? userGainControl;
         private Gate? processedNoiseGate;
         private Gate? parallelNoiseGate;
@@ -89,6 +90,22 @@ namespace TAC_COM.Models
                 if (HasInitialised && noiseMixLevel != null)
                 {
                     noiseMixLevel.Volume = value;
+                }
+            }
+        }
+
+        private float ringModulationWetDryMix;
+        private const float MaxRingModulationWetMix = 0.5f;
+        public float RingModulationWetDryMix
+        {
+            get => ringModulationWetDryMix;
+            set
+            {
+                ringModulationWetDryMix = value;
+                if (ringModulator != null)
+                {
+                    ringModulator.Wet = Math.Min(value, MaxRingModulationWetMix);
+                    ringModulator.Dry = 1 - Math.Min(ringModulationWetDryMix, 1 - MaxRingModulationWetMix);
                 }
             }
         }
@@ -254,6 +271,14 @@ namespace TAC_COM.Models
                     outputSampleSource = outputSampleSource.AppendSource(x => effect.CreateInstance(x));
                 }
             }
+
+            // Apply ring modulation based on user noise level
+            outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
+            {
+                Wet = RingModulationWetDryMix,
+                Dry = 1 - RingModulationWetDryMix,
+                Frequency = 250f,
+            }, out ringModulator);
 
             // Profile specific gain adjustment
             outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)

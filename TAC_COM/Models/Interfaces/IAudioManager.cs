@@ -85,6 +85,18 @@ namespace TAC_COM.Models.Interfaces
         string OutputGainLevelString { get; }
 
         /// <summary>
+        /// Gets or sets the interference level as a value between
+        /// 0 and 1.
+        /// </summary>
+        float InterferenceLevel { get; set; }
+
+        /// <summary>
+        /// Gets the formatted string value of the interference
+        /// level.
+        /// </summary>
+        string InterferenceLevelString { get; }
+
+        /// <summary>
         /// Gets or sets the current active <see cref="IProfile"/>.
         /// </summary>
         IProfile? ActiveProfile { get; set; }
