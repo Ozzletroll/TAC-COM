@@ -202,7 +202,7 @@ namespace TAC_COM.ViewModels
                 OnPropertyChanged(nameof(AudioManager.State));
                 if (AudioManager.State == false)
                 {
-                    BypassState = true;
+                    BypassState = false;
                     iconService.SetStandbyIcon();
                 }
                 else
