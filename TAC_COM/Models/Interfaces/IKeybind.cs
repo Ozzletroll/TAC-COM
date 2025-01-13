@@ -63,6 +63,13 @@ namespace TAC_COM.Models.Interfaces
         bool IsReleased(KeyboardHookEventArgs args);
 
         /// <summary>
+        /// Method to manually call KeyUp combination,
+        /// preventing hanging keybinds when toggling
+        /// playback whilst holding key combination.
+        /// </summary>
+        void CallKeyUp();
+
+        /// <summary>
         /// Method to serialise keybind as a dictionary,
         /// for storing in the config file.
         /// </summary>

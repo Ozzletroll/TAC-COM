@@ -119,6 +119,11 @@ namespace TAC_COM.Models
             return false;
         }
 
+        public void CallKeyUp()
+        {
+            KeyboardInputGenerator.KeyUp(keycode);
+        }
+
         public override string ToString()
         {
             var output = new StringBuilder();

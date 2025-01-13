@@ -107,6 +107,10 @@ namespace TAC_COM.Models
             if (state) InitialisePTTKeySubscription();
             else
             {
+                // Prevent hanging keybind if subscription ended
+                // whilst keybind still held.
+                PTTKey?.CallKeyUp();
+
                 DisposeKeyboardSubscription(pttKeybindSubscription);
                 DisposeKeyboardSubscription(pttKeybindCatchSubscription);
                 DisposeKeyboardSubscription(systemKeybindSubscription);
