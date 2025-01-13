@@ -70,12 +70,6 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             int samples = source.Read(buffer, offset, count);
 
             DiscreteSignal carrierSignal = new(source.WaveFormat.SampleRate, buffer);
-            //DiscreteSignal modulatorSignal = new SquareWaveBuilder()
-            //    .SetParameter("frequency", Frequency)
-            //    .SetParameter("phase", Math.PI / 6)
-            //    .OfLength(buffer.Length)
-            //    .SampledAt(source.WaveFormat.SampleRate)
-            //    .Build();
 
             DiscreteSignal modulatorSignal = CreateSignalBuilder()
                 .SetParameter("frequency", Frequency)
