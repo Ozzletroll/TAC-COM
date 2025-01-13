@@ -14,6 +14,9 @@ namespace TAC_COM.Models
         public float DistortionWet = 0.5f;
         public float DistortionDry = 0.5f;
 
+        public Type? RingModulatorType;
+        public float RingModulatorFrequency;
+
         public float HighpassFrequency;
         public float LowpassFrequency;
         public float PeakFrequency;

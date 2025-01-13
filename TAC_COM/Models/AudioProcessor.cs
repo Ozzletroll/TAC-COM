@@ -273,12 +273,17 @@ namespace TAC_COM.Models
             }
 
             // Apply ring modulation based on user noise level
-            outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
+            if (activeProfile?.Settings.RingModulatorType != null
+                && activeProfile?.Settings.RingModulatorFrequency != null)
             {
-                Wet = RingModulationWetDryMix,
-                Dry = 1 - RingModulationWetDryMix,
-                Frequency = 250f,
-            }, out ringModulator);
+                outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
+                {
+                    Wet = RingModulationWetDryMix,
+                    Dry = 1 - RingModulationWetDryMix,
+                    ModulatorSignalType = activeProfile.Settings.RingModulatorType,
+                    Frequency = activeProfile.Settings.RingModulatorFrequency,
+                }, out ringModulator);
+            }
 
             // Profile specific gain adjustment
             outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)

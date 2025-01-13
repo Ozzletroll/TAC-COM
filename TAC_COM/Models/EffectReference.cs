@@ -21,7 +21,7 @@ namespace TAC_COM.Models
         /// Creates an instance of the class of the type <see cref="EffectType"/>,
         /// using the parameters of <see cref="Parameters"/>.
         /// </summary>
-        /// <param name="sourceParameter"></param>
+        /// <param name="sourceParameter"> The source signal to pass into the instantiated effect.</param>
         /// <returns> The <see cref="ISampleSource"/> with the instantiated effect applied.</returns>
         /// <exception cref="InvalidOperationException"> Thrown if effect fails to instantiate. </exception>
         public ISampleSource CreateInstance(ISampleSource? sourceParameter)

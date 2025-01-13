@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Reflection;
 using CSCore;
-using NWaves.Effects;
 using NWaves.Operations;
 using NWaves.Signals;
 using NWaves.Signals.Builders;
@@ -33,6 +32,21 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         public float Frequency { get; set; } = 1.0f;
 
         /// <summary>
+        /// Gets or sets the Type of the <see cref="SignalBuilder"/>
+        /// to use for ring modulation.
+        /// </summary>
+        public Type? ModulatorSignalType {  get; set; }
+
+        private SignalBuilder CreateSignalBuilder()
+        {
+            ConstructorInfo? constructor = ModulatorSignalType?.GetConstructors()
+                .FirstOrDefault();
+
+            if (constructor?.Invoke([]) is SignalBuilder instance) return instance;
+            else throw new InvalidOperationException("Effect failed to instantiate.");
+        }
+
+        /// <summary>
         /// Method to process one sample of the buffer with
         /// one sample of the ring modulated stream, mixing them
         /// according to the <see cref="Wet"/> and <see cref="Dry"/>
@@ -56,7 +70,14 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             int samples = source.Read(buffer, offset, count);
 
             DiscreteSignal carrierSignal = new(source.WaveFormat.SampleRate, buffer);
-            DiscreteSignal modulatorSignal = new SquareWaveBuilder()
+            //DiscreteSignal modulatorSignal = new SquareWaveBuilder()
+            //    .SetParameter("frequency", Frequency)
+            //    .SetParameter("phase", Math.PI / 6)
+            //    .OfLength(buffer.Length)
+            //    .SampledAt(source.WaveFormat.SampleRate)
+            //    .Build();
+
+            DiscreteSignal modulatorSignal = CreateSignalBuilder()
                 .SetParameter("frequency", Frequency)
                 .SetParameter("phase", Math.PI / 6)
                 .OfLength(buffer.Length)
