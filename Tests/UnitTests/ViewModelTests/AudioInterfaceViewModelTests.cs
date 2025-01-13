@@ -136,7 +136,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
             Assert.IsTrue(testViewModel.IsSelectable == true);
-            Assert.IsTrue(testViewModel.BypassState == true);
+            Assert.IsTrue(testViewModel.BypassState == false);
             mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
