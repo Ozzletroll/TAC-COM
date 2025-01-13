@@ -97,14 +97,10 @@ namespace TAC_COM.Audio.DSP
             return sampleSources.Contains(source);
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Read method,
-        /// in which the sources are mixed together.
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This is where the sources are mixed.
+        /// </remarks>
         public int Read(float[] buffer, int offset, int count)
         {
             int numberOfStoredSamples = 0;
@@ -185,25 +181,16 @@ namespace TAC_COM.Audio.DSP
             return numberOfStoredSamples;
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> CanSeek
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanSeek { get { return false; } }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> WaveFormat
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public WaveFormat WaveFormat
         {
             get { return waveFormat; }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Position
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public long Position
         {
             get { return 0; }
@@ -213,19 +200,13 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Length
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public long Length
         {
             get { return 0; }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Dispose
-        /// method.
-        /// </summary>
+        /// <inheritdoc/>
         public void Dispose()
         {
             lock (lockObj)

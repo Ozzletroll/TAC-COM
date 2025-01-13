@@ -98,14 +98,11 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Read method,
-        /// in which the effect is applied to the sample buffer.
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
+        /// <remarks> 
+        /// This is where the effect is applied to all
+        /// samples in the buffer.
+        /// </remarks>
         public int Read(float[] buffer, int offset, int count)
         {
             int samples = source.Read(buffer, offset, count);
@@ -117,28 +114,19 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             return samples;
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> CanSeek
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanSeek
         {
             get { return source.CanSeek; }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> WaveFormat
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public WaveFormat WaveFormat
         {
             get { return source.WaveFormat; }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Position
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public long Position
         {
             get
@@ -151,21 +139,16 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Length
-        /// property.
-        /// </summary>
+        /// <inheritdoc/>
         public long Length
         {
             get { return source.Length; }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="ISampleSource"/> Dispose
-        /// method.
-        /// </summary>
+        /// <inheritdoc/>
         public void Dispose()
         {
+            source?.Dispose();
             GC.SuppressFinalize(this);
         }
     }

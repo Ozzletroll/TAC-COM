@@ -37,14 +37,10 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="SampleAggregatorBase"/> Read method,
-        /// applying the filtering to the signal.
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This is where the filtering is applied.
+        /// </remarks>
         public override int Read(float[] buffer, int offset, int count)
         {
             int read = base.Read(buffer, offset, count);
