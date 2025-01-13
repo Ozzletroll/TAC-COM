@@ -150,6 +150,32 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestCallKeyUp()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.KeyF,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            bool keyUpTriggered = false;
+
+            var keybindKeyUpListener = KeyboardHook.KeyboardEvents.Subscribe(args =>
+            {
+                if (args.Key == testKeybind.KeyCode && !args.IsKeyDown)
+                {
+                    keyUpTriggered = true;
+                }
+            });
+
+            testKeybind.CallKeyUp();
+
+            Assert.IsTrue(keyUpTriggered);
+        }
+
+        [TestMethod]
         public void TestToString()
         {
             testKeybind = new Keybind(
