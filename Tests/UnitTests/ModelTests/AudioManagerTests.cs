@@ -246,6 +246,18 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestInterferenceLevelProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = 0.35f;
+            audioManager.InterferenceLevel = newPropertyValue;
+            Assert.AreEqual(audioManager.InterferenceLevel, newPropertyValue);
+            Assert.AreEqual(audioManager.AudioProcessor.RingModulationWetDryMix, newPropertyValue);
+        }
+
+        [TestMethod]
         public void TestGetAudioDevices()
         {
             var mockMMDeviceEnumerator = new Mock<IMMDeviceEnumeratorService>();
