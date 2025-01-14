@@ -234,6 +234,27 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestInterferenceLevelProperty()
+        {
+            float testInterferenceLevelValue = 55;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.InterferenceLevel);
+
+            testViewModel.SettingsService = mockSettingsService.Object;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue);
+            mockSettingsService.Verify(
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue), Times.Once);
+            mockAudioManager.VerifySet(audioManager => audioManager.InterferenceLevel = testInterferenceLevelValue);
+        }
+
+        [TestMethod]
         public void TestProfilesProperty()
         {
             var mockProfile1 = new Profile()
