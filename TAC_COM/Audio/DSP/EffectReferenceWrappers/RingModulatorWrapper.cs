@@ -26,16 +26,15 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         public float Dry { get; set; }
 
         /// <summary>
-        /// Gets or sets the frequency of the modulator signal
-        /// in Hz.
-        /// </summary>
-        public float Frequency { get; set; } = 1.0f;
-
-        /// <summary>
         /// Gets or sets the Type of the <see cref="SignalBuilder"/>
         /// to use for ring modulation.
         /// </summary>
         public Type? ModulatorSignalType {  get; set; }
+
+        /// <summary>
+        /// Gets or sets the parameters for the modulator signal.
+        /// </summary>
+        public Dictionary<string, object> ModulatorParameters { get; set; } = [];
 
         private SignalBuilder CreateSignalBuilder()
         {
@@ -44,6 +43,22 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 
             if (constructor?.Invoke([]) is SignalBuilder instance) return instance;
             else throw new InvalidOperationException("Effect failed to instantiate.");
+        }
+
+        /// <summary>
+        /// Static method to set the parameters of a <see cref="SignalBuilder"/>.
+        /// </summary>
+        /// <param name="builder"> The object to apply the parameters to.</param>
+        /// <param name="parameters"> The dictionary of parameters and values to apply.</param>
+        static void SetParameters(dynamic builder, Dictionary<string, object> parameters)
+        {
+            foreach (var parameter in parameters)
+            {
+                object[] parameterObject = [parameter.Key, parameter.Value];
+
+                MethodInfo setParameterMethod = builder.GetType().GetMethod("SetParameter");
+                setParameterMethod.Invoke(builder, parameterObject);
+            }
         }
 
         /// <summary>
@@ -71,10 +86,11 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 
             DiscreteSignal carrierSignal = new(source.WaveFormat.SampleRate, buffer);
 
-            DiscreteSignal modulatorSignal = CreateSignalBuilder()
-                .SetParameter("frequency", Frequency)
-                .SetParameter("phase", Math.PI / 6)
-                .OfLength(buffer.Length)
+            var signalBuilder = CreateSignalBuilder();
+            SetParameters(signalBuilder, ModulatorParameters);
+
+            DiscreteSignal modulatorSignal = signalBuilder
+                .OfLength(samples)
                 .SampledAt(source.WaveFormat.SampleRate)
                 .Build();
 
