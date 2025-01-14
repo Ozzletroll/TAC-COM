@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using CSCore.Streams.Effects;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
@@ -31,6 +32,11 @@ namespace TAC_COM.Audio.Profiles
                 DistortionMode = null,
                 DistortionInput = 40,
                 DistortionOutput = 42,
+                RingModulatorType = typeof(SquareWaveBuilder),
+                RingModulatorParameters =
+                {
+                    { "frequency", 1125f },
+                },
                 PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
                 HighpassFrequency = 800,

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using CSCore.Streams.Effects;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
@@ -28,6 +29,11 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 DistortionType = typeof(DmoDistortionEffect),
+                RingModulatorType = typeof(SquareWaveBuilder),
+                RingModulatorParameters = 
+                {
+                    { "frequency", 250f },
+                },
                 PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                 HighpassFrequency = 800,

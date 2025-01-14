@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using NWaves.Effects;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
@@ -34,6 +35,13 @@ namespace TAC_COM.Audio.Profiles
                 DistortionOutput = 42,
                 DistortionWet = 0.9f,
                 DistortionDry = 0.1f,
+                RingModulatorType = typeof(KarplusStrongBuilder),
+                RingModulatorParameters =
+                {
+                    { "frequency", 500f },
+                    { "stretch", 2.5f },
+                    { "feedback", 1.25f },
+                },
                 PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
                 HighpassFrequency = 1000,

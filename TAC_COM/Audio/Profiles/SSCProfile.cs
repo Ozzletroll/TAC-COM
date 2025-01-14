@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 using NWaves.Effects;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
@@ -34,6 +35,11 @@ namespace TAC_COM.Audio.Profiles
                 DistortionOutput = 40,
                 DistortionWet = 0.5f,
                 DistortionDry = 0.5f,
+                RingModulatorType = typeof(TriangleWaveBuilder),
+                RingModulatorParameters =
+                {
+                    { "frequency", 350f },
+                },
                 PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                 HighpassFrequency = 600,

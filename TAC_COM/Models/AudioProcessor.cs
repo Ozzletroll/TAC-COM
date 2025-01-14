@@ -95,7 +95,7 @@ namespace TAC_COM.Models
         }
 
         private float ringModulationWetDryMix;
-        private const float MaxRingModulationWetMix = 0.5f;
+        private const float MaxRingModulationWetMix = 0.7f;
         public float RingModulationWetDryMix
         {
             get => ringModulationWetDryMix;
@@ -273,15 +273,14 @@ namespace TAC_COM.Models
             }
 
             // Apply ring modulation based on user noise level
-            if (activeProfile?.Settings.RingModulatorType != null
-                && activeProfile?.Settings.RingModulatorFrequency != null)
+            if (activeProfile?.Settings.RingModulatorType != null)
             {
                 outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
                 {
                     Wet = RingModulationWetDryMix,
                     Dry = 1 - RingModulationWetDryMix,
                     ModulatorSignalType = activeProfile.Settings.RingModulatorType,
-                    Frequency = activeProfile.Settings.RingModulatorFrequency,
+                    ModulatorParameters = activeProfile.Settings.RingModulatorParameters,
                 }, out ringModulator);
             }
 
