@@ -258,6 +258,26 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
+        public void TestInterferenceLevelStringProperty()
+        {
+            bool propertyChangedRaised = false;
+            var propertyName = nameof(audioManager.InterferenceLevelString);
+
+            audioManager.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == propertyName)
+                {
+                    propertyChangedRaised = true;
+                }
+            };
+
+            audioManager.InterferenceLevel = 0.65f;
+
+            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
+            Assert.IsTrue(audioManager.InterferenceLevelString == "65%");
+        }
+
+        [TestMethod]
         public void TestGetAudioDevices()
         {
             var mockMMDeviceEnumerator = new Mock<IMMDeviceEnumeratorService>();
