@@ -3,7 +3,7 @@ using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {
-    internal class MockAudioManager : IAudioManager
+    public class MockAudioManager : IAudioManager
     {
         public bool BypassState { get; set; }
         public float InputPeakMeterValue { get; set; }
@@ -18,6 +18,8 @@ namespace Tests.MockModels
         public ObservableCollection<IMMDeviceWrapper> InputDevices { get; set; } = [];
         public ObservableCollection<IMMDeviceWrapper> OutputDevices { get; set; } = [];
         public IProfile? ActiveProfile { get; set; }
+        public float InterferenceLevel { get; set; }
+        public string InterferenceLevelString { get; }
 
         public void GetAudioDevices() { }
 
