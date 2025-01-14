@@ -5,6 +5,7 @@ using CSCore.Streams;
 using CSCore.Streams.Effects;
 using Moq;
 using TAC_COM.Audio.DSP;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -87,6 +88,30 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(noiseMixLevel.Volume, newPropertyValue);
         }
 
+        [TestMethod]
+        public void TestRingModulationWetDryMixProperty()
+        {
+            audioProcessor.HasInitialised = true;
+
+            var ringModulator = new RingModulatorWrapper(new MockSampleSource());
+
+            FieldInfo? ringModulatorField = typeof(AudioProcessor).GetField("ringModulator", BindingFlags.NonPublic | BindingFlags.Instance);
+            ringModulatorField?.SetValue(audioProcessor, ringModulator);
+
+            FieldInfo? ringModulatorMaxModulationField 
+                = typeof(AudioProcessor).GetField("MaxRingModulationWetMix", 
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            float? maxModulationValue = (float?)(ringModulatorMaxModulationField?.GetValue(audioProcessor));
+
+            Assert.IsNotNull(maxModulationValue);
+
+            var newPropertyValue = 0.75f;
+            audioProcessor.RingModulationWetDryMix = newPropertyValue;
+            Assert.AreEqual(audioProcessor.RingModulationWetDryMix, newPropertyValue);
+            Assert.AreEqual(ringModulator.Wet, newPropertyValue * maxModulationValue);
+            Assert.AreEqual(ringModulator.Dry, 1 - ringModulator.Wet);
+        }
+        
         [TestMethod]
         public void TestInitialise()
         {
