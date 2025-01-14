@@ -11,7 +11,7 @@
                              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                              mc:Ignorable="d"
                              Title="TAC/COM"
-                             Height="350" Width="600" MinHeight="350" MinWidth="600"
+                             Height="350" Width="500" MinHeight="350" MinWidth="500"
                              TitleBarForeground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                              TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              BorderThickness="1" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
