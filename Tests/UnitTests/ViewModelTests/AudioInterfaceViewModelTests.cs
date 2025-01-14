@@ -213,13 +213,13 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         [TestMethod]
-        public void TestInterferenceLevelProperty()
+        public void TestNoiseLevelProperty()
         {
-            float testInterferenceLevelValue = 45;
+            float testNoiseLevelValue = 45;
 
             var mockSettingsService = new Mock<ISettingsService>();
             mockSettingsService.Setup(
-                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue)).Verifiable();
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseLevel), testNoiseLevelValue)).Verifiable();
 
             var mockAudioManager = new Mock<IAudioManager>();
             mockAudioManager.SetupProperty(audioManager => audioManager.NoiseLevel);
@@ -227,10 +227,10 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NoiseLevel), testNoiseLevelValue);
             mockSettingsService.Verify(
-                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue), Times.Once);
-            mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testInterferenceLevelValue);
+                settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseLevel), testNoiseLevelValue), Times.Once);
+            mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testNoiseLevelValue);
         }
 
         [TestMethod]
@@ -365,7 +365,8 @@ namespace Tests.UnitTests.ViewModelTests
                 OutputDevice = "Test Output Device 1",
                 NoiseGateThreshold = 70,
                 OutputLevel = -1,
-                InterferenceLevel = 45,
+                NoiseLevel = 45,
+                InterferenceLevel = 30,
                 ActiveProfile = "GMS Type-4 Datalink"
             };
 
@@ -376,6 +377,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             Assert.IsTrue(testViewModel.NoiseGateThreshold == testAudioSettings.NoiseGateThreshold);
             Assert.IsTrue(testViewModel.OutputLevel == testAudioSettings.OutputLevel);
+            Assert.IsTrue(testViewModel.NoiseLevel == testAudioSettings.NoiseLevel);
             Assert.IsTrue(testViewModel.InterferenceLevel == testAudioSettings.InterferenceLevel);
             Assert.IsTrue(testViewModel.ActiveProfile?.ProfileName == testAudioSettings.ActiveProfile);
         }

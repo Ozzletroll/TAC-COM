@@ -97,6 +97,17 @@ namespace Tests.UnitTests.ModelTests
             );
 
             allEffectsReferences.Add(
+                new(typeof(RingModulatorWrapper))
+                {
+                    Parameters = new Dictionary<string, object>
+                    {
+                        { "Wet", 0.5f },
+                        { "Dry", 0.5f },
+                    }
+                }
+            );
+
+            allEffectsReferences.Add(
                 new(typeof(RobotEffectWrapper))
                 {
                     Parameters = new Dictionary<string, object>
