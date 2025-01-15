@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CSCore.XAudio2;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
@@ -280,7 +281,22 @@ namespace TAC_COM.ViewModels
                 value = (float)Math.Round(value, 0);
                 audioManager.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(NoiseGateThreshold));
+                OnPropertyChanged(nameof(NoiseGateThresholdString));
                 settingsService.UpdateAppConfig(nameof(NoiseGateThreshold), value);
+
+            }
+        }
+
+        /// <summary>
+        /// Gets the formatted string value of the noise gate
+        /// threshold level in decibels.
+        /// </summary>
+        public string NoiseGateThresholdString
+        {
+            get
+            {
+                string? sign = audioManager.NoiseGateThreshold < 0 ? null : "+";
+                return sign + audioManager.NoiseGateThreshold.ToString() + "dB";
             }
         }
 
@@ -296,7 +312,21 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.OutputGainLevel = value;
                 OnPropertyChanged(nameof(OutputLevel));
+                OnPropertyChanged(nameof(OutputLevelString));
                 settingsService.UpdateAppConfig(nameof(OutputLevel), value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the formatted string value of the output
+        /// gain level in decibels.
+        /// </summary>
+        public string OutputLevelString
+        {
+            get
+            {
+                string? sign = OutputLevel < 0 ? null : "+";
+                return sign + OutputLevel.ToString() + "dB";
             }
         }
 
@@ -312,7 +342,21 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.NoiseLevel = value;
                 OnPropertyChanged(nameof(NoiseLevel));
+                OnPropertyChanged(nameof(NoiseLevelString));
                 settingsService.UpdateAppConfig(nameof(NoiseLevel), value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the formatted string value of the looping
+        /// background noise sfx channel volume adjustment
+        /// as a percentage.
+        /// </summary>
+        public string NoiseLevelString
+        {
+            get
+            {
+                return Math.Round(audioManager.NoiseLevel * 100).ToString() + "%";
             }
         }
 
@@ -328,7 +372,20 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.InterferenceLevel = value;
                 OnPropertyChanged(nameof(InterferenceLevel));
+                OnPropertyChanged(nameof(InterferenceLevelString));
                 settingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the formatted string value of the interference
+        /// level.
+        /// </summary>
+        public string InterferenceLevelString
+        {
+            get
+            {
+                return Math.Round(audioManager.InterferenceLevel * 100).ToString() + "%";
             }
         }
 

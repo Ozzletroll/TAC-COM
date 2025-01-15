@@ -217,16 +217,6 @@ namespace TAC_COM.Models
             {
                 outputGainLevel = value;
                 audioProcessor.UserGainLevel = value;
-                OnPropertyChanged(nameof(OutputGainLevelString));
-            }
-        }
-
-        public string OutputGainLevelString
-        {
-            get
-            {
-                string? sign = outputGainLevel < 0 ? null : "+";
-                return sign + outputGainLevel.ToString() + "dB";
             }
         }
 
@@ -236,16 +226,6 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.NoiseGateThreshold = value;
-                OnPropertyChanged(nameof(NoiseGateThresholdString));
-            }
-        }
-
-        public string NoiseGateThresholdString
-        {
-            get
-            {
-                string? sign = audioProcessor.NoiseGateThreshold < 0 ? null : "+";
-                return sign + audioProcessor.NoiseGateThreshold.ToString() + "dB";
             }
         }
 
@@ -255,15 +235,6 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.UserNoiseLevel = value;
-                OnPropertyChanged(nameof(NoiseLevelString));
-            }
-        }
-
-        public string NoiseLevelString
-        {
-            get
-            {
-                return Math.Round(audioProcessor.UserNoiseLevel * 100).ToString() + "%";
             }
         }
 
@@ -273,15 +244,6 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.RingModulationWetDryMix = value;
-                OnPropertyChanged(nameof(InterferenceLevelString));
-            }
-        }
-
-        public string InterferenceLevelString
-        {
-            get
-            {
-                return Math.Round(audioProcessor.RingModulationWetDryMix * 100).ToString() + "%";
             }
         }
 

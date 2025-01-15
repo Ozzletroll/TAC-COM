@@ -53,24 +53,11 @@ namespace TAC_COM.Models.Interfaces
         float NoiseGateThreshold { get; set; }
 
         /// <summary>
-        /// Gets the formatted string value of the noise gate
-        /// threshold level in decibels.
-        /// </summary>
-        string NoiseGateThresholdString { get; }
-
-        /// <summary>
         /// Gets or sets the value of the looping background noise
         /// sfx channel volume as value between 0 and 1,
         /// to be exposed to the viewmodel.
         /// </summary>
         float NoiseLevel { get; set; }
-
-        /// <summary>
-        /// Gets the formatted string value of the looping
-        /// background noise sfx channel volume adjustment
-        /// as a percentage.
-        /// </summary>
-        string NoiseLevelString { get; }
 
         /// <summary>
         /// Gets or sets the value of the output gain
@@ -79,22 +66,10 @@ namespace TAC_COM.Models.Interfaces
         float OutputGainLevel { get; set; }
 
         /// <summary>
-        /// Gets the formatted string value of the output
-        /// gain level in decibels.
-        /// </summary>
-        string OutputGainLevelString { get; }
-
-        /// <summary>
         /// Gets or sets the interference level as a value between
         /// 0 and 1.
         /// </summary>
         float InterferenceLevel { get; set; }
-
-        /// <summary>
-        /// Gets the formatted string value of the interference
-        /// level.
-        /// </summary>
-        string InterferenceLevelString { get; }
 
         /// <summary>
         /// Gets or sets the current active <see cref="IProfile"/>.

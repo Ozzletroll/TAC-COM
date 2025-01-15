@@ -274,7 +274,7 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="-100" Max="0" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
-                            <Label Content="{Binding AudioManager.NoiseGateThresholdString}"
+                            <Label Content="{Binding NoiseGateThresholdString}"
                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                    FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -289,7 +289,7 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="-10" Max="10" Interval="1" Sensitivity="2"
                                            Value="{Binding OutputLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding AudioManager.OutputGainLevelString}" 
+                            <Label Content="{Binding OutputLevelString}" 
                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                    FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -304,7 +304,7 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="0" Max="1" Interval="0.01" Sensitivity="2"
                                            Value="{Binding NoiseLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding AudioManager.NoiseLevelString}" 
+                            <Label Content="{Binding NoiseLevelString}" 
                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                    FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -319,7 +319,7 @@
                             <controls:Dial Height="50" Width="50"
                            Min="0" Max="1" Interval="0.01" Sensitivity="2"
                            Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding AudioManager.InterferenceLevelString}" 
+                            <Label Content="{Binding InterferenceLevelString}" 
                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                    FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
