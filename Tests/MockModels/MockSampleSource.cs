@@ -2,6 +2,9 @@
 
 namespace Tests.MockModels
 {
+    /// <summary>
+    /// Mock class to act as the <see cref="ISampleSource"/> stream during testing.
+    /// </summary>
     public class MockSampleSource : ISampleSource
     {
         public bool CanSeek => throw new NotImplementedException();
@@ -12,7 +15,10 @@ namespace Tests.MockModels
 
         public long Length => throw new NotImplementedException();
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
 
         public int Read(float[] buffer, int offset, int count)
         {

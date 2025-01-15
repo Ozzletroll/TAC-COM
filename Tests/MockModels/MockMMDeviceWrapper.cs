@@ -4,6 +4,10 @@ using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {
+    /// <summary>
+    /// Mock class to act as the wrapper for <see cref="MMDevice"/>.
+    /// </summary>
+    /// <param name="_friendlyName"></param>
     public class MockMMDeviceWrapper(string _friendlyName) : IMMDeviceWrapper
     {
         private readonly string friendlyName = _friendlyName;
@@ -21,6 +25,10 @@ namespace Tests.MockModels
             }
         }
 
+        /// <summary>
+        /// Method to manually set the disposed state of the wrapped <see cref="MMDevice"/>.
+        /// </summary>
+        /// <param name="state"> The desired state to set the property to.</param>
         public void SetDisposedState(bool state)
         {
             var field = typeof(CSCore.Win32.ComObject).GetField("_disposed", BindingFlags.NonPublic | BindingFlags.Instance);

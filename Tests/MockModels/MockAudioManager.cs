@@ -3,6 +3,9 @@ using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {
+    /// <summary>
+    /// Mock class to act as the audio manager during testing.
+    /// </summary>
     public class MockAudioManager : IAudioManager
     {
         public bool BypassState { get; set; }

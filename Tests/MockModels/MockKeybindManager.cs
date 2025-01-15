@@ -5,7 +5,10 @@ using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
 {
-    internal class MockKeybindManager : IKeybindManager
+    /// <summary>
+    /// Mock class to act as the keybind manager during testing.
+    /// </summary>
+    public class MockKeybindManager : IKeybindManager
     {
         public Keybind? NewPTTKeybind { get; set; }
         public bool PassthroughState { get; set; }

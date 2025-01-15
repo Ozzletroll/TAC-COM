@@ -4,7 +4,11 @@ using Moq;
 
 namespace Tests.MockModels
 {
-    internal class MockDevice(string _friendlyName) : IMMDevice
+    /// <summary>
+    /// Mock class to act as the audio device during testing.
+    /// </summary>
+    /// <param name="_friendlyName"></param>
+    public class MockDevice(string _friendlyName) : IMMDevice
     {
         private readonly string friendlyName = _friendlyName;
 
