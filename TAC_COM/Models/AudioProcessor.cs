@@ -285,11 +285,14 @@ namespace TAC_COM.Models
             }
 
             // Profile specific gain adjustment
-            outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+            if (outputSampleSource != null)
             {
-                GainDB = activeProfile?.Settings.GainAdjust ?? 0,
-            });
-
+                outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
+                {
+                    GainDB = activeProfile?.Settings.GainAdjust ?? 0,
+                });
+            }
+            
             // Combine parallel processing chain with processed source
             var effectsSource = outputSampleSource.ToMono().ChangeSampleRate(sampleRate);
             var drySource = ParallelProcessedSignalChain(parallelSource.ToSampleSource()).ToMono().ChangeSampleRate(sampleRate);
