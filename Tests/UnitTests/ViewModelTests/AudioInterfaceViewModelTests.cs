@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -185,10 +186,26 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
+            Utils.TestMultiplePropertyChange(
+                testViewModel, 
+                nameof(testViewModel.NoiseGateThreshold), 
+                testThresholdValue,
+                nameof(testViewModel.NoiseGateThresholdString));
+
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseGateThreshold), testThresholdValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseGateThreshold = testThresholdValue);
+        }
+
+        [TestMethod]
+        public void TestNoiseGateThresholdString()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.NoiseGateThreshold);
+
+            testViewModel.NoiseGateThreshold = -56f;
+
+            Assert.IsTrue(testViewModel.NoiseGateThresholdString == "-56dB");
         }
 
         [TestMethod]
@@ -206,10 +223,26 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.OutputLevel), testOutputLevelValue);
+            Utils.TestMultiplePropertyChange(
+                testViewModel, 
+                nameof(testViewModel.OutputLevel), 
+                testOutputLevelValue, 
+                nameof(testViewModel.OutputLevelString));
+
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputLevel), testOutputLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.OutputGainLevel = testOutputLevelValue);
+        }
+
+        [TestMethod]
+        public void TestOutputGainLevelStringProperty()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.OutputGainLevel);
+
+            testViewModel.OutputLevel = 25f;
+
+            Assert.IsTrue(testViewModel.OutputLevelString == "+25dB");
         }
 
         [TestMethod]
@@ -227,10 +260,26 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NoiseLevel), testNoiseLevelValue);
+            Utils.TestMultiplePropertyChange(
+                testViewModel, 
+                nameof(testViewModel.NoiseLevel), 
+                testNoiseLevelValue,
+                nameof(testViewModel.NoiseLevelString));
+
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseLevel), testNoiseLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testNoiseLevelValue);
+        }
+
+        [TestMethod]
+        public void TestNoiseLevelStringProperty()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.NoiseLevel);
+
+            testViewModel.NoiseLevel = 0.25f;
+
+            Assert.IsTrue(testViewModel.NoiseLevelString == "25%");
         }
 
         [TestMethod]
@@ -248,10 +297,26 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue);
+            Utils.TestMultiplePropertyChange(
+                testViewModel, 
+                nameof(testViewModel.InterferenceLevel), 
+                testInterferenceLevelValue,
+                nameof(testViewModel.InterferenceLevelString));
+
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.InterferenceLevel), testInterferenceLevelValue), Times.Once);
             mockAudioManager.VerifySet(audioManager => audioManager.InterferenceLevel = testInterferenceLevelValue);
+        }
+
+        [TestMethod]
+        public void TestInterferenceLevelStringProperty()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.InterferenceLevel);
+
+            testViewModel.InterferenceLevel = 0.65f;
+
+            Assert.IsTrue(testViewModel.InterferenceLevelString == "65%");
         }
 
         [TestMethod]

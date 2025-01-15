@@ -152,31 +152,6 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestOutputGainLevelStringProperty()
-        {
-            bool propertyChangedRaised = false;
-            var propertyName = nameof(audioManager.OutputGainLevelString);
-
-            audioManager.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == propertyName)
-                {
-                    propertyChangedRaised = true;
-                }
-            };
-
-            audioManager.OutputGainLevel = 25f;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.OutputGainLevelString == "+25dB");
-
-            audioManager.OutputGainLevel = -50;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.OutputGainLevelString == "-50dB");
-        }
-
-        [TestMethod]
         public void TestNoiseGateThresholdProperty()
         {
             var mockAudioProcessor = new Mock<AudioProcessor>();
@@ -186,31 +161,6 @@ namespace Tests.UnitTests.ModelTests
             audioManager.NoiseGateThreshold = newPropertyValue;
             Assert.AreEqual(audioManager.NoiseGateThreshold, newPropertyValue);
             Assert.AreEqual(audioManager.AudioProcessor.NoiseGateThreshold, newPropertyValue);
-        }
-
-        [TestMethod]
-        public void TestNoiseGateThresholdStringProperty()
-        {
-            bool propertyChangedRaised = false;
-            var propertyName = nameof(audioManager.NoiseGateThresholdString);
-
-            audioManager.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == propertyName)
-                {
-                    propertyChangedRaised = true;
-                }
-            };
-
-            audioManager.NoiseGateThreshold = -55f;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.NoiseGateThresholdString == "-55dB");
-
-            audioManager.NoiseGateThreshold = 0;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.NoiseGateThresholdString == "+0dB");
         }
 
         [TestMethod]
@@ -226,26 +176,6 @@ namespace Tests.UnitTests.ModelTests
         }
 
         [TestMethod]
-        public void TestNoiseLevelStringProperty()
-        {
-            bool propertyChangedRaised = false;
-            var propertyName = nameof(audioManager.NoiseLevelString);
-
-            audioManager.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == propertyName)
-                {
-                    propertyChangedRaised = true;
-                }
-            };
-
-            audioManager.NoiseLevel = 0.25f;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.NoiseLevelString == "25%");
-        }
-
-        [TestMethod]
         public void TestInterferenceLevelProperty()
         {
             var mockAudioProcessor = new Mock<AudioProcessor>();
@@ -255,26 +185,6 @@ namespace Tests.UnitTests.ModelTests
             audioManager.InterferenceLevel = newPropertyValue;
             Assert.AreEqual(audioManager.InterferenceLevel, newPropertyValue);
             Assert.AreEqual(audioManager.AudioProcessor.RingModulationWetDryMix, newPropertyValue);
-        }
-
-        [TestMethod]
-        public void TestInterferenceLevelStringProperty()
-        {
-            bool propertyChangedRaised = false;
-            var propertyName = nameof(audioManager.InterferenceLevelString);
-
-            audioManager.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == propertyName)
-                {
-                    propertyChangedRaised = true;
-                }
-            };
-
-            audioManager.InterferenceLevel = 0.65f;
-
-            Assert.IsTrue(propertyChangedRaised, $"Property change not raised for {propertyName}");
-            Assert.IsTrue(audioManager.InterferenceLevelString == "65%");
         }
 
         [TestMethod]
