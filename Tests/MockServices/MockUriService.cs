@@ -2,6 +2,9 @@
 
 namespace Tests.MockServices
 {
+    /// <summary>
+    /// Mock implementation of the <see cref="IUriService"/> interface.
+    /// </summary>
     public class MockUriService : IUriService
     {
         public Uri GetThemeUri(string themeName)
