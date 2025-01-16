@@ -19,7 +19,6 @@ namespace TAC_COM.Models
 
         public float HighpassFrequency;
         public float LowpassFrequency;
-        public float PeakFrequency;
 
         public List<EffectReference>? PreDistortionSignalChain;
         public List<EffectReference>? PostDistortionSignalChain;

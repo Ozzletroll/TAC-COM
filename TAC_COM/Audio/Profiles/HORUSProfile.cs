@@ -41,7 +41,6 @@ namespace TAC_COM.Audio.Profiles
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
                 HighpassFrequency = 800,
                 LowpassFrequency = 7000,
-                PeakFrequency = 3000,
                 GainAdjust = 3,
             };
         }

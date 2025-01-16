@@ -172,9 +172,6 @@ namespace TAC_COM.Models
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
                 Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
-            }).AppendSource(x => new BiQuadFilterSource(x)
-            {
-                Filter = new PeakFilter(sampleRate, activeProfile.Settings.PeakFrequency, 500, 2),
             });
 
             // Apply profile specific pre-distortion effects
@@ -223,9 +220,9 @@ namespace TAC_COM.Models
                     distortionSource.AppendSource(x => new DmoDistortionEffect(x)
                     {
                         Gain = -60,
-                        Edge = 85,
+                        Edge = 75,
                         PostEQCenterFrequency = 3500,
-                        PostEQBandwidth = 2400,
+                        PostEQBandwidth = 4800,
                         PreLowpassCutoff = 8000
                     });
 
@@ -259,7 +256,7 @@ namespace TAC_COM.Models
 
                 outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
                 {
-                    GainDB = -45,
+                    GainDB = -25,
                 });
             }
 
@@ -310,8 +307,8 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.8f;
-            dryMixLevel.Volume = 0.2f;
+            wetMixLevel.Volume = 0.7f;
+            dryMixLevel.Volume = 0.3f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -352,9 +349,6 @@ namespace TAC_COM.Models
             }).AppendSource(x => new BiQuadFilterSource(x)
             {
                 Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
-            }).AppendSource(x => new BiQuadFilterSource(x)
-            {
-                Filter = new PeakFilter(sampleRate, activeProfile.Settings.PeakFrequency, 500, 2),
             });
 
             var distortedSource = sampleSource.AppendSource(x => new TubeDistortionWrapper(x)

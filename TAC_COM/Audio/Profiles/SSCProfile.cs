@@ -30,22 +30,21 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.HardClipping,
-                DistortionInput = 20,
-                DistortionOutput = 40,
-                DistortionWet = 0.5f,
-                DistortionDry = 0.5f,
+                DistortionMode = DistortionMode.SoftClipping,
+                DistortionInput = 16,
+                DistortionOutput = 28,
+                DistortionWet = 0.2f,
+                DistortionDry = 0.8f,
                 RingModulatorType = typeof(TriangleWaveBuilder),
                 RingModulatorParameters =
                 {
-                    { "frequency", 350f },
+                    { "frequency", 150f },
                 },
                 PreDistortionSignalChain = new SSCChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
-                HighpassFrequency = 600,
-                LowpassFrequency = 4000,
-                PeakFrequency = 3500,
-                GainAdjust = -8,
+                HighpassFrequency = 400,
+                LowpassFrequency = 2400,
+                GainAdjust = -2,
             };
         }
     }

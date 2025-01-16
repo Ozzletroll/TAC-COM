@@ -31,23 +31,22 @@ namespace TAC_COM.Audio.Profiles
             {
                 DistortionType = typeof(DistortionWrapper),
                 DistortionMode = DistortionMode.SoftClipping,
-                DistortionInput = 22,
-                DistortionOutput = 42,
-                DistortionWet = 0.9f,
-                DistortionDry = 0.1f,
+                DistortionInput = 14,
+                DistortionOutput = 22,
+                DistortionWet = 0.8f,
+                DistortionDry = 0.2f,
                 RingModulatorType = typeof(KarplusStrongBuilder),
                 RingModulatorParameters =
                 {
                     { "frequency", 500f },
-                    { "stretch", 2.5f },
-                    { "feedback", 1.25f },
+                    { "stretch", 4.8f },
+                    { "feedback", 2f },
                 },
                 PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
                 HighpassFrequency = 1000,
                 LowpassFrequency = 7000,
-                PeakFrequency = 5000,
-                GainAdjust = 1,
+                GainAdjust = 0,
             };
         }
     }
