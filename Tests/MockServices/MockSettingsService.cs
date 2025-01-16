@@ -3,7 +3,14 @@ using TAC_COM.Settings;
 
 namespace Tests.MockServices
 {
-    internal class MockSettingsService : ISettingsService
+    /// <summary>
+    /// Mock implementation of the <see cref="ISettingsService"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// Initialises with default values for <see cref="AudioSettings"/> and
+    /// <see cref="KeybindSettings"/>.
+    /// </remarks>
+    public class MockSettingsService : ISettingsService
     {
         public AudioSettings AudioSettings { get; set; }
         public KeybindSettings KeybindSettings { get; set; }
@@ -34,6 +41,10 @@ namespace Tests.MockServices
             }
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MockSettingsService"/> class
+        /// with default test values.
+        /// </summary>
         public MockSettingsService()
         {
             AudioSettings = new AudioSettings
