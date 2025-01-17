@@ -6,7 +6,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     public class TubeDistortionWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
-        private readonly TubeDistortionEffect tubeDistortion = new();
+        private TubeDistortionEffect tubeDistortion = new();
 
         /// <summary>
         /// Gets or sets the value of the "wet" processed signal 
@@ -33,6 +33,51 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             set
             {
                 tubeDistortion.Dry = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of the "Rh" parameter,
+        /// a filter coefficient (close to 1.0) defining placement 
+        /// of poles in the HP filter that removes DC component.
+        /// </summary>
+        public float Rh
+        {
+            get => tubeDistortion.Rh;
+            set
+            {
+                tubeDistortion = new
+                    (
+                        inputGain: InputGainDB, 
+                        outputGain: OutputGainDB, 
+                        q: Q, 
+                        dist: Distortion, 
+                        rh: value, 
+                        rl: Rl
+                    );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of the "Rl" parameter,
+        /// a filter coefficient between 0 and 1 that defines placement 
+        /// of pole in the LP filter used to simulate capacitances 
+        /// in tube amplifiers.
+        /// </summary>
+        public float Rl
+        {
+            get => tubeDistortion.Rl;
+            set
+            {
+                tubeDistortion = new
+                    (
+                        inputGain: InputGainDB,
+                        outputGain: OutputGainDB,
+                        q: Q,
+                        dist: Distortion,
+                        rh: Rh,
+                        rl: value
+                    );
             }
         }
 
