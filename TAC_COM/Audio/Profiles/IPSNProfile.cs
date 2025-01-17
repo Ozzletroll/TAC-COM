@@ -38,7 +38,7 @@ namespace TAC_COM.Audio.Profiles
                 RingModulatorType = typeof(KarplusStrongBuilder),
                 RingModulatorParameters =
                 {
-                    { "frequency", 500f },
+                    { "frequency", 200f },
                     { "stretch", 4.8f },
                     { "feedback", 2f },
                 },

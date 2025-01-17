@@ -33,11 +33,13 @@ namespace TAC_COM.Audio.Profiles
                 DistortionMode = DistortionMode.HalfWaveRectify,
                 DistortionInput = 30,
                 DistortionOutput = 23,
+                DistortionWet = 0.8f,
+                DistortionDry = 0.2f,
                 RingModulatorType = typeof(KarplusStrongBuilder),
                 RingModulatorParameters =
                 {
                     { "frequency", 50f },
-                    { "stretch", 0.8f },
+                    { "stretch", 2.8f },
                     { "feedback", 1.85f },
                 },
                 PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
