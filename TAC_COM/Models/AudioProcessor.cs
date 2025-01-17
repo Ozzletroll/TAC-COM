@@ -162,7 +162,7 @@ namespace TAC_COM.Models
                 ThresholdDB = NoiseGateThreshold,
                 Attack = 5,
                 Hold = 30,
-                Release = 5,
+                Release = 50,
             }, out processedNoiseGate);
 
             // EQ
@@ -307,8 +307,8 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.7f;
-            dryMixLevel.Volume = 0.3f;
+            wetMixLevel.Volume = 0.8f;
+            dryMixLevel.Volume = 0.2f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -358,7 +358,7 @@ namespace TAC_COM.Models
                 InputGainDB = 55,
                 OutputGainDB = 10,
                 Q = -0.5f,
-                Distortion = 85,
+                Distortion = 25,
                 Rh = 0.996f,
                 Rl = 0.1f,
             });
@@ -378,7 +378,7 @@ namespace TAC_COM.Models
 
             ISampleSource outputSource = compressedSource.AppendSource(x => new Gain(x)
             {
-                GainDB = 5,
+                GainDB = 2,
             });
 
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");
