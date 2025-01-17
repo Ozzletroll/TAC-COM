@@ -355,10 +355,12 @@ namespace TAC_COM.Models
             {
                 Wet = 0.5f,
                 Dry = 0.5f,
-                InputGainDB = 15,
-                OutputGainDB = -5,
-                Q = -0.2f,
-                Distortion = 15,
+                InputGainDB = 55,
+                OutputGainDB = 10,
+                Q = -0.5f,
+                Distortion = 85,
+                Rh = 0.996f,
+                Rl = 0.1f,
             });
 
             // Compression
@@ -366,16 +368,15 @@ namespace TAC_COM.Models
                 distortedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
                 {
                     Mode = DynamicsMode.Compressor,
-                    MinAmplitude = -120,
-                    Threshold = -10,
-                    Ratio = 10,
+                    MinAmplitude = -70,
+                    Threshold = -30,
+                    Ratio = 40,
                     Attack = 10,
                     Release = 300,
-                    MakeupGain = 25,
+                    MakeupGain = 24,
                 });
 
-            ISampleSource outputSource = compressedSource;
-            outputSource = compressedSource.AppendSource(x => new Gain(x)
+            ISampleSource outputSource = compressedSource.AppendSource(x => new Gain(x)
             {
                 GainDB = 5,
             });
