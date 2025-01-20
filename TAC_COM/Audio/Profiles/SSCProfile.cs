@@ -33,8 +33,8 @@ namespace TAC_COM.Audio.Profiles
                 DistortionMode = DistortionMode.SoftClipping,
                 DistortionInput = 16,
                 DistortionOutput = 24,
-                DistortionWet = 0.6f,
-                DistortionDry = 0.4f,
+                DistortionWet = 0.2f,
+                DistortionDry = 0.8f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
@@ -44,7 +44,7 @@ namespace TAC_COM.Audio.Profiles
                 PostDistortionSignalChain = new SSCChain().GetPostDistortionEffects(),
                 HighpassFrequency = 600,
                 LowpassFrequency = 2400,
-                GainAdjust = -4,
+                GainAdjust = -3,
             };
         }
     }

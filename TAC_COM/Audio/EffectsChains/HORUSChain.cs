@@ -19,12 +19,13 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Shift", 0.9f },
                 }
             },
+
             new(typeof(EchoWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.02f },
-                    { "Dry", 0.98f },
+                    { "Wet", 0.01f },
+                    { "Dry", 0.99f },
                     { "Delay", 28f },
                 }
             },

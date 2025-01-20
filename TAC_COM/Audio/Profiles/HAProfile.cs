@@ -41,7 +41,7 @@ namespace TAC_COM.Audio.Profiles
                     { "frequency", 50f },
                     { "stretch", 2.8f },
                     { "feedback", 1.85f },
-                },
+                }, 
                 PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                 HighpassFrequency = 250,

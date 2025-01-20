@@ -307,8 +307,8 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.8f;
-            dryMixLevel.Volume = 0.2f;
+            wetMixLevel.Volume = 0.85f;
+            dryMixLevel.Volume = 0.15f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -423,7 +423,7 @@ namespace TAC_COM.Models
                 ISampleSource output;
                 output = new Gain(loopSource)
                 {
-                    GainDB = 15,
+                    GainDB = 10,
                 };
 
                 return output;

@@ -1,4 +1,5 @@
 ﻿using NWaves.Operations;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
@@ -36,6 +37,23 @@ namespace TAC_COM.Audio.EffectsChains
                     { "MakeupGain", 26 },
                 }
             },
+
+            new(typeof(RingModulatorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
+                    { "ModulatorSignalType", typeof(SquareWaveBuilder) },
+                    { "ModulatorParameters",
+                        new Dictionary<string, object>
+                        {
+                            { "frequency", 1000 },
+                        }
+                    },
+                }
+            },
+
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;

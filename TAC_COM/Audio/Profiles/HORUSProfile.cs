@@ -31,7 +31,7 @@ namespace TAC_COM.Audio.Profiles
                 DistortionType = typeof(DmoDistortionEffect),
                 DistortionMode = null,
                 DistortionInput = 40,
-                DistortionOutput = 42,
+                DistortionOutput = 22,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
@@ -39,8 +39,8 @@ namespace TAC_COM.Audio.Profiles
                 },
                 PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 400,
-                LowpassFrequency = 7000,
+                HighpassFrequency = 500,
+                LowpassFrequency = 5000,
                 GainAdjust = 3,
             };
         }
