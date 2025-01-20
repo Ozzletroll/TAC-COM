@@ -1,12 +1,16 @@
 ﻿using CSCore;
 using NWaves.Effects;
 using NWaves.Operations;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 using Tests.MockModels;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="EffectReference"/> class.
+    /// </summary>
     [TestClass]
     public class EffectsReferenceTests
     {
@@ -103,6 +107,13 @@ namespace Tests.UnitTests.ModelTests
                     {
                         { "Wet", 0.5f },
                         { "Dry", 0.5f },
+                        { "ModulatorSignalType", typeof(SquareWaveBuilder) },
+                        { "ModulatorParameters", 
+                            new Dictionary<string, object> 
+                            {
+                                { "frequency", 1000 },
+                            } 
+                        },
                     }
                 }
             );
@@ -159,6 +170,9 @@ namespace Tests.UnitTests.ModelTests
             return allEffectsReferences;
         }
 
+        /// <summary>
+        /// Test method for the <see cref="EffectReference.CreateInstance(ISampleSource)"/> method.
+        /// </summary>
         [TestMethod]
         public void TestCreateInstance()
         {
