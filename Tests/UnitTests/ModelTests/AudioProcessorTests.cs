@@ -13,16 +13,25 @@ using Tests.MockModels;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="AudioProcessor"/> class.
+    /// </summary>
     [TestClass]
     public class AudioProcessorTests
     {
         private AudioProcessor audioProcessor;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioProcessorTests"/> class.
+        /// </summary>
         public AudioProcessorTests()
         {
             audioProcessor = new AudioProcessor();
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.HasInitialised"/> property.
+        /// </summary>
         [TestMethod]
         public void TestHasInitialisedProperty()
         {
@@ -31,6 +40,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.HasInitialised, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.UserGainLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestUserGainLevelProperty()
         {
@@ -46,6 +58,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.UserGainLevel, userGainControl.GainDB);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.NoiseGateThreshold"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseGateThresholdProperty()
         {
@@ -72,6 +87,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.NoiseGateThreshold, dryNoiseGate.ThresholdDB);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.UserNoiseLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestUserNoiseLevelProperty()
         {
@@ -88,6 +106,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(noiseMixLevel.Volume, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.RingModulationWetDryMix"/> property.
+        /// </summary>
         [TestMethod]
         public void TestRingModulationWetDryMixProperty()
         {
@@ -111,7 +132,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(ringModulator.Wet, newPropertyValue * maxModulationValue);
             Assert.AreEqual(ringModulator.Dry, 1 - ringModulator.Wet);
         }
-        
+
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.Initialise"/> method.
+        /// </summary>
         [TestMethod]
         public void TestInitialise()
         {
@@ -150,6 +174,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(audioProcessor.HasInitialised == true);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.ReturnCompleteSignalChain"/> method.
+        /// </summary>
         [TestMethod]
         public void TestReturnCompleteSignalChain()
         {
@@ -171,7 +198,6 @@ namespace Tests.UnitTests.ModelTests
                 PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                 HighpassFrequency = 800,
                 LowpassFrequency = 2900,
-                PeakFrequency = 2800,
                 GainAdjust = 3,
             };
             mockProfile.Object.NoiseSource = new FileSourceWrapper()
@@ -187,6 +213,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsInstanceOfType(output, typeof(IWaveSource));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.SetMixerLevels"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetMixerLevels()
         {
