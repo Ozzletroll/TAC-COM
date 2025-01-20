@@ -16,18 +16,27 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="AudioManager"/> class.
+    /// </summary>
     [TestClass]
     public partial class AudioManagerTests
     {
         private readonly AudioManager audioManager;
         private readonly MockUriService mockUriService;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioManagerTests"/> class.
+        /// </summary>
         public AudioManagerTests()
         {
             audioManager = new AudioManager();
             mockUriService = new MockUriService();
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.AudioProcessor"/> property.
+        /// </summary>
         [TestMethod]
         public void TestAudioProcessorProperty()
         {
@@ -36,6 +45,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.EnumeratorService"/> property.
+        /// </summary>
         [TestMethod]
         public void TestEnumeratorServiceProperty()
         {
@@ -44,6 +56,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.EnumeratorService, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ActiveProfile"/> property.
+        /// </summary>
         [TestMethod]
         public void TestActiveProfileProperty()
         {
@@ -59,6 +74,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.ActiveProfile, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.InputDevices"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInputDevicesProperty()
         {
@@ -71,6 +89,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.InputDevices, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OutputDevices"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputDevicesProperty()
         {
@@ -83,6 +104,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.OutputDevices, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.State"/> property.
+        /// </summary>
         [TestMethod]
         public void TestStateProperty()
         {
@@ -91,6 +115,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.State, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.BypassState"/> property.
+        /// </summary>
         [TestMethod]
         public void TestBypassStateProperty()
         {
@@ -107,6 +134,9 @@ namespace Tests.UnitTests.ModelTests
             mockAudioProcessor.Verify(audioProcessor => audioProcessor.SetMixerLevels(true), Times.Once());
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.InputMeter"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInputMeterProperty()
         {
@@ -115,6 +145,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.InputMeter, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OutputMeter"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputMeterProperty()
         {
@@ -123,6 +156,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.OutputMeter, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.InputPeakMeterValue"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInputPeakMeterValueProperty()
         {
@@ -131,6 +167,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.InputPeakMeterValue, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OutputPeakMeterValue"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputPeakMeterValueProperty()
         {
@@ -139,6 +178,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.OutputPeakMeterValue, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OutputGainLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputGainLevelProperty()
         {
@@ -151,6 +193,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.UserGainLevel, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.NoiseGateThreshold"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseGateThresholdProperty()
         {
@@ -163,6 +208,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.NoiseGateThreshold, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.NoiseLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseLevelProperty()
         {
@@ -175,6 +223,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.UserNoiseLevel, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.InterferenceLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInterferenceLevelProperty()
         {
@@ -187,6 +238,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.RingModulationWetDryMix, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.GetAudioDevices"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetAudioDevices()
         {
@@ -223,6 +277,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.SetInputDevice"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetInputDevice()
         {
@@ -246,6 +303,9 @@ namespace Tests.UnitTests.ModelTests
             mockInputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.SetOutputDevice"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetOutputDevice()
         {
@@ -269,6 +329,14 @@ namespace Tests.UnitTests.ModelTests
             mockOutputMeter.Verify(meter => meter.Initialise(mockDevice2.Device), Times.Once());
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method.
+        /// </summary>
+        /// <remarks>
+        /// Test case simulates the system output device being disposed, such as
+        /// when a the audio device disconnected, or the sample rate is changed 
+        /// during playback/recording.
+        /// </remarks>
         [TestMethod]
         public void TestResetOutputDevice()
         {
@@ -327,6 +395,14 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
 
+
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = true,
+        /// <see cref="AudioManager.InputDevices"/> = null and 
+        /// <see cref="AudioManager.OutputDevices"/> = null.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleStateAsync_StateTrue_NullDevices()
         {
@@ -334,11 +410,11 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? stateField = typeof(AudioManager).GetField("state", BindingFlags.NonPublic | BindingFlags.Instance);
             stateField?.SetValue(audioManager, true);
 
-            // activeInputDevice != null
+            // activeInputDevice = null
             FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
             activeInputField?.SetValue(audioManager, null);
 
-            // activeOutputDevice != null
+            // activeOutputDevice = null
             FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
             activeOutputField?.SetValue(audioManager, null);
 
@@ -354,6 +430,13 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNull(outputValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = true,
+        /// <see cref="AudioManager.InputDevices"/> and 
+        /// <see cref="AudioManager.OutputDevices"/> as valid devices.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleStateAsync_StateTrue_ValidDevices()
         {
@@ -439,6 +522,13 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(1, outputStoppedHandlers.Count, "Stopped event handler not subscribed to output");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = false,
+        /// <see cref="AudioManager.InputDevices"/> and 
+        /// <see cref="AudioManager.OutputDevices"/> as valid devices.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleStateAsync_StateFalse_ValidDevices()
         {
@@ -467,6 +557,11 @@ namespace Tests.UnitTests.ModelTests
             mockWasapiOutput.Verify(output => output.Dispose(), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ToggleBypassStateAsync"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = false.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleBypassState_StateFalse()
         {
@@ -482,6 +577,12 @@ namespace Tests.UnitTests.ModelTests
             mockAudioProcessor.Verify(processor => processor.SetMixerLevels(false), Times.Never);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ToggleBypassStateAsync"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = true and
+        /// <see cref="AudioManager.BypassState"/> = true.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleBypassState_StateTrue_BypassStateTrue()
         {
@@ -531,6 +632,12 @@ namespace Tests.UnitTests.ModelTests
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.ToggleBypassStateAsync"/> method,
+        /// with a test case of <see cref="AudioManager.State"/> = true and
+        /// <see cref="AudioManager.BypassState"/> = false.
+        /// </summary>
+        /// <returns> A <see cref="Task"/> that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task TestToggleBypassState_StateTrue_BypassStateFalse()
         {
@@ -581,6 +688,9 @@ namespace Tests.UnitTests.ModelTests
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OnInputStopped"/> event handler.
+        /// </summary>
         [TestMethod]
         public void TestOnInputStopped()
         {
@@ -592,6 +702,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(audioManager.InputPeakMeterValue == 0);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OnOutputStopped"/> event handler.
+        /// </summary>
         [TestMethod]
         public void TestOnOutputStopped()
         {
@@ -603,6 +716,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(audioManager.OutputPeakMeterValue == 0);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OnDataAvailable"/> event handler.
+        /// </summary>
         [TestMethod]
         public void TestOnDataAvailable()
         {
