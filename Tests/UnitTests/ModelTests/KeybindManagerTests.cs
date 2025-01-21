@@ -10,11 +10,17 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="KeybindManager"/> class.
+    /// </summary>
     [TestClass]
     public class KeybindManagerTests
     {
         public KeybindManager keybindManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeybindManagerTests"/> class.
+        /// </summary>
         public KeybindManagerTests()
         {
             var mockSettingsService = new Mock<ISettingsService>();
@@ -22,6 +28,9 @@ namespace Tests.UnitTests.ModelTests
             keybindManager = new KeybindManager(mockSettingsService.Object);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.PTTKey"/> property.
+        /// </summary>
         [TestMethod]
         public void TestPTTKeyProperty()
         {
@@ -47,6 +56,9 @@ namespace Tests.UnitTests.ModelTests
             }
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.NewPTTKeybind"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNewPTTKeybindProperty()
         {
@@ -63,6 +75,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(keybindManager.NewPTTKeybind, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.ToggleState"/> property.
+        /// </summary>
         [TestMethod]
         public void TestToggleStateProperty()
         {
@@ -71,6 +86,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(keybindManager.ToggleState, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.PassthroughState"/> property.
+        /// </summary>
         [TestMethod]
         public void TestPassthroughStateProperty()
         {
@@ -79,6 +97,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(keybindManager.PassthroughState, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTT"/> method,
+        /// with a test case of <see cref="Keybind.IsPressed(KeyboardHookEventArgs)"/> = true.
+        /// </summary>
         [TestMethod]
         public void TestTogglePTT_PTTKeyIsPressed()
         {
@@ -97,6 +119,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keybindManager.ToggleState == true);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTT"/> method,
+        /// with a test case of <see cref="Keybind.IsReleased(KeyboardHookEventArgs)"/> = true.
+        /// </summary>
         [TestMethod]
         public void TestTogglePTT_PTTKeyIsReleased()
         {
@@ -117,6 +143,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keybindManager.ToggleState == false);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTTKeybindSubscription"/> method,
+        /// with the parameter state = true.
+        /// </summary>
         [TestMethod]
         public void TestTogglePTTKeybindSubscription_StateTrue()
         {
@@ -141,6 +171,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(systemKeybindSubscriptionValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTTKeybindSubscription"/> method,
+        /// with the parameter state = false.
+        /// </summary>
         [TestMethod]
         public void TestTogglePTTKeybindSubscription_StateFalse()
         {
@@ -177,6 +211,10 @@ namespace Tests.UnitTests.ModelTests
             mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
+        /// with the parameter state = true.
+        /// </summary>
         public void TestToggleUserKeybindSubscription_StateTrue()
         {
             keybindManager.ToggleUserKeybindSubscription(true);
@@ -189,6 +227,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keybindManager.NewPTTKeybind?.KeyCode == VirtualKeyCode.KeyV);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
+        /// with the parameter state = false.
+        /// </summary>
         [TestMethod]
         public void TestToggleUserKeybindSubscription_StateFalse()
         {
@@ -203,6 +245,9 @@ namespace Tests.UnitTests.ModelTests
             mockKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.UpdateKeybind"/> method.
+        /// </summary>
         [TestMethod]
         public void TestUpdateKeybind()
         {
@@ -215,6 +260,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keybindManager.PTTKey == mockNewPTTKey.Object);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.LoadKeybindSettings"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadKeybindSettings()
         {
