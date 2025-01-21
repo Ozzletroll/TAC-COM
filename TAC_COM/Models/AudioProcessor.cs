@@ -274,6 +274,7 @@ namespace TAC_COM.Models
             {
                 outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
                 {
+                    ModulatedSignalAdjustmentDB = activeProfile.Settings.RingModulatorGainAdjust,
                     Wet = RingModulationWetDryMix,
                     Dry = 1 - RingModulationWetDryMix,
                     ModulatorSignalType = activeProfile.Settings.RingModulatorType,

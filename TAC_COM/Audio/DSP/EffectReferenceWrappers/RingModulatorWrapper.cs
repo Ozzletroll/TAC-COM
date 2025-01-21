@@ -3,6 +3,7 @@ using CSCore;
 using NWaves.Operations;
 using NWaves.Signals;
 using NWaves.Signals.Builders.Base;
+using TAC_COM.Audio.Utils;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
@@ -17,6 +18,21 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     public class RingModulatorWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
+
+        private float modulatedSignalAdjustmentLinear = 1;
+
+        /// <summary>
+        /// Gets or sets the gain adjustment of the carrier signal 
+        /// in decibels.
+        /// </summary>
+        public float ModulatedSignalAdjustmentDB
+        {
+            get => LinearDBConverter.LinearToDecibel(modulatedSignalAdjustmentLinear);
+            set
+            {
+                modulatedSignalAdjustmentLinear = LinearDBConverter.DecibelToLinear(value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the value of the "wet" processed signal 
@@ -72,14 +88,16 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         /// Method to process one sample of the buffer with
         /// one sample of the ring modulated stream, mixing them
         /// according to the <see cref="Wet"/> and <see cref="Dry"/>
-        /// values.
+        /// values, and adjusting the wet signal gain according to
+        /// the <see cref="ModulatedSignalAdjustmentDB"/> parameter.
         /// </summary>
         /// <param name="bufferSample"> The sample from the buffer to process.</param>
         /// <param name="modulatorSample"> The sample from the ring modulator to process.</param>
         /// <returns></returns>
         private float Process(float bufferSample, float modulatorSample)
         {
-            return (Wet * modulatorSample) + (Dry * bufferSample);
+            var gainAdjustModulatorSample = Math.Max(Math.Min(modulatorSample * modulatedSignalAdjustmentLinear, 1), -1);
+            return (Wet * gainAdjustModulatorSample) + (Dry * bufferSample);
         }
 
         /// <inheritdoc/>

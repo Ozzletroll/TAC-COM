@@ -15,6 +15,7 @@ namespace TAC_COM.Models
         public float DistortionDry = 0.5f;
 
         public Type? RingModulatorType;
+        public int RingModulatorGainAdjust = 0;
         public Dictionary<string, object> RingModulatorParameters = [];
 
         public float HighpassFrequency;
