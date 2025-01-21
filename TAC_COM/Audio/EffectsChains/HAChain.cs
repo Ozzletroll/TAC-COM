@@ -29,9 +29,9 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
-                    { "Frequency", 850 },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.8f },
+                    { "Frequency", 550 },
                     { "ModulationIndex", 1 },
                 }
             },
@@ -51,22 +51,6 @@ namespace TAC_COM.Audio.EffectsChains
                      { "Release", 300 },
                      { "MakeupGain", 5 },
                  }
-            },
-
-            new(typeof(RingModulatorWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
-                    { "ModulatorSignalType", typeof(TriangleWaveBuilder) },
-                    { "ModulatorParameters",
-                        new Dictionary<string, object>
-                        {
-                            { "frequency", 800 },
-                        }
-                    },
-                }
             },
         ];
 

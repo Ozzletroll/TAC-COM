@@ -32,11 +32,11 @@ namespace TAC_COM.Audio.Profiles
                 DistortionType = typeof(DistortionWrapper),
                 DistortionMode = DistortionMode.HalfWaveRectify,
                 DistortionInput = 30,
-                DistortionOutput = 23,
+                DistortionOutput = 18,
                 DistortionWet = 0.4f,
                 DistortionDry = 0.6f,
                 RingModulatorType = typeof(SawtoothBuilder),
-                RingModulatorGainAdjust = 12f,
+                RingModulatorGainAdjust = 5.5f,
                 RingModulatorParameters =
                 {
                     { "frequency", 550f },
@@ -45,7 +45,7 @@ namespace TAC_COM.Audio.Profiles
                 PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                 HighpassFrequency = 500,
                 LowpassFrequency = 6300,
-                GainAdjust = -3,
+                GainAdjust = -5,
             };
         }
     }
