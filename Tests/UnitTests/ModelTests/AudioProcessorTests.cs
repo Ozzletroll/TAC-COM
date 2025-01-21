@@ -119,8 +119,8 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? ringModulatorField = typeof(AudioProcessor).GetField("ringModulator", BindingFlags.NonPublic | BindingFlags.Instance);
             ringModulatorField?.SetValue(audioProcessor, ringModulator);
 
-            FieldInfo? ringModulatorMaxModulationField 
-                = typeof(AudioProcessor).GetField("MaxRingModulationWetMix", 
+            FieldInfo? ringModulatorMaxModulationField
+                = typeof(AudioProcessor).GetField("MaxRingModulationWetMix",
                 BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
             float? maxModulationValue = (float?)(ringModulatorMaxModulationField?.GetValue(audioProcessor));
 

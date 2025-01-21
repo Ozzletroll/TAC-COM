@@ -108,11 +108,11 @@ namespace Tests.UnitTests.ModelTests
                         { "Wet", 0.5f },
                         { "Dry", 0.5f },
                         { "ModulatorSignalType", typeof(SquareWaveBuilder) },
-                        { "ModulatorParameters", 
-                            new Dictionary<string, object> 
+                        { "ModulatorParameters",
+                            new Dictionary<string, object>
                             {
                                 { "frequency", 1000 },
-                            } 
+                            }
                         },
                     }
                 }

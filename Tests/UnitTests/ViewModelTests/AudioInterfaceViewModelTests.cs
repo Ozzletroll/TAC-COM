@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
@@ -187,8 +186,8 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.AudioManager = mockAudioManager.Object;
 
             Utils.TestMultiplePropertyChange(
-                testViewModel, 
-                nameof(testViewModel.NoiseGateThreshold), 
+                testViewModel,
+                nameof(testViewModel.NoiseGateThreshold),
                 testThresholdValue,
                 nameof(testViewModel.NoiseGateThresholdString));
 
@@ -224,9 +223,9 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.AudioManager = mockAudioManager.Object;
 
             Utils.TestMultiplePropertyChange(
-                testViewModel, 
-                nameof(testViewModel.OutputLevel), 
-                testOutputLevelValue, 
+                testViewModel,
+                nameof(testViewModel.OutputLevel),
+                testOutputLevelValue,
                 nameof(testViewModel.OutputLevelString));
 
             mockSettingsService.Verify(
@@ -261,8 +260,8 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.AudioManager = mockAudioManager.Object;
 
             Utils.TestMultiplePropertyChange(
-                testViewModel, 
-                nameof(testViewModel.NoiseLevel), 
+                testViewModel,
+                nameof(testViewModel.NoiseLevel),
                 testNoiseLevelValue,
                 nameof(testViewModel.NoiseLevelString));
 
@@ -298,8 +297,8 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.AudioManager = mockAudioManager.Object;
 
             Utils.TestMultiplePropertyChange(
-                testViewModel, 
-                nameof(testViewModel.InterferenceLevel), 
+                testViewModel,
+                nameof(testViewModel.InterferenceLevel),
                 testInterferenceLevelValue,
                 nameof(testViewModel.InterferenceLevelString));
 
@@ -328,8 +327,8 @@ namespace Tests.UnitTests.ViewModelTests
                 FileIdentifier = "ID1",
                 Theme = mockUriService.GetResourcesUri(),
                 Icon = new BitmapImage(mockUriService.GetIconUri("ID1")),
-            }; 
-            
+            };
+
             var mockProfile2 = new Profile()
             {
                 ProfileName = "Profile 2",

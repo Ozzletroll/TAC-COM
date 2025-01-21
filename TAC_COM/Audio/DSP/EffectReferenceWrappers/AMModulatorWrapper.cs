@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using CSCore;
+﻿using CSCore;
 using NWaves.Operations;
-using NWaves.Signals.Builders.Base;
 using NWaves.Signals;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers

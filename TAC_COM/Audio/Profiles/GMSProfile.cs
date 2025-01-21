@@ -30,7 +30,7 @@ namespace TAC_COM.Audio.Profiles
             {
                 DistortionType = typeof(DmoDistortionEffect),
                 RingModulatorType = typeof(SquareWaveBuilder),
-                RingModulatorParameters = 
+                RingModulatorParameters =
                 {
                     { "frequency", 250f },
                 },

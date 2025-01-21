@@ -48,11 +48,11 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             {
                 tubeDistortion = new
                     (
-                        inputGain: InputGainDB, 
-                        outputGain: OutputGainDB, 
-                        q: Q, 
-                        dist: Distortion, 
-                        rh: value, 
+                        inputGain: InputGainDB,
+                        outputGain: OutputGainDB,
+                        q: Q,
+                        dist: Distortion,
+                        rh: value,
                         rl: Rl
                     );
             }

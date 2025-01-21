@@ -290,7 +290,7 @@ namespace TAC_COM.Models
                     GainDB = activeProfile?.Settings.GainAdjust ?? 0,
                 });
             }
-            
+
             // Combine parallel processing chain with processed source
             var effectsSource = outputSampleSource.ToMono().ChangeSampleRate(sampleRate);
             var drySource = ParallelProcessedSignalChain(parallelSource.ToSampleSource()).ToMono().ChangeSampleRate(sampleRate);

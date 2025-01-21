@@ -15,7 +15,7 @@ namespace Tests.MockModels
 
         public long Length => throw new NotImplementedException();
 
-        public void Dispose() 
+        public void Dispose()
         {
             GC.SuppressFinalize(this);
         }

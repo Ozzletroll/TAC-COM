@@ -40,7 +40,7 @@ namespace TAC_COM.Audio.Profiles
                 RingModulatorParameters =
                 {
                     { "frequency", 550f },
-                }, 
+                },
                 PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                 HighpassFrequency = 500,

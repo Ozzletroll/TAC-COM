@@ -85,7 +85,7 @@ namespace TAC_COM.Settings
         /// </summary>
         [ConfigurationProperty("interferenceLevel", DefaultValue = 0.15f)]
         public float InterferenceLevel
-        {   
+        {
             get => (float)this["interferenceLevel"];
             set
             {

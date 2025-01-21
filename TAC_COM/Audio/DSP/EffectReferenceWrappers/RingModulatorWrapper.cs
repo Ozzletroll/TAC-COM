@@ -52,7 +52,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         /// Gets or sets the Type of the <see cref="SignalBuilder"/>
         /// to use for ring modulation.
         /// </summary>
-        public Type? ModulatorSignalType {  get; set; }
+        public Type? ModulatorSignalType { get; set; }
 
         /// <summary>
         /// Gets or sets the parameters for the modulator signal.

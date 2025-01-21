@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Services;
