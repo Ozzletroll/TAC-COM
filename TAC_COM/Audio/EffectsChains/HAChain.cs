@@ -1,4 +1,5 @@
 ﻿using NWaves.Operations;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
@@ -11,15 +12,6 @@ namespace TAC_COM.Audio.EffectsChains
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [
-            new(typeof(BitCrusherWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.8f },
-                    { "Dry", 0.2f },
-                    { "BitDepth", 6 }
-                }
-            },
             new(typeof(TubeDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
@@ -30,6 +22,17 @@ namespace TAC_COM.Audio.EffectsChains
                     { "OutputGainDB", 8 },
                     { "Q", -0.2f },
                     { "Distortion", 20 }
+                }
+            },
+
+            new(typeof(AMModulatorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.7f },
+                    { "Dry", 0.3f },
+                    { "Frequency", 650 },
+                    { "ModulationIndex", 1 },
                 }
             },
         ];
@@ -48,7 +51,23 @@ namespace TAC_COM.Audio.EffectsChains
                      { "Release", 300 },
                      { "MakeupGain", 5 },
                  }
-            }
+            },
+
+            new(typeof(RingModulatorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.5f },
+                    { "Dry", 0.5f },
+                    { "ModulatorSignalType", typeof(TriangleWaveBuilder) },
+                    { "ModulatorParameters",
+                        new Dictionary<string, object>
+                        {
+                            { "frequency", 800 },
+                        }
+                    },
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
