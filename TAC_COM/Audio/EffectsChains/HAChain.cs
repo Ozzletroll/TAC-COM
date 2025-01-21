@@ -29,9 +29,9 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.7f },
-                    { "Dry", 0.3f },
-                    { "Frequency", 650 },
+                    { "Wet", 0.5f },
+                    { "Dry", 0.5f },
+                    { "Frequency", 850 },
                     { "ModulationIndex", 1 },
                 }
             },
