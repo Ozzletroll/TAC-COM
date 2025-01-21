@@ -2,11 +2,18 @@
 using CSCore;
 using NWaves.Operations;
 using NWaves.Signals;
-using NWaves.Signals.Builders;
 using NWaves.Signals.Builders.Base;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
+    /// <summary>
+    /// Wrapper class to apply ring modulation to a given
+    /// <see cref="ISampleSource"/>.
+    /// </summary>
+    /// <remarks>
+    /// Can be used as a <see cref="Models.EffectReference"/>.
+    /// </remarks>
+    /// <param name="inputSource">The <see cref="ISampleSource"/> to which the effect is to be applied.</param>
     public class RingModulatorWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
