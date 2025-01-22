@@ -5,16 +5,25 @@ using TAC_COM.Utilities;
 namespace Tests.UnitTests.ServiceTests
 {
 
+    /// <summary>
+    /// Test class for the <see cref="IconService"/> class.
+    /// </summary>
     [TestClass]
     public class IconServiceTests
     {
         public IconService testIconService;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="IconServiceTests"/> class.
+        /// </summary>
         public IconServiceTests()
         {
             testIconService = new IconService();
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IconService.SetLiveIcon"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetLiveIcon()
         {
@@ -32,6 +41,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.AreEqual("TAC/COM Live", raisedEventArgs?.Tooltip);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IconService.SetEnabledIcon"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetEnabledIcon()
         {
@@ -49,6 +61,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.AreEqual("TAC/COM Enabled", raisedEventArgs?.Tooltip);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IconService.SetStandbyIcon"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetStandbyIcon()
         {
@@ -66,6 +81,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.AreEqual("TAC/COM Standby", raisedEventArgs?.Tooltip);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IconService.SetActiveProfileIcon"/> method.
+        /// </summary>
         [TestMethod]
         public void TestSetActiveProfileIcon()
         {
