@@ -4,11 +4,17 @@ using TAC_COM.Models;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="Keybind"/> class.
+    /// </summary>
     [TestClass]
     public class KeybindTests
     {
         private Keybind testKeybind;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeybindTests"/> class.
+        /// </summary>
         public KeybindTests()
         {
             testKeybind = new Keybind(
@@ -20,6 +26,9 @@ namespace Tests.UnitTests.ModelTests
                 passthrough: false);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.KeyCode"/> property.
+        /// </summary>
         [TestMethod]
         public void TestKeyCodeProperty()
         {
@@ -28,6 +37,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.KeyCode, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.IsModifier"/> property.
+        /// </summary>
         [TestMethod]
         public void TestIsModifierProperty()
         {
@@ -36,6 +48,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.IsModifier, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.Shift"/> property.
+        /// </summary>
         [TestMethod]
         public void TestShiftProperty()
         {
@@ -44,6 +59,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.Shift, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.Ctrl"/> property.
+        /// </summary>
         [TestMethod]
         public void TestCtrlProperty()
         {
@@ -52,6 +70,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.Ctrl, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.Alt"/> property.
+        /// </summary>
         [TestMethod]
         public void TestAltProperty()
         {
@@ -60,6 +81,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.Alt, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.Passthrough"/> property.
+        /// </summary>
         [TestMethod]
         public void TestPassthroughProperty()
         {
@@ -68,6 +92,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.Passthrough, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.IsPressed(KeyboardHookEventArgs)"/>
+        /// method.
+        /// </summary>
         [TestMethod]
         public void TestIsPressed()
         {
@@ -110,6 +138,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsFalse(testKeybind.IsPressed(keyboardIncorrectTestArgs));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.IsReleased(KeyboardHookEventArgs)"/>
+        /// method.
+        /// </summary>
         [TestMethod]
         public void TestIsReleased()
         {
@@ -149,6 +181,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsFalse(testKeybind.IsReleased(keyboardIncorrectTestArgs));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.CallKeyUp"/> method.
+        /// </summary>
         [TestMethod]
         public void TestCallKeyUp()
         {
@@ -175,6 +210,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keyUpTriggered);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.ToString"/> method.
+        /// </summary>
         [TestMethod]
         public void TestToString()
         {
@@ -191,6 +229,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testKeybind.ToString(), expectedString);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.ToDictionary"/> method.
+        /// </summary>
         [TestMethod]
         public void TestToDictionary()
         {
