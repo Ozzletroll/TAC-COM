@@ -7,12 +7,18 @@ using Tests.MockServices;
 
 namespace Tests.UnitTests.ModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="Profile"/> class.
+    /// </summary>
     [TestClass]
     public class ProfileTests
     {
         private readonly MockUriService mockURIService = new();
         private readonly Profile testProfile;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ProfileTests"/> class.
+        /// </summary>
         public ProfileTests()
         {
             testProfile = new Profile()
@@ -24,6 +30,9 @@ namespace Tests.UnitTests.ModelTests
             };
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.FileService"/> property.
+        /// </summary>
         [TestMethod]
         public void TestFileServiceProperty()
         {
@@ -32,6 +41,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.FileService, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.ProfileName"/> property.
+        /// </summary>
         [TestMethod]
         public void TestProfileNameProperty()
         {
@@ -40,6 +52,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.ProfileName, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.FileIdentifier"/> property.
+        /// </summary>
         [TestMethod]
         public void TestFileIdentifierProperty()
         {
@@ -48,6 +63,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.FileIdentifier, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.Theme"/> property.
+        /// </summary>
         [TestMethod]
         public void TestThemeProperty()
         {
@@ -56,6 +74,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.Theme, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.Icon"/> property.
+        /// </summary>
         [TestMethod]
         public void TestIconProperty()
         {
@@ -64,6 +85,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.Icon, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.Settings"/> property.
+        /// </summary>
         [TestMethod]
         public void TestSettingsProperty()
         {
@@ -72,6 +96,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.Settings, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.NoiseSource"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseSourceProperty()
         {
@@ -80,6 +107,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.NoiseSource, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.OpenSFXSource"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOpenSFXSourceProperty()
         {
@@ -88,6 +118,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.OpenSFXSource, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.CloseSFXSource"/> property.
+        /// </summary>
         [TestMethod]
         public void TestCloseFXSourceProperty()
         {
@@ -96,6 +129,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(testProfile.CloseSFXSource, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.LoadSources"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadSources()
         {
@@ -117,6 +153,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(testProfile.NoiseSource);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Profile.ToString"/> method.
+        /// </summary>
         [TestMethod]
         public void TestToString()
         {
