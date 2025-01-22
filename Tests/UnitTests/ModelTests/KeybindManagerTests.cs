@@ -19,7 +19,7 @@ namespace Tests.UnitTests.ModelTests
         public KeybindManager keybindManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeybindManagerTests"/> class.
+        /// Initialises a new instance of the <see cref="KeybindManagerTests"/> class.
         /// </summary>
         public KeybindManagerTests()
         {

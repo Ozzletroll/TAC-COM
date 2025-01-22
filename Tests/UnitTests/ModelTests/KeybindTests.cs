@@ -13,7 +13,7 @@ namespace Tests.UnitTests.ModelTests
         private Keybind testKeybind;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="KeybindTests"/> class.
+        /// Initialises a new instance of the <see cref="KeybindTests"/> class.
         /// </summary>
         public KeybindTests()
         {
