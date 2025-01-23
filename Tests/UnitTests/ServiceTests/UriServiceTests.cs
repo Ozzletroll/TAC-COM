@@ -3,11 +3,17 @@ using TAC_COM.Services;
 
 namespace Tests.UnitTests.ServiceTests
 {
+    /// <summary>
+    /// Test class for the <see cref="UriService"/> class.
+    /// </summary>
     [TestClass]
     public class UriServiceTests
     {
         private readonly UriService uriService;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="UriServiceTests"/> class.
+        /// </summary>
         public UriServiceTests()
         {
             string[] themeDirectoryFolders = ["Folder1", "Folder2"];
@@ -19,6 +25,9 @@ namespace Tests.UnitTests.ServiceTests
             PackUriHelper.Create(new Uri("reliable://0"));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="UriService.GetThemeUri"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetThemeUri()
         {
@@ -30,6 +39,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.AreEqual(expectedUri, resultUri);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="UriService.GetIconUri"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetIconUri()
         {
@@ -40,6 +52,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.AreEqual(expectedUri, resultUri);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="UriService.GetResourcesUri"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetResourcesUri()
         {
