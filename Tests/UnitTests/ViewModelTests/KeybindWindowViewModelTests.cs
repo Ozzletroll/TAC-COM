@@ -9,6 +9,9 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="KeybindWindowViewModel"/> class.
+    /// </summary>
     [TestClass]
     public class KeybindWindowViewModelTests
     {
@@ -16,6 +19,9 @@ namespace Tests.UnitTests.ViewModelTests
         public IKeybindManager keybindManager;
         public KeybindWindowViewModel testViewModel;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="KeybindWindowViewModelTests"/> class.
+        /// </summary>
         public KeybindWindowViewModelTests()
         {
             settingsService = new MockSettingsService();
@@ -23,6 +29,9 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel = new KeybindWindowViewModel(keybindManager);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindWindowViewModel"/> constructor.
+        /// </summary>
         [TestMethod]
         public void TestConstructor()
         {
@@ -41,6 +50,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(propertyChangedSubscribed, "PropertyChanged event is not subscribed.");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindWindowViewModel.NewKeybindName"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNewKeybindNameProperty()
         {
@@ -48,6 +60,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.NewKeybindName == "[ Shift + V ]");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindWindowViewModel.PassthroughState"/> property.
+        /// </summary>
         [TestMethod]
         public void TestPassthroughStateProperty()
         {
@@ -61,6 +76,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockKeybindManager.VerifySet(keybindManager => keybindManager.PassthroughState = true);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="KeybindWindowViewModel.CloseKeybindDialog"/> command.
+        /// </summary>
         [TestMethod]
         public void TestExecuteCloseKeybindDialogCommand()
         {
