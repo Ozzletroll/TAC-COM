@@ -4,11 +4,17 @@ using TAC_COM.Services;
 
 namespace Tests.UnitTests.ServiceTests
 {
+    /// <summary>
+    /// Test class for the <see cref="MMDeviceEnumeratorService"/> class.
+    /// </summary>
     [TestClass]
     public class MMDeviceEnumeratorTests
     {
         private readonly MMDeviceEnumeratorService enumeratorService = new();
 
+        /// <summary>
+        /// Test method for the <see cref="MMDeviceEnumeratorService.GetInputDevices"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetInputDevices()
         {
@@ -25,6 +31,9 @@ namespace Tests.UnitTests.ServiceTests
             }
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MMDeviceEnumeratorService.GetOutputDevices"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetOutputDevices()
         {
