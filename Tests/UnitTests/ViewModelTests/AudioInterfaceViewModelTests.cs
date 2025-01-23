@@ -14,6 +14,9 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="AudioInterfaceViewModel"/> class.
+    /// </summary>
     [TestClass]
     public class AudioInterfaceViewModelTests
     {
@@ -24,6 +27,9 @@ namespace Tests.UnitTests.ViewModelTests
         private readonly Mock<IApplicationContextWrapper> mockApplication = new();
         private readonly AudioInterfaceViewModel testViewModel;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AudioInterfaceViewModelTests"/> class.
+        /// </summary>
         public AudioInterfaceViewModelTests()
         {
             testViewModel = new AudioInterfaceViewModel(mockApplication.Object, mockAudioManager, mockUriService, new IconService(), mockThemeService)
@@ -32,6 +38,9 @@ namespace Tests.UnitTests.ViewModelTests
             };
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel"/> constructor.
+        /// </summary>
         [TestMethod]
         public void TestConstructor()
         {
@@ -50,6 +59,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsNotNull(viewModel.KeybindManager);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.AllInputDevices"/> property.
+        /// </summary>
         [TestMethod]
         public void TestAllInputDevicesProperty()
         {
@@ -59,6 +71,9 @@ namespace Tests.UnitTests.ViewModelTests
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.AllInputDevices), newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.AllOutputDevices"/> property.
+        /// </summary>
         [TestMethod]
         public void TestAllOutputDevicesProperty()
         {
@@ -68,6 +83,9 @@ namespace Tests.UnitTests.ViewModelTests
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.AllOutputDevices), newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.InputDevice"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInputDeviceProperty()
         {
@@ -90,6 +108,9 @@ namespace Tests.UnitTests.ViewModelTests
                 audioManager => audioManager.SetInputDevice(mockDevice), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.OutputDevice"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputDeviceProperty()
         {
@@ -112,6 +133,9 @@ namespace Tests.UnitTests.ViewModelTests
                 audioManager => audioManager.SetOutputDevice(mockDevice), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.State"/> property.
+        /// </summary>
         [TestMethod]
         public void TestStateProperty()
         {
@@ -141,12 +165,18 @@ namespace Tests.UnitTests.ViewModelTests
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.IsSelectable"/> property.
+        /// </summary>
         [TestMethod]
         public void TestIsSelectableProperty()
         {
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.BypassState"/> property.
+        /// </summary>
         [TestMethod]
         public void TestBypassStateProperty()
         {
@@ -170,6 +200,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.NoiseGateThreshold"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseGateThresholdProperty()
         {
@@ -196,6 +229,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseGateThreshold = testThresholdValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.NoiseGateThresholdString"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseGateThresholdString()
         {
@@ -207,6 +243,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.NoiseGateThresholdString == "-56dB");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.OutputLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputLevelProperty()
         {
@@ -233,6 +272,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.VerifySet(audioManager => audioManager.OutputGainLevel = testOutputLevelValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.OutputLevelString"/> property.
+        /// </summary>
         [TestMethod]
         public void TestOutputGainLevelStringProperty()
         {
@@ -244,6 +286,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.OutputLevelString == "+25dB");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.NoiseLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseLevelProperty()
         {
@@ -270,6 +315,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.VerifySet(audioManager => audioManager.NoiseLevel = testNoiseLevelValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.NoiseLevelString"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNoiseLevelStringProperty()
         {
@@ -281,6 +329,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.NoiseLevelString == "25%");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.InterferenceLevel"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInterferenceLevelProperty()
         {
@@ -307,6 +358,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.VerifySet(audioManager => audioManager.InterferenceLevel = testInterferenceLevelValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.InterferenceLevelString"/> property.
+        /// </summary>
         [TestMethod]
         public void TestInterferenceLevelStringProperty()
         {
@@ -318,6 +372,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.InterferenceLevelString == "65%");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.Profiles"/> property.
+        /// </summary>
         [TestMethod]
         public void TestProfilesProperty()
         {
@@ -343,6 +400,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(testViewModel.Profiles, testProfiles);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.ActiveProfile"/> property.
+        /// </summary>
         [TestMethod]
         public void TestActiveProfileProperty()
         {
@@ -381,6 +441,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockIconService.Verify(iconService => iconService.SetActiveProfileIcon(testActiveProfile.Icon), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.KeybindName"/> property.
+        /// </summary>
         [TestMethod]
         public void TestKeybindNameProperty()
         {
@@ -390,6 +453,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.KeybindName == "[ Shift + V ]");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.LoadInputDevices"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadInputDevices()
         {
@@ -406,6 +472,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.AllInputDevices[1].FriendlyName == "Test Input Device 2");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.LoadOutputDevices"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadOutputDevices()
         {
@@ -422,6 +491,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.AllOutputDevices[1].FriendlyName == "Test Output Device 2");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.LoadDeviceSettings"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadDeviceSettings()
         {
@@ -441,6 +513,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.OutputDevice?.FriendlyName == mockOutputDevice.FriendlyName);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.LoadAudioSettings"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadAudioSettings()
         {
@@ -467,6 +542,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.ActiveProfile?.ProfileName == testAudioSettings.ActiveProfile);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.ShowKeybindDialog"/> method.
+        /// </summary>
         [TestMethod]
         public void TestShowKeybindDialogCommand()
         {
@@ -479,6 +557,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockWindowService.Verify(windowService => windowService.OpenKeybindWindow(), Times.Once);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.ConfirmKeybindChange"/> method.
+        /// </summary>
         [TestMethod]
         public void TestConfirmKeybindChangeCommand()
         {
