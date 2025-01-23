@@ -9,6 +9,9 @@ using Tests.MockModels;
 
 namespace Tests.UnitTests.ServiceTests
 {
+    /// <summary>
+    /// Test class for the <see cref="WindowService"/> class.
+    /// </summary>
     [TestClass]
     public class WindowServiceTests
     {
@@ -16,6 +19,9 @@ namespace Tests.UnitTests.ServiceTests
         private readonly Mock<Window> mockMainWindow;
         private readonly MockApplicationContextWrapper mockApplication;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="WindowServiceTests"/> class.
+        /// </summary>
         public WindowServiceTests()
         {
             // Create and configure a mock MainWindow
@@ -37,6 +43,14 @@ namespace Tests.UnitTests.ServiceTests
             };
         }
 
+        /// <summary>
+        /// Test method for the <see cref="WindowService.OpenKeybindWindow"/> method.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="STATestMethodAttribute"/> is used to ensure that
+        /// the tests are run in a single-threaded apartment (STA), which
+        /// is required for WPF components.
+        /// </remarks>
         [STATestMethod]
         public void TestOpenKeybindWindow()
         {
