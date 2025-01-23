@@ -3,11 +3,17 @@ using TAC_COM.Services;
 
 namespace Tests.UnitTests.ServiceTests
 {
+    /// <summary>
+    /// Test class for the <see cref="SFXFileService"/> class.
+    /// </summary>
     [TestClass]
     public class SFXFileServiceTests
     {
         private readonly SFXFileService fileService = new("MockResources/MockSFX");
 
+        /// <summary>
+        /// Test method for the <see cref="SFXFileService.GetOpenSFX"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetOpenSFX()
         {
@@ -18,6 +24,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.IsTrue(output.WaveFormat.Channels == 1);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="SFXFileService.GetCloseSFX"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetCloseSFX()
         {
@@ -28,6 +37,9 @@ namespace Tests.UnitTests.ServiceTests
             Assert.IsTrue(output.WaveFormat.Channels == 1);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="SFXFileService.GetNoiseSFX"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetNoiseSFX()
         {
