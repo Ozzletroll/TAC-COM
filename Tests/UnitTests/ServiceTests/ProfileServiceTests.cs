@@ -6,18 +6,27 @@ using Tests.MockServices;
 namespace Tests.UnitTests.ServiceTests
 {
 
+    /// <summary>
+    /// Test class for the <see cref="ProfileService"/> class.
+    /// </summary>
     [TestClass]
     public class ProfileServiceTests
     {
         public ProfileService testProfileService;
         private readonly IUriService mockUriService;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ProfileServiceTests"/> class.
+        /// </summary>
         public ProfileServiceTests()
         {
             mockUriService = new MockUriService();
             testProfileService = new ProfileService(mockUriService);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="ProfileService.GetAllProfiles"/> method.
+        /// </summary>
         [TestMethod]
         public void TestGetAllProfiles()
         {
