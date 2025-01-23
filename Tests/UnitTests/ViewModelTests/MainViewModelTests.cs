@@ -10,11 +10,17 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="MainViewModel"/> class.
+    /// </summary>
     [TestClass]
     public class MainViewModelTests
     {
         private readonly MainViewModel testViewModel;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="MainViewModelTests"/> class.
+        /// </summary>
         public MainViewModelTests()
         {
             var mockApplication = new Mock<IApplicationContextWrapper>();
@@ -26,6 +32,9 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel = new MainViewModel(mockApplication.Object, mockAudioManager, mockUriService, mockIconService.Object, mockThemeService);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel"/> constructor.
+        /// </summary>
         [TestMethod]
         public void TestConstructor()
         {
@@ -52,6 +61,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsInstanceOfType(viewModel.CurrentViewModel, typeof(AudioInterfaceViewModel));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.ActiveProfileIcon"/> property.
+        /// </summary>
         [TestMethod]
         public void TestActiveProfileIconProperty()
         {
@@ -62,6 +74,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.ActiveProfileIcon == mockImageSource);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.NotifyIconImage"/> property.
+        /// </summary>
         [TestMethod]
         public void TestNotifyIconImageProperty()
         {
@@ -72,6 +87,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.NotifyIconImage == mockImageSource);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.IconText"/> property.
+        /// </summary>
         [TestMethod]
         public void TestIconTextProperty()
         {
