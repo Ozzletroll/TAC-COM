@@ -162,7 +162,7 @@ namespace TAC_COM.Models
                 ThresholdDB = NoiseGateThreshold,
                 Attack = 5,
                 Hold = 30,
-                Release = 50,
+                Release = 5,
             }, out processedNoiseGate);
 
             // EQ
@@ -308,8 +308,8 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.85f;
-            dryMixLevel.Volume = 0.15f;
+            wetMixLevel.Volume = 0.8f;
+            dryMixLevel.Volume = 0.2f;
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -424,7 +424,7 @@ namespace TAC_COM.Models
                 ISampleSource output;
                 output = new Gain(loopSource)
                 {
-                    GainDB = 10,
+                    GainDB = 5,
                 };
 
                 return output;
