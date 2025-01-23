@@ -6,6 +6,14 @@ using Tests.MockServices;
 
 namespace Tests.UnitTests.ServiceTests
 {
+    /// <summary>
+    /// Test class for the <see cref="ThemeService"/> class.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="STATestClassAttribute"/> is used to ensure that 
+    /// the tests are run in a single-threaded apartment (STA), which
+    /// is required for WPF components.
+    /// </remarks>
     [STATestClass]
     public class ThemeServiceTests
     {
@@ -13,12 +21,18 @@ namespace Tests.UnitTests.ServiceTests
         private readonly MockUriService mockUriService = new();
         private readonly MockApplicationContextWrapper mockApplication;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="ThemeServiceTests"/> class.
+        /// </summary>
         public ThemeServiceTests()
         {
             mockApplication = new MockApplicationContextWrapper(new Mock<Window>().Object);
             themeService = new ThemeService(mockApplication, mockUriService);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="ThemeService.ChangeTheme"/> method.
+        /// </summary>
         [TestMethod]
         public void TestChangeTheme()
         {
