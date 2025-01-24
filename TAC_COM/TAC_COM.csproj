@@ -112,7 +112,7 @@
     <PackageReference Include="CSCore" Version="1.2.1.2" />
     <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
     <PackageReference Include="NWaves" Version="0.9.6" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
   </ItemGroup>
 
 </Project>
