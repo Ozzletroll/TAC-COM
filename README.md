@@ -121,7 +121,8 @@ The level boost in dB for the processed output signal. Used to normalise input/o
 Sets the level of the processed signal's "background noise" effect during transmission. Ranges from 0% to 100%.
 
 ### Interference Level
-Sets the level of the processed signal's simulated signal degradation/interference. Ranges from 0% to 100%.
+Sets the level of the processed signal's simulated signal degradation/interference. Ranges from 0% to 100%. 
+Use sparingly for dramatic effect, as values above 50% become increasingly unintelligible.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
