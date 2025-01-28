@@ -21,7 +21,7 @@ namespace TAC_COM.Audio.EffectsChains
                     { "InputGainDB", 10 },
                     { "OutputGainDB", 8 },
                     { "Q", -0.2f },
-                    { "Distortion", 20 }
+                    { "Distortion", 25 }
                 }
             },
         ];
@@ -32,8 +32,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                     { "ModulatorSignalType", typeof(SquareWaveBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>
@@ -51,10 +51,10 @@ namespace TAC_COM.Audio.EffectsChains
                      { "Mode", DynamicsMode.Compressor },
                      { "MinAmplitude", -120 },
                      { "Threshold", -10 },
-                     { "Ratio", 100 },
+                     { "Ratio", 10 },
                      { "Attack", 30 },
                      { "Release", 300 },
-                     { "MakeupGain", 8 },
+                     { "MakeupGain", 5 },
                  }
             },
 

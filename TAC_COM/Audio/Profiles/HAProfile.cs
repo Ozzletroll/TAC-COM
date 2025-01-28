@@ -29,18 +29,23 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("HA"));
             Settings = new EffectParameters()
             {
-                DistortionType = null,
-                RingModulatorType = typeof(SawtoothBuilder),
-                RingModulatorGainAdjust = 5.5f,
+                DistortionType = typeof(DistortionWrapper),
+                DistortionMode = DistortionMode.HalfWaveRectify,
+                DistortionInput = 20,
+                DistortionOutput = 12,
+                DistortionWet = 0.2f,
+                DistortionDry = 0.8f,
+                RingModulatorType = typeof(PinkNoiseBuilder),
+                RingModulatorGainAdjust = 25f,
                 RingModulatorParameters =
                 {
-                    { "frequency", 550f },
+                    { "frequency", 1850f },
                 },
                 PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
                 HighpassFrequency = 500,
                 LowpassFrequency = 6300,
-                GainAdjust = 2,
+                GainAdjust = -3,
             };
         }
     }

@@ -38,7 +38,7 @@ namespace TAC_COM.Audio.Profiles
                 PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
                 HighpassFrequency = 800,
                 LowpassFrequency = 2900,
-                GainAdjust = 3,
+                GainAdjust = 4,
             };
         }
     }
