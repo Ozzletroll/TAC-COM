@@ -22,7 +22,7 @@ namespace TAC_COM.Models
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? output;
         private IWasapiOutWrapper? sfxOutput;
-        private const float SFXVolume = 0.3f;
+        private const float SFXVolume = 0.2f;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AudioManager"/>,
