@@ -50,16 +50,15 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
 ### Installation
 
 1. Download the latest <a href="https://github.com/Ozzletroll/TAC-COM/releases">release</a>.
-2. If you don't already have it, download and install <a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">.NET Desktop Runtime 8</a>.
-3. Install virtual audio cable driver:
+2. Install virtual audio cable driver:
    <a href="https://vb-audio.com/Cable/">VB-Cable Virtual Audio Device</a>
-4. Unzip and run the TAC/COM executable.
+3. Unzip and run the TAC/COM executable.
 
 ### Setup
 
 1. Set the TAC/COM input device to your microphone input device.
 2. Set the TAC/COM output device to your virtual audio cable input device.
-3. Select your desired radio profile. Each profile features unique transmission click sfx and transmission static.
+3. Select your desired radio profile. Each profile features unique mic click sfx and transmission static.
 4. Set your chosen push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
 
 <p align="center">
@@ -68,7 +67,7 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
 
 ## Discord Setup
 
-Whilst instructions here are given for Discord, setup should be largely identical for any other VoIP platform.
+Whilst instructions here are given for Discord, setup should be largely identical for any other VoIP program.
 
 1. Navigate to "User Settings".
 2. Open "Voice & Video" under "App Settings".
