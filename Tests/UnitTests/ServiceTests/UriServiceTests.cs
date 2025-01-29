@@ -33,7 +33,7 @@ namespace Tests.UnitTests.ServiceTests
         {
 
             string expectedRelativePath = "Folder1/Folder2/ThemeTEST.xaml";
-            Uri expectedUri = new($"pack://application:,,,/{expectedRelativePath}", UriKind.Absolute);
+            Uri expectedUri = new(expectedRelativePath, UriKind.Relative);
             Uri resultUri = uriService.GetThemeUri("TEST");
 
             Assert.AreEqual(expectedUri, resultUri);
@@ -46,7 +46,7 @@ namespace Tests.UnitTests.ServiceTests
         public void TestGetIconUri()
         {
             string expectedRelativePath = "FolderA/FolderB/Icon-Test.ico";
-            Uri expectedUri = new($"pack://application:,,,/{expectedRelativePath}", UriKind.Absolute);
+            Uri expectedUri = new(expectedRelativePath, UriKind.Relative);
             Uri resultUri = uriService.GetIconUri("Test");
 
             Assert.AreEqual(expectedUri, resultUri);
@@ -58,7 +58,7 @@ namespace Tests.UnitTests.ServiceTests
         [TestMethod]
         public void TestGetResourcesUri()
         {
-            Uri expectedUri = new($"pack://application:,,,/Resources.xaml", UriKind.Absolute);
+            Uri expectedUri = new("/Resources.xaml", UriKind.Relative);
             Uri resultUri = uriService.GetResourcesUri();
 
             Assert.AreEqual(expectedUri, resultUri);

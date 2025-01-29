@@ -26,18 +26,18 @@ namespace TAC_COM.Services
         public Uri GetThemeUri(string themeName)
         {
             string relativePath = $"{string.Join("/", themeDirectoryFolders)}/Theme{themeName}.xaml";
-            return new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
+            return new Uri(relativePath, UriKind.Relative);
         }
 
         public Uri GetIconUri(string iconName)
         {
             string relativePath = $"{string.Join("/", iconDirectoryFolders)}/Icon-{iconName}.ico";
-            return new Uri($"pack://application:,,,/{relativePath}", UriKind.Absolute);
+            return new Uri(relativePath, UriKind.Relative);
         }
 
         public Uri GetResourcesUri()
         {
-            return new Uri("pack://application:,,,/Resources.xaml");
+            return new Uri("/Resources.xaml", UriKind.Relative);
         }
     }
 }

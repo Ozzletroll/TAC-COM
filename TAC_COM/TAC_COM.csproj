@@ -35,6 +35,14 @@
     <None Remove="Static\SFX\Noise\NoiseSSC.wav" />
   </ItemGroup>
 
+	<ItemGroup>
+	  <Page Remove="Themes\ThemeGMS.xaml" />
+	  <Page Remove="Themes\ThemeHA.xaml" />
+	  <Page Remove="Themes\ThemeHORUS.xaml" />
+	  <Page Remove="Themes\ThemeIPSN.xaml" />
+	  <Page Remove="Themes\ThemeSSC.xaml" />
+	</ItemGroup>
+
   <ItemGroup>
     <Content Include="Static\Icons\enabled.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -114,6 +122,14 @@
     <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
     <PackageReference Include="NWaves" Version="0.9.6" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Themes\ThemeGMS.xaml" />
+    <Resource Include="Themes\ThemeHA.xaml" />
+    <Resource Include="Themes\ThemeHORUS.xaml" />
+    <Resource Include="Themes\ThemeIPSN.xaml" />
+    <Resource Include="Themes\ThemeSSC.xaml" />
   </ItemGroup>
 
 </Project>
