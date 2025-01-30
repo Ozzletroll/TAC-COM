@@ -290,5 +290,46 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(keybindManager.PTTKey.IsModifier);
             Assert.IsFalse(keybindManager.PTTKey.Passthrough);
         }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockPTTKeybindSubscription = new Mock<IDisposable>();
+            var mockPTTKeybindCatchSubscription = new Mock<IDisposable>();
+            var mockUserKeybindSubscription = new Mock<IDisposable>();
+            var mockSystemKeybindSubscription = new Mock<IDisposable>();
+
+            mockPTTKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+            mockPTTKeybindCatchSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+            mockUserKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+            mockSystemKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
+            FieldInfo? pttKeybindSubscriptionField 
+                = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            pttKeybindSubscriptionField?.SetValue(keybindManager, mockPTTKeybindSubscription.Object);
+
+            FieldInfo? pttKeybindCatchSubscriptionField
+                = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            pttKeybindCatchSubscriptionField?.SetValue(keybindManager, mockPTTKeybindCatchSubscription.Object);
+
+            FieldInfo? userKeybindSubscriptionField
+                = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            userKeybindSubscriptionField?.SetValue(keybindManager, mockUserKeybindSubscription.Object);
+
+            FieldInfo? systemKeybindSubscriptionField
+                = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            systemKeybindSubscriptionField?.SetValue(keybindManager, mockSystemKeybindSubscription.Object);
+
+            keybindManager.Dispose();
+
+            mockPTTKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockPTTKeybindCatchSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockUserKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+        }
     }
 }
