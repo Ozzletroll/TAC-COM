@@ -14,7 +14,7 @@ namespace TAC_COM.Models
     /// playback state and various other properties to be exposed via
     /// <see cref="ViewModels.AudioInterfaceViewModel"/>.
     /// </summary>
-    public class AudioManager : NotifyProperty, IAudioManager
+    public class AudioManager : NotifyProperty, IAudioManager, IDisposable
     {
         private MMDevice? activeInputDevice;
         private MMDevice? activeOutputDevice;
@@ -401,11 +401,20 @@ namespace TAC_COM.Models
         {
             await Task.Run(() =>
             {
-                input?.Stop();
-                input?.Dispose();
-                output?.Stop();
-                output?.Dispose();
+                StopPlayback();
             });
+        }
+
+        /// <summary>
+        /// Stops the current recording and playback, 
+        /// disposing of the <see cref="input"/> and <see cref="output"/>.
+        /// </summary>
+        private void StopPlayback()
+        {
+            input?.Stop();
+            input?.Dispose();
+            output?.Stop();
+            output?.Dispose();
         }
 
         /// <summary>
@@ -497,6 +506,15 @@ namespace TAC_COM.Models
                     sfxOutput.Play();
                 }
             });
+        }
+
+        /// <summary>
+        /// Disposes of the <see cref="AudioManager"/> and suppresses finalisation.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            StopPlayback();
         }
     }
 }

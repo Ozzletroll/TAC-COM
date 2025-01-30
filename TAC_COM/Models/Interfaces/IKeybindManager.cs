@@ -7,7 +7,7 @@ namespace TAC_COM.Models.Interfaces
     /// Interface to represent the service responsible for
     /// handling keyboard hook subscriptions.
     /// </summary>
-    public interface IKeybindManager : INotifyPropertyChanged
+    public interface IKeybindManager : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Gets or sets the proposed new push-to-talk keybind

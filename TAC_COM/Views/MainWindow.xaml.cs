@@ -36,6 +36,11 @@ namespace TAC_COM
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
+            if (DataContext is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+
             System.Windows.Application.Current.Shutdown();
         }
 

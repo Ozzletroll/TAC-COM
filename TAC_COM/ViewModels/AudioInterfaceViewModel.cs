@@ -12,7 +12,7 @@ namespace TAC_COM.ViewModels
     /// ViewModel representing the overall audio device state
     /// and parameters to be exposed to the <see cref="Views.AudioInterfaceView"/>.
     /// </summary>
-    public class AudioInterfaceViewModel : ViewModelBase
+    public class AudioInterfaceViewModel : ViewModelBase, IDisposable
     {
         private ISettingsService settingsService;
 
@@ -545,6 +545,17 @@ namespace TAC_COM.ViewModels
         private void ExecuteKeybindChange()
         {
             keybindManager.UpdateKeybind();
+        }
+
+        /// <summary>
+        /// Override method of <see cref="IDisposable"/> to dispose
+        /// of the <see cref="AudioManager"/> and <see cref="KeybindManager"/>.
+        /// </summary>
+        public override void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            AudioManager.Dispose();
+            KeybindManager.Dispose();
         }
 
         /// <summary>
