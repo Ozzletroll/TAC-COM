@@ -36,6 +36,11 @@ namespace Tests.MockModels
             await Task.Run(() => { });
         }
 
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public MockAudioManager()
         {
             InputDevices = [];
