@@ -116,7 +116,7 @@ namespace Tests.UnitTests.ModelTests
 
             keybindManager.TogglePTT(mockKeyboardHookEventArgs.Object);
 
-            Assert.IsTrue(keybindManager.ToggleState == true);
+            Assert.IsTrue(keybindManager.ToggleState);
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Tests.UnitTests.ModelTests
 
             keybindManager.TogglePTT(mockKeyboardHookEventArgs.Object);
 
-            Assert.IsTrue(keybindManager.ToggleState == false);
+            Assert.IsFalse(keybindManager.ToggleState);
         }
 
         /// <summary>
@@ -224,7 +224,8 @@ namespace Tests.UnitTests.ModelTests
             var userKeybindSubscriptionValue = userKeybindSubscriptionField?.GetValue(keybindManager);
 
             Assert.IsNotNull(userKeybindSubscriptionValue);
-            Assert.IsTrue(keybindManager.NewPTTKeybind?.KeyCode == VirtualKeyCode.KeyV);
+            Assert.IsNotNull(keybindManager.NewPTTKeybind);
+            Assert.AreEqual(VirtualKeyCode.KeyV, keybindManager.NewPTTKeybind.KeyCode);
         }
 
         /// <summary>
@@ -257,7 +258,7 @@ namespace Tests.UnitTests.ModelTests
 
             keybindManager.UpdateKeybind();
 
-            Assert.IsTrue(keybindManager.PTTKey == mockNewPTTKey.Object);
+            Assert.AreEqual(mockNewPTTKey.Object, keybindManager.PTTKey);
         }
 
         /// <summary>
@@ -281,12 +282,13 @@ namespace Tests.UnitTests.ModelTests
 
             keybindManager.LoadKeybindSettings();
 
-            Assert.IsTrue(keybindManager.PTTKey?.KeyCode == VirtualKeyCode.KeyF);
-            Assert.IsTrue(keybindManager.PTTKey?.Shift == true);
-            Assert.IsTrue(keybindManager.PTTKey?.Ctrl == false);
-            Assert.IsTrue(keybindManager.PTTKey?.Alt == false);
-            Assert.IsTrue(keybindManager.PTTKey?.IsModifier == true);
-            Assert.IsTrue(keybindManager.PTTKey?.Passthrough == false);
+            Assert.IsNotNull(keybindManager.PTTKey);
+            Assert.AreEqual(VirtualKeyCode.KeyF, keybindManager.PTTKey.KeyCode);
+            Assert.IsTrue(keybindManager.PTTKey.Shift);
+            Assert.IsFalse(keybindManager.PTTKey.Ctrl);
+            Assert.IsFalse(keybindManager.PTTKey.Alt);
+            Assert.IsTrue(keybindManager.PTTKey.IsModifier);
+            Assert.IsFalse(keybindManager.PTTKey.Passthrough);
         }
     }
 }
