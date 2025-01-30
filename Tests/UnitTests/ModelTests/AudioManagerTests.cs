@@ -741,5 +741,30 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(42.0, audioManager.InputPeakMeterValue);
             Assert.AreEqual(84.0, audioManager.OutputPeakMeterValue);
         }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockWasapiInput = new Mock<IWasapiCaptureWrapper>();
+            var mockWasapiOutput = new Mock<IWasapiOutWrapper>();
+
+            mockWasapiInput.Setup(input => input.Stop()).Verifiable();
+            mockWasapiInput.Setup(input => input.Dispose()).Verifiable();
+            mockWasapiOutput.Setup(output => output.Stop()).Verifiable();
+            mockWasapiOutput.Setup(output => output.Dispose()).Verifiable();
+
+            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            inputField?.SetValue(audioManager, mockWasapiInput.Object);
+
+            FieldInfo? outputField = typeof(AudioManager).GetField("output", BindingFlags.NonPublic | BindingFlags.Instance);
+            outputField?.SetValue(audioManager, mockWasapiOutput.Object);
+
+            audioManager.Dispose();
+
+            mockWasapiInput.Verify(input => input.Stop(), Times.Once());
+            mockWasapiInput.Verify(input => input.Dispose(), Times.Once());
+            mockWasapiOutput.Verify(output => output.Stop(), Times.Once());
+            mockWasapiOutput.Verify(output => output.Dispose(), Times.Once());
+        }
     }
 }
