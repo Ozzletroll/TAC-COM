@@ -388,8 +388,10 @@ namespace Tests.UnitTests.ModelTests
 
             MMDevice? activeOutputDevice = (MMDevice?)activeOutputDeviceField?.GetValue(audioManager);
 
-            Assert.AreEqual(activeOutputDevice?.ToString(), mockDevice1.FriendlyName);
-            Assert.IsTrue(activeOutputDevice?.IsDisposed == false);
+            Assert.IsNotNull(activeOutputDevice);
+            Assert.AreEqual(activeOutputDevice.ToString(), mockDevice1.FriendlyName);
+            Assert.IsNotNull(activeOutputDevice);
+            Assert.IsFalse(activeOutputDevice.IsDisposed);
             mockOutputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
             Assert.IsTrue(inputPropertyChangeRaised, $"Property change not raised for {inputDevicesProperty}");
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
@@ -420,7 +422,7 @@ namespace Tests.UnitTests.ModelTests
 
             await audioManager.ToggleStateAsync();
 
-            Assert.IsTrue(audioManager.State == false);
+            Assert.IsFalse(audioManager.State);
             FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
             var inputValue = inputField?.GetValue(audioManager);
             Assert.IsNull(inputValue);
@@ -499,7 +501,7 @@ namespace Tests.UnitTests.ModelTests
 
             await audioManager.ToggleStateAsync();
 
-            Assert.IsTrue(audioManager.State == true);
+            Assert.IsTrue(audioManager.State);
 
             mockProfile.Verify(profile => profile.LoadSources(), Times.Once());
 
@@ -572,8 +574,8 @@ namespace Tests.UnitTests.ModelTests
 
             await audioManager.ToggleBypassStateAsync();
 
-            Assert.IsTrue(audioManager.State == false);
-            Assert.IsTrue(audioManager.BypassState == false);
+            Assert.IsFalse(audioManager.State);
+            Assert.IsFalse(audioManager.BypassState);
             mockAudioProcessor.Verify(processor => processor.SetMixerLevels(false), Times.Never);
         }
 
@@ -699,7 +701,7 @@ namespace Tests.UnitTests.ModelTests
             var onInputStopped = typeof(AudioManager).GetMethod("OnInputStopped", BindingFlags.NonPublic | BindingFlags.Instance);
             onInputStopped?.Invoke(audioManager, [null, new RecordingStoppedEventArgs()]);
 
-            Assert.IsTrue(audioManager.InputPeakMeterValue == 0);
+            Assert.AreEqual(0, audioManager.InputPeakMeterValue);
         }
 
         /// <summary>
@@ -713,7 +715,7 @@ namespace Tests.UnitTests.ModelTests
             var onOutputStopped = typeof(AudioManager).GetMethod("OnOutputStopped", BindingFlags.NonPublic | BindingFlags.Instance);
             onOutputStopped?.Invoke(audioManager, [null, new PlaybackStoppedEventArgs()]);
 
-            Assert.IsTrue(audioManager.OutputPeakMeterValue == 0);
+            Assert.AreEqual(0, audioManager.OutputPeakMeterValue);
         }
 
         /// <summary>
