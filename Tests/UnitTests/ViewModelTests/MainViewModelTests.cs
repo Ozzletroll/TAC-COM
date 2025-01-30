@@ -98,5 +98,18 @@ namespace Tests.UnitTests.ViewModelTests
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IconText), newPropertyValue);
             Assert.AreEqual("Icon Text", testViewModel.IconText);
         }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockCurrentViewModel = new Mock<ViewModelBase>();
+            mockCurrentViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
+
+            testViewModel.CurrentViewModel = mockCurrentViewModel.Object;
+
+            testViewModel.Dispose();
+
+            mockCurrentViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
+        }
     }
 }
