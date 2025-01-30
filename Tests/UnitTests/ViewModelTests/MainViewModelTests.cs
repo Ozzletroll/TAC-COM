@@ -99,6 +99,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual("Icon Text", testViewModel.IconText);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
         [TestMethod]
         public void TestDispose()
         {

@@ -742,6 +742,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(84.0, audioManager.OutputPeakMeterValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
         [TestMethod]
         public void TestDispose()
         {

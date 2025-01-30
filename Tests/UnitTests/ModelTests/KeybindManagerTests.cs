@@ -291,6 +291,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsFalse(keybindManager.PTTKey.Passthrough);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
         [TestMethod]
         public void TestDispose()
         {
