@@ -154,13 +154,13 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.KeybindManager = mockKeybindManager.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
-            Assert.IsTrue(testViewModel.IsSelectable == false);
+            Assert.IsFalse(testViewModel.IsSelectable);
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
-            Assert.IsTrue(testViewModel.IsSelectable == true);
-            Assert.IsTrue(testViewModel.BypassState == false);
+            Assert.IsTrue(testViewModel.IsSelectable);
+            Assert.IsFalse(testViewModel.BypassState);
             mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
@@ -240,7 +240,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             testViewModel.NoiseGateThreshold = -56f;
 
-            Assert.IsTrue(testViewModel.NoiseGateThresholdString == "-56dB");
+            Assert.AreEqual("-56dB", testViewModel.NoiseGateThresholdString);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             testViewModel.OutputLevel = 25f;
 
-            Assert.IsTrue(testViewModel.OutputLevelString == "+25dB");
+            Assert.AreEqual("+25dB", testViewModel.OutputLevelString);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             testViewModel.NoiseLevel = 0.25f;
 
-            Assert.IsTrue(testViewModel.NoiseLevelString == "25%");
+            Assert.AreEqual("25%", testViewModel.NoiseLevelString);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             testViewModel.InterferenceLevel = 0.65f;
 
-            Assert.IsTrue(testViewModel.InterferenceLevelString == "65%");
+            Assert.AreEqual("65%", testViewModel.InterferenceLevelString);
         }
 
         /// <summary>
@@ -467,9 +467,9 @@ namespace Tests.UnitTests.ViewModelTests
             var loadInputDevices = typeof(AudioInterfaceViewModel).GetMethod("LoadInputDevices", BindingFlags.NonPublic | BindingFlags.Instance);
             loadInputDevices?.Invoke(testViewModel, []);
 
-            Assert.IsTrue(testViewModel.AllInputDevices.Count == 2);
-            Assert.IsTrue(testViewModel.AllInputDevices[0].FriendlyName == "Test Input Device 1");
-            Assert.IsTrue(testViewModel.AllInputDevices[1].FriendlyName == "Test Input Device 2");
+            Assert.AreEqual(2, testViewModel.AllInputDevices.Count);
+            Assert.AreEqual("Test Input Device 1", testViewModel.AllInputDevices[0].FriendlyName);
+            Assert.AreEqual("Test Input Device 2", testViewModel.AllInputDevices[1].FriendlyName);
         }
 
         /// <summary>
@@ -486,9 +486,9 @@ namespace Tests.UnitTests.ViewModelTests
             var loadOutputDevices = typeof(AudioInterfaceViewModel).GetMethod("LoadOutputDevices", BindingFlags.NonPublic | BindingFlags.Instance);
             loadOutputDevices?.Invoke(testViewModel, []);
 
-            Assert.IsTrue(testViewModel.AllOutputDevices.Count == 2);
-            Assert.IsTrue(testViewModel.AllOutputDevices[0].FriendlyName == "Test Output Device 1");
-            Assert.IsTrue(testViewModel.AllOutputDevices[1].FriendlyName == "Test Output Device 2");
+            Assert.AreEqual(2, testViewModel.AllOutputDevices.Count);
+            Assert.AreEqual("Test Output Device 1", testViewModel.AllOutputDevices[0].FriendlyName);
+            Assert.AreEqual("Test Output Device 2", testViewModel.AllOutputDevices[1].FriendlyName);
         }
 
         /// <summary>
@@ -509,8 +509,10 @@ namespace Tests.UnitTests.ViewModelTests
             var loadDeviceSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadDeviceSettings", BindingFlags.NonPublic | BindingFlags.Instance);
             loadDeviceSettings?.Invoke(testViewModel, []);
 
-            Assert.IsTrue(testViewModel.InputDevice?.FriendlyName == mockInputDevice.FriendlyName);
-            Assert.IsTrue(testViewModel.OutputDevice?.FriendlyName == mockOutputDevice.FriendlyName);
+            Assert.IsNotNull(testViewModel.InputDevice);
+            Assert.IsNotNull(testViewModel.OutputDevice);
+            Assert.AreEqual(mockInputDevice.FriendlyName, testViewModel.InputDevice.FriendlyName);
+            Assert.AreEqual(mockOutputDevice.FriendlyName, testViewModel.OutputDevice.FriendlyName);
         }
 
         /// <summary>
@@ -535,11 +537,12 @@ namespace Tests.UnitTests.ViewModelTests
             var loadAudioSettings = typeof(AudioInterfaceViewModel).GetMethod("LoadAudioSettings", BindingFlags.NonPublic | BindingFlags.Instance);
             loadAudioSettings?.Invoke(testViewModel, []);
 
-            Assert.IsTrue(testViewModel.NoiseGateThreshold == testAudioSettings.NoiseGateThreshold);
-            Assert.IsTrue(testViewModel.OutputLevel == testAudioSettings.OutputLevel);
-            Assert.IsTrue(testViewModel.NoiseLevel == testAudioSettings.NoiseLevel);
-            Assert.IsTrue(testViewModel.InterferenceLevel == testAudioSettings.InterferenceLevel);
-            Assert.IsTrue(testViewModel.ActiveProfile?.ProfileName == testAudioSettings.ActiveProfile);
+            Assert.AreEqual(testAudioSettings.NoiseGateThreshold, testViewModel.NoiseGateThreshold);
+            Assert.AreEqual(testAudioSettings.OutputLevel, testViewModel.OutputLevel);
+            Assert.AreEqual(testAudioSettings.NoiseLevel, testViewModel.NoiseLevel);
+            Assert.AreEqual(testAudioSettings.InterferenceLevel, testViewModel.InterferenceLevel);
+            Assert.IsNotNull(testViewModel.ActiveProfile);
+            Assert.AreEqual(testAudioSettings.ActiveProfile, testViewModel.ActiveProfile.ProfileName);
         }
 
         /// <summary>
@@ -570,6 +573,27 @@ namespace Tests.UnitTests.ViewModelTests
 
             testViewModel.ConfirmKeybindChange.Execute(null);
             mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            var mockKeybindManager = new Mock<IKeybindManager>();
+
+            mockAudioManager.Setup(audioManager => audioManager.Dispose()).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
+
+            testViewModel.AudioManager = mockAudioManager.Object;
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            testViewModel.Dispose();
+
+            mockAudioManager.Verify(audioManager => audioManager.Dispose(), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
         }
     }
 }

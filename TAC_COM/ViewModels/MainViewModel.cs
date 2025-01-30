@@ -9,7 +9,7 @@ namespace TAC_COM.ViewModels
     /// The main viewmodel of the application, which encapsulates
     /// the other viewmodels as the <see cref="CurrentViewModel"/>.
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         /// <summary>
         /// Gets or sets the current viewmodel of the application.
@@ -89,6 +89,15 @@ namespace TAC_COM.ViewModels
         {
             ProfileChangeEventArgs? f = e as ProfileChangeEventArgs;
             ActiveProfileIcon = f?.Icon;
+        }
+
+        /// <summary>
+        /// Override method to dispose of the current viewmodel.
+        /// </summary>
+        public override void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            CurrentViewModel.Dispose();
         }
 
         /// <summary>

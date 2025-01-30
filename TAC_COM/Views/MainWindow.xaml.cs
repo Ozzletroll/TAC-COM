@@ -30,13 +30,16 @@ namespace TAC_COM
 
         /// <summary>
         /// Override method to handle the <see cref="Window.Closed"/>
-        /// event, shutting down the application.
+        /// event, disposing of the current DataContext.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            System.Windows.Application.Current.Shutdown();
+            if (DataContext is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
 
         /// <summary>

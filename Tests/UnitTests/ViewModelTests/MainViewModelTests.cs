@@ -71,7 +71,7 @@ namespace Tests.UnitTests.ViewModelTests
             System.Windows.Media.ImageSource newPropertyValue = mockImageSource;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.ActiveProfileIcon), newPropertyValue);
-            Assert.IsTrue(testViewModel.ActiveProfileIcon == mockImageSource);
+            Assert.AreEqual(mockImageSource, testViewModel.ActiveProfileIcon);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Tests.UnitTests.ViewModelTests
             Icon newPropertyValue = mockImageSource;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NotifyIconImage), newPropertyValue);
-            Assert.IsTrue(testViewModel.NotifyIconImage == mockImageSource);
+            Assert.AreEqual(mockImageSource, testViewModel.NotifyIconImage);
         }
 
         /// <summary>
@@ -96,7 +96,23 @@ namespace Tests.UnitTests.ViewModelTests
             string newPropertyValue = "Icon Text";
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IconText), newPropertyValue);
-            Assert.IsTrue(testViewModel.IconText == "Icon Text");
+            Assert.AreEqual("Icon Text", testViewModel.IconText);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// </summary>
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockCurrentViewModel = new Mock<ViewModelBase>();
+            mockCurrentViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
+
+            testViewModel.CurrentViewModel = mockCurrentViewModel.Object;
+
+            testViewModel.Dispose();
+
+            mockCurrentViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
         }
     }
 }

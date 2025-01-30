@@ -7,7 +7,7 @@ namespace TAC_COM.Models.Interfaces
     /// as well as any properties that need to be exposed to the view model
     /// layer.
     /// </summary>
-    public interface IAudioManager
+    public interface IAudioManager : IDisposable
     {
         /// <summary>
         /// Gets or sets the value representing the overall state of the

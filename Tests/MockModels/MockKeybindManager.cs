@@ -6,7 +6,7 @@ using TAC_COM.Models.Interfaces;
 namespace Tests.MockModels
 {
     /// <summary>
-    /// Mock class to act as the keybind manager during testing.
+    /// Mock class to act as the <see cref="KeybindManager"/> during testing.
     /// </summary>
     public class MockKeybindManager : IKeybindManager
     {
@@ -18,6 +18,11 @@ namespace Tests.MockModels
         IKeybind? IKeybindManager.PTTKey { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
 
         public void InitialisePTTKeySubscription() { }
 

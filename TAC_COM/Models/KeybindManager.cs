@@ -13,7 +13,7 @@ namespace TAC_COM.Models
     /// <see cref="ViewModels.KeybindWindowViewModel"/>.
     /// </summary>
     /// <param name="settingsService"> Dependency injection of the <see cref="ISettingsService"/>.</param>
-    public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager
+    public class KeybindManager(ISettingsService settingsService) : NotifyProperty, IKeybindManager, IDisposable
     {
         private IDisposable? pttKeybindSubscription;
         private IDisposable? pttKeybindCatchSubscription;
@@ -225,6 +225,18 @@ namespace TAC_COM.Models
                 alt: SettingsService.KeybindSettings.Alt,
                 isModifier: SettingsService.KeybindSettings.IsModifier,
                 passthrough: SettingsService.KeybindSettings.Passthrough);
+        }
+
+        /// <summary>
+        /// Method to dispose of all <see cref="IDisposable"/> subscriptions.
+        /// </summary>
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            pttKeybindSubscription?.Dispose();
+            pttKeybindCatchSubscription?.Dispose();
+            userKeybindSubscription?.Dispose();
+            systemKeybindSubscription?.Dispose();
         }
     }
 }
