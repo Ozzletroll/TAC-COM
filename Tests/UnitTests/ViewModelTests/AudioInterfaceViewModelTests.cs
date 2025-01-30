@@ -574,5 +574,23 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.ConfirmKeybindChange.Execute(null);
             mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
         }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            var mockKeybindManager = new Mock<IKeybindManager>();
+
+            mockAudioManager.Setup(audioManager => audioManager.Dispose()).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
+
+            testViewModel.AudioManager = mockAudioManager.Object;
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            testViewModel.Dispose();
+
+            mockAudioManager.Verify(audioManager => audioManager.Dispose(), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
+        }
     }
 }
