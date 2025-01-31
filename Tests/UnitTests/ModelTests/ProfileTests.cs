@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using Tests.MockServices;
@@ -153,13 +154,42 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(testProfile.NoiseSource);
         }
 
+        [TestMethod]
+        public void TestDisposeSources()
+        {
+            var mockCloseSFXSource = new Mock<IFileSourceWrapper>();
+            var mockOpenSFXSource = new Mock<IFileSourceWrapper>();
+            var mockNoiseSource = new Mock<IFileSourceWrapper>();
+
+            mockCloseSFXSource.Setup(source => source.Dispose()).Verifiable();
+            mockOpenSFXSource.Setup(source => source.Dispose()).Verifiable();
+            mockNoiseSource.Setup(source => source.Dispose()).Verifiable();
+
+            var mockProfile = new Profile
+            {
+                ProfileName = "TestProfile",
+                FileIdentifier = "Test",
+                Theme = mockURIService.GetIconUri("TEST"),
+                Icon = new BitmapImage(),
+                CloseSFXSource = mockCloseSFXSource.Object,
+                OpenSFXSource = mockOpenSFXSource.Object,
+                NoiseSource = mockNoiseSource.Object
+            };
+
+            mockProfile.DisposeSources();
+
+            mockCloseSFXSource.Verify(source => source.Dispose(), Times.Once());
+            mockOpenSFXSource.Verify(source => source.Dispose(), Times.Once());
+            mockNoiseSource.Verify(source => source.Dispose(), Times.Once());
+        }
+
         /// <summary>
         /// Test method for the <see cref="Profile.ToString"/> method.
         /// </summary>
         [TestMethod]
         public void TestToString()
         {
-            Assert.AreEqual(testProfile.ToString(), "TestProfile");
+            Assert.AreEqual("TestProfile", testProfile.ToString());
         }
     }
 }
