@@ -47,6 +47,12 @@ namespace TAC_COM.Models
 
         public void Start() => wasapiCapture.Start();
 
-        public void Stop() => wasapiCapture.Stop();
+        public void Stop()
+        {
+            if (wasapiCapture.RecordingState != RecordingState.Stopped)
+            {
+                wasapiCapture.Stop();
+            }
+        }
     }
 }
