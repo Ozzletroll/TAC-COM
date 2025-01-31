@@ -23,5 +23,10 @@ namespace TAC_COM.Models
         {
             WaveSource.SetPosition(timeSpan);
         }
+
+        public void Dispose()
+        {
+            WaveSource?.Dispose();
+        }
     }
 }

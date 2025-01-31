@@ -137,6 +137,13 @@ namespace TAC_COM.Models
             }
         }
 
+        public void DisposeSources()
+        {
+            NoiseSource?.Dispose();
+            OpenSFXSource?.Dispose();
+            CloseSFXSource?.Dispose();
+        }
+
         /// <summary>
         /// Override method to return the <see cref="ProfileName"/>
         /// as a string.

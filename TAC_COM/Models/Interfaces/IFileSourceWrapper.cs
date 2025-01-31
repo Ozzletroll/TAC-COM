@@ -19,5 +19,10 @@ namespace TAC_COM.Models.Interfaces
         /// </summary>
         /// <param name="timeSpan"></param>
         void SetPosition(TimeSpan timeSpan);
+
+        /// <summary>
+        /// Method to dispose of the <see cref="WaveSource"/>.
+        /// </summary>
+        void Dispose();
     }
 }

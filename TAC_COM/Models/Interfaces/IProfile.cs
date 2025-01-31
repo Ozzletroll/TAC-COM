@@ -61,6 +61,11 @@ namespace TAC_COM.Models.Interfaces
         void LoadSources();
 
         /// <summary>
+        /// Method to dispose of all sfx sources.
+        /// </summary>
+        void DisposeSources();
+
+        /// <summary>
         /// Override method to return the <see cref="ProfileName"/>
         /// as a string.
         /// </summary>

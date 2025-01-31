@@ -88,6 +88,7 @@ namespace TAC_COM.Models
             get => activeProfile;
             set
             {
+                activeProfile?.DisposeSources();
                 activeProfile = value;
             }
         }
