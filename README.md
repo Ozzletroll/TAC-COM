@@ -123,5 +123,15 @@ Sets the level of the processed signal's "background noise" effect during transm
 Sets the level of the processed signal's simulated signal degradation/interference. Ranges from 0% to 100%. 
 Use sparingly for dramatic effect, as values above 50% become increasingly unintelligible.
 
+## System Tray
+While running, TAC/COM creates an icon on the system tray that provides a simple visual indicator of the push-to-talk transmission state.
+
+| Icon | Description |
+| --- | --- |
+| <img height="32px" width="32px" align="center" src="/TAC_COM/Static/Icons/standby.ico" alt="A crossed-out white microphone icon, indicating that TAC/COM is not transmitting any audio data."> | **Standby:** No audio being passed to the output device. |
+| <img height="32px" width="32px" align="center" src="/TAC_COM/Static/Icons/enabled.ico" alt="A white microphone icon, indicating that TAC/COM is transmitting unprocessed audio."> | **Enabled:** Regular microphone input being passed to the output voice, with no radio effect applied. |
+| <img height="32px" width="32px" align="center" src="/TAC_COM/Static/Icons/live.ico" alt="A red microphone icon, indicating that TAC/COM is applying the radio effect to the output."> | **Transmitting:** Processed radio effect audio being passed to output device. |
+
+Right clicking the system icon shows a dropdown menu of additional options to show/hide the app, or toggle if TAC/COM's window should stay on top of other windows.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
