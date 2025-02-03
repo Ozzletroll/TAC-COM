@@ -101,6 +101,17 @@ namespace Tests.UnitTests.ModelTests
             );
 
             allEffectsReferences.Add(
+                new(typeof(ReverbWrapper))
+                {
+                    Parameters = new Dictionary<string, object>
+                {
+                    { "ReverbTime", 300f },
+                    { "ReverbMix", -8f },
+                }
+                }
+            );
+
+            allEffectsReferences.Add(
                 new(typeof(RingModulatorWrapper))
                 {
                     Parameters = new Dictionary<string, object>
