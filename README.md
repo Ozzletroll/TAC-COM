@@ -97,14 +97,14 @@ During PTT radio transmission, the audio is deliberately compressed and distorte
 - Use sci-fi military jargon at every opportunity.
 
 ## Noise Gate Configuration
-To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video), allowing you to hear TAC/COM's output.
+To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video). Alternatively, you can temporarily select your headset speakers as TAC/COMS output device. Either option will allow you to hear your own processed voice for testing purposes.
 
 1. Set the noise gate threshold in TAC/COM to -100db.
 2. Speak at a normal volume.
 3. Gradually raise the threshold value until any background noise is eliminated. 
 4. If your own voice becomes muted or suppressed, lower the threshold slightly.
 
-Repeat this process whilst holding the push-to-talk key. Ideally you should hear your own processed voice clearly, as well as the distinct mic open/close click tones on keydown/release.
+Repeat this process whilst holding the push-to-talk key. Ideally you should hear your own processed voice clearly with no background noise, as well as the distinct mic open/close click tones on push-to-talk keydown/release.
 
 > **Make sure to set the "Noise" and "Interference" levels to 0% during testing, as these setting deliberately introduce noise and distortion to the processed signal.**
 
