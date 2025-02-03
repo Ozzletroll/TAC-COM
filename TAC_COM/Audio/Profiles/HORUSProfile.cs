@@ -1,6 +1,8 @@
 ﻿using System.Windows.Media.Imaging;
 using CSCore.Streams.Effects;
+using NWaves.Effects;
 using NWaves.Signals.Builders;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
@@ -28,10 +30,12 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("HORUS"));
             Settings = new EffectParameters()
             {
-                DistortionType = typeof(DmoDistortionEffect),
-                DistortionMode = null,
-                DistortionInput = 40,
-                DistortionOutput = 22,
+                DistortionType = typeof(DistortionWrapper),
+                DistortionMode = DistortionMode.SoftClipping,
+                DistortionInput = 8,
+                DistortionOutput = 24,
+                DistortionWet = 0.5f,
+                DistortionDry = 0.5f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
@@ -39,9 +43,9 @@ namespace TAC_COM.Audio.Profiles
                 },
                 PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 500,
-                LowpassFrequency = 5000,
-                GainAdjust = 4,
+                HighpassFrequency = 400,
+                LowpassFrequency = 2500,
+                GainAdjust = 2,
             };
         }
     }

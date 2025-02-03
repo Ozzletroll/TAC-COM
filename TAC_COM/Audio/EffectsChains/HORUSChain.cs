@@ -1,4 +1,5 @@
-﻿using TAC_COM.Audio.DSP.EffectReferenceWrappers;
+﻿using NWaves.Signals.Builders;
+using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
 namespace TAC_COM.Audio.EffectsChains
@@ -14,36 +15,43 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
-                    { "Shift", 0.9f },
-                }
-            },
-
-            new(typeof(EchoWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.01f },
-                    { "Dry", 0.99f },
-                    { "Delay", 28f },
-                }
-            },
-
-            new(typeof(EchoWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.01f },
-                    { "Dry", 0.99f },
-                    { "Delay", 28f },
+                    { "Wet", 0.25f },
+                    { "Dry", 0.75f },
+                    { "Shift", 0.95f },
                 }
             },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
+            new(typeof(EchoWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.02f },
+                    { "Dry", 0.98f },
+                    { "Delay", 30f },
+                }
+            },
 
+            new(typeof(EchoWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.01f },
+                    { "Dry", 0.99f },
+                    { "Delay", 30f },
+                }
+            },
+
+            new(typeof(ReverbWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "ReverbTime", 250f },
+                    { "ReverbMix", -12f },
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
