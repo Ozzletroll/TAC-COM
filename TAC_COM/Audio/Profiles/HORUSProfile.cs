@@ -34,8 +34,8 @@ namespace TAC_COM.Audio.Profiles
                 DistortionMode = DistortionMode.SoftClipping,
                 DistortionInput = 8,
                 DistortionOutput = 24,
-                DistortionWet = 0.5f,
-                DistortionDry = 0.5f,
+                DistortionWet = 0.2f,
+                DistortionDry = 0.8f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
