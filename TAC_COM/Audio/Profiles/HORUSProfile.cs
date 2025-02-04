@@ -31,11 +31,11 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.SoftClipping,
+                DistortionMode = DistortionMode.HardClipping,
                 DistortionInput = 8,
                 DistortionOutput = 24,
-                DistortionWet = 0.2f,
-                DistortionDry = 0.8f,
+                DistortionWet = 0.3f,
+                DistortionDry = 0.7f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
@@ -43,7 +43,7 @@ namespace TAC_COM.Audio.Profiles
                 },
                 PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 400,
+                HighpassFrequency = 500,
                 LowpassFrequency = 2500,
                 GainAdjust = 2,
             };
