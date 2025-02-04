@@ -1,5 +1,6 @@
 ﻿using CSCore;
 using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
 using CSCore.SoundOut;
 using TAC_COM.Models.Interfaces;
 
@@ -45,6 +46,12 @@ namespace TAC_COM.Models
 
         public void Play() => wasapiOut.Play();
 
-        public void Stop() => wasapiOut.Stop();
+        public void Stop()
+        {
+            if (wasapiOut.PlaybackState != PlaybackState.Stopped)
+            {
+                wasapiOut.Stop();
+            }
+        }
     }
 }
