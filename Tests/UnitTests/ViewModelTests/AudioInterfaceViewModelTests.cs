@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Moq;
@@ -543,6 +544,40 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(testAudioSettings.InterferenceLevel, testViewModel.InterferenceLevel);
             Assert.IsNotNull(testViewModel.ActiveProfile);
             Assert.AreEqual(testAudioSettings.ActiveProfile, testViewModel.ActiveProfile.ProfileName);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.AudioManager_PropertyChange"/> event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestAudioManager_PropertyChanged()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupAllProperties();
+
+            var propertyChangeMethod = typeof(AudioInterfaceViewModel)
+                .GetMethod("AudioManager_PropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            void handler(object? sender, PropertyChangedEventArgs args)
+            {
+                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
+            }
+
+            mockAudioManager.Object.PropertyChanged += handler;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(true)).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            mockAudioManager.Object.State = true;
+            mockAudioManager.Object.PlaybackReady = true;
+            mockAudioManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PlaybackReady"));
+
+            Assert.IsFalse(testViewModel.UIDeviceControlsEnabled);
+            Assert.IsTrue(testViewModel.UIPTTControlsEnabled);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
         }
 
         /// <summary>
