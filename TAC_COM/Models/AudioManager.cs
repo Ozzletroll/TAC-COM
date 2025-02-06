@@ -134,6 +134,17 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool playbackReady;
+        public bool PlaybackReady
+        {
+            get => playbackReady;
+            set
+            {
+                playbackReady = value;
+                OnPropertyChanged(nameof(PlaybackReady));
+            }
+        }
+
         private bool bypassState;
 
         /// <inheritdoc/>
@@ -332,10 +343,12 @@ namespace TAC_COM.Models
                     return;
                 }
                 await StartAudioAsync();
+                PlaybackReady = true;
             }
             else
             {
                 await StopAudioAsync();
+                PlaybackReady = false;
             }
         }
 

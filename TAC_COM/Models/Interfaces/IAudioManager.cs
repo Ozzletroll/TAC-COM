@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -7,13 +8,19 @@ namespace TAC_COM.Models.Interfaces
     /// as well as any properties that need to be exposed to the view model
     /// layer.
     /// </summary>
-    public interface IAudioManager : IDisposable
+    public interface IAudioManager : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Gets or sets the value representing the overall state of the
         /// <see cref="IAudioManager"/>.
         /// </summary>
         bool State { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value representing whether the 
+        /// <see cref="IAudioManager"/> is ready to start playback.
+        /// </summary>
+        bool PlaybackReady { get; set; }
 
         /// <summary>
         /// Gets or sets the value representing whether the

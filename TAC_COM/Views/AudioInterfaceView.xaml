@@ -42,7 +42,7 @@
                 <ComboBox x:Name="InputSelection" Width="300" 
                           ItemsSource="{Binding AllInputDevices}"
                           SelectedItem="{Binding InputDevice}"
-                          IsEnabled="{Binding IsSelectable}"
+                          IsEnabled="{Binding UIDeviceControlsEnabled}"
                           Text="SELECT INPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           Cursor="Hand"
                           Focusable="False" IsEditable="True" IsReadOnly="True"
@@ -76,7 +76,7 @@
                 <ComboBox x:Name="OutputSelection" Width="300"
                           ItemsSource="{Binding AllOutputDevices}"
                           SelectedItem="{Binding OutputDevice}"
-                          IsEnabled="{Binding IsSelectable}"
+                          IsEnabled="{Binding UIDeviceControlsEnabled}"
                           Text="SELECT VIRTUAL OUTPUT DEVICE" FontFamily="Calibri" FontSize="14"
                           Cursor="Hand"
                           Focusable="False" IsEditable="True" IsReadOnly="True"
@@ -110,7 +110,7 @@
                 <ComboBox x:Name="ProfileSelection" Width="300"
                           ItemsSource="{Binding Profiles}"
                           SelectedItem="{Binding ActiveProfile}"
-                          IsEnabled="{Binding IsSelectable}"
+                          IsEnabled="{Binding UIDeviceControlsEnabled}"
                           Text="SELECT MANUFACTURER" FontFamily="Calibri" FontSize="14"
                           Cursor="Hand"
                           Focusable="False" IsEditable="True" IsReadOnly="True"
@@ -142,7 +142,7 @@
                                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                 Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
-                                IsEnabled="{Binding IsSelectable}" Command="{Binding ShowKeybindDialog}" FontSize="10"
+                                IsEnabled="{Binding UIDeviceControlsEnabled}" Command="{Binding ShowKeybindDialog}" FontSize="10"
                                 BorderThickness="0"
                                 adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
                                 adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
@@ -223,7 +223,7 @@
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                               FontSize="18" FontWeight="ExtraLight"
-                              IsChecked="{Binding BypassState}" IsEnabled="{Binding State}"
+                              IsChecked="{Binding BypassState}" IsEnabled="{Binding UIPTTControlsEnabled}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
