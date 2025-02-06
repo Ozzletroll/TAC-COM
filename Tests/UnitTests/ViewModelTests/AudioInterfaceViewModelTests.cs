@@ -146,32 +146,32 @@ namespace Tests.UnitTests.ViewModelTests
             mockIconService.Setup(iconService => iconService.SetStandbyIcon()).Verifiable();
             mockIconService.Setup(iconService => iconService.SetEnabledIcon()).Verifiable();
 
-            var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(true));
-            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(false));
-
             testViewModel.IconService = mockIconService.Object;
-            testViewModel.KeybindManager = mockKeybindManager.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
-            Assert.IsFalse(testViewModel.IsSelectable);
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
-            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
-            Assert.IsTrue(testViewModel.IsSelectable);
             Assert.IsFalse(testViewModel.BypassState);
             mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
-            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
 
         /// <summary>
-        /// Test method for the <see cref="AudioInterfaceViewModel.IsSelectable"/> property.
+        /// Test method for the <see cref="AudioInterfaceViewModel.UIDeviceControlsEnabled"/> property.
         /// </summary>
         [TestMethod]
-        public void TestIsSelectableProperty()
+        public void TestUIDeviceControlsEnabledProperty()
         {
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIDeviceControlsEnabled), !testViewModel.UIDeviceControlsEnabled);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.UIPTTControlsEnabled"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUIPTTControlsEnabledProperty()
+        {
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIPTTControlsEnabled), !testViewModel.UIPTTControlsEnabled);
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace Tests.UnitTests.ViewModelTests
             string testKeybindNameValue = "Shift + V";
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.KeybindName), testKeybindNameValue);
-            Assert.IsTrue(testViewModel.KeybindName == "[ Shift + V ]");
+            Assert.AreEqual("[ Shift + V ]", testViewModel.KeybindName);
         }
 
         /// <summary>

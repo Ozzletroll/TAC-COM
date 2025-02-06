@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
@@ -20,6 +21,10 @@ namespace Tests.MockModels
         public ObservableCollection<IMMDeviceWrapper> OutputDevices { get; set; } = [];
         public IProfile? ActiveProfile { get; set; }
         public float InterferenceLevel { get; set; }
+        public bool PlaybackReady { get; set; }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public void GetAudioDevices() { }
 
         public void SetInputDevice(IMMDeviceWrapper inputDevice) { }
