@@ -581,6 +581,44 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.KeybindManager_PropertyChange"/> event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestKeybindManager_PropertyChanged()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.SetupAllProperties();
+            
+            var propertyChangeMethod = typeof(AudioInterfaceViewModel)
+                .GetMethod("KeybindManager_PropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            void handler(object? sender, PropertyChangedEventArgs args)
+            {
+                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
+            }
+
+            mockKeybindManager.Object.PropertyChanged += handler;
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            mockKeybindManager.Object.ToggleState = true;
+            mockKeybindManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("ToggleState"));
+
+            Assert.IsTrue(testViewModel.BypassState);
+
+            mockKeybindManager.Object.PTTKey
+                = new Keybind(Dapplo.Windows.Input.Enums.VirtualKeyCode.KeyV,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false);
+
+            mockKeybindManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PTTKey"));
+
+            Assert.AreEqual("[ CTRL + V ]", testViewModel.KeybindName);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioInterfaceViewModel.ShowKeybindDialog"/> method.
         /// </summary>
         [TestMethod]
