@@ -399,7 +399,7 @@ namespace Tests.UnitTests.ModelTests
 
 
         /// <summary>
-        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// Test method for the <see cref="AudioManager.ToggleStateAsync"/> method,
         /// with a test case of <see cref="AudioManager.State"/> = true,
         /// <see cref="AudioManager.InputDevices"/> = null and 
         /// <see cref="AudioManager.OutputDevices"/> = null.
@@ -420,20 +420,21 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
             activeOutputField?.SetValue(audioManager, null);
 
+            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
+
             await audioManager.ToggleStateAsync();
 
             Assert.IsFalse(audioManager.State);
-            FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsFalse(audioManager.PlaybackReady);
             var inputValue = inputField?.GetValue(audioManager);
             Assert.IsNull(inputValue);
-
-            FieldInfo? micOutputField = typeof(AudioManager).GetField("micOutput", BindingFlags.NonPublic | BindingFlags.Instance);
             var outputValue = micOutputField?.GetValue(audioManager);
             Assert.IsNull(outputValue);
         }
 
         /// <summary>
-        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// Test method for the <see cref="AudioManager.ToggleStateAsync"/> method,
         /// with a test case of <see cref="AudioManager.State"/> = true,
         /// <see cref="AudioManager.InputDevices"/> and 
         /// <see cref="AudioManager.OutputDevices"/> as valid devices.
@@ -502,6 +503,7 @@ namespace Tests.UnitTests.ModelTests
             await audioManager.ToggleStateAsync();
 
             Assert.IsTrue(audioManager.State);
+            Assert.IsTrue(audioManager.PlaybackReady);
 
             mockProfile.Verify(profile => profile.LoadSources(), Times.Once());
 
@@ -525,7 +527,7 @@ namespace Tests.UnitTests.ModelTests
         }
 
         /// <summary>
-        /// Test method for the <see cref="AudioManager.ResetOutputDevice"/> method,
+        /// Test method for the <see cref="AudioManager.ToggleStateAsync"/> method,
         /// with a test case of <see cref="AudioManager.State"/> = false,
         /// <see cref="AudioManager.InputDevices"/> and 
         /// <see cref="AudioManager.OutputDevices"/> as valid devices.
@@ -557,6 +559,8 @@ namespace Tests.UnitTests.ModelTests
 
             mockWasapiOutput.Verify(output => output.Stop(), Times.Once);
             mockWasapiOutput.Verify(output => output.Dispose(), Times.Once);
+
+            Assert.IsFalse(audioManager.PlaybackReady);
         }
 
         /// <summary>

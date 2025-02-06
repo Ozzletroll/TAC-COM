@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using Moq;
@@ -146,32 +147,32 @@ namespace Tests.UnitTests.ViewModelTests
             mockIconService.Setup(iconService => iconService.SetStandbyIcon()).Verifiable();
             mockIconService.Setup(iconService => iconService.SetEnabledIcon()).Verifiable();
 
-            var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(true));
-            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(false));
-
             testViewModel.IconService = mockIconService.Object;
-            testViewModel.KeybindManager = mockKeybindManager.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), true);
-            Assert.IsFalse(testViewModel.IsSelectable);
             mockIconService.Verify(iconService => iconService.SetEnabledIcon(), Times.Once);
-            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.State), false);
-            Assert.IsTrue(testViewModel.IsSelectable);
             Assert.IsFalse(testViewModel.BypassState);
             mockIconService.Verify(iconService => iconService.SetStandbyIcon(), Times.Once);
-            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
 
         /// <summary>
-        /// Test method for the <see cref="AudioInterfaceViewModel.IsSelectable"/> property.
+        /// Test method for the <see cref="AudioInterfaceViewModel.UIDeviceControlsEnabled"/> property.
         /// </summary>
         [TestMethod]
-        public void TestIsSelectableProperty()
+        public void TestUIDeviceControlsEnabledProperty()
         {
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IsSelectable), !testViewModel.IsSelectable);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIDeviceControlsEnabled), !testViewModel.UIDeviceControlsEnabled);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.UIPTTControlsEnabled"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUIPTTControlsEnabledProperty()
+        {
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIPTTControlsEnabled), !testViewModel.UIPTTControlsEnabled);
         }
 
         /// <summary>
@@ -450,7 +451,7 @@ namespace Tests.UnitTests.ViewModelTests
             string testKeybindNameValue = "Shift + V";
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.KeybindName), testKeybindNameValue);
-            Assert.IsTrue(testViewModel.KeybindName == "[ Shift + V ]");
+            Assert.AreEqual("[ Shift + V ]", testViewModel.KeybindName);
         }
 
         /// <summary>
@@ -543,6 +544,78 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(testAudioSettings.InterferenceLevel, testViewModel.InterferenceLevel);
             Assert.IsNotNull(testViewModel.ActiveProfile);
             Assert.AreEqual(testAudioSettings.ActiveProfile, testViewModel.ActiveProfile.ProfileName);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.AudioManager_PropertyChange"/> event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestAudioManager_PropertyChanged()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupAllProperties();
+
+            var propertyChangeMethod = typeof(AudioInterfaceViewModel)
+                .GetMethod("AudioManager_PropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            void handler(object? sender, PropertyChangedEventArgs args)
+            {
+                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
+            }
+
+            mockAudioManager.Object.PropertyChanged += handler;
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(true)).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            mockAudioManager.Object.State = true;
+            mockAudioManager.Object.PlaybackReady = true;
+            mockAudioManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PlaybackReady"));
+
+            Assert.IsFalse(testViewModel.UIDeviceControlsEnabled);
+            Assert.IsTrue(testViewModel.UIPTTControlsEnabled);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.KeybindManager_PropertyChange"/> event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestKeybindManager_PropertyChanged()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+            mockKeybindManager.SetupAllProperties();
+            
+            var propertyChangeMethod = typeof(AudioInterfaceViewModel)
+                .GetMethod("KeybindManager_PropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            void handler(object? sender, PropertyChangedEventArgs args)
+            {
+                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
+            }
+
+            mockKeybindManager.Object.PropertyChanged += handler;
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            mockKeybindManager.Object.ToggleState = true;
+            mockKeybindManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("ToggleState"));
+
+            Assert.IsTrue(testViewModel.BypassState);
+
+            mockKeybindManager.Object.PTTKey
+                = new Keybind(Dapplo.Windows.Input.Enums.VirtualKeyCode.KeyV,
+                    false,
+                    true,
+                    false,
+                    false,
+                    false);
+
+            mockKeybindManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PTTKey"));
+
+            Assert.AreEqual("[ CTRL + V ]", testViewModel.KeybindName);
         }
 
         /// <summary>

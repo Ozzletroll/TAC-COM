@@ -193,26 +193,30 @@ namespace TAC_COM.ViewModels
         public bool State
         {
             get => audioManager.State;
-            set
+            set 
             {
-                AudioManager.State = value;
-                AudioManager.ToggleStateAsync();
-                IsSelectable = !AudioManager.State;
-                keybindManager.TogglePTTKeybindSubscription(State);
-                OnPropertyChanged(nameof(AudioManager.State));
-                if (AudioManager.State == false)
-                {
-                    BypassState = false;
-                    iconService.SetStandbyIcon();
-                }
-                else
-                {
-                    iconService.SetEnabledIcon();
-                }
+                SetState(value);
+                OnPropertyChanged(nameof(State));
             }
         }
 
-        private bool isSelectable = true;
+        private bool uiPTTControlsEnabled;
+
+        /// <summary>
+        /// Gets or sets the value representing if the PTT UI controls
+        /// are currently selectable.
+        /// </summary>
+        public bool UIPTTControlsEnabled
+        {
+            get => uiPTTControlsEnabled;
+            set
+            {
+                uiPTTControlsEnabled = value;
+                OnPropertyChanged(nameof(UIPTTControlsEnabled));
+            }
+        }
+
+        private bool uiDeviceControlsEnabled = true;
 
         /// <summary>
         /// Gets or sets the value representing if the audio
@@ -222,13 +226,13 @@ namespace TAC_COM.ViewModels
         /// Setting this to false prevents device changes 
         /// during playback/recording.
         /// </remarks>
-        public bool IsSelectable
+        public bool UIDeviceControlsEnabled
         {
-            get => isSelectable;
+            get => uiDeviceControlsEnabled;
             set
             {
-                isSelectable = value;
-                OnPropertyChanged(nameof(IsSelectable));
+                uiDeviceControlsEnabled = value;
+                OnPropertyChanged(nameof(UIDeviceControlsEnabled));
             }
         }
 
@@ -439,6 +443,28 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// Method to set the overall application state,
+        /// called via the <see cref="State"/> property setter.
+        /// Begins or ends playback and processing via the
+        /// <see cref="AudioManager"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetState(bool value)
+        {
+            AudioManager.State = value;
+            AudioManager.ToggleStateAsync();
+            if (AudioManager.State == false)
+            {
+                BypassState = false;
+                iconService.SetStandbyIcon();
+            }
+            else
+            {
+                iconService.SetEnabledIcon();
+            }
+        }
+
+        /// <summary>
         /// Method to get all input devices and update
         /// <see cref="AllInputDevices"/>.
         /// </summary>
@@ -501,6 +527,26 @@ namespace TAC_COM.ViewModels
 
         /// <summary>
         /// Method to handle <see cref="NotifyProperty"/> property 
+        /// changes from the <see cref="AudioManager"/>.
+        /// </summary>
+        /// <remarks>
+        /// Methods and properties that await the <see cref="AudioManager.PlaybackReady"/> state
+        /// are then called or set here.
+        /// </remarks>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the PropertyChanged event.</param>
+        private void AudioManager_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AudioManager.PlaybackReady))
+            {
+                UIDeviceControlsEnabled = !AudioManager.PlaybackReady;
+                UIPTTControlsEnabled = AudioManager.PlaybackReady;
+                keybindManager.TogglePTTKeybindSubscription(State);
+            }
+        }
+
+        /// <summary>
+        /// Method to handle <see cref="NotifyProperty"/> property 
         /// changes from the <see cref="KeybindManager"/>.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -509,11 +555,11 @@ namespace TAC_COM.ViewModels
         {
             if (e.PropertyName == nameof(KeybindManager.ToggleState))
             {
-                BypassState = keybindManager.ToggleState;
+                BypassState = KeybindManager.ToggleState;
             }
             if (e.PropertyName == nameof(KeybindManager.PTTKey))
             {
-                KeybindName = keybindManager?.PTTKey?.ToString().ToUpper() ?? "NONE";
+                KeybindName = KeybindManager?.PTTKey?.ToString().ToUpper() ?? "NONE";
             }
         }
 
@@ -573,6 +619,7 @@ namespace TAC_COM.ViewModels
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
             audioManager = _audioManager;
+            audioManager.PropertyChanged += AudioManager_PropertyChanged;
 
             settingsService = new SettingsService();
             iconService = _iconService;
