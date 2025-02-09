@@ -193,7 +193,7 @@ namespace TAC_COM.ViewModels
         public bool State
         {
             get => audioManager.State;
-            set 
+            set
             {
                 SetState(value);
                 OnPropertyChanged(nameof(State));

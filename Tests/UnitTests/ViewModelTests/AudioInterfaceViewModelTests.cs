@@ -588,7 +588,7 @@ namespace Tests.UnitTests.ViewModelTests
         {
             var mockKeybindManager = new Mock<IKeybindManager>();
             mockKeybindManager.SetupAllProperties();
-            
+
             var propertyChangeMethod = typeof(AudioInterfaceViewModel)
                 .GetMethod("KeybindManager_PropertyChanged", BindingFlags.NonPublic | BindingFlags.Instance);
 

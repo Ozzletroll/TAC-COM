@@ -307,7 +307,7 @@ namespace Tests.UnitTests.ModelTests
             mockUserKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
             mockSystemKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
 
-            FieldInfo? pttKeybindSubscriptionField 
+            FieldInfo? pttKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
 
             pttKeybindSubscriptionField?.SetValue(keybindManager, mockPTTKeybindSubscription.Object);
