@@ -21,6 +21,37 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Shift", 0.7f },
                 }
             },
+
+            new(typeof(VocoderEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "Shift", 0.9f },
+                }
+            },
+
+            new(typeof(VocoderEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "Shift", 0.95f },
+                }
+            },
+
+            new(typeof(AMModulatorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
+                    { "Frequency", 30 },
+                    { "ModulationIndex", 1.3f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
@@ -50,7 +81,7 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "ReverbTime", 250f },
-                    { "ReverbMix", -12f },
+                    { "ReverbMix", -14f },
                 }
             },
 
@@ -74,11 +105,11 @@ namespace TAC_COM.Audio.EffectsChains
                 {
                     { "Wet", 0.2f },
                     { "Dry", 0.8f },
-                    { "ModulatorSignalType", typeof(TriangleWaveBuilder) },
+                    { "ModulatorSignalType", typeof(SineBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>
                         {
-                            { "frequency", 500 },
+                            { "frequency", 3500 },
                         }
                     },
                 }

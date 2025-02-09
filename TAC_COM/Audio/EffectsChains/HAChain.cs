@@ -57,10 +57,6 @@ namespace TAC_COM.Audio.EffectsChains
                      { "MakeupGain", 5 },
                  }
             },
-
-            
-
-            
         ];
 
         public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;

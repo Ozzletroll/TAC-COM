@@ -33,8 +33,8 @@ namespace TAC_COM.Audio.Profiles
                 DistortionMode = DistortionMode.HardClipping,
                 DistortionInput = 8,
                 DistortionOutput = 24,
-                DistortionWet = 0.3f,
-                DistortionDry = 0.7f,
+                DistortionWet = 0.2f,
+                DistortionDry = 0.8f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
@@ -42,7 +42,7 @@ namespace TAC_COM.Audio.Profiles
                 },
                 PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
                 PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 300,
+                HighpassFrequency = 500,
                 LowpassFrequency = 2500,
                 GainAdjust = 2,
             };
