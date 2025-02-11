@@ -121,7 +121,7 @@ namespace TAC_COM
             contextMenuStrip.Items.Add(new ToolStripSeparator());
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, (s, e) => ExitApplication()));
 
-            var initialIcon = IconService.IsLightThemeEnabled() ? "./Static/Icons/standby-light.ico" : "./Static/Icons/standby.ico";
+            var initialIcon = iconService.IsLightThemeEnabled() ? "./Static/Icons/standby-light.ico" : "./Static/Icons/standby.ico";
             notifyIcon = new NotifyIcon
             {
                 Text = "TAC/COM Standby",

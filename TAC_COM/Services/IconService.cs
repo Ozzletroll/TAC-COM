@@ -9,6 +9,7 @@ namespace TAC_COM.Services
     /// </summary>
     public class IconService : IIconService
     {
+        public IRegistryService RegistryService;
         public event EventHandler? ChangeSystemTrayIcon;
         public event EventHandler? ChangeProfileIcon;
 
@@ -37,18 +38,17 @@ namespace TAC_COM.Services
         /// <summary>
         /// Static method to check the if the system is using the light theme.
         /// </summary>
-        public static bool IsLightThemeEnabled()
+        public bool IsLightThemeEnabled()
         {
-            var hKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            if (hKey != null)
-            {
-                var value = hKey.GetValue("SystemUsesLightTheme");
-                if (value != null && (int)value == 1)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return RegistryService.GetThemeRegistryValue() == 1;
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="IconService"/>.
+        /// </summary>
+        public IconService()
+        {
+            RegistryService = new RegistryService();
         }
     }
 }
