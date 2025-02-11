@@ -16,29 +16,9 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.15f },
+                    { "Dry", 0.85f },
                     { "Shift", 0.7f },
-                }
-            },
-
-            new(typeof(VocoderEffectWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
-                    { "Shift", 0.9f },
-                }
-            },
-
-            new(typeof(VocoderEffectWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
-                    { "Shift", 0.95f },
                 }
             },
 
