@@ -10,31 +10,45 @@ namespace TAC_COM.Services
     public class IconService : IIconService
     {
         public event EventHandler? ChangeSystemTrayIcon;
-
-
         public event EventHandler? ChangeProfileIcon;
-
 
         public void SetLiveIcon()
         {
             ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/live.ico", "TAC/COM Live"));
         }
 
-
         public void SetEnabledIcon()
         {
-            ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/enabled.ico", "TAC/COM Enabled"));
+            var iconPath = IsLightThemeEnabled() ? "./Static/Icons/enabled-light.ico" : "./Static/Icons/enabled.ico";
+            ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs(iconPath, "TAC/COM Enabled"));
         }
-
 
         public void SetStandbyIcon()
         {
-            ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs("./Static/Icons/standby.ico", "TAC/COM Standby"));
+            var iconPath = IsLightThemeEnabled() ? "./Static/Icons/standby-light.ico" : "./Static/Icons/standby.ico";
+            ChangeSystemTrayIcon?.Invoke(this, new IconChangeEventArgs(iconPath, "TAC/COM Standby"));
         }
 
         public void SetActiveProfileIcon(System.Windows.Media.ImageSource icon)
         {
             ChangeProfileIcon?.Invoke(this, new ProfileChangeEventArgs(icon));
+        }
+
+        /// <summary>
+        /// Static method to check the if the system is using the light theme.
+        /// </summary>
+        public static bool IsLightThemeEnabled()
+        {
+            var hKey = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            if (hKey != null)
+            {
+                var value = hKey.GetValue("SystemUsesLightTheme");
+                if (value != null && (int)value == 1)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

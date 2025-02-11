@@ -631,6 +631,7 @@ namespace TAC_COM.ViewModels
             audioManager.PropertyChanged += AudioManager_PropertyChanged;
 
             settingsService = new SettingsService();
+
             iconService = _iconService;
 
             themeService = _themeService;
