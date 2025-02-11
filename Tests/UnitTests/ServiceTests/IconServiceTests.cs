@@ -1,6 +1,10 @@
 ﻿using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using Moq;
 using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
+using Tests.MockModels;
 
 namespace Tests.UnitTests.ServiceTests
 {
@@ -100,6 +104,21 @@ namespace Tests.UnitTests.ServiceTests
 
             Assert.IsNotNull(raisedEventArgs);
             Assert.AreEqual(mockImageSource, raisedEventArgs?.Icon);
+        }
+
+        [TestMethod]
+        public void TestIsLightThemeEnabled()
+        {
+            var mockRegistryService = new Mock<IRegistryService>();
+            mockRegistryService.Setup(service => service.GetThemeRegistryValue()).Returns(1);
+
+            testIconService.RegistryService = mockRegistryService.Object;
+
+            Assert.IsTrue(testIconService.IsLightThemeEnabled());
+
+            mockRegistryService.Setup(service => service.GetThemeRegistryValue()).Returns(0);
+
+            Assert.IsFalse(testIconService.IsLightThemeEnabled());
         }
     }
 }
