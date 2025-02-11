@@ -253,21 +253,8 @@ namespace TAC_COM.ViewModels
             get => audioManager.BypassState;
             set
             {
-                if (value != AudioManager.BypassState)
-                {
-                    AudioManager.BypassState = value;
-                    AudioManager.ToggleBypassStateAsync();
-                    OnPropertyChanged(nameof(AudioManager.BypassState));
-
-                    if (BypassState)
-                    {
-                        iconService.SetLiveIcon();
-                    }
-                    else
-                    {
-                        iconService.SetEnabledIcon();
-                    }
-                }
+                SetBypassState(value);
+                OnPropertyChanged(nameof(AudioManager.BypassState));
             }
         }
 
@@ -461,6 +448,28 @@ namespace TAC_COM.ViewModels
             else
             {
                 iconService.SetEnabledIcon();
+            }
+        }
+
+        /// <summary>
+        /// Method to set the bypass state of the audio manager,
+        /// called via the <see cref="BypassState"/> property setter.
+        /// </summary>
+        private void SetBypassState(bool value)
+        {
+            if (value != AudioManager.BypassState)
+            {
+                AudioManager.BypassState = value;
+                AudioManager.ToggleBypassStateAsync();
+
+                if (BypassState)
+                {
+                    iconService.SetLiveIcon();
+                }
+                else
+                {
+                    iconService.SetEnabledIcon();
+                }
             }
         }
 
