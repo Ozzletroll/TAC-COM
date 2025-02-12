@@ -8,27 +8,17 @@ namespace TAC_COM.Services
     /// </summary>
     public class RegistryService : IRegistryService
     {
-        /// <summary>
-        /// Gets or sets the system theme registry key.
-        /// </summary>
-        public RegistryKey? SystemThemeRegistry;
+        private readonly RegistryKey? systemThemeRegistry
+            = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
 
         public int? GetThemeRegistryValue()
         {
-            var value = SystemThemeRegistry?.GetValue("SystemUsesLightTheme");
+            var value = systemThemeRegistry?.GetValue("SystemUsesLightTheme");
             if (value != null)
             {
                 return (int)value;
             }
             else return null;
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="RegistryService"/> class.
-        /// </summary>
-        public RegistryService()
-        {
-            SystemThemeRegistry = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
         }
     }
 }
