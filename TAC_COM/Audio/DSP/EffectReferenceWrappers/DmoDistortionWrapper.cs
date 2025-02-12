@@ -37,6 +37,10 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }, out gain);
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the gain after distortion in dB,
+        /// ranging from -60 to 0 dB.
+        /// </summary>
         public float Gain
         {
             get => distortionEffect.Gain;
@@ -46,6 +50,9 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the additional gain offset after distortion in dB.
+        /// </summary>
         public float OffsetGain
         {
             get => gain.GainDB;
@@ -55,6 +62,10 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the percentage of distortion intensity,
+        /// ranges from 0 to 100.
+        /// </summary>
         public float Edge
         {
             get => distortionEffect.Edge;
@@ -64,6 +75,10 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the center frequency of harmonic content addition
+        /// in Hz.
+        /// </summary>
         public float PostEQCenterFrequency
         {
             get => distortionEffect.PostEQCenterFrequency;
@@ -73,6 +88,9 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the bandwidth of harmonic content addition.
+        /// </summary>
         public float PostEQBandwidth
         {
             get => distortionEffect.PostEQBandwidth;
@@ -82,6 +100,10 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
             }
         }
 
+        /// <summary>
+        /// Gets or sets the value representing the cutoff filter for high-frequency harmonics
+        /// attenuation in Hz.
+        /// </summary>
         public float PreLowpassCutoff
         {
             get => distortionEffect.PreLowpassCutoff;
