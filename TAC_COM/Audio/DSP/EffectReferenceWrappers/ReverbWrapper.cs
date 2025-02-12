@@ -22,7 +22,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         /// <see cref="IWaveSource"/>, then the effect is applied before
         /// converting back to a <see cref="ISampleSource"/>.
         /// </remarks>
-        /// <param name="inputSource"></param>
+        /// <param name="inputSource"> The <see cref="ISampleSource"/> to apply the effect to.</param>
         public ReverbWrapper(ISampleSource inputSource)
         {
             source = inputSource.ToWaveSource();
@@ -62,10 +62,6 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         }
 
         /// <inheritdoc/>
-        /// <remarks> 
-        /// This is where the effect is applied to all
-        /// samples in the buffer.
-        /// </remarks>
         public int Read(float[] buffer, int offset, int count)
         {
             int samples = sampleSource.Read(buffer, offset, count);
