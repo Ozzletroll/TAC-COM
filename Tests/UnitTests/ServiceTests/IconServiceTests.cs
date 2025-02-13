@@ -1,10 +1,8 @@
 ﻿using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using Moq;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
-using Tests.MockModels;
 
 namespace Tests.UnitTests.ServiceTests
 {

@@ -11,7 +11,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     /// Can be used as a <see cref="Models.EffectReference"/>.
     /// </remarks>
     /// <param name="inputSource">The <see cref="ISampleSource"/> to which the effect is to be applied.</param>
-    public class DistortionWrapper(ISampleSource inputSource) : ISampleSource
+    public class NwavesDistortionWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
         private readonly DistortionEffect distortionEffect = new(DistortionMode.SoftClipping);

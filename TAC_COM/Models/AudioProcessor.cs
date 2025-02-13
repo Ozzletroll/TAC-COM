@@ -1,8 +1,6 @@
 ﻿using CSCore;
-using CSCore.DSP;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
-using NWaves.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
@@ -165,26 +163,17 @@ namespace TAC_COM.Models
                 Release = 5,
             }, out processedNoiseGate);
 
-            // EQ
-            sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
+            // Apply profile specific pre-compression effects
+            var preCompressionSource = sampleSource;
+            if (activeProfile?.Settings.PreCompressionSignalChain != null)
             {
-                Filter = new HighpassFilter(sampleRate, activeProfile.Settings.HighpassFrequency)
-            }).AppendSource(x => new BiQuadFilterSource(x)
-            {
-                Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
-            });
-
-            // Apply profile specific pre-distortion effects
-            var preDistortionSampleSource = sampleSource;
-            if (activeProfile?.Settings.PreDistortionSignalChain != null)
-            {
-                foreach (EffectReference effect in activeProfile.Settings.PreDistortionSignalChain)
+                foreach (EffectReference effect in activeProfile.Settings.PreCompressionSignalChain)
                 {
-                    preDistortionSampleSource = preDistortionSampleSource.AppendSource(x => effect.CreateInstance(x));
+                    preCompressionSource = preCompressionSource.AppendSource(x => effect.CreateInstance(x));
                 }
             }
 
-            var dynamicsProcessedSource = preDistortionSampleSource;
+            var dynamicsProcessedSource = preCompressionSource;
 
             // Limiter
             dynamicsProcessedSource = dynamicsProcessedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
@@ -210,60 +199,13 @@ namespace TAC_COM.Models
                 MakeupGain = 45,
             });
 
-            var distortionSource = dynamicsProcessedSource.ToWaveSource();
-
-            // Apply CSCore distortion, depending on ActiveProfile settings
-            if (activeProfile?.Settings.DistortionType == typeof(DmoDistortionEffect))
-            {
-                // Distortion
-                distortionSource =
-                    distortionSource.AppendSource(x => new DmoDistortionEffect(x)
-                    {
-                        Gain = -60,
-                        Edge = 75,
-                        PostEQCenterFrequency = 3500,
-                        PostEQBandwidth = 4800,
-                        PreLowpassCutoff = 8000
-                    });
-
-                // Reduce gain to compensate for distortion
-                var gainAdjustedDistortionSource = distortionSource.ToSampleSource();
-                gainAdjustedDistortionSource = gainAdjustedDistortionSource.AppendSource(x => new Gain(x)
-                {
-                    GainDB = -45,
-                });
-
-                distortionSource = gainAdjustedDistortionSource.ToWaveSource();
-            }
-
             // Convert to SampleSource
-            var outputSampleSource = distortionSource.ToSampleSource();
+            var outputSampleSource = dynamicsProcessedSource;
 
-            // Apply NWaves distortion, depending on ActiveProfile settings
-            if (activeProfile?.Settings.DistortionType == typeof(DistortionWrapper)
-                && activeProfile.Settings.DistortionMode != null)
+            // Apply profile specific post-compression effects
+            if (activeProfile?.Settings.PostCompressionSignalChain != null)
             {
-                outputSampleSource
-                    = outputSampleSource.AppendSource(x
-                    => new DistortionWrapper(x)
-                    {
-                        Mode = (DistortionMode)activeProfile.Settings.DistortionMode,
-                        InputGainDB = activeProfile.Settings.DistortionInput,
-                        OutputGainDB = activeProfile.Settings.DistortionOutput,
-                        Wet = activeProfile.Settings.DistortionWet,
-                        Dry = activeProfile.Settings.DistortionDry,
-                    });
-
-                outputSampleSource = outputSampleSource.AppendSource(x => new Gain(x)
-                {
-                    GainDB = -25,
-                });
-            }
-
-            // Apply profile specific post-distortion effects
-            if (activeProfile?.Settings.PostDistortionSignalChain != null)
-            {
-                foreach (EffectReference effect in activeProfile.Settings.PostDistortionSignalChain)
+                foreach (EffectReference effect in activeProfile.Settings.PostCompressionSignalChain)
                 {
                     outputSampleSource = outputSampleSource.AppendSource(x => effect.CreateInstance(x));
                 }
@@ -308,8 +250,11 @@ namespace TAC_COM.Models
             wetDryMixer.AddSource(wetMixLevel);
             wetDryMixer.AddSource(dryMixLevel);
 
-            wetMixLevel.Volume = 0.8f;
-            dryMixLevel.Volume = 0.2f;
+            if (activeProfile != null)
+            {
+                wetMixLevel.Volume = activeProfile.Settings.PrimaryMix;
+                dryMixLevel.Volume = activeProfile.Settings.ParallelMix;
+            }
 
             // User gain control
             outputSampleSource = wetDryMixer.AppendSource(x => new Gain(x)
@@ -343,30 +288,17 @@ namespace TAC_COM.Models
                 Release = 5,
             }, out parallelNoiseGate);
 
-            // EQ
-            sampleSource = sampleSource.AppendSource(x => new BiQuadFilterSource(x)
+            // Apply profile specific pre-compression effects
+            if (activeProfile?.Settings.PreCompressionParallelSignalChain != null)
             {
-                Filter = new HighpassFilter(sampleRate, activeProfile.Settings.HighpassFrequency)
-            }).AppendSource(x => new BiQuadFilterSource(x)
-            {
-                Filter = new LowpassFilter(sampleRate, activeProfile.Settings.LowpassFrequency),
-            });
+                foreach (EffectReference effect in activeProfile.Settings.PreCompressionParallelSignalChain)
+                {
+                    sampleSource = sampleSource.AppendSource(x => effect.CreateInstance(x));
+                }
+            }
 
-            var distortedSource = sampleSource.AppendSource(x => new TubeDistortionWrapper(x)
-            {
-                Wet = 0.5f,
-                Dry = 0.5f,
-                InputGainDB = 55,
-                OutputGainDB = 10,
-                Q = -0.5f,
-                Distortion = 25,
-                Rh = 0.996f,
-                Rl = 0.1f,
-            });
-
-            // Compression
             var compressedSource =
-                distortedSource.AppendSource(x => new DynamicsProcessorWrapper(x)
+                sampleSource.AppendSource(x => new DynamicsProcessorWrapper(x)
                 {
                     Mode = DynamicsMode.Compressor,
                     MinAmplitude = -70,
@@ -374,12 +306,23 @@ namespace TAC_COM.Models
                     Ratio = 40,
                     Attack = 10,
                     Release = 300,
-                    MakeupGain = 24,
+                    MakeupGain = 20,
                 });
 
-            ISampleSource outputSource = compressedSource.AppendSource(x => new Gain(x)
+            sampleSource = compressedSource;
+
+            // Apply profile specific post-compression effects
+            if (activeProfile?.Settings.PostCompressionParallelSignalChain != null)
             {
-                GainDB = 2,
+                foreach (EffectReference effect in activeProfile.Settings.PostCompressionParallelSignalChain)
+                {
+                    sampleSource = sampleSource.AppendSource(x => effect.CreateInstance(x));
+                }
+            }
+
+            ISampleSource outputSource = sampleSource.AppendSource(x => new Gain(x)
+            {
+                GainDB = activeProfile?.Settings.ParallelGainAdjust ?? 0f,
             });
 
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");

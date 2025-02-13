@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media.Imaging;
-using CSCore.Streams.Effects;
 using NWaves.Signals.Builders;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
@@ -28,17 +27,19 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("GMS"));
             Settings = new EffectParameters()
             {
-                DistortionType = typeof(DmoDistortionEffect),
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
                     { "frequency", 250f },
                 },
-                PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
-                PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 800,
-                LowpassFrequency = 2900,
+                PreCompressionSignalChain = new GMSChain().GetPreCompressionEffects(),
+                PostCompressionSignalChain = new GMSChain().GetPostCompressionEffects(),
+                PreCompressionParallelSignalChain = new GMSChain().GetPreCompressionParallelEffects(),
+                PostCompressionParallelSignalChain = new GMSChain().GetPostCompressionParallelEffects(),
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
                 GainAdjust = 4,
+                ParallelGainAdjust = 5f,
             };
         }
     }

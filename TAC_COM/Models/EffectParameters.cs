@@ -1,5 +1,4 @@
-﻿using NWaves.Effects;
-
+﻿
 namespace TAC_COM.Models
 {
     /// <summary>
@@ -7,23 +6,19 @@ namespace TAC_COM.Models
     /// </summary>
     public class EffectParameters
     {
-        public Type? DistortionType;
-        public DistortionMode? DistortionMode = null;
-        public float DistortionInput = 40;
-        public float DistortionOutput = 40;
-        public float DistortionWet = 0.5f;
-        public float DistortionDry = 0.5f;
-
         public Type? RingModulatorType;
         public float RingModulatorGainAdjust = 0;
         public Dictionary<string, object> RingModulatorParameters = [];
 
-        public float HighpassFrequency;
-        public float LowpassFrequency;
+        public List<EffectReference>? PreCompressionSignalChain;
+        public List<EffectReference>? PostCompressionSignalChain;
 
-        public List<EffectReference>? PreDistortionSignalChain;
-        public List<EffectReference>? PostDistortionSignalChain;
+        public List<EffectReference>? PreCompressionParallelSignalChain;
+        public List<EffectReference>? PostCompressionParallelSignalChain;
 
+        public float PrimaryMix = 0.8f;
+        public float ParallelMix = 0.2f;
         public float GainAdjust = 0;
+        public float ParallelGainAdjust = 0;
     }
 }

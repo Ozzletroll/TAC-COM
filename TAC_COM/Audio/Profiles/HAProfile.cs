@@ -1,7 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
-using NWaves.Effects;
 using NWaves.Signals.Builders;
-using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
@@ -29,23 +27,20 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("HA"));
             Settings = new EffectParameters()
             {
-                DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.HalfWaveRectify,
-                DistortionInput = 20,
-                DistortionOutput = 12,
-                DistortionWet = 0.2f,
-                DistortionDry = 0.8f,
                 RingModulatorType = typeof(PinkNoiseBuilder),
-                RingModulatorGainAdjust = 25f,
+                RingModulatorGainAdjust = 35f,
                 RingModulatorParameters =
                 {
                     { "frequency", 1850f },
                 },
-                PreDistortionSignalChain = new HAChain().GetPreDistortionEffects(),
-                PostDistortionSignalChain = new HAChain().GetPostDistortionEffects(),
-                HighpassFrequency = 500,
-                LowpassFrequency = 6300,
-                GainAdjust = -3,
+                PreCompressionSignalChain = new HAChain().GetPreCompressionEffects(),
+                PostCompressionSignalChain = new HAChain().GetPostCompressionEffects(),
+                PreCompressionParallelSignalChain = new HAChain().GetPreCompressionParallelEffects(),
+                PostCompressionParallelSignalChain = new HAChain().GetPostCompressionParallelEffects(),
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
+                GainAdjust = -5,
+                ParallelGainAdjust = 5f,
             };
         }
     }
