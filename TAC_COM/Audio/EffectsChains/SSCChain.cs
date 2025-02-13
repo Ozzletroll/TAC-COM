@@ -90,7 +90,21 @@ namespace TAC_COM.Audio.EffectsChains
 
         public static List<EffectReference> PreCompressionParallelEffects { get; } =
         [
+            new(typeof(HighpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 600f },
+                }
+            },
 
+            new(typeof(LowpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 2400f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =

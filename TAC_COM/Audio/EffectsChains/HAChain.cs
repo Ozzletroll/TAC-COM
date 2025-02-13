@@ -54,8 +54,6 @@ namespace TAC_COM.Audio.EffectsChains
                     { "PreLowpassCutoff", 8000f },
                 }
             },
-
-
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
@@ -108,7 +106,21 @@ namespace TAC_COM.Audio.EffectsChains
 
         public static List<EffectReference> PreCompressionParallelEffects { get; } =
         [
+            new(typeof(HighpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 500f },
+                }
+            },
 
+            new(typeof(LowpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 6300f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
