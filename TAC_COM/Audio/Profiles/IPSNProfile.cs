@@ -29,24 +29,20 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("IPSN"));
             Settings = new EffectParameters()
             {
-                DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.SoftClipping,
-                DistortionInput = 14,
-                DistortionOutput = 24,
-                DistortionWet = 0.8f,
-                DistortionDry = 0.2f,
                 RingModulatorType = typeof(KarplusStrongBuilder),
-                RingModulatorGainAdjust = 1.5f,
+                RingModulatorGainAdjust = 5.5f,
                 RingModulatorParameters =
                 {
                     { "frequency", 900f },
                     { "stretch", 4.8f },
                     { "feedback", 1.5f },
                 },
-                PreDistortionSignalChain = new IPSNChain().GetPreDistortionEffects(),
-                PostDistortionSignalChain = new IPSNChain().GetPostDistortionEffects(),
-                HighpassFrequency = 1000,
-                LowpassFrequency = 7000,
+                PreCompressionSignalChain = new IPSNChain().GetPreCompressionEffects(),
+                PostCompressionSignalChain = new IPSNChain().GetPostCompressionEffects(),
+                PreCompressionParallelSignalChain = new IPSNChain().GetPreCompressionParallelEffects(),
+                PostCompressionParallelSignalChain = new IPSNChain().GetPostCompressionParallelEffects(),
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
                 GainAdjust = 2,
             };
         }

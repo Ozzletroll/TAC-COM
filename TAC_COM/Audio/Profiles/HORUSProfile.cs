@@ -29,21 +29,17 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("HORUS"));
             Settings = new EffectParameters()
             {
-                DistortionType = typeof(DistortionWrapper),
-                DistortionMode = DistortionMode.HardClipping,
-                DistortionInput = 8,
-                DistortionOutput = 24,
-                DistortionWet = 0.2f,
-                DistortionDry = 0.8f,
                 RingModulatorType = typeof(SquareWaveBuilder),
                 RingModulatorParameters =
                 {
                     { "frequency", 1125f },
                 },
-                PreDistortionSignalChain = new HORUSChain().GetPreDistortionEffects(),
-                PostDistortionSignalChain = new HORUSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 500,
-                LowpassFrequency = 2500,
+                PreCompressionSignalChain = new HORUSChain().GetPreCompressionEffects(),
+                PostCompressionSignalChain = new HORUSChain().GetPostCompressionEffects(),
+                PreCompressionParallelSignalChain = new HORUSChain().GetPreCompressionParallelEffects(),
+                PostCompressionParallelSignalChain = new HORUSChain().GetPostCompressionParallelEffects(),
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
                 GainAdjust = 2,
             };
         }
