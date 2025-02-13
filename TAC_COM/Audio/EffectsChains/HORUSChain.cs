@@ -1,4 +1,5 @@
-﻿using NWaves.Operations;
+﻿using NWaves.Effects;
+using NWaves.Operations;
 using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
@@ -12,30 +13,61 @@ namespace TAC_COM.Audio.EffectsChains
     {
         public static List<EffectReference> PreDistortionEffects { get; } =
         [
+            new(typeof(HighpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 800f },
+                }
+            },
+
+            new(typeof(LowpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 2500f },
+                }
+            },
+
             new(typeof(VocoderEffectWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.15f },
-                    { "Dry", 0.85f },
-                    { "Shift", 0.7f },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "Shift", 0.8f },
                 }
             },
 
-            new(typeof(AMModulatorWrapper))
+            new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                    { "Frequency", 30 },
-                    { "ModulationIndex", 1.3f },
+                    { "Gain", -15f },
+                    { "OffsetGain", 0f },
+                    { "Edge", 25f },
+                    { "PostEQCenterFrequency", 1800f },
+                    { "PostEQBandwidth", 1000f },
+                    { "PreLowpassCutoff", 8000f },
                 }
             },
         ];
 
         public static List<EffectReference> PostDistortionEffects { get; } =
         [
+            
+            new(typeof(NwavesDistortionWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Mode", DistortionMode.HardClipping },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
+                    { "InputGainDB", 12 },
+                    { "OutputGainDB", 0 },
+                }
+            },
+
             new(typeof(EchoWrapper))
             {
                 Parameters = new Dictionary<string, object>
@@ -60,7 +92,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "ReverbTime", 250f },
+                    { "ReverbTime", 150f },
                     { "ReverbMix", -14f },
                 }
             },
@@ -73,30 +105,34 @@ namespace TAC_COM.Audio.EffectsChains
                     { "MinAmplitude", -120 },
                     { "Threshold", -20 },
                     { "Ratio", 10 },
-                    { "Attack", 30 },
+                    { "Attack", 10 },
                     { "Release", 300 },
                     { "MakeupGain", 12 },
                 }
             },
+        ];
 
-            new(typeof(RingModulatorWrapper))
+        public override List<EffectReference> GetPreCompressionEffects() => PreDistortionEffects;
+        public override List<EffectReference> GetPostCompressionEffects() => PostDistortionEffects;
+
+        public static List<EffectReference> PreCompressionParallelEffects { get; } =
+        [
+
+        ];
+
+        public static List<EffectReference> PostCompressionParallelEffects { get; } =
+        [
+            new(typeof(ReverbWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                    { "ModulatorSignalType", typeof(SineBuilder) },
-                    { "ModulatorParameters",
-                        new Dictionary<string, object>
-                        {
-                            { "frequency", 3500 },
-                        }
-                    },
+                    { "ReverbTime", 550f },
+                    { "ReverbMix", 0f },
                 }
             },
         ];
 
-        public override List<EffectReference> GetPreDistortionEffects() => PreDistortionEffects;
-        public override List<EffectReference> GetPostDistortionEffects() => PostDistortionEffects;
+        public override List<EffectReference> GetPreCompressionParallelEffects() => PreCompressionParallelEffects;
+        public override List<EffectReference> GetPostCompressionParallelEffects() => PostCompressionParallelEffects;
     }
 }
