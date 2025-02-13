@@ -109,7 +109,14 @@ namespace TAC_COM.Audio.EffectsChains
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
         [
-
+            new(typeof(RobotEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 1f },
+                    { "Dry", 0f },
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreCompressionParallelEffects() => PreCompressionParallelEffects;

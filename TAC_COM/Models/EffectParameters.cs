@@ -19,5 +19,6 @@ namespace TAC_COM.Models
         public float PrimaryMix = 0.8f;
         public float ParallelMix = 0.2f;
         public float GainAdjust = 0;
+        public float ParallelGainAdjust = 0;
     }
 }

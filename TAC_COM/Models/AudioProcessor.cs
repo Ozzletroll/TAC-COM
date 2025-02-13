@@ -324,7 +324,7 @@ namespace TAC_COM.Models
 
             ISampleSource outputSource = sampleSource.AppendSource(x => new Gain(x)
             {
-                GainDB = 5,
+                GainDB = activeProfile?.Settings.ParallelGainAdjust ?? 0f,
             });
 
             return outputSource ?? throw new InvalidOperationException("Parallel SampleSource cannot be null.");

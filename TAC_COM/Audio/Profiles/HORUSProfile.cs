@@ -41,6 +41,7 @@ namespace TAC_COM.Audio.Profiles
                 PrimaryMix = 0.6f,
                 ParallelMix = 0.4f,
                 GainAdjust = 2,
+                ParallelGainAdjust = 5f,
             };
         }
     }

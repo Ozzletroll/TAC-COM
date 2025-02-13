@@ -1,7 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
-using NWaves.Effects;
 using NWaves.Signals.Builders;
-using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;
@@ -38,9 +36,10 @@ namespace TAC_COM.Audio.Profiles
                 PostCompressionSignalChain = new SSCChain().GetPostCompressionEffects(),
                 PreCompressionParallelSignalChain = new SSCChain().GetPreCompressionParallelEffects(),
                 PostCompressionParallelSignalChain = new SSCChain().GetPostCompressionParallelEffects(),
-                PrimaryMix = 0.8f,
-                ParallelMix = 0.2f,
-                GainAdjust = -3,
+                PrimaryMix = 0.7f,
+                ParallelMix = 0.3f,
+                GainAdjust = -3f,
+                ParallelGainAdjust = 10f,
             };
         }
     }
