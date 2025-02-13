@@ -171,7 +171,7 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(passthroughSourceValue);
             Assert.AreEqual(sampleRateValue, wasapiCapture.WaveFormat.SampleRate);
             Assert.AreEqual(activeProfileValue, mockProfile.Object);
-            Assert.IsTrue(audioProcessor.HasInitialised == true);
+            Assert.AreEqual(true, audioProcessor.HasInitialised);
         }
 
         /// <summary>
@@ -193,11 +193,12 @@ namespace Tests.UnitTests.ModelTests
             mockProfile.SetupAllProperties();
             mockProfile.Object.Settings = new EffectParameters()
             {
-                DistortionType = typeof(DmoDistortionEffect),
-                PreDistortionSignalChain = new GMSChain().GetPreDistortionEffects(),
-                PostDistortionSignalChain = new GMSChain().GetPostDistortionEffects(),
-                HighpassFrequency = 800,
-                LowpassFrequency = 2900,
+                PreCompressionSignalChain = new GMSChain().GetPreCompressionEffects(),
+                PostCompressionSignalChain = new GMSChain().GetPostCompressionEffects(),
+                PreCompressionParallelSignalChain = new GMSChain().GetPreCompressionParallelEffects(),
+                PostCompressionParallelSignalChain = new GMSChain().GetPostCompressionParallelEffects(),
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
                 GainAdjust = 3,
             };
             mockProfile.Object.NoiseSource = new FileSourceWrapper()
@@ -236,13 +237,13 @@ namespace Tests.UnitTests.ModelTests
 
             audioProcessor.SetMixerLevels(true);
 
-            Assert.IsTrue(wetNoiseMixLevel.Volume == 1);
-            Assert.IsTrue(dryMixLevel.Volume == 0);
+            Assert.AreEqual(1, wetNoiseMixLevel.Volume);
+            Assert.AreEqual(0, dryMixLevel.Volume);
 
             audioProcessor.SetMixerLevels(false);
 
-            Assert.IsTrue(wetNoiseMixLevel.Volume == 0);
-            Assert.IsTrue(dryMixLevel.Volume == 1);
+            Assert.AreEqual(0, wetNoiseMixLevel.Volume);
+            Assert.AreEqual(1, dryMixLevel.Volume);
         }
     }
 }

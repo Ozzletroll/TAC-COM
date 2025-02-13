@@ -44,15 +44,16 @@ namespace Tests.UnitTests.ModelTests
             );
 
             allEffectsReferences.Add(
-                new(typeof(DistortionWrapper))
+                new(typeof(DmoDistortionWrapper))
                 {
                     Parameters = new Dictionary<string, object>
                     {
-                        { "Mode", DistortionMode.HalfWaveRectify },
-                        { "Wet", 0.1f },
-                        { "Dry", 0.9f },
-                        { "InputGainDB", 25 },
-                        { "OutputGainDB", 15 },
+                        { "Gain", -60f },
+                        { "OffsetGain", -45f },
+                        { "Edge", 75f },
+                        { "PostEQCenterFrequency", 3500f },
+                        { "PostEQBandwidth", 4800f },
+                        { "PreLowpassCutoff", 8000f },
                     }
                 }
             );
@@ -96,6 +97,38 @@ namespace Tests.UnitTests.ModelTests
                         { "Width", 0.05f },
                         { "Depth", 0.3f },
                         { "Feedback", 0.5f }
+                    }
+                }
+            );
+
+            allEffectsReferences.Add(
+                new(typeof(HighpassFilterWrapper))
+                {
+                    Parameters = new Dictionary<string, object>
+                    {
+                        { "Frequency", 800f },
+                    }
+                });
+
+            allEffectsReferences.Add(
+                new(typeof(LowpassFilterWrapper))
+                {
+                    Parameters = new Dictionary<string, object>
+                    {
+                        { "Frequency", 800f },
+                    }
+                });
+
+            allEffectsReferences.Add(
+                new(typeof(NwavesDistortionWrapper))
+                {
+                    Parameters = new Dictionary<string, object>
+                    {
+                        { "Mode", DistortionMode.HalfWaveRectify },
+                        { "Wet", 0.1f },
+                        { "Dry", 0.9f },
+                        { "InputGainDB", 25 },
+                        { "OutputGainDB", 15 },
                     }
                 }
             );
