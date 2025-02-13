@@ -38,8 +38,8 @@ namespace TAC_COM.Audio.Profiles
                 PostCompressionSignalChain = new HORUSChain().GetPostCompressionEffects(),
                 PreCompressionParallelSignalChain = new HORUSChain().GetPreCompressionParallelEffects(),
                 PostCompressionParallelSignalChain = new HORUSChain().GetPostCompressionParallelEffects(),
-                PrimaryMix = 0.8f,
-                ParallelMix = 0.2f,
+                PrimaryMix = 0.6f,
+                ParallelMix = 0.4f,
                 GainAdjust = 2,
             };
         }

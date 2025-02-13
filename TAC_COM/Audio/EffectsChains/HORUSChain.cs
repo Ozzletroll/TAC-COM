@@ -38,24 +38,23 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Shift", 0.8f },
                 }
             },
+        ];
 
+        public static List<EffectReference> PostDistortionEffects { get; } =
+        [
             new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Gain", -15f },
+                    { "Gain", -35f },
                     { "OffsetGain", 0f },
-                    { "Edge", 25f },
+                    { "Edge", 20f },
                     { "PostEQCenterFrequency", 1800f },
                     { "PostEQBandwidth", 1000f },
                     { "PreLowpassCutoff", 8000f },
                 }
             },
-        ];
 
-        public static List<EffectReference> PostDistortionEffects { get; } =
-        [
-            
             new(typeof(NwavesDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
@@ -85,15 +84,6 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Wet", 0.05f },
                     { "Dry", 0.95f },
                     { "Delay", 32f },
-                }
-            },
-
-            new(typeof(ReverbWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "ReverbTime", 150f },
-                    { "ReverbMix", -14f },
                 }
             },
 
