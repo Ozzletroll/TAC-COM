@@ -1,7 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
-using NWaves.Effects;
 using NWaves.Signals.Builders;
-using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Services.Interfaces;

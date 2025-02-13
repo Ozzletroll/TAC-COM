@@ -2,7 +2,6 @@
 using CSCore;
 using CSCore.SoundIn;
 using CSCore.Streams;
-using CSCore.Streams.Effects;
 using Moq;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;

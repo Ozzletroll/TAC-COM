@@ -1,5 +1,5 @@
-﻿using CSCore.Streams.Effects;
-using CSCore;
+﻿using CSCore;
+using CSCore.Streams.Effects;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {

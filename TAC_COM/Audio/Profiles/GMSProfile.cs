@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media.Imaging;
-using CSCore.Streams.Effects;
 using NWaves.Signals.Builders;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;

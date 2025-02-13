@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore;
+﻿using CSCore;
 using CSCore.DSP;
 
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
