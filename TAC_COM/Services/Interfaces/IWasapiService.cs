@@ -12,13 +12,15 @@ namespace TAC_COM.Services.Interfaces
         /// <summary>
         /// Method to create a new <see cref="IWasapiCaptureWrapper"/>.
         /// </summary>
-        /// <returns> The new <see cref="IWasapiCaptureWrapper"/>.</returns>
-        IWasapiCaptureWrapper CreateWasapiCapture();
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> from the <see cref="IAudioManager"/>.</param>
+        /// <returns> The created <see cref="IWasapiCaptureWrapper"/>.</returns>
+        IWasapiCaptureWrapper CreateWasapiCapture(CancellationToken cancellationToken);
 
         /// <summary>
         /// Method to create a new <see cref="IWasapiOutWrapper"/>.
         /// </summary>
-        /// <returns> The new <see cref="IWasapiOutWrapper"/>.</returns>
-        IWasapiOutWrapper CreateWasapiOut();
+        /// <param name="cancellationToken"> The <see cref="CancellationToken"/> from the <see cref="IAudioManager"/>.</param>
+        /// <returns> The created <see cref="IWasapiOutWrapper"/>.</returns>
+        IWasapiOutWrapper CreateWasapiOut(CancellationToken cancellationToken);
     }
 }

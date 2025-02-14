@@ -1,4 +1,5 @@
-﻿using TAC_COM.Models;
+﻿using System.Threading;
+using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 
@@ -10,14 +11,14 @@ namespace TAC_COM.Services
     /// </summary>
     public class WasapiService : IWasapiService
     {
-        public IWasapiCaptureWrapper CreateWasapiCapture()
+        public IWasapiCaptureWrapper CreateWasapiCapture(CancellationToken cancellationToken)
         {
-            return new WasapiCaptureWrapper();
+            return new WasapiCaptureWrapper(cancellationToken);
         }
 
-        public IWasapiOutWrapper CreateWasapiOut()
+        public IWasapiOutWrapper CreateWasapiOut(CancellationToken cancellationToken)
         {
-            return new WasapiOutWrapper();
+            return new WasapiOutWrapper(cancellationToken);
         }
     }
 }

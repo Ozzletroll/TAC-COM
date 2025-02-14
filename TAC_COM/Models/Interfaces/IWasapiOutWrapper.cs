@@ -6,7 +6,7 @@ namespace TAC_COM.Models.Interfaces
 {
     /// <summary>
     /// Interface representing the wrapper for a
-    /// <see cref="CSCore.SoundOut.WasapiOut"/>.
+    /// <see cref="WasapiOut"/>.
     /// </summary>
     public interface IWasapiOutWrapper
     {

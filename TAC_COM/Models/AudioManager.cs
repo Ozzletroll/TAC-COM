@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
@@ -22,15 +23,16 @@ namespace TAC_COM.Models
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? output;
         private IWasapiOutWrapper? sfxOutput;
+        private CancellationTokenSource cancellationTokenSource;
         private const float SFXVolume = 0.2f;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AudioManager"/>,
-        /// and gets all currently connected input and output devices.
+        /// Initialises a new instance of the <see cref="AudioManager"/>.
         /// </summary>
         public AudioManager()
         {
             GetAudioDevices();
+            cancellationTokenSource = new CancellationTokenSource();
         }
 
         private IAudioProcessor audioProcessor = new AudioProcessor();
@@ -332,11 +334,18 @@ namespace TAC_COM.Models
         /// either <see cref="StartAudioAsync"/> or <see cref="StopAudioAsync"/>,
         /// starting or ending audio recording/playback.
         /// </summary>
+        /// <remarks>
+        /// A <see cref="CancellationTokenSource"/> is utilised to prevent errors when stopping audio playback
+        /// whilst the <see cref="WasapiCaptureWrapper"/> is still initialising.
+        /// </remarks>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         public async Task ToggleStateAsync()
         {
             if (state)
             {
+                cancellationTokenSource?.Cancel();
+                cancellationTokenSource = new CancellationTokenSource();
+
                 if (activeInputDevice == null || activeOutputDevice == null)
                 {
                     State = false;
@@ -379,19 +388,21 @@ namespace TAC_COM.Models
         {
             await Task.Run(() =>
             {
-                if (activeInputDevice != null && activeOutputDevice != null && activeProfile != null)
+                if (activeInputDevice != null 
+                && activeOutputDevice != null 
+                && activeProfile != null)
                 {
                     input?.Dispose();
                     output?.Dispose();
 
                     activeProfile.LoadSources();
-                    input = WasapiService.CreateWasapiCapture();
-                    output = WasapiService.CreateWasapiOut();
+                    input = WasapiService.CreateWasapiCapture(cancellationTokenSource.Token);
+                    output = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
 
                     ResetOutputDevice();
 
                     input.Device = activeInputDevice;
-                    input.Initialize();
+                    input.Initialise();
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;
 
@@ -429,6 +440,8 @@ namespace TAC_COM.Models
             input?.Dispose();
             output?.Stop();
             output?.Dispose();
+
+            cancellationTokenSource?.Cancel();
         }
 
         /// <summary>
@@ -511,7 +524,7 @@ namespace TAC_COM.Models
                 if (activeOutputDevice != null && fileSourceWrapper.WaveSource != null)
                 {
                     sfxOutput?.Dispose();
-                    sfxOutput = WasapiService.CreateWasapiOut();
+                    sfxOutput = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
 
                     sfxOutput.Device = activeOutputDevice;
 
