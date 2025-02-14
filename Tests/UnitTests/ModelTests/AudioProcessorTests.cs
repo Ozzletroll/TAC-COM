@@ -170,7 +170,7 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsNotNull(passthroughSourceValue);
             Assert.AreEqual(sampleRateValue, wasapiCapture.WaveFormat.SampleRate);
             Assert.AreEqual(activeProfileValue, mockProfile.Object);
-            Assert.AreEqual(true, audioProcessor.HasInitialised);
+            Assert.IsTrue(audioProcessor.HasInitialised);
         }
 
         /// <summary>
@@ -243,6 +243,138 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.AreEqual(0, wetNoiseMixLevel.Volume);
             Assert.AreEqual(1, dryMixLevel.Volume);
+        }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            audioProcessor = new AudioProcessor();
+
+            var mockInputWrapper = new Mock<IWasapiCaptureWrapper>();
+            mockInputWrapper.SetupAllProperties();
+
+            var wasapiCapture = new WasapiCapture();
+            wasapiCapture.Initialize();
+
+            mockInputWrapper.Object.WasapiCapture = wasapiCapture;
+            var mockProfile = new Mock<IProfile>();
+
+            // Mock inputSource
+            var mockSoundIn_1 = new Mock<ISoundIn>();
+            mockSoundIn_1.Setup(m => m.WaveFormat).Returns(new WaveFormat());
+            mockSoundIn_1.Setup(m => m.Dispose()).Verifiable();
+
+            var mockInputSource = new SoundInSource(mockSoundIn_1.Object);
+
+            // Mock parallelSource
+            var mockSoundIn_2 = new Mock<ISoundIn>();
+            mockSoundIn_2.Setup(m => m.WaveFormat).Returns(new WaveFormat());
+            mockSoundIn_2.Setup(m => m.Dispose()).Verifiable();
+
+            var mockParallelSource = new SoundInSource(mockSoundIn_2.Object);
+
+            // Mock passthroughSource
+            var mockSoundIn_3 = new Mock<ISoundIn>();
+            mockSoundIn_3.Setup(m => m.WaveFormat).Returns(new WaveFormat());
+            mockSoundIn_3.Setup(m => m.Dispose()).Verifiable();
+
+            var mockPassthroughSource = new SoundInSource(mockSoundIn_3.Object);
+
+            // Mock all other ISampleSource objects
+            var mockDryMixLevelSource = new Mock<ISampleSource>();
+            mockDryMixLevelSource.Setup(m => m.Dispose()).Verifiable();
+            var mockDryMixLevel = new VolumeSource(mockDryMixLevelSource.Object);
+
+            var mockWetMixLevelSource = new Mock<ISampleSource>();
+            mockWetMixLevelSource.Setup(m => m.Dispose()).Verifiable();
+            var mockWetMixLevel = new VolumeSource(mockWetMixLevelSource.Object);
+
+            var mockNoiseMixLevelSource = new Mock<ISampleSource>();
+            mockNoiseMixLevelSource.Setup(m => m.Dispose()).Verifiable();
+            var mockNoiseMixLevel = new VolumeSource(mockNoiseMixLevelSource.Object);
+
+            var mockWetNoiseMixLevelSource = new Mock<ISampleSource>();
+            mockWetNoiseMixLevelSource.Setup(m => m.Dispose()).Verifiable();
+            var mockWetNoiseMixLevel = new VolumeSource(mockWetNoiseMixLevelSource.Object);
+
+            var mockRingModulatorSource = new Mock<ISampleSource>();
+            mockRingModulatorSource.Setup(m => m.Dispose()).Verifiable();
+            var mockRingModulator = new RingModulatorWrapper(mockRingModulatorSource.Object);
+
+            var mockUserGainControlSource = new Mock<ISampleSource>();
+            mockUserGainControlSource.Setup(m => m.Dispose()).Verifiable();
+            var mockUserGainControl = new Gain(mockUserGainControlSource.Object);
+
+            var mockProcessedNoiseGateSource = new Mock<ISampleSource>();
+            mockProcessedNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
+            mockProcessedNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            var mockProcessedNoiseGate = new Gate(mockProcessedNoiseGateSource.Object);
+
+            var mockParallelNoiseGateSource = new Mock<ISampleSource>();
+            mockParallelNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
+            mockParallelNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            var mockParallelNoiseGate = new Gate(mockParallelNoiseGateSource.Object);
+
+            var mockDryNoiseGateSource = new Mock<ISampleSource>();
+            mockDryNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
+            mockDryNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            var mockDryNoiseGate = new Gate(mockDryNoiseGateSource.Object);
+
+            // Setup all private fields
+            FieldInfo? inputSourceField = typeof(AudioProcessor).GetField("inputSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            inputSourceField?.SetValue(audioProcessor, mockInputSource);
+            var inputSourceValue = inputSourceField?.GetValue(audioProcessor) as SoundInSource;
+
+            FieldInfo? parallelSourceField = typeof(AudioProcessor).GetField("parallelSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            parallelSourceField?.SetValue(audioProcessor, mockParallelSource);
+            var parallelSourceValue = parallelSourceField?.GetValue(audioProcessor) as SoundInSource;
+
+            FieldInfo? passthroughSourceField = typeof(AudioProcessor).GetField("passthroughSource", BindingFlags.NonPublic | BindingFlags.Instance);
+            passthroughSourceField?.SetValue(audioProcessor, mockPassthroughSource);
+            var passthroughSourceValue = passthroughSourceField?.GetValue(audioProcessor) as SoundInSource;
+
+            FieldInfo? dryMixLevelField = typeof(AudioProcessor).GetField("dryMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            dryMixLevelField?.SetValue(audioProcessor, mockDryMixLevel);
+
+            FieldInfo? wetMixLevelField = typeof(AudioProcessor).GetField("wetMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            wetMixLevelField?.SetValue(audioProcessor, mockWetMixLevel);
+
+            FieldInfo? noiseMixLevelField = typeof(AudioProcessor).GetField("noiseMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            noiseMixLevelField?.SetValue(audioProcessor, mockNoiseMixLevel);
+
+            FieldInfo? wetNoiseMixLevelField = typeof(AudioProcessor).GetField("wetNoiseMixLevel", BindingFlags.NonPublic | BindingFlags.Instance);
+            wetNoiseMixLevelField?.SetValue(audioProcessor, mockWetNoiseMixLevel);
+
+            FieldInfo? ringModulatorField = typeof(AudioProcessor).GetField("ringModulator", BindingFlags.NonPublic | BindingFlags.Instance);
+            ringModulatorField?.SetValue(audioProcessor, mockRingModulator);
+
+            FieldInfo? userGainControlField = typeof(AudioProcessor).GetField("userGainControl", BindingFlags.NonPublic | BindingFlags.Instance);
+            userGainControlField?.SetValue(audioProcessor, mockUserGainControl);
+
+            FieldInfo? processedNoiseGateField = typeof(AudioProcessor).GetField("processedNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            processedNoiseGateField?.SetValue(audioProcessor, mockProcessedNoiseGate);
+
+            FieldInfo? parallelNoiseGateField = typeof(AudioProcessor).GetField("parallelNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            parallelNoiseGateField?.SetValue(audioProcessor, mockParallelNoiseGate);
+
+            FieldInfo? dryNoiseGateField = typeof(AudioProcessor).GetField("dryNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            dryNoiseGateField?.SetValue(audioProcessor, mockDryNoiseGate);
+
+            audioProcessor.Dispose();
+
+            Assert.IsNull(inputSourceValue?.SoundIn);
+            Assert.IsNull(parallelSourceValue?.SoundIn);
+            Assert.IsNull(passthroughSourceValue?.SoundIn);
+
+            mockDryMixLevelSource.Verify(m => m.Dispose(), Times.Once);
+            mockWetMixLevelSource.Verify(m => m.Dispose(), Times.Once);
+            mockNoiseMixLevelSource.Verify(m => m.Dispose(), Times.Once);
+            mockWetNoiseMixLevelSource.Verify(m => m.Dispose(), Times.Once);
+            mockRingModulatorSource.Verify(m => m.Dispose(), Times.Once);
+            mockUserGainControlSource.Verify(m => m.Dispose(), Times.Once);
+            mockProcessedNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
+            mockParallelNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
+            mockDryNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
         }
     }
 }
