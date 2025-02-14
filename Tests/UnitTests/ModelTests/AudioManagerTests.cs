@@ -481,7 +481,7 @@ namespace Tests.UnitTests.ModelTests
             var mockAudioProcessor = new Mock<IAudioProcessor>();
             var mockWaveSource = new Mock<IWaveSource>();
 
-            mockAudioProcessor.Setup(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object)).Verifiable();
+            mockAudioProcessor.Setup(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object, It.IsAny<CancellationToken>())).Verifiable();
             mockAudioProcessor.Setup(audioProcessor => audioProcessor.ReturnCompleteSignalChain()).Returns(mockWaveSource.Object);
 
             audioManager.ActiveProfile = mockProfile.Object;
@@ -517,7 +517,7 @@ namespace Tests.UnitTests.ModelTests
 
             mockWasapiInput.Verify(input => input.Initialise(), Times.Once());
             mockWasapiInput.Verify(input => input.Start(), Times.Once());
-            mockAudioProcessor.Verify(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object), Times.Once());
+            mockAudioProcessor.Verify(audioProcessor => audioProcessor.Initialise(mockWasapiInput.Object, mockProfile.Object, It.IsAny<CancellationToken>()), Times.Once());
             mockWasapiOut.Verify(output => output.Initialise(mockWaveSource.Object), Times.Once());
             mockWasapiOut.Verify(output => output.Play(), Times.Once());
 

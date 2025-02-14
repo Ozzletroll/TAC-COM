@@ -148,7 +148,7 @@ namespace Tests.UnitTests.ModelTests
             mockInputWrapper.Object.WasapiCapture = wasapiCapture;
             var mockProfile = new Mock<IProfile>();
 
-            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object);
+            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object, new CancellationTokenSource().Token);
 
             FieldInfo? inputSourceField = typeof(AudioProcessor).GetField("inputSource", BindingFlags.NonPublic | BindingFlags.Instance);
             var inputSourceValue = inputSourceField?.GetValue(audioProcessor);
@@ -205,7 +205,7 @@ namespace Tests.UnitTests.ModelTests
                 WaveSource = new MockWaveSource()
             };
 
-            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object);
+            audioProcessor.Initialise(mockInputWrapper.Object, mockProfile.Object, new CancellationTokenSource().Token);
 
             var output = audioProcessor.ReturnCompleteSignalChain();
 
