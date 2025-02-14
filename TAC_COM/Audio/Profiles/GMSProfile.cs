@@ -28,6 +28,7 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 RingModulatorType = typeof(SquareWaveBuilder),
+                RingModulatorGainAdjust = 0,
                 RingModulatorParameters =
                 {
                     { "frequency", 250f },

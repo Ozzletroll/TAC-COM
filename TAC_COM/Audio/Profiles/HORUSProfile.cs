@@ -28,6 +28,7 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 RingModulatorType = typeof(SquareWaveBuilder),
+                RingModulatorGainAdjust = 0,
                 RingModulatorParameters =
                 {
                     { "frequency", 1125f },
@@ -39,7 +40,7 @@ namespace TAC_COM.Audio.Profiles
                 PrimaryMix = 0.6f,
                 ParallelMix = 0.4f,
                 GainAdjust = 2,
-                ParallelGainAdjust = 5f,
+                ParallelGainAdjust = 10f,
             };
         }
     }

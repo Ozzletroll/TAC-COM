@@ -11,7 +11,7 @@ namespace TAC_COM.Audio.EffectsChains
     /// </summary>
     public class HAChain : BaseChain
     {
-        public static List<EffectReference> PreDistortionEffects { get; } =
+        public static List<EffectReference> PreCompressionEffects { get; } =
         [
             new(typeof(HighpassFilterWrapper))
             {
@@ -56,7 +56,7 @@ namespace TAC_COM.Audio.EffectsChains
             },
         ];
 
-        public static List<EffectReference> PostDistortionEffects { get; } =
+        public static List<EffectReference> PostCompressionEffects { get; } =
         [
             new(typeof(NwavesDistortionWrapper))
             {
@@ -101,8 +101,8 @@ namespace TAC_COM.Audio.EffectsChains
             },
         ];
 
-        public override List<EffectReference> GetPreCompressionEffects() => PreDistortionEffects;
-        public override List<EffectReference> GetPostCompressionEffects() => PostDistortionEffects;
+        public override List<EffectReference> GetPreCompressionEffects() => PreCompressionEffects;
+        public override List<EffectReference> GetPostCompressionEffects() => PostCompressionEffects;
 
         public static List<EffectReference> PreCompressionParallelEffects { get; } =
         [

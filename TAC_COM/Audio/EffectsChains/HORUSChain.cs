@@ -10,13 +10,13 @@ namespace TAC_COM.Audio.EffectsChains
     /// </summary>
     public class HORUSChain : BaseChain
     {
-        public static List<EffectReference> PreDistortionEffects { get; } =
+        public static List<EffectReference> PreCompressionEffects { get; } =
         [
             new(typeof(HighpassFilterWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 800f },
+                    { "Frequency", 900f },
                 }
             },
 
@@ -24,7 +24,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2500f },
+                    { "Frequency", 1900f },
                 }
             },
 
@@ -37,32 +37,32 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Shift", 0.8f },
                 }
             },
-        ];
 
-        public static List<EffectReference> PostDistortionEffects { get; } =
-        [
             new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Gain", -35f },
+                    { "Gain", -60f },
                     { "OffsetGain", 0f },
-                    { "Edge", 20f },
-                    { "PostEQCenterFrequency", 1800f },
-                    { "PostEQBandwidth", 1000f },
+                    { "Edge", 30f },
+                    { "PostEQCenterFrequency", 2800f },
+                    { "PostEQBandwidth", 2000f },
                     { "PreLowpassCutoff", 8000f },
                 }
             },
+        ];
 
+        public static List<EffectReference> PostCompressionEffects { get; } =
+        [
             new(typeof(NwavesDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Mode", DistortionMode.HardClipping },
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
-                    { "InputGainDB", 12 },
-                    { "OutputGainDB", 0 },
+                    { "Wet", 0.8f },
+                    { "Dry", 0.2f },
+                    { "InputGainDB", 28 },
+                    { "OutputGainDB", 20 },
                 }
             },
 
@@ -70,8 +70,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                     { "Delay", 32f },
                 }
             },
@@ -80,8 +80,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.05f },
-                    { "Dry", 0.95f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                     { "Delay", 32f },
                 }
             },
@@ -96,26 +96,41 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Ratio", 10 },
                     { "Attack", 10 },
                     { "Release", 300 },
-                    { "MakeupGain", 12 },
+                    { "MakeupGain", 15 },
                 }
             },
         ];
 
-        public override List<EffectReference> GetPreCompressionEffects() => PreDistortionEffects;
-        public override List<EffectReference> GetPostCompressionEffects() => PostDistortionEffects;
+        public override List<EffectReference> GetPreCompressionEffects() => PreCompressionEffects;
+        public override List<EffectReference> GetPostCompressionEffects() => PostCompressionEffects;
 
         public static List<EffectReference> PreCompressionParallelEffects { get; } =
         [
-
+            new(typeof(HighpassFilterWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Frequency", 600f },
+                }
+            },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
         [
+            new(typeof(RobotEffectWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 1f },
+                    { "Dry", 0f },
+                }
+            },
+
             new(typeof(ReverbWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "ReverbTime", 550f },
+                    { "ReverbTime", 750f },
                     { "ReverbMix", 0f },
                 }
             },
