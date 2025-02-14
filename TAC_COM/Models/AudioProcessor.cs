@@ -108,8 +108,10 @@ namespace TAC_COM.Models
             }
         }
 
-        public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile)
+        public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested) return;
+
             inputSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };

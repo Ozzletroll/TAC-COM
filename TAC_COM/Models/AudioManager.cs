@@ -406,7 +406,7 @@ namespace TAC_COM.Models
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;
 
-                    AudioProcessor.Initialise(input, activeProfile);
+                    AudioProcessor.Initialise(input, activeProfile, cancellationTokenSource.Token);
 
                     output.Device = activeOutputDevice;
                     output.Initialise(audioProcessor.ReturnCompleteSignalChain());

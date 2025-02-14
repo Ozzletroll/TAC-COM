@@ -52,7 +52,7 @@ namespace TAC_COM.Models.Interfaces
         /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> from 
         /// which the <see cref="SoundInSource"/> is created.</param>
         /// <param name="profile">The <see cref="Profile"/> to be set as <see cref="activeProfile"/>.</param>
-        void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile);
+        void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken token);
 
         /// <summary>
         /// Returns the full combined <see cref="IWaveSource"/> signal chain for 
