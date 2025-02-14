@@ -40,6 +40,11 @@ namespace TAC_COM.Models.Interfaces
         float RingModulationWetDryMix { get; set; }
 
         /// <summary>
+        /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.
+        /// </summary>
+        void Dispose();
+
+        /// <summary>
         /// Initialises the various <see cref="SoundInSource"/>'s for use in
         /// the other signal chains. This method must be called prior to
         /// <see cref="ReturnCompleteSignalChain"/>.

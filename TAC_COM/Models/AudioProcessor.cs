@@ -110,10 +110,6 @@ namespace TAC_COM.Models
 
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile)
         {
-            inputSource?.Dispose();
-            parallelSource?.Dispose();
-            passthroughSource?.Dispose();
-
             inputSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
@@ -473,6 +469,22 @@ namespace TAC_COM.Models
                     dryMixLevel.Volume = Convert.ToInt32(!bypassState);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            inputSource?.Dispose();
+            parallelSource?.Dispose();
+            passthroughSource?.Dispose();
+            dryMixLevel?.Dispose();
+            wetMixLevel?.Dispose();
+            noiseMixLevel?.Dispose();
+            wetNoiseMixLevel?.Dispose();
+            ringModulator?.Dispose();
+            userGainControl?.Dispose();
+            processedNoiseGate?.Dispose();
+            parallelNoiseGate?.Dispose();
+            dryNoiseGate?.Dispose();
         }
     }
 }

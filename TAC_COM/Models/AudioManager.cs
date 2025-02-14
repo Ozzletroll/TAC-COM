@@ -440,7 +440,7 @@ namespace TAC_COM.Models
             input?.Dispose();
             output?.Stop();
             output?.Dispose();
-
+            AudioProcessor.Dispose();
             cancellationTokenSource?.Cancel();
         }
 
