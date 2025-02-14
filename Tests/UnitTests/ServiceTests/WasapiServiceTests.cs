@@ -17,7 +17,8 @@ namespace Tests.UnitTests.ServiceTests
         [TestMethod]
         public void TestCreateWaspiCapture()
         {
-            var output = wasapiService.CreateWasapiCapture();
+            CancellationToken token = new();
+            var output = wasapiService.CreateWasapiCapture(token);
 
             Assert.IsNotNull(output);
             Assert.IsInstanceOfType(output, typeof(WasapiCaptureWrapper));
@@ -29,7 +30,8 @@ namespace Tests.UnitTests.ServiceTests
         [TestMethod]
         public void TestCreateWaspiOut()
         {
-            var output = wasapiService.CreateWasapiOut();
+            CancellationToken token = new();
+            var output = wasapiService.CreateWasapiOut(token);
 
             Assert.IsNotNull(output);
             Assert.IsInstanceOfType(output, typeof(WasapiOutWrapper));

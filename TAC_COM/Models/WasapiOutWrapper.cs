@@ -6,11 +6,13 @@ using TAC_COM.Models.Interfaces;
 namespace TAC_COM.Models
 {
     /// <summary>
-    /// Wrapper class for the <see cref="CSCore.SoundOut.WasapiOut"/>,
+    /// Wrapper class for the <see cref="WasapiOut"/>,
     /// to faciliate easier testing.
     /// </summary>
-    public class WasapiOutWrapper : IWasapiOutWrapper
+    public class WasapiOutWrapper(CancellationToken token) : IWasapiOutWrapper
     {
+        private readonly CancellationToken cancellationToken = token;
+
         private readonly WasapiOut wasapiOut = new() { Latency = 5 };
         public MMDevice Device
         {
@@ -37,17 +39,35 @@ namespace TAC_COM.Models
         }
 
 
-        public void Dispose() => wasapiOut.Dispose();
+        public void Dispose()
+        {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiOut.Dispose();
+            }
+        }
 
 
-        public void Initialise(IWaveSource? source) => wasapiOut.Initialize(source);
+        public void Initialise(IWaveSource? source) 
+        { 
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiOut.Initialize(source);
+            }
+        }
 
-
-        public void Play() => wasapiOut.Play();
+        public void Play() 
+        {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiOut.Play();
+            }
+        }
 
         public void Stop()
         {
-            if (wasapiOut.PlaybackState != PlaybackState.Stopped)
+            if (wasapiOut.PlaybackState != PlaybackState.Stopped
+                && !cancellationToken.IsCancellationRequested)
             {
                 wasapiOut.Stop();
             }

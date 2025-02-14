@@ -40,7 +40,7 @@ namespace TAC_COM.Models.Interfaces
         /// Method to initialise the <see cref="WasapiCapture"/>, ready
         /// for recording.
         /// </summary>
-        void Initialize();
+        void Initialise();
 
         /// <summary>
         /// Method to start the <see cref="WasapiCapture"/> recording.

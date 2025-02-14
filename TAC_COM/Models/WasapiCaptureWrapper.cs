@@ -8,8 +8,10 @@ namespace TAC_COM.Models
     /// Wrapper class for the <see cref="WasapiCapture"/>, to facilitate
     /// easier testing.
     /// </summary>
-    public class WasapiCaptureWrapper : IWasapiCaptureWrapper
+    public class WasapiCaptureWrapper(CancellationToken token) : IWasapiCaptureWrapper
     {
+        private readonly CancellationToken cancellationToken = token;
+
         private WasapiCapture wasapiCapture = new(false, AudioClientShareMode.Shared, 5);
         public WasapiCapture WasapiCapture
         {
@@ -41,15 +43,34 @@ namespace TAC_COM.Models
             remove => wasapiCapture.Stopped -= value;
         }
 
-        public void Dispose() => wasapiCapture.Dispose();
+        public void Dispose()
+        {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiCapture.Dispose();
+            };
+        }
 
-        public void Initialize() => wasapiCapture.Initialize();
+        public void Initialise()
+        {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiCapture.Initialize();
+            }
+        }
 
-        public void Start() => wasapiCapture.Start();
+        public void Start()
+        {
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                wasapiCapture.Start();
+            }
+        }
 
         public void Stop()
         {
-            if (wasapiCapture.RecordingState != RecordingState.Stopped)
+            if (wasapiCapture.RecordingState != RecordingState.Stopped
+                && !cancellationToken.IsCancellationRequested)
             {
                 wasapiCapture.Stop();
             }
