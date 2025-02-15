@@ -4,7 +4,7 @@ using NWaves.Operations;
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
     /// <summary>
-    /// Wrapper class to apply an <see cref="ChorusEffect"/> to a given
+    /// Wrapper class to apply an <see cref="DynamicsProcessor"/> to a given
     /// <see cref="ISampleSource"/>.
     /// </summary>
     /// <remarks>
