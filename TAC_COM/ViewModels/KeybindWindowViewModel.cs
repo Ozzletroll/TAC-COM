@@ -8,7 +8,7 @@ namespace TAC_COM.ViewModels
     /// Viewmodel to expose the <see cref="KeybindManager"/>
     /// properties to the <see cref="Views.KeybindWindowView"/>.
     /// </summary>
-    public class KeybindWindowViewModel : ViewModelBase
+    public class KeybindWindowViewModel : ViewModelBase, IDisposable
     {
         /// <summary>
         /// Gets or sets the underlying <see cref="IKeybindManager"/>
@@ -85,6 +85,14 @@ namespace TAC_COM.ViewModels
             KeybindManager.ToggleUserKeybindSubscription(false);
             KeybindManager.UpdateKeybind();
             RaiseClose();
+        }
+
+        public override void Dispose()
+        {
+            KeybindManager.Dispose();
+            KeybindManager.ToggleUserKeybindSubscription(false);
+            KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

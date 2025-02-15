@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
@@ -433,10 +432,17 @@ namespace TAC_COM.Models
         /// </summary>
         private void StopPlayback()
         {
+            if (input != null)
+            {
+                input.DataAvailable -= OnDataAvailable;
+                input.Stopped -= OnInputStopped;
+            }
+            
             input?.Stop();
             input?.Dispose();
             output?.Stop();
             output?.Dispose();
+
             AudioProcessor.Dispose();
             cancellationTokenSource?.Cancel();
         }

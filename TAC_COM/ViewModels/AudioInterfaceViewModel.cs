@@ -610,7 +610,9 @@ namespace TAC_COM.ViewModels
         {
             GC.SuppressFinalize(this);
             AudioManager.Dispose();
+            AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();
+            KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
         }
 
         /// <summary>
