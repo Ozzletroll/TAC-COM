@@ -11,8 +11,8 @@ namespace TAC_COM.Models
     public class WasapiCaptureWrapper(CancellationToken token) : IWasapiCaptureWrapper
     {
         private readonly CancellationToken cancellationToken = token;
-
         private WasapiCapture wasapiCapture = new(false, AudioClientShareMode.Shared, 5);
+
         public WasapiCapture WasapiCapture
         {
             get => wasapiCapture;

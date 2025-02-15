@@ -12,8 +12,8 @@ namespace TAC_COM.Models
     public class WasapiOutWrapper(CancellationToken token) : IWasapiOutWrapper
     {
         private readonly CancellationToken cancellationToken = token;
-
         private readonly WasapiOut wasapiOut = new() { Latency = 5 };
+
         public MMDevice Device
         {
             get => wasapiOut.Device;
