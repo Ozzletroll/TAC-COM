@@ -1,6 +1,7 @@
 ﻿using CSCore;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
+using NWaves.Audio;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
@@ -136,9 +137,27 @@ namespace TAC_COM.Models
                 var noiseSignalChain = NoiseSignalChain();
                 var mixerSignalChain = MixerSignalChain(inputSignalChain, drySignalChain, noiseSignalChain);
 
+                PreBufferSignalChain(mixerSignalChain);
+
                 return mixerSignalChain;
             }
             else return null;
+        }
+
+        /// <summary>
+        /// Prepares the signal chain for immediate playback by reading a buffer of bytes
+        /// into the chain.
+        /// </summary>
+        /// <remarks>
+        /// This reduces the playback latency on the first playback.
+        /// </remarks>
+        /// <param name="signalChain"> The completed <see cref="IWaveSource"/> signal chain to be
+        /// prepared for playback.</param>
+        private static void PreBufferSignalChain(IWaveSource signalChain)
+        {
+            var warmUpBytesCount = 1024 * signalChain.WaveFormat.BytesPerSample;
+            var warmUpBuffer = new byte[warmUpBytesCount];
+            signalChain.Read(warmUpBuffer, 0, warmUpBytesCount);
         }
 
         /// <summary>
