@@ -118,14 +118,28 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 6300f },
+                    { "Frequency", 3000f },
                 }
             },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
         [
-
+            new(typeof(RingModulatorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Wet", 1f },
+                    { "Dry", 0f },
+                    { "ModulatorSignalType", typeof(SquareWaveBuilder) },
+                    { "ModulatorParameters",
+                        new Dictionary<string, object>
+                        {
+                            { "frequency", 550 },
+                        }
+                    },
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreCompressionParallelEffects() => PreCompressionParallelEffects;

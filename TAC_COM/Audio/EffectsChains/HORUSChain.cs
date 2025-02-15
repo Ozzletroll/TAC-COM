@@ -1,5 +1,6 @@
 ﻿using NWaves.Effects;
 using NWaves.Operations;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
@@ -16,7 +17,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 900f },
+                    { "Frequency", 600f },
                 }
             },
 
@@ -32,8 +33,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.15f },
+                    { "Dry", 0.85f },
                     { "Shift", 0.9f },
                 }
             },
@@ -42,10 +43,10 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Gain", -40f },
-                    { "OffsetGain", 0f },
-                    { "Edge", 45f },
-                    { "PostEQCenterFrequency", 2800f },
+                    { "Gain", -60f },
+                    { "OffsetGain", -10f },
+                    { "Edge", 55f },
+                    { "PostEQCenterFrequency", 2200f },
                     { "PostEQBandwidth", 2000f },
                     { "PreLowpassCutoff", 8000f },
                 }
@@ -61,8 +62,8 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Mode", DistortionMode.HardClipping },
                     { "Wet", 0.2f },
                     { "Dry", 0.8f },
-                    { "InputGainDB", 28 },
-                    { "OutputGainDB", 20 },
+                    { "InputGainDB", 24 },
+                    { "OutputGainDB", 14 },
                 }
             },
 
@@ -96,7 +97,7 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Ratio", 10 },
                     { "Attack", 10 },
                     { "Release", 300 },
-                    { "MakeupGain", 10 },
+                    { "MakeupGain", 14 },
                 }
             },
         ];
