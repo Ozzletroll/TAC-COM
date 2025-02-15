@@ -487,6 +487,7 @@ namespace TAC_COM.Models
             processedNoiseGate?.Dispose();
             parallelNoiseGate?.Dispose();
             dryNoiseGate?.Dispose();
+            HasInitialised = false;
         }
     }
 }
