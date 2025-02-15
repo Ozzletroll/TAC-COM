@@ -392,9 +392,6 @@ namespace TAC_COM.Models
                 && activeOutputDevice != null 
                 && activeProfile != null)
                 {
-                    input?.Dispose();
-                    output?.Dispose();
-
                     activeProfile.LoadSources();
                     input = WasapiService.CreateWasapiCapture(cancellationTokenSource.Token);
                     output = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
