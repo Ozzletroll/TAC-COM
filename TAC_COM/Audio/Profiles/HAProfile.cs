@@ -28,7 +28,7 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 RingModulatorType = typeof(PinkNoiseBuilder),
-                RingModulatorGainAdjust = 35f,
+                RingModulatorGainAdjust = 40f,
                 RingModulatorParameters =
                 {
                     { "frequency", 1850f },
@@ -39,7 +39,7 @@ namespace TAC_COM.Audio.Profiles
                 PostCompressionParallelSignalChain = new HAChain().GetPostCompressionParallelEffects(),
                 PrimaryMix = 0.8f,
                 ParallelMix = 0.2f,
-                GainAdjust = -5,
+                GainAdjust = -10,
                 ParallelGainAdjust = 5f,
             };
         }
