@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Moq;
+using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
@@ -95,6 +96,24 @@ namespace Tests.UnitTests.ViewModelTests
             mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybindSubscription(false), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
             Assert.IsTrue(closeEventRaised, "The Close event was not raised.");
+        }
+
+        [TestMethod]
+        public void TestDispose()
+        {
+            var mockKeybindManager = new Mock<IKeybindManager>();
+
+            mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybindSubscription(false)).Verifiable();
+            mockKeybindManager.SetupRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+
+            testViewModel.Dispose();
+
+            mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybindSubscription(false), Times.Once);
+            mockKeybindManager.VerifyRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
         }
     }
 }
