@@ -16,7 +16,7 @@ namespace TAC_COM.Audio.DSP
     /// </remarks>
     public class Gate : ISampleSource
     {
-        readonly ISampleSource source;
+        private readonly ISampleSource source;
         private readonly int sampleRate;
         private float envelope;
         private float gateControl;

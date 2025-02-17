@@ -9,7 +9,7 @@ namespace TAC_COM.Audio.DSP
     /// <param name="inputSource"></param>
     public class Gain(ISampleSource inputSource) : ISampleSource
     {
-        readonly ISampleSource source = inputSource;
+        private readonly ISampleSource source = inputSource;
 
         private float gainLinear;
 
