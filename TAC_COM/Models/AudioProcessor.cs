@@ -215,7 +215,6 @@ namespace TAC_COM.Models
                 MakeupGain = 45,
             });
 
-            // Convert to SampleSource
             var outputSampleSource = dynamicsProcessedSource;
 
             // Apply profile specific post-compression effects

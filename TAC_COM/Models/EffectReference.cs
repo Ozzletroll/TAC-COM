@@ -24,13 +24,13 @@ namespace TAC_COM.Models
         /// <param name="sourceParameter"> The source signal to pass into the instantiated effect.</param>
         /// <returns> The <see cref="ISampleSource"/> with the instantiated effect applied.</returns>
         /// <exception cref="InvalidOperationException"> Thrown if effect fails to instantiate. </exception>
-        public ISampleSource CreateInstance(ISampleSource? sourceParameter)
+        public ISampleSource CreateInstance(ISampleSource sourceParameter)
         {
             ConstructorInfo? constructor = EffectType.GetConstructors()
                 .FirstOrDefault(ctor => ctor.GetParameters().Length == 1 &&
                                         ctor.GetParameters()[0].ParameterType == typeof(ISampleSource));
 
-            var instance = constructor?.Invoke([sourceParameter]) as ISampleSource;
+            ISampleSource? instance = constructor?.Invoke([sourceParameter]) as ISampleSource;
 
             if (instance != null && Parameters != null)
             {
@@ -44,7 +44,7 @@ namespace TAC_COM.Models
                 }
             }
             if (instance != null) return instance;
-            else throw new InvalidOperationException("Effect failed to instantiate.");
+            else throw new InvalidOperationException($"Effect {EffectType.FullName} failed to instantiate.");
         }
     }
 }
