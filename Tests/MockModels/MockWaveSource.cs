@@ -20,9 +20,6 @@ namespace Tests.MockModels
             GC.SuppressFinalize(this);
         }
 
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            throw new NotImplementedException();
-        }
+        public int Read(byte[] buffer, int offset, int count) => count;
     }
 }
