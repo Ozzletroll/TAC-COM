@@ -387,8 +387,8 @@ namespace TAC_COM.Models
         {
             await Task.Run(() =>
             {
-                if (activeInputDevice != null 
-                && activeOutputDevice != null 
+                if (activeInputDevice != null
+                && activeOutputDevice != null
                 && activeProfile != null)
                 {
                     activeProfile.LoadSources();
@@ -437,7 +437,7 @@ namespace TAC_COM.Models
                 input.DataAvailable -= OnDataAvailable;
                 input.Stopped -= OnInputStopped;
             }
-            
+
             input?.Stop();
             input?.Dispose();
             output?.Stop();

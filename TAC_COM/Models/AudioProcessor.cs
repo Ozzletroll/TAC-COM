@@ -1,7 +1,6 @@
 ﻿using CSCore;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
-using NWaves.Audio;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;

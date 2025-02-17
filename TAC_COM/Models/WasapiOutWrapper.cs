@@ -48,15 +48,15 @@ namespace TAC_COM.Models
         }
 
 
-        public void Initialise(IWaveSource? source) 
-        { 
+        public void Initialise(IWaveSource? source)
+        {
             if (!cancellationToken.IsCancellationRequested)
             {
                 wasapiOut.Initialize(source);
             }
         }
 
-        public void Play() 
+        public void Play()
         {
             if (!cancellationToken.IsCancellationRequested)
             {
