@@ -658,7 +658,9 @@ namespace Tests.UnitTests.ViewModelTests
             var mockKeybindManager = new Mock<IKeybindManager>();
 
             mockAudioManager.Setup(audioManager => audioManager.Dispose()).Verifiable();
+            mockAudioManager.SetupRemove(audioManager => audioManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
             mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
+            mockKeybindManager.SetupRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
 
             testViewModel.AudioManager = mockAudioManager.Object;
             testViewModel.KeybindManager = mockKeybindManager.Object;
@@ -666,7 +668,9 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.Dispose();
 
             mockAudioManager.Verify(audioManager => audioManager.Dispose(), Times.Once);
+            mockAudioManager.VerifyRemove(audioManager => audioManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
+            mockKeybindManager.VerifyRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
         }
     }
 }
