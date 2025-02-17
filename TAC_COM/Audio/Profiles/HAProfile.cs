@@ -27,11 +27,12 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("HA"));
             Settings = new EffectParameters()
             {
-                RingModulatorType = typeof(PinkNoiseBuilder),
-                RingModulatorGainAdjust = 40f,
+                RingModulatorType = typeof(SineBuilder),
+                RingModulatorGainAdjust = 35f,
                 RingModulatorParameters =
                 {
-                    { "frequency", 1850f },
+                    { "frequency", 850f },
+                    { "phase", 0.5f },
                 },
                 PreCompressionSignalChain = new HAChain().GetPreCompressionEffects(),
                 PostCompressionSignalChain = new HAChain().GetPostCompressionEffects(),

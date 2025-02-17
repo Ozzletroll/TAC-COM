@@ -16,7 +16,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 600f },
+                    { "Frequency", 900f },
                 }
             },
 
@@ -37,32 +37,20 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Shift", 0.9f },
                 }
             },
+        ];
 
+        public static List<EffectReference> PostCompressionEffects { get; } =
+        [
             new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Gain", -60f },
-                    { "OffsetGain", -10f },
-                    { "Edge", 55f },
-                    { "PostEQCenterFrequency", 2200f },
-                    { "PostEQBandwidth", 2000f },
-                    { "PreLowpassCutoff", 8000f },
-                }
-            },
-        ];
-
-        public static List<EffectReference> PostCompressionEffects { get; } =
-        [
-            new(typeof(NwavesDistortionWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Mode", DistortionMode.HardClipping },
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
-                    { "InputGainDB", 24 },
-                    { "OutputGainDB", 14 },
+                    { "OffsetGain", -40f },
+                    { "Edge", 65f },
+                    { "PostEQCenterFrequency", 3200f },
+                    { "PostEQBandwidth", 3000f },
+                    { "PreLowpassCutoff", 5000f },
                 }
             },
 
@@ -70,8 +58,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                     { "Delay", 32f },
                 }
             },
@@ -80,8 +68,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.05f },
-                    { "Dry", 0.95f },
+                    { "Wet", 0.2f },
+                    { "Dry", 0.8f },
                     { "Delay", 32f },
                 }
             },
@@ -110,7 +98,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 400f },
+                    { "Frequency", 300f },
                 }
             },
         ];
@@ -121,8 +109,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 1f },
-                    { "Dry", 0f },
+                    { "Wet", 0.8f },
+                    { "Dry", 0.2f },
                 }
             },
 
@@ -130,7 +118,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "ReverbTime", 750f },
+                    { "ReverbTime", 500f },
                     { "ReverbMix", 0f },
                 }
             },

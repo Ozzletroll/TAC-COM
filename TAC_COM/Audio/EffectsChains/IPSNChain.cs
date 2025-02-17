@@ -24,7 +24,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 7000f },
+                    { "Frequency", 5000f },
                 }
             },
 
@@ -98,7 +98,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 7000f },
+                    { "Frequency", 5000f },
                 }
             },
         ];

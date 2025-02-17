@@ -27,9 +27,14 @@ namespace TAC_COM.Audio.Profiles
             Icon = new BitmapImage(UriProvider.GetIconUri("IPSN"));
             Settings = new EffectParameters()
             {
-                RingModulatorType = typeof(WhiteNoiseBuilder),
-                RingModulatorGainAdjust = 50f,
-                RingModulatorParameters = { },
+                RingModulatorType = typeof(KarplusStrongBuilder),
+                RingModulatorGainAdjust = 25f,
+                RingModulatorParameters =
+                {
+                    { "frequency", 900f },
+                    { "stretch", 4.8f },
+                    { "feedback", 1.5f },
+                },
                 PreCompressionSignalChain = new IPSNChain().GetPreCompressionEffects(),
                 PostCompressionSignalChain = new IPSNChain().GetPostCompressionEffects(),
                 PreCompressionParallelSignalChain = new IPSNChain().GetPreCompressionParallelEffects(),
