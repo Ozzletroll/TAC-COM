@@ -278,40 +278,38 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="activeInputDevice"/> field to the 
-        /// <see cref="MMDevice"/> of the given (<see cref="IMMDeviceWrapper"/> <paramref name="inputDevice"/>). 
+        /// Sets the current active input device to the 
+        /// <see cref="MMDevice"/> of the given <see cref="IMMDeviceWrapper"/>
+        /// and initialises the <see cref="InputMeter"/>. 
         /// </summary>
         /// <param name="inputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetInputDevice(IMMDeviceWrapper inputDevice)
         {
-            var matchingDevice = InputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == inputDevice.FriendlyName);
-            if (matchingDevice != null)
-            {
-                activeInputDevice = matchingDevice.Device;
-                InputMeter.Initialise(activeInputDevice);
-            }
+            activeInputDevice = inputDevice.Device;
+            InputMeter.Initialise(activeInputDevice);
         }
 
         /// <summary>
-        /// Sets the value of the <see cref="activeOutputDevice"/> property to the 
-        /// <see cref="MMDevice"/> of the given (<see cref="IMMDeviceWrapper"/> <paramref name="outputDevice"/>). 
+        /// Sets the current active output device to the 
+        /// <see cref="MMDevice"/> of the given <see cref="IMMDeviceWrapper"/>
+        /// and initialses the <see cref="OutputMeter"/>. 
         /// </summary>
         /// <param name="outputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            var matchingDevice = OutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == outputDeviceWrapper.FriendlyName);
-            if (matchingDevice != null)
-            {
-                activeOutputDevice = matchingDevice.Device;
-                lastOutputDeviceName = matchingDevice.FriendlyName;
-                OutputMeter.Initialise(activeOutputDevice);
-            }
+            activeOutputDevice = outputDeviceWrapper.Device;
+            lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
+            OutputMeter.Initialise(activeOutputDevice);
         }
 
         /// <summary>
         /// Checks if the <see cref="activeOutputDevice"/> has become disposed, and attempts to reset it 
         /// to a device matching the <see cref="MMDevice.FriendlyName"/> of <see cref="lastOutputDeviceName"/>.
         /// </summary>
+        /// <remarks>
+        /// This method handles cases where the <see cref="activeOutputDevice"/> has been disposed through
+        /// system changes, such as unplugging a USB audio device, or other device related errors.
+        /// </remarks>
         public void ResetOutputDevice()
         {
             if (activeOutputDevice is null) return;
