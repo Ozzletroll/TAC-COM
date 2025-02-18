@@ -31,7 +31,9 @@ namespace TAC_COM.Services
             {
                 devices.Add(new MMDeviceWrapper(device));
             }
-            return devices;
+
+            var sortedDevices = devices.OrderBy(d => d.FriendlyName).ToList();
+            return new ObservableCollection<IMMDeviceWrapper>(sortedDevices);
         }
 
         public ObservableCollection<IMMDeviceWrapper> GetOutputDevices()
@@ -43,7 +45,9 @@ namespace TAC_COM.Services
             {
                 devices.Add(new MMDeviceWrapper(device));
             }
-            return devices;
+
+            var sortedDevices = devices.OrderBy(d => d.FriendlyName).ToList();
+            return new ObservableCollection<IMMDeviceWrapper>(sortedDevices);
         }
     }
 }
