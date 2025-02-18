@@ -49,7 +49,7 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Wet", 0.4f },
                     { "Dry", 0.6f },
                     { "InputGainDB", 26 },
-                    { "OutputGainDB", 0 },
+                    { "OutputGainDB", 5 },
                 }
             },
 
@@ -63,7 +63,7 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Ratio", 40 },
                     { "Attack", 30 },
                     { "Release", 300 },
-                    { "MakeupGain", 26 },
+                    { "MakeupGain", 28 },
                 }
             },
 
@@ -71,8 +71,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.3f },
-                    { "Dry", 0.7f },
+                    { "Wet", 0.25f },
+                    { "Dry", 0.75f },
                     { "ModulatorSignalType", typeof(SquareWaveBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>
