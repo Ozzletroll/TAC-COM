@@ -24,7 +24,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2500f },
+                    { "Frequency", 2800f },
                 }
             },
 
@@ -32,8 +32,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.15f },
-                    { "Dry", 0.85f },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
                     { "Shift", 0.9f },
                 }
             },
@@ -58,8 +58,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
                     { "Delay", 32f },
                 }
             },
@@ -68,8 +68,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.05f },
+                    { "Dry", 0.95f },
                     { "Delay", 32f },
                 }
             },
@@ -84,7 +84,7 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Ratio", 10 },
                     { "Attack", 10 },
                     { "Release", 300 },
-                    { "MakeupGain", 14 },
+                    { "MakeupGain", 13 },
                 }
             },
         ];
@@ -120,6 +120,20 @@ namespace TAC_COM.Audio.EffectsChains
                 {
                     { "ReverbTime", 700f },
                     { "ReverbMix", 0f },
+                }
+            },
+
+            new(typeof(DynamicsProcessorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Mode", DynamicsMode.Compressor },
+                    { "MinAmplitude", -120 },
+                    { "Threshold", -10 },
+                    { "Ratio", 10 },
+                    { "Attack", 10 },
+                    { "Release", 300 },
+                    { "MakeupGain", 4 },
                 }
             },
         ];

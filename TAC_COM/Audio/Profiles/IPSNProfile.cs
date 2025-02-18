@@ -28,19 +28,19 @@ namespace TAC_COM.Audio.Profiles
             Settings = new EffectParameters()
             {
                 RingModulatorType = typeof(KarplusStrongBuilder),
-                RingModulatorGainAdjust = 25f,
+                RingModulatorGainAdjust = 45f,
                 RingModulatorParameters =
                 {
-                    { "frequency", 900f },
+                    { "frequency", 1900f },
                     { "stretch", 4.8f },
-                    { "feedback", 1.5f },
+                    { "feedback", 5f },
                 },
                 PreCompressionSignalChain = new IPSNChain().GetPreCompressionEffects(),
                 PostCompressionSignalChain = new IPSNChain().GetPostCompressionEffects(),
                 PreCompressionParallelSignalChain = new IPSNChain().GetPreCompressionParallelEffects(),
                 PostCompressionParallelSignalChain = new IPSNChain().GetPostCompressionParallelEffects(),
-                PrimaryMix = 0.8f,
-                ParallelMix = 0.2f,
+                PrimaryMix = 0.9f,
+                ParallelMix = 0.1f,
                 GainAdjust = -4f,
                 ParallelGainAdjust = -2f,
             };

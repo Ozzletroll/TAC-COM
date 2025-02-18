@@ -1,4 +1,5 @@
 ﻿using NWaves.Effects;
+using NWaves.Operations;
 using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
@@ -32,9 +33,9 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.5f },
-                    { "Dry", 0.5f },
-                    { "BitDepth", 5 }
+                    { "Wet", 1f },
+                    { "Dry", 0f },
+                    { "BitDepth", 9 }
                 }
             },
         ];
@@ -46,9 +47,9 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "Mode", DistortionMode.SoftClipping },
-                    { "Wet", 0.8f },
-                    { "Dry", 0.2f },
-                    { "InputGainDB", 14 },
+                    { "Wet", 0.9f },
+                    { "Dry", 0.1f },
+                    { "InputGainDB", 18 },
                     { "OutputGainDB", 0 },
                 }
             },
@@ -68,8 +69,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                     { "ModulatorSignalType", typeof(TriangleWaveBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>

@@ -17,7 +17,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 500f },
+                    { "Frequency", 800f },
                 }
             },
 
@@ -25,7 +25,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 6300f },
+                    { "Frequency", 3500f },
                 }
             },
 
@@ -49,8 +49,8 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Gain", -15f },
                     { "OffsetGain", -60f },
                     { "Edge", 55f },
-                    { "PostEQCenterFrequency", 4500f },
-                    { "PostEQBandwidth", 3800f },
+                    { "PostEQCenterFrequency", 5500f },
+                    { "PostEQBandwidth", 3500f },
                     { "PreLowpassCutoff", 8000f },
                 }
             },
@@ -63,8 +63,8 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "Mode", DistortionMode.HalfWaveRectify },
-                    { "Wet", 0.4f },
-                    { "Dry", 0.6f },
+                    { "Wet", 0.5f },
+                    { "Dry", 0.5f },
                     { "InputGainDB", 28 },
                     { "OutputGainDB", 8 },
                 }
@@ -74,8 +74,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.2f },
-                    { "Dry", 0.8f },
+                    { "Wet", 0.4f },
+                    { "Dry", 0.6f },
                     { "ModulatorSignalType", typeof(SquareWaveBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>
@@ -110,7 +110,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 500f },
+                    { "Frequency", 800f },
                 }
             },
 

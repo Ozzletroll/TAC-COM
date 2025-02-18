@@ -93,7 +93,7 @@ namespace TAC_COM.Models
         }
 
         private float ringModulationWetDryMix;
-        private const float MaxRingModulationWetMix = 0.7f;
+        private const float MaxRingModulationWetMix = 0.8f;
         public float RingModulationWetDryMix
         {
             get => ringModulationWetDryMix;
