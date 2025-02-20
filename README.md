@@ -21,7 +21,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Features
-TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms chatter.
+TAC/COM is a realtime VoIP effects processor that emulates sci-fi radio comms chatter.
 
 - Realtime audio processing
 - Push-to-talk
@@ -83,7 +83,7 @@ Whilst instructions here are given for Discord, setup should be largely identica
   <img src="/TAC_COM/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
 </p>
 
-> **Unless disabled, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
+> **Unless disabled fully, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
 
 ## Noise Gate Configuration
 To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video). Alternatively, you can temporarily select your headset speakers as TAC/COM's output device. Either option will allow you to hear your own processed voice for testing purposes.
