@@ -21,7 +21,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Features
-TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms chatter.
+TAC/COM is a realtime VoIP effects processor that emulates sci-fi radio comms chatter.
 
 - Realtime audio processing
 - Push-to-talk
@@ -58,7 +58,7 @@ TAC/COM is a realtime VoIP effect processor that emulates sci-fi radio comms cha
 
 1. Set the TAC/COM input device to your microphone input device.
 2. Set the TAC/COM output device to your virtual audio cable input device.
-3. Select your desired radio profile. Each profile features unique mic click sfx and transmission static.
+3. Select your desired radio profile. Each profile features unique mic clicks, transmission static and voice processing.
 4. Set your chosen push-to-talk keybind via the keybind edit button. Enable "passthrough" if you want the keybind to reach other apps, otherwise leave it disabled.
 
 <p align="center">
@@ -83,7 +83,19 @@ Whilst instructions here are given for Discord, setup should be largely identica
   <img src="/TAC_COM/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
 </p>
 
-> **Unless disabled, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
+> **Unless disabled fully, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
+
+## Noise Gate Configuration
+To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video). Alternatively, you can temporarily select your headset speakers as TAC/COM's output device. Either option will allow you to hear your own processed voice for testing purposes.
+
+1. Set the noise gate threshold in TAC/COM to -100db.
+2. Speak at a normal volume.
+3. Gradually raise the threshold value until any background noise is eliminated. 
+4. If your own voice becomes muted or suppressed, lower the threshold slightly.
+
+Repeat this process whilst holding the push-to-talk key. Ideally you should hear your own processed voice clearly with no background noise, as well as the distinct mic open/close click tones on push-to-talk keydown/release.
+
+> **Make sure to set the "Noise" and "Interference" levels to 0% during testing, as these setting deliberately introduce noise and distortion to the processed signal.**
 
 ## Usage
 1. Click "enable" to allow audio passthrough. This will transmit your voice without any additional processing to your chosen output device.
@@ -95,18 +107,6 @@ During PTT radio transmission, the audio is deliberately compressed and distorte
 - Be direct and short when communicating.
 - Speak slowly and clearly.
 - Use sci-fi military jargon at every opportunity.
-
-## Noise Gate Configuration
-To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video). Alternatively, you can temporarily select your headset speakers as TAC/COMS output device. Either option will allow you to hear your own processed voice for testing purposes.
-
-1. Set the noise gate threshold in TAC/COM to -100db.
-2. Speak at a normal volume.
-3. Gradually raise the threshold value until any background noise is eliminated. 
-4. If your own voice becomes muted or suppressed, lower the threshold slightly.
-
-Repeat this process whilst holding the push-to-talk key. Ideally you should hear your own processed voice clearly with no background noise, as well as the distinct mic open/close click tones on push-to-talk keydown/release.
-
-> **Make sure to set the "Noise" and "Interference" levels to 0% during testing, as these setting deliberately introduce noise and distortion to the processed signal.**
 
 ## Settings
 
