@@ -85,6 +85,12 @@ Whilst instructions here are given for Discord, setup should be largely identica
 
 > **Unless disabled fully, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
 
+---
+
+More detailed installation guides can be found on the TAC/COM wiki <a href="https://github.com/Ozzletroll/TAC-COM/wiki">here</a>.
+
+---
+
 ## Noise Gate Configuration
 To set TAC/COM's noise gate threshold correctly, you can use Discord's "Mic Test" feature (under User Settings -> Voice & Video). Alternatively, you can temporarily select your headset speakers as TAC/COM's output device. Either option will allow you to hear your own processed voice for testing purposes.
 
