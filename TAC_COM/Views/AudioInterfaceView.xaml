@@ -287,8 +287,9 @@
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" MaxLength="4"
-                                         HorizontalAlignment="Center" VerticalAlignment="Center">
-
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
                                         <Binding Path="NoiseGateThreshold" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
@@ -296,7 +297,6 @@
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-
                                 </TextBox>
                                 <Label FontSize="12" FontWeight="Normal" Height="16"
                                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">dB</Label>
@@ -320,7 +320,9 @@
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" MaxLength="3"
-                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
                                         <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
                                                  Converter="{StaticResource PrefixValueConverter}" ConverterParameter="+">
@@ -352,7 +354,9 @@
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" MaxLength="3"
-                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
                                         <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
@@ -383,7 +387,9 @@
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" MaxLength="3"
-                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
+                                         adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
                                         <Binding Path="InterferenceLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
