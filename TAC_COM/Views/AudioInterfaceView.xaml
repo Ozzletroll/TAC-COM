@@ -278,7 +278,7 @@
                           Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
-                                           Min="-100" Max="0" Interval="1" Sensitivity="2"
+                                           Min="-100" Max="0" Interval="1" Sensitivity="4"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
@@ -286,7 +286,7 @@
                                          BorderBrush="Transparent" BorderThickness="0"
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
-                                         FontSize="12" FontWeight="Normal" 
+                                         FontSize="12" FontWeight="Normal" MaxLength="4"
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
 
                                     <TextBox.Text >
@@ -319,7 +319,7 @@
                                          BorderBrush="Transparent" BorderThickness="0"
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
-                                         FontSize="12" FontWeight="Normal" 
+                                         FontSize="12" FontWeight="Normal" MaxLength="3"
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBox.Text >
                                         <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
@@ -351,7 +351,7 @@
                                          BorderBrush="Transparent" BorderThickness="0"
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
-                                         FontSize="12" FontWeight="Normal" 
+                                         FontSize="12" FontWeight="Normal" MaxLength="3"
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBox.Text >
                                         <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
@@ -376,16 +376,14 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="0" Max="100" Interval="1" Sensitivity="2"
                                            Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          Background="Transparent" 
                                          BorderBrush="Transparent" BorderThickness="0"
                                          CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
-                                         FontSize="12" FontWeight="Normal" 
+                                         FontSize="12" FontWeight="Normal" MaxLength="3"
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
-
                                     <TextBox.Text >
                                         <Binding Path="InterferenceLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
@@ -393,13 +391,10 @@
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-
                                 </TextBox>
                                 <Label FontSize="12" FontWeight="Normal" Height="16"
                                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">%</Label>
                             </StackPanel>
-
-
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
