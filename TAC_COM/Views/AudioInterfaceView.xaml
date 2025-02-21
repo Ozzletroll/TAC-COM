@@ -278,7 +278,7 @@
                           Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
-                                           Min="-100" Max="0" Interval="1" Sensitivity="4"
+                                           Min="-100" Max="0" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
