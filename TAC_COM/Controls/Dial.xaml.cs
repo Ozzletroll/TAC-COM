@@ -179,23 +179,9 @@ namespace TAC_COM.Controls
             Gauge.IsLargeArc = angle > 180;
             Gauge.Point = new Point(x, y);
 
-            // Rotate marker
-            DoubleAnimation animation = new();
-            Duration duration = new(TimeSpan.FromMilliseconds(250));
-            ExponentialEase acc = new()
-            {
-                EasingMode = EasingMode.EaseOut,
-                Exponent = 5
-            };
-            animation.To = angle + START_MARKER_ANGLE;
-            animation.Duration = duration;
-            animation.EasingFunction = acc;
-            Storyboard.SetTargetName(animation, "Marker");
-            Storyboard.SetTargetProperty(animation, new PropertyPath(RotateTransform.AngleProperty));
-
-            Storyboard storyboard = new();
-            storyboard.Children.Add(animation);
-            storyboard.Begin(this);
+            // Rotate dial marker
+            RotateTransform rotateTransform = Marker;
+            rotateTransform.Angle = angle + START_MARKER_ANGLE;
         }
 
         /// <summary>
