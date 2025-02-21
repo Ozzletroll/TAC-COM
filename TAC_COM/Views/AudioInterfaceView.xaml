@@ -12,8 +12,10 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
-    
-    
+
+    <UserControl.Resources>
+        <utilities:PrefixValueConverter x:Key="PrefixValueConverter"/>
+    </UserControl.Resources>
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -278,7 +280,6 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="-100" Max="0" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          Background="Transparent" 
@@ -295,12 +296,11 @@
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-                                    
+
                                 </TextBox>
                                 <Label FontSize="12" FontWeight="Normal" Height="16"
                                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">dB</Label>
                             </StackPanel>
-                            
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -313,8 +313,6 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="-10" Max="10" Interval="1" Sensitivity="2"
                                            Value="{Binding OutputLevel, Mode=TwoWay}"/>
-
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          Background="Transparent" 
@@ -323,20 +321,18 @@
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" 
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
-
                                     <TextBox.Text >
-                                        <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                                 Converter="{StaticResource PrefixValueConverter}" ConverterParameter="+">
                                             <Binding.ValidationRules>
                                                 <utilities:RangeValidationRule Minimum="-10" Maximum="10"/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-
                                 </TextBox>
                                 <Label FontSize="12" FontWeight="Normal" Height="16"
                                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">dB</Label>
                             </StackPanel>
-
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -349,7 +345,6 @@
                             <controls:Dial Height="50" Width="50"
                                            Min="0" Max="100" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseLevel, Mode=TwoWay}"/>
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                          Background="Transparent" 
@@ -358,7 +353,6 @@
                                          TextAlignment="Right" Padding="4, 4, 2, 4"
                                          FontSize="12" FontWeight="Normal" 
                                          HorizontalAlignment="Center" VerticalAlignment="Center">
-
                                     <TextBox.Text >
                                         <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
@@ -366,12 +360,10 @@
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
-
                                 </TextBox>
                                 <Label FontSize="12" FontWeight="Normal" Height="16"
                                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">%</Label>
                             </StackPanel>
-
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

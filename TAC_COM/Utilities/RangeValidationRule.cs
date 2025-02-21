@@ -19,6 +19,12 @@ namespace TAC_COM.Utilities
         public float Maximum { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of the converter prefix
+        /// that will be ignored when parsing the value.
+        /// </summary>
+        public char Prefix { get; set; }
+
+        /// <summary>
         /// Validates the value to check if it is within the specified range.
         /// </summary>
         /// <param name="value"> The value to be validated.</param>
@@ -26,9 +32,14 @@ namespace TAC_COM.Utilities
         /// <returns></returns>
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (value as string != null)
+            if (value is string stringValue)
             {
-                if (float.TryParse((string)value, out float number))
+                if (stringValue.StartsWith(Prefix))
+                {
+                    stringValue = stringValue[1..];
+                }
+
+                if (float.TryParse(stringValue, out float number))
                 {
                     if (number < Minimum || number > Maximum)
                     {
