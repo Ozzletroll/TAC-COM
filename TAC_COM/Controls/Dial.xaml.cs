@@ -108,7 +108,20 @@ namespace TAC_COM.Controls
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Dial? f = d as Dial;
+            f?.OnValueChanged((float)e.OldValue, (float)e.NewValue);
             f?.RenderDisplay();
+        }
+
+        /// <summary>
+        /// Method called when the value property changes on the <see cref="ValueProperty"/>.
+        /// Updates the percentage value of the dial when the user manually enters a
+        /// specific value.
+        /// </summary>
+        /// <param name="oldValue"> The old value of the input.</param>
+        /// <param name="newValue"> The new value of the input.</param>
+        protected virtual void OnValueChanged(float oldValue, float newValue)
+        {
+            PercentValue = (newValue - Min) / (Max - Min) * 100;
         }
 
         /// <summary>
@@ -234,7 +247,6 @@ namespace TAC_COM.Controls
                 }
             }
         }
-
 
         /// <summary>
         /// Method to handle the dial load event, initialising
