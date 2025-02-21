@@ -6,11 +6,15 @@
              xmlns:local="clr-namespace:TAC_COM.Views" 
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-             xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" xmlns:controls="clr-namespace:TAC_COM.Controls"
+             xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
+             xmlns:controls="clr-namespace:TAC_COM.Controls" 
+             xmlns:utilities="clr-namespace:TAC_COM.Utilities"
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
-
+    
+    
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -268,60 +272,142 @@
 
                 <StackPanel Orientation="Vertical" Width="100">
                     <Label x:Name="GateThreshold" Content="NOISE GATE" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80"
                           Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
                                            Min="-100" Max="0" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseGateThreshold, Mode=TwoWay}"/>
-                            <Label Content="{Binding NoiseGateThresholdString}"
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         Background="Transparent" 
+                                         BorderBrush="Transparent" BorderThickness="0"
+                                         CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         TextAlignment="Right" Padding="4, 4, 2, 4"
+                                         FontSize="12" FontWeight="Normal" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                    <TextBox.Text >
+                                        <Binding Path="NoiseGateThreshold" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <utilities:RangeValidationRule Minimum="-100" Maximum="0"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                    
+                                </TextBox>
+                                <Label FontSize="12" FontWeight="Normal" Height="16"
+                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">dB</Label>
+                            </StackPanel>
+                            
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Width="100">
                     <Label Content="OUTPUT LEVEL" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
                                            Min="-10" Max="10" Interval="1" Sensitivity="2"
                                            Value="{Binding OutputLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding OutputLevelString}" 
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         Background="Transparent" 
+                                         BorderBrush="Transparent" BorderThickness="0"
+                                         CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         TextAlignment="Right" Padding="4, 4, 2, 4"
+                                         FontSize="12" FontWeight="Normal" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                    <TextBox.Text >
+                                        <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <utilities:RangeValidationRule Minimum="-10" Maximum="10"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+
+                                </TextBox>
+                                <Label FontSize="12" FontWeight="Normal" Height="16"
+                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">dB</Label>
+                            </StackPanel>
+
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Width="100">
                     <Label Content="NOISE LEVEL" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80"
                                 Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
-                                           Min="0" Max="1" Interval="0.01" Sensitivity="2"
+                                           Min="0" Max="100" Interval="1" Sensitivity="2"
                                            Value="{Binding NoiseLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding NoiseLevelString}" 
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         Background="Transparent" 
+                                         BorderBrush="Transparent" BorderThickness="0"
+                                         CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         TextAlignment="Right" Padding="4, 4, 2, 4"
+                                         FontSize="12" FontWeight="Normal" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                    <TextBox.Text >
+                                        <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <utilities:RangeValidationRule Minimum="0" Maximum="100"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+
+                                </TextBox>
+                                <Label FontSize="12" FontWeight="Normal" Height="16"
+                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">%</Label>
+                            </StackPanel>
+
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Width="100">
                     <Label Content="INTERFERENCE" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="70"
-                Background="Transparent">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" 
+                                Background="Transparent">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <controls:Dial Height="50" Width="50"
-                           Min="0" Max="1" Interval="0.01" Sensitivity="2"
-                           Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
-                            <Label Content="{Binding InterferenceLevelString}" 
-                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                   FontSize="12" FontWeight="Normal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                           Min="0" Max="100" Interval="1" Sensitivity="2"
+                                           Value="{Binding InterferenceLevel, Mode=TwoWay}"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBox Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         Background="Transparent" 
+                                         BorderBrush="Transparent" BorderThickness="0"
+                                         CaretBrush="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                                         TextAlignment="Right" Padding="4, 4, 2, 4"
+                                         FontSize="12" FontWeight="Normal" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                    <TextBox.Text >
+                                        <Binding Path="InterferenceLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <utilities:RangeValidationRule Minimum="0" Maximum="100"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+
+                                </TextBox>
+                                <Label FontSize="12" FontWeight="Normal" Height="16"
+                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}">%</Label>
+                            </StackPanel>
+
+
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
