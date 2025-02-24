@@ -543,6 +543,8 @@ namespace TAC_COM.Models
         {
             GC.SuppressFinalize(this);
             StopPlayback();
+            InputMeter?.Dispose();
+            OutputMeter?.Dispose();
         }
     }
 }

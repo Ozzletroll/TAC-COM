@@ -6,7 +6,7 @@ namespace TAC_COM.Models.Interfaces
     /// The interface that represents the wrapper class
     /// for an <see cref="AudioMeterInformation"/>
     /// </summary>
-    public interface IPeakMeterWrapper
+    public interface IPeakMeterWrapper : IDisposable
     {
         /// <summary>
         /// Method to initialise the <see cref="AudioMeterInformation"/>

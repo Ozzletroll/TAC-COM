@@ -11,7 +11,6 @@ namespace TAC_COM.Models
     {
         private AudioMeterInformation? audioMeterInformation;
 
-
         public void Initialise(MMDevice device)
         {
             audioMeterInformation = AudioMeterInformation.FromDevice(device);
@@ -20,6 +19,12 @@ namespace TAC_COM.Models
         public float GetValue()
         {
             return audioMeterInformation?.PeakValue * 100 ?? 0;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            audioMeterInformation?.Dispose();
         }
     }
 }
