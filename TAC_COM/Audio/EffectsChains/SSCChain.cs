@@ -71,8 +71,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.25f },
-                    { "Dry", 0.75f },
+                    { "Wet", 0.3f },
+                    { "Dry", 0.7f },
                     { "ModulatorSignalType", typeof(SquareWaveBuilder) },
                     { "ModulatorParameters",
                         new Dictionary<string, object>

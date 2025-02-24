@@ -25,17 +25,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 5000f },
-                }
-            },
-
-            new(typeof(BitCrusherWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 1f },
-                    { "Dry", 0f },
-                    { "BitDepth", 9 }
+                    { "Frequency", 3000f },
                 }
             },
         ];
@@ -47,10 +37,10 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "Mode", DistortionMode.SoftClipping },
-                    { "Wet", 0.9f },
-                    { "Dry", 0.1f },
+                    { "Wet", 0.7f },
+                    { "Dry", 0.3f },
                     { "InputGainDB", 18 },
-                    { "OutputGainDB", 0 },
+                    { "OutputGainDB", 4 },
                 }
             },
 
@@ -60,24 +50,22 @@ namespace TAC_COM.Audio.EffectsChains
                 {
                     { "Wet", 0.2f },
                     { "Dry", 0.8f },
-                    { "Frequency", 115 },
+                    { "Frequency", 50 },
                     { "ModulationIndex", 1.3f },
                 }
             },
 
-            new(typeof(RingModulatorWrapper))
+            new(typeof(DynamicsProcessorWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.3f },
-                    { "Dry", 0.7f },
-                    { "ModulatorSignalType", typeof(TriangleWaveBuilder) },
-                    { "ModulatorParameters",
-                        new Dictionary<string, object>
-                        {
-                            { "frequency", 2300 },
-                        }
-                    },
+                    { "Mode", DynamicsMode.Compressor },
+                    { "MinAmplitude", -120 },
+                    { "Threshold", -10 },
+                    { "Ratio", 10 },
+                    { "Attack", 30 },
+                    { "Release", 300 },
+                    { "MakeupGain", 6 },
                 }
             },
         ];
@@ -91,7 +79,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 1000f },
+                    { "Frequency", 500f },
                 }
             },
 
@@ -99,14 +87,24 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 5000f },
+                    { "Frequency", 1000f },
                 }
             },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
         [
-
+            new(typeof(NwavesDistortionWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Mode", DistortionMode.HalfWaveRectify },
+                    { "Wet", 0.7f },
+                    { "Dry", 0.3f },
+                    { "InputGainDB", 22 },
+                    { "OutputGainDB", 18 },
+                }
+            },
         ];
 
         public override List<EffectReference> GetPreCompressionParallelEffects() => PreCompressionParallelEffects;

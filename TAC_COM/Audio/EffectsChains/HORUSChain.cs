@@ -58,8 +58,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.1f },
-                    { "Dry", 0.9f },
+                    { "Wet", 0.15f },
+                    { "Dry", 0.85f },
                     { "Delay", 32f },
                 }
             },
@@ -68,8 +68,8 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 0.05f },
-                    { "Dry", 0.95f },
+                    { "Wet", 0.1f },
+                    { "Dry", 0.9f },
                     { "Delay", 32f },
                 }
             },
@@ -119,7 +119,7 @@ namespace TAC_COM.Audio.EffectsChains
                 Parameters = new Dictionary<string, object>
                 {
                     { "ReverbTime", 700f },
-                    { "ReverbMix", 0f },
+                    { "ReverbMix", -8f },
                 }
             },
 
