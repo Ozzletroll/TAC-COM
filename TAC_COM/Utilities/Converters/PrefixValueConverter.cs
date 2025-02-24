@@ -13,7 +13,7 @@ namespace TAC_COM.Utilities.Converters
         /// </summary>
         /// <param name="value">The value to be converted.</param>
         /// <param name="targetType"> The target type of the conversion.</param>
-        /// <param name="parameter"> The prefix to append to the start of the string.</param>
+        /// <param name="parameter"> The prefix character to append to the start of the string.</param>
         /// <param name="culture"> The culture info of the conversion.</param>
         /// <returns> The converted value.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -30,7 +30,7 @@ namespace TAC_COM.Utilities.Converters
         /// </summary>
         /// <param name="value">The value to be converted.</param>
         /// <param name="targetType"> The target type of the conversion.</param>
-        /// <param name="parameter"> The prefix to be removed from the string.</param>
+        /// <param name="parameter"> The prefix character to be removed from the string.</param>
         /// <param name="culture"> The culture info of the conversion.</param>
         /// <returns> The converted value.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
