@@ -430,16 +430,23 @@ namespace TAC_COM.Models
         /// </summary>
         private void StopPlayback()
         {
-            if (input != null)
-            {
-                input.DataAvailable -= OnDataAvailable;
-                input.Stopped -= OnInputStopped;
-            }
-
             input?.Stop();
             input?.Dispose();
             output?.Stop();
             output?.Dispose();
+
+            if (input != null)
+            {
+                input.DataAvailable -= OnDataAvailable;
+                input.Stopped -= OnInputStopped;
+                input = null;
+            }
+
+            if (output != null)
+            {
+                output.Stopped -= OnOutputStopped;
+                output = null;
+            }
 
             AudioProcessor.Dispose();
             cancellationTokenSource?.Cancel();
