@@ -271,22 +271,8 @@ namespace TAC_COM.ViewModels
                 value = (float)Math.Round(value, 0);
                 audioManager.NoiseGateThreshold = value;
                 OnPropertyChanged(nameof(NoiseGateThreshold));
-                OnPropertyChanged(nameof(NoiseGateThresholdString));
                 settingsService.UpdateAppConfig(nameof(NoiseGateThreshold), value);
 
-            }
-        }
-
-        /// <summary>
-        /// Gets the formatted string value of the noise gate
-        /// threshold level in decibels.
-        /// </summary>
-        public string NoiseGateThresholdString
-        {
-            get
-            {
-                string? sign = audioManager.NoiseGateThreshold < 0 ? null : "+";
-                return sign + audioManager.NoiseGateThreshold.ToString() + "dB";
             }
         }
 
@@ -302,21 +288,7 @@ namespace TAC_COM.ViewModels
             {
                 audioManager.OutputGainLevel = value;
                 OnPropertyChanged(nameof(OutputLevel));
-                OnPropertyChanged(nameof(OutputLevelString));
                 settingsService.UpdateAppConfig(nameof(OutputLevel), value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the formatted string value of the output
-        /// gain level in decibels.
-        /// </summary>
-        public string OutputLevelString
-        {
-            get
-            {
-                string? sign = OutputLevel < 0 ? null : "+";
-                return sign + OutputLevel.ToString() + "dB";
             }
         }
 
@@ -327,55 +299,28 @@ namespace TAC_COM.ViewModels
         /// </summary>
         public float NoiseLevel
         {
-            get => audioManager.NoiseLevel;
+            get => (float)Math.Round(audioManager.NoiseLevel * 100, 0);
             set
             {
-                audioManager.NoiseLevel = value;
+                audioManager.NoiseLevel = value / 100;
                 OnPropertyChanged(nameof(NoiseLevel));
-                OnPropertyChanged(nameof(NoiseLevelString));
                 settingsService.UpdateAppConfig(nameof(NoiseLevel), value);
             }
         }
 
         /// <summary>
-        /// Gets the formatted string value of the looping
-        /// background noise sfx channel volume adjustment
-        /// as a percentage.
-        /// </summary>
-        public string NoiseLevelString
-        {
-            get
-            {
-                return Math.Round(audioManager.NoiseLevel * 100).ToString() + "%";
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the value representing the noise
-        /// sfx level as a value between 0 and 1, and
+        /// sfx level as a value between 0 and 100, and
         /// updates the config appropriately.
         /// </summary>
         public float InterferenceLevel
         {
-            get => audioManager.InterferenceLevel;
+            get => (float)Math.Round(audioManager.InterferenceLevel * 100, 0);
             set
             {
-                audioManager.InterferenceLevel = value;
+                audioManager.InterferenceLevel = value / 100;
                 OnPropertyChanged(nameof(InterferenceLevel));
-                OnPropertyChanged(nameof(InterferenceLevelString));
                 settingsService.UpdateAppConfig(nameof(InterferenceLevel), value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the formatted string value of the interference
-        /// level.
-        /// </summary>
-        public string InterferenceLevelString
-        {
-            get
-            {
-                return Math.Round(audioManager.InterferenceLevel * 100).ToString() + "%";
             }
         }
 
@@ -523,10 +468,10 @@ namespace TAC_COM.ViewModels
         /// </summary>
         private void LoadAudioSettings()
         {
-            audioManager.NoiseGateThreshold = settingsService.AudioSettings.NoiseGateThreshold;
-            audioManager.OutputGainLevel = settingsService.AudioSettings.OutputLevel;
-            audioManager.NoiseLevel = settingsService.AudioSettings.NoiseLevel;
-            audioManager.InterferenceLevel = settingsService.AudioSettings.InterferenceLevel;
+            NoiseGateThreshold = settingsService.AudioSettings.NoiseGateThreshold;
+            OutputLevel = settingsService.AudioSettings.OutputLevel;
+            NoiseLevel = settingsService.AudioSettings.NoiseLevel;
+            InterferenceLevel = settingsService.AudioSettings.InterferenceLevel;
             var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == settingsService.AudioSettings.ActiveProfile);
             if (savedProfile != null)
             {
