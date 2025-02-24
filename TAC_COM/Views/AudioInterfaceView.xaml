@@ -8,15 +8,35 @@
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
              xmlns:controls="clr-namespace:TAC_COM.Controls" 
-             xmlns:utilities="clr-namespace:TAC_COM.Utilities"
+             xmlns:utilities="clr-namespace:TAC_COM.Utilities" 
+             xmlns:converters="clr-namespace:TAC_COM.Utilities.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:AudioInterfaceViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
 
     <UserControl.Resources>
-        <utilities:PrefixValueConverter x:Key="PrefixValueConverter"/>
+        <converters:ClampValueConverter x:Key="ClampValueConverter"/>
+
+        <converters:ValueConverterGroup x:Key="ClampAndPrefixConverter">
+            
+            <converters:ConverterInfo>
+                <converters:ConverterInfo.Converter>
+                    <converters:ClampValueConverter />
+                </converters:ConverterInfo.Converter>
+                <converters:ConverterInfo.Parameter>-10,10</converters:ConverterInfo.Parameter>
+            </converters:ConverterInfo>
+
+            <converters:ConverterInfo>
+                <converters:ConverterInfo.Converter>
+                    <converters:PrefixValueConverter />
+                </converters:ConverterInfo.Converter>
+                <converters:ConverterInfo.Parameter>+</converters:ConverterInfo.Parameter>
+            </converters:ConverterInfo>
+
+        </converters:ValueConverterGroup>
+        
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -142,8 +162,8 @@
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                           FontWeight="Normal"
-                           Width="250" Height="20" IsEnabled="{Binding IsSelectable}" Content="{Binding KeybindName}"/>
+                           FontWeight="Normal" Width="250" Height="20" 
+                           Content="{Binding KeybindName}"/>
                     <Button DockPanel.Dock="Right" Width="50" Height="20" 
                                 HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
@@ -291,10 +311,8 @@
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
-                                        <Binding Path="NoiseGateThreshold" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <utilities:RangeValidationRule Minimum="-100" Maximum="0"/>
-                                            </Binding.ValidationRules>
+                                        <Binding Path="NoiseGateThreshold" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                                 Converter="{StaticResource ClampValueConverter}" ConverterParameter="-100,0">
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
@@ -325,10 +343,7 @@
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
                                         <Binding Path="OutputLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
-                                                 Converter="{StaticResource PrefixValueConverter}" ConverterParameter="+">
-                                            <Binding.ValidationRules>
-                                                <utilities:RangeValidationRule Minimum="-10" Maximum="10"/>
-                                            </Binding.ValidationRules>
+                                                 Converter="{StaticResource ClampAndPrefixConverter}">
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
@@ -358,10 +373,8 @@
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
-                                        <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <utilities:RangeValidationRule Minimum="0" Maximum="100"/>
-                                            </Binding.ValidationRules>
+                                        <Binding Path="NoiseLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                                 Converter="{StaticResource ClampValueConverter}" ConverterParameter="0,100">
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
@@ -391,10 +404,8 @@
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnFocus="False"
                                          adonisExtensions:ValidationExtension.IsErrorMessageVisibleOnMouseOver="False">
                                     <TextBox.Text >
-                                        <Binding Path="InterferenceLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                            <Binding.ValidationRules>
-                                                <utilities:RangeValidationRule Minimum="0" Maximum="100"/>
-                                            </Binding.ValidationRules>
+                                        <Binding Path="InterferenceLevel" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged"
+                                                 Converter="{StaticResource ClampValueConverter}" ConverterParameter="0,100">
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
