@@ -3,6 +3,9 @@ using TAC_COM.Utilities.Converters;
 
 namespace Tests.UnitTests.UtilityTests
 {
+    /// <summary>
+    /// Test class for the <see cref="PrefixValueConverter"/> class.
+    /// </summary>
     [TestClass]
     public class PrefixValueConverterTests
     {
