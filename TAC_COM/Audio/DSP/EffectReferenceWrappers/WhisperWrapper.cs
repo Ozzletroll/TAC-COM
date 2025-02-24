@@ -14,7 +14,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     public class WhisperWrapper(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource;
-        private readonly WhisperEffect whisperEffect = new(280, fftSize: 2048);
+        private readonly WhisperEffect whisperEffect = new(40, fftSize: 256);
 
         /// <summary>
         /// Gets or sets the value of the "wet" processed signal 

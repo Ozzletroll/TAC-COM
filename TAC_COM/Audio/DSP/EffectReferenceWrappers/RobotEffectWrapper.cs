@@ -14,7 +14,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
     public class RobotEffectWrapper(ISampleSource inputSource) : ISampleSource
     {
         readonly ISampleSource source = inputSource;
-        private readonly RobotEffect robotEffect = new(280, fftSize: 2048)
+        private readonly RobotEffect robotEffect = new(256, fftSize: 1024)
         {
             Wet = 0.8f,
             Dry = 0.2f,

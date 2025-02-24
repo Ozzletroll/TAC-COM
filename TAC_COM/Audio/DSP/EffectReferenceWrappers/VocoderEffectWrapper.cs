@@ -4,7 +4,7 @@ using NWaves.Effects;
 namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
 {
     /// <summary>
-    /// Wrapper class to apply an <see cref="DistortionEffect"/> to a given
+    /// Wrapper class to apply an <see cref="PitchShiftVocoderEffect"/> to a given
     /// <see cref="ISampleSource"/>.
     /// </summary>
     /// <remarks>
