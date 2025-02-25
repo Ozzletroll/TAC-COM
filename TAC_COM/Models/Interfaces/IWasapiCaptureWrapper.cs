@@ -7,7 +7,7 @@ namespace TAC_COM.Models.Interfaces
     /// Interface representing the wrapper class for a
     /// <see cref="CSCore.SoundIn.WasapiCapture"/>.
     /// </summary>
-    public interface IWasapiCaptureWrapper
+    public interface IWasapiCaptureWrapper : IDisposable
     {
         /// <summary>
         /// Gets or sets the current <see cref="CSCore.SoundIn.WasapiCapture"/>.
@@ -30,11 +30,6 @@ namespace TAC_COM.Models.Interfaces
         /// event handler.
         /// </summary>
         event EventHandler<RecordingStoppedEventArgs> Stopped;
-
-        /// <summary>
-        /// Method to manually dispose of the <see cref="WasapiCapture"/>.
-        /// </summary>
-        void Dispose();
 
         /// <summary>
         /// Method to initialise the <see cref="WasapiCapture"/>, ready

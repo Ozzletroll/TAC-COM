@@ -8,7 +8,7 @@ namespace TAC_COM.Models.Interfaces
     /// Interface representing the wrapper for a
     /// <see cref="WasapiOut"/>.
     /// </summary>
-    public interface IWasapiOutWrapper
+    public interface IWasapiOutWrapper : IDisposable
     {
         /// <summary>
         /// Gets or sets the class's <see cref="MMDevice"/>.
@@ -26,11 +26,6 @@ namespace TAC_COM.Models.Interfaces
         /// event handler.
         /// </summary>
         event EventHandler<PlaybackStoppedEventArgs> Stopped;
-
-        /// <summary>
-        /// Method to manually dispose of the <see cref="WasapiOut"/>.
-        /// </summary>
-        void Dispose();
 
         /// <summary>
         /// Method to initialise the <see cref="WasapiOut"/> for playback,

@@ -12,7 +12,7 @@ namespace TAC_COM.Models
     public class WasapiOutWrapper(CancellationToken token) : IWasapiOutWrapper
     {
         private readonly CancellationToken cancellationToken = token;
-        private readonly WasapiOut wasapiOut = new() { Latency = 5 };
+        private readonly WasapiOut wasapiOut = new(true, AudioClientShareMode.Shared, 25, ThreadPriority.Highest);
 
         public MMDevice Device
         {
@@ -38,15 +38,14 @@ namespace TAC_COM.Models
             remove => wasapiOut.Stopped -= value;
         }
 
-
         public void Dispose()
         {
             if (!cancellationToken.IsCancellationRequested)
             {
+                GC.SuppressFinalize(this);
                 wasapiOut.Dispose();
             }
         }
-
 
         public void Initialise(IWaveSource? source)
         {

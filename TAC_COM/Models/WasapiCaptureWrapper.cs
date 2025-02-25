@@ -1,4 +1,5 @@
-﻿using CSCore.CoreAudioAPI;
+﻿using CSCore;
+using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using TAC_COM.Models.Interfaces;
 
@@ -11,7 +12,7 @@ namespace TAC_COM.Models
     public class WasapiCaptureWrapper(CancellationToken token) : IWasapiCaptureWrapper
     {
         private readonly CancellationToken cancellationToken = token;
-        private WasapiCapture wasapiCapture = new(false, AudioClientShareMode.Shared, 5);
+        private WasapiCapture wasapiCapture = new(true, AudioClientShareMode.Shared, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
 
         public WasapiCapture WasapiCapture
         {
@@ -47,6 +48,7 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
+                GC.SuppressFinalize(this);
                 wasapiCapture.Dispose();
             };
         }

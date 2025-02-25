@@ -282,9 +282,7 @@ namespace TAC_COM.Models
 
         /// <summary>
         /// Returns the assembled parallel processing <see cref="ISampleSource"/> signal chain, for use in
-        /// <see cref="InputSignalChain"/>. This chain uses less pronounced audio effects, 
-        /// and is blended with the processed signal chain in 
-        /// <see cref="InputSignalChain"/> to improve audio clarity.
+        /// <see cref="InputSignalChain"/>.
         /// </summary>
         /// <param name="parallelSource"> <see cref="ISampleSource"/> representing the unprocessed microphone input. </param>
         /// <returns> The complete parallel processed <see cref="ISampleSource"/> signal chain. </returns>
@@ -295,7 +293,7 @@ namespace TAC_COM.Models
             var sampleSource = parallelSource;
 
             // Noise gate
-            sampleSource = parallelSource.AppendSource(x => new Gate(x)
+            sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
                 ThresholdDB = NoiseGateThreshold,
                 Attack = 5,
@@ -417,7 +415,7 @@ namespace TAC_COM.Models
             dryMix = dryMix.ToMono().ChangeSampleRate(sampleRate);
             noiseMix = noiseMix.ToMono().ChangeSampleRate(sampleRate);
 
-            // Mix wet signal with noise source
+            // Mix processed wet signal with noise source
             var wetNoiseMixer = new Mixer(1, sampleRate)
             {
                 FillWithZeros = true,
@@ -462,7 +460,7 @@ namespace TAC_COM.Models
                     Threshold = -20
                 });
 
-            return compressedOutput;
+            return compressedOutput.ToMono();
         }
 
         /// <inheritdoc/>
