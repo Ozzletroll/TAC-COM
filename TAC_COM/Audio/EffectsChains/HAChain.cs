@@ -29,19 +29,6 @@ namespace TAC_COM.Audio.EffectsChains
                 }
             },
 
-            new(typeof(TubeDistortionWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.4f },
-                    { "Dry", 0.6f },
-                    { "InputGainDB", 10 },
-                    { "OutputGainDB", 8 },
-                    { "Q", -0.2f },
-                    { "Distortion", 25 }
-                }
-            },
-
             new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
@@ -70,22 +57,6 @@ namespace TAC_COM.Audio.EffectsChains
                 }
             },
 
-            new(typeof(RingModulatorWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Wet", 0.4f },
-                    { "Dry", 0.6f },
-                    { "ModulatorSignalType", typeof(SquareWaveBuilder) },
-                    { "ModulatorParameters",
-                        new Dictionary<string, object>
-                        {
-                            { "frequency", 200 },
-                        }
-                    },
-                }
-            },
-
             new(typeof(DynamicsProcessorWrapper))
             {
                  Parameters = new Dictionary<string, object>
@@ -110,7 +81,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 800f },
+                    { "Frequency", 100f },
                 }
             },
 
@@ -118,26 +89,23 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 3000f },
+                    { "Frequency", 1500f },
                 }
             },
         ];
 
         public static List<EffectReference> PostCompressionParallelEffects { get; } =
         [
-            new(typeof(RingModulatorWrapper))
+            new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Wet", 1f },
-                    { "Dry", 0f },
-                    { "ModulatorSignalType", typeof(SquareWaveBuilder) },
-                    { "ModulatorParameters",
-                        new Dictionary<string, object>
-                        {
-                            { "frequency", 550 },
-                        }
-                    },
+                    { "Gain", -60f },
+                    { "OffsetGain", -45f },
+                    { "Edge", 75f },
+                    { "PostEQCenterFrequency", 1500f },
+                    { "PostEQBandwidth", 4800f },
+                    { "PreLowpassCutoff", 8000f },
                 }
             },
         ];

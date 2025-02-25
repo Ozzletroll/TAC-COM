@@ -34,10 +34,10 @@ namespace TAC_COM.Audio.Profiles
                 PostCompressionSignalChain = new IPSNChain().GetPostCompressionEffects(),
                 PreCompressionParallelSignalChain = new IPSNChain().GetPreCompressionParallelEffects(),
                 PostCompressionParallelSignalChain = new IPSNChain().GetPostCompressionParallelEffects(),
-                PrimaryMix = 0.7f,
-                ParallelMix = 0.3f,
-                GainAdjust = -4f,
-                ParallelGainAdjust = -4f,
+                PrimaryMix = 0.8f,
+                ParallelMix = 0.2f,
+                GainAdjust = -5f,
+                ParallelGainAdjust = 0f,
             };
         }
     }

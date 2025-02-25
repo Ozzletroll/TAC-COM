@@ -39,8 +39,8 @@ namespace TAC_COM.Audio.Profiles
                 PostCompressionParallelSignalChain = new HAChain().GetPostCompressionParallelEffects(),
                 PrimaryMix = 0.7f,
                 ParallelMix = 0.3f,
-                GainAdjust = -10,
-                ParallelGainAdjust = 8f,
+                GainAdjust = -7f,
+                ParallelGainAdjust = -5f,
             };
         }
     }
