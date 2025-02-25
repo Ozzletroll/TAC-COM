@@ -77,13 +77,13 @@ Whilst instructions here are given for Discord, setup should be largely identica
   <img src="/TAC_COM/Static/Images/discord-setup-1.png" alt="Screenshot of Discord's Voice & Video settings, with the input device set to 'CABLE Output (VB-Audio Virtual Cable)'.">
 </p>
 
-4. Disable Discord's noise suppression.
+4. Disable Discord's echo cancellation and noise suppression.
 
 <p align="center">
   <img src="/TAC_COM/Static/Images/discord-setup-2.png" alt="Screenshot of Discord's Voice & Video settings, with Noise Suppression set to 'None'.">
 </p>
 
-> **Unless disabled fully, Discord's noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
+> **Unless disabled fully, Discord's echo cancellation and noise suppression will interfere with TAC/COM's radio mic sfx. TAC/COM uses it's own built-in adjustable noise gate that does not affect the sfx channel.**
 
 ---
 
