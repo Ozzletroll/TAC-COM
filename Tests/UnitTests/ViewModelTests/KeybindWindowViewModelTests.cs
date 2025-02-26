@@ -57,7 +57,7 @@ namespace Tests.UnitTests.ViewModelTests
         public void TestNewKeybindNameProperty()
         {
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NewKeybindName), "Shift + V");
-            Assert.IsTrue(testViewModel.NewKeybindName == "[ Shift + V ]");
+            Assert.AreEqual("[ Shift + V ]", testViewModel.NewKeybindName);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.KeybindManager = mockKeybindManager.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.PassthroughState), true);
-            Assert.IsTrue(testViewModel.PassthroughState == true);
+            Assert.AreEqual(true, testViewModel.PassthroughState);
             mockKeybindManager.VerifySet(keybindManager => keybindManager.PassthroughState = true);
         }
 
@@ -83,7 +83,6 @@ namespace Tests.UnitTests.ViewModelTests
         public void TestExecuteCloseKeybindDialogCommand()
         {
             var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.ToggleUserKeybindSubscription(false)).Verifiable();
             mockKeybindManager.Setup(keybindManager => keybindManager.UpdateKeybind()).Verifiable();
 
             testViewModel.KeybindManager = mockKeybindManager.Object;
@@ -92,7 +91,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.Close += (sender, e) => closeEventRaised = true;
 
             testViewModel.CloseKeybindDialog.Execute(null);
-            mockKeybindManager.Verify(keybindManager => keybindManager.ToggleUserKeybindSubscription(false), Times.Once);
+
             mockKeybindManager.Verify(keybindManager => keybindManager.UpdateKeybind(), Times.Once);
             Assert.IsTrue(closeEventRaised, "The Close event was not raised.");
         }

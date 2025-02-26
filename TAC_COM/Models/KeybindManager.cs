@@ -259,6 +259,8 @@ namespace TAC_COM.Models
 
         public void UpdateKeybind()
         {
+            ToggleUserKeybindSubscription(false);
+
             if (NewPTTKeybind != null) NewPTTKeybind.Passthrough = PassthroughState;
             PTTKey = NewPTTKeybind;
         }
