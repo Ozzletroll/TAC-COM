@@ -2,6 +2,7 @@
 using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Utilities.MouseHook;
 
 namespace TAC_COM.Models
 {
@@ -107,7 +108,32 @@ namespace TAC_COM.Models
             else return false;
         }
 
+        public bool IsPressed(MouseHookEventArgsExtended args)
+        {
+            if (args.Key != KeyCode) return false;
+
+            args.Handled = !Passthrough;
+            
+            if (args.IsKeyDown)
+            {
+                return true;
+            }
+            else return false;
+        }
+
         public bool IsReleased(KeyboardHookEventArgs args)
+        {
+            if (args.Key == KeyCode)
+            {
+                if (!args.IsKeyDown)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool IsReleased(MouseHookEventArgsExtended args)
         {
             if (args.Key == KeyCode)
             {
