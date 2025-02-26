@@ -173,7 +173,7 @@ namespace Tests.UnitTests.ModelTests
         /// method.
         /// </summary>
         [TestMethod]
-        public void TestIsReleased()
+        public void TestIsReleased_Keyboard()
         {
             testKeybind = new Keybind(
                 keyCode: VirtualKeyCode.KeyF,
@@ -202,13 +202,40 @@ namespace Tests.UnitTests.ModelTests
 
             KeyboardInputGenerator.KeyUp(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardCorrectTestArgs != null);
+            Assert.IsNotNull(keyboardCorrectTestArgs);
             Assert.IsTrue(testKeybind.IsReleased(keyboardCorrectTestArgs));
 
             KeyboardInputGenerator.KeyDown(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardIncorrectTestArgs != null);
+            Assert.IsNotNull(keyboardIncorrectTestArgs);
             Assert.IsFalse(testKeybind.IsReleased(keyboardIncorrectTestArgs));
+        }
+
+        [TestMethod]
+        public void TestIsReleased_Mouse()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.Mbutton,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            var testCorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Mbutton,
+                IsKeyDown = false
+            };
+
+            var testIncorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Xbutton1,
+                IsKeyDown = false
+            };
+
+            Assert.IsTrue(testKeybind.IsReleased(testCorrectArgs));
+            Assert.IsFalse(testKeybind.IsReleased(testIncorrectArgs));
         }
 
         /// <summary>
