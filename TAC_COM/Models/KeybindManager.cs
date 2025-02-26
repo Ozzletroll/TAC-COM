@@ -1,8 +1,10 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using System.Reactive.Linq;
+using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
+using TAC_COM.Utilities.MouseHook;
 
 namespace TAC_COM.Models
 {
@@ -19,6 +21,19 @@ namespace TAC_COM.Models
         private IDisposable? pttKeybindCatchSubscription;
         private IDisposable? userKeybindSubscription;
         private IDisposable? systemKeybindSubscription;
+
+        private IDisposable? pttMouseButtonSubscription;
+        private IDisposable? userMouseButtonSubscription;
+
+        private readonly HashSet<MouseMessages> allowedMouseMessages =
+        [
+            MouseMessages.WM_XBUTTON1DOWN,
+            MouseMessages.WM_XBUTTON1UP,
+            MouseMessages.WM_XBUTTON2DOWN,
+            MouseMessages.WM_XBUTTON2UP,
+            MouseMessages.WM_MBUTTONDOWN,
+            MouseMessages.WM_MBUTTONUP,
+        ];
 
         private ISettingsService settingsService = settingsService;
 
@@ -102,16 +117,32 @@ namespace TAC_COM.Models
             }
         }
 
+        public void TogglePTT(MouseHookEventArgsExtended args)
+        {
+            if (PTTKey != null)
+            {
+                if (PTTKey.IsPressed(args))
+                {
+                    if (!ToggleState) ToggleState = true;
+                }
+                if (PTTKey.IsReleased(args))
+                {
+                    if (ToggleState) ToggleState = false;
+                }
+            }
+        }
+
         public void TogglePTTKeybindSubscription(bool state)
         {
-            if (state) InitialisePTTKeySubscription();
+            if (state) InitialisePTTKeySubscriptions();
             else
             {
                 PTTKey?.CallKeyUp();
 
-                DisposeKeyboardSubscription(pttKeybindSubscription);
-                DisposeKeyboardSubscription(pttKeybindCatchSubscription);
-                DisposeKeyboardSubscription(systemKeybindSubscription);
+                pttKeybindSubscription?.Dispose();
+                pttKeybindCatchSubscription?.Dispose();
+                systemKeybindSubscription?.Dispose();
+                pttMouseButtonSubscription?.Dispose();
             };
         }
 
@@ -136,7 +167,7 @@ namespace TAC_COM.Models
         /// is handled here.
         /// </para>
         /// </remarks>
-        private void InitialisePTTKeySubscription()
+        private void InitialisePTTKeySubscriptions()
         {
             if (PTTKey == null) return;
 
@@ -173,18 +204,30 @@ namespace TAC_COM.Models
                 KeyboardInputGenerator.KeyUp(VirtualKeyCode.Control);
                 KeyboardInputGenerator.KeyUp(VirtualKeyCode.Menu);
             });
+
+            // Mouse hook to handle mouse button presses
+            pttMouseButtonSubscription
+                = MouseHookExtended.MouseEvents.Subscribe(args =>
+                {
+                    TogglePTT(args);
+                });
         }
 
         public void ToggleUserKeybindSubscription(bool state)
         {
             if (state) InitialiseUserKeybindSubscription();
-            else DisposeKeyboardSubscription(userKeybindSubscription);
+            else
+            {
+                userKeybindSubscription?.Dispose();
+                userMouseButtonSubscription?.Dispose();
+            }
         }
 
         /// <summary>
-        /// Method to initialise the <see cref="KeyboardHook"/> that
+        /// Method to initialise a <see cref="KeyboardHook"/> that
         /// listens for the user's proposed new keybind combination,
-        /// setting the <see cref="NewPTTKeybind"/> property.
+        /// as well as a <see cref="MouseHookExtended"/> that listens
+        /// for mouse button presses, updating the <see cref="NewPTTKeybind"/>.
         /// </summary>
         private void InitialiseUserKeybindSubscription()
         {
@@ -201,16 +244,17 @@ namespace TAC_COM.Models
                         NewPTTKeybind = new Keybind(args.Key, args.IsLeftShift, args.IsLeftControl, args.IsLeftAlt, args.IsModifier, PassthroughState);
                     }
                 });
-        }
 
-        /// <summary>
-        /// Method to manually dispose of an <see cref="IDisposable"/>
-        /// <see cref="KeyboardHook"/> subscription.
-        /// </summary>
-        /// <param name="subscription"></param>
-        private static void DisposeKeyboardSubscription(IDisposable? subscription)
-        {
-            subscription?.Dispose();
+            userMouseButtonSubscription = MouseHookExtended.MouseEvents.Subscribe(args =>
+            {
+                if (allowedMouseMessages.Contains(args.MouseMessage))
+                {
+                    if (args.IsKeyDown)
+                    {
+                        NewPTTKeybind = new Keybind(args.Key, false, false, false, false, PassthroughState);
+                    }
+                }
+            });
         }
 
         public void UpdateKeybind()
@@ -240,6 +284,8 @@ namespace TAC_COM.Models
             pttKeybindCatchSubscription?.Dispose();
             userKeybindSubscription?.Dispose();
             systemKeybindSubscription?.Dispose();
+            pttMouseButtonSubscription?.Dispose();
+            userMouseButtonSubscription?.Dispose();
         }
     }
 }
