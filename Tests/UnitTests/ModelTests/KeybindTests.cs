@@ -1,4 +1,5 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using System.Reactive.Linq;
+using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
 using Dapplo.Windows.Input.Mouse;
 using TAC_COM.Models;
@@ -151,37 +152,20 @@ namespace Tests.UnitTests.ModelTests
                 isModifier: false,
                 passthrough: false);
 
-            MouseHookEventArgsExtended? mouseCorrectTestArgs = null;
-
-            var testCorrectSubscription = MouseHookExtended.MouseEvents.Subscribe(args =>
+            var testCorrectArgs = new MouseHookEventArgsExtended
             {
-                if (args.Key == testKeybind.KeyCode)
-                {
-                    mouseCorrectTestArgs = args;
-                }
-            });
+                Key = VirtualKeyCode.Mbutton,
+                IsKeyDown = true
+            };
 
-            MouseHookEventArgsExtended? mouseIncorrectTestArgs = null;
-
-            VirtualKeyCode incorrectKeyCode = VirtualKeyCode.Xbutton1;
-
-            var testIncorrectSubscription = MouseHookExtended.MouseEvents.Subscribe(args =>
+            var testIncorrectArgs = new MouseHookEventArgsExtended
             {
-                if (args.Key == incorrectKeyCode)
-                {
-                    mouseIncorrectTestArgs = args;
-                }
-            });
+                Key = VirtualKeyCode.Xbutton1,
+                IsKeyDown = true
+            };
 
-            MouseInputGenerator.MouseDown(MouseButtons.Middle);
-
-            Assert.IsNotNull(mouseCorrectTestArgs);
-            Assert.IsTrue(testKeybind.IsPressed(mouseCorrectTestArgs));
-
-            MouseInputGenerator.MouseDown(MouseButtons.XButton1);
-
-            Assert.IsNotNull(mouseIncorrectTestArgs);
-            Assert.IsFalse(testKeybind.IsPressed(mouseIncorrectTestArgs));
+            Assert.IsTrue(testKeybind.IsPressed(testCorrectArgs));
+            Assert.IsFalse(testKeybind.IsPressed(testIncorrectArgs));
         }
 
         /// <summary>
