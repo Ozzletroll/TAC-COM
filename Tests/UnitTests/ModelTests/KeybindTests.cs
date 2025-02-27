@@ -211,6 +211,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsFalse(testKeybind.IsReleased(keyboardIncorrectTestArgs));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="Keybind.IsReleased(MouseHookEventArgsExtended)"/>
+        /// </summary>
         [TestMethod]
         public void TestIsReleased_Mouse()
         {
@@ -283,7 +286,7 @@ namespace Tests.UnitTests.ModelTests
 
             var expectedString = "Shift + Ctrl + Alt + V";
 
-            Assert.AreEqual(testKeybind.ToString(), expectedString);
+            Assert.AreEqual(expectedString, testKeybind.ToString());
         }
 
         /// <summary>
