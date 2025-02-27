@@ -82,7 +82,6 @@ namespace TAC_COM.ViewModels
         /// </summary>
         private void ExecuteCloseKeybindDialog()
         {
-            KeybindManager.ToggleUserKeybindSubscription(false);
             KeybindManager.UpdateKeybind();
             RaiseClose();
         }

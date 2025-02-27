@@ -1,5 +1,6 @@
 ﻿using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
+using TAC_COM.Utilities.MouseHook;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -46,12 +47,20 @@ namespace TAC_COM.Models.Interfaces
         bool Shift { get; set; }
 
         /// <summary>
-        /// Method to determine if the keybind is currently pressed.
+        /// Method to determine if the keyboard keybind is currently pressed.
         /// </summary>
         /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> to be
         /// checked against.</param>
         /// <returns> A boolean representing if the keybind is currently pressed.</returns>
         bool IsPressed(KeyboardHookEventArgs args);
+
+        /// <summary>
+        /// Method to determine if the mouse keybind is currently pressed.
+        /// </summary>
+        /// <param name="args"> The <see cref="MouseHookEventArgsExtended"/> to
+        /// be checked against.</param>
+        /// <returns> A boolean representing if the keybind is currently pressed.</returns>
+        bool IsPressed(MouseHookEventArgsExtended args);
 
         /// <summary>
         /// Method to determine if the keybind has been released.
@@ -61,6 +70,15 @@ namespace TAC_COM.Models.Interfaces
         /// <returns> A boolean representing if the keybind has been
         /// released.</returns>
         bool IsReleased(KeyboardHookEventArgs args);
+
+        /// <summary>
+        /// Method to determine if the mouse keybind has been released.
+        /// </summary>
+        /// <param name="args"> The <see cref="KeyboardHookEventArgs"/> to be
+        /// checked against.</param>
+        /// <returns> A boolean representing if the keybind has been
+        /// released.</returns>
+        bool IsReleased(MouseHookEventArgsExtended args);
 
         /// <summary>
         /// Method to manually call KeyUp combination,

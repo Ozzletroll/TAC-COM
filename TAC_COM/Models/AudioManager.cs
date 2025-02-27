@@ -22,6 +22,10 @@ namespace TAC_COM.Models
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? output;
         private IWasapiOutWrapper? sfxOutput;
+        private SemaphoreSlim startAudioSemaphore = new(1, 1);
+        private SemaphoreSlim sfxAudioSemaphore = new(1, 1);
+        private TaskCompletionSource<bool> startPlaybackCompletionSource = new();
+        private TaskCompletionSource<bool> stopPlaybackCompletionSource = new();
         private CancellationTokenSource cancellationTokenSource;
         private const float SFXVolume = 0.2f;
 
@@ -32,6 +36,8 @@ namespace TAC_COM.Models
         {
             GetAudioDevices();
             cancellationTokenSource = new CancellationTokenSource();
+            startPlaybackCompletionSource.SetResult(true);
+            stopPlaybackCompletionSource.SetResult(true);
         }
 
         private IAudioProcessor audioProcessor = new AudioProcessor();
@@ -338,23 +344,31 @@ namespace TAC_COM.Models
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
         public async Task ToggleStateAsync()
         {
-            if (state)
+            await startAudioSemaphore.WaitAsync();
+            try
             {
-                cancellationTokenSource?.Cancel();
-                cancellationTokenSource = new CancellationTokenSource();
-
-                if (activeInputDevice == null || activeOutputDevice == null)
+                if (state)
                 {
-                    State = false;
-                    return;
+                    cancellationTokenSource?.Cancel();
+                    cancellationTokenSource = new CancellationTokenSource();
+
+                    if (activeInputDevice == null || activeOutputDevice == null)
+                    {
+                        State = false;
+                        return;
+                    }
+                    await StartAudioAsync();
+                    PlaybackReady = true;
                 }
-                await StartAudioAsync();
-                PlaybackReady = true;
+                else
+                {
+                    await StopAudioAsync();
+                    PlaybackReady = false;
+                }
             }
-            else
+            finally
             {
-                await StopAudioAsync();
-                PlaybackReady = false;
+                startAudioSemaphore.Release();
             }
         }
 
@@ -383,6 +397,9 @@ namespace TAC_COM.Models
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task StartAudioAsync()
         {
+            // Wait until StopPlayback() has completed fully
+            await stopPlaybackCompletionSource.Task;
+
             await Task.Run(() =>
             {
                 if (activeInputDevice != null
@@ -408,6 +425,10 @@ namespace TAC_COM.Models
 
                     input.Start();
                     output.Play();
+
+                    startPlaybackCompletionSource.TrySetResult(true);
+                    startPlaybackCompletionSource = new TaskCompletionSource<bool>();
+                    startPlaybackCompletionSource.SetResult(true);
                 }
             });
         }
@@ -428,8 +449,11 @@ namespace TAC_COM.Models
         /// Stops the current recording and playback, 
         /// disposing of the <see cref="input"/> and <see cref="output"/>.
         /// </summary>
-        private void StopPlayback()
+        private async void StopPlayback()
         {
+            // Wait until StartAudioAsync() has completed fully
+            await startPlaybackCompletionSource.Task;
+
             input?.Stop();
             input?.Dispose();
             output?.Stop();
@@ -449,7 +473,11 @@ namespace TAC_COM.Models
             }
 
             AudioProcessor.Dispose();
+
             cancellationTokenSource?.Cancel();
+            stopPlaybackCompletionSource.TrySetResult(true);
+            stopPlaybackCompletionSource = new TaskCompletionSource<bool>();
+            stopPlaybackCompletionSource.SetResult(true);
         }
 
         /// <summary>
@@ -493,29 +521,38 @@ namespace TAC_COM.Models
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task PlayGateSFXAsync()
         {
-            if (activeOutputDevice != null
-                && ActiveProfile != null)
+            await sfxAudioSemaphore.WaitAsync();
+
+            try 
             {
-                if (activeOutputDevice.IsDisposed)
+                if (activeOutputDevice != null
+                && ActiveProfile != null)
                 {
-                    ResetOutputDevice();
-                };
+                    if (activeOutputDevice.IsDisposed)
+                    {
+                        ResetOutputDevice();
+                    };
 
-                IFileSourceWrapper? file;
-                if (bypassState)
-                {
-                    file = ActiveProfile.OpenSFXSource;
-                }
-                else
-                {
-                    file = ActiveProfile.CloseSFXSource;
-                }
+                    IFileSourceWrapper? file;
+                    if (bypassState)
+                    {
+                        file = ActiveProfile.OpenSFXSource;
+                    }
+                    else
+                    {
+                        file = ActiveProfile.CloseSFXSource;
+                    }
 
-                if (file != null)
-                {
-                    file.SetPosition(new TimeSpan(0));
-                    await PlaySFXAsync(file);
+                    if (file != null)
+                    {
+                        file.SetPosition(new TimeSpan(0));
+                        await PlaySFXAsync(file);
+                    }
                 }
+            }
+            finally
+            {
+                sfxAudioSemaphore.Release();
             }
         }
 

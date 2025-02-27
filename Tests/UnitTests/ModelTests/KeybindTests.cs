@@ -1,6 +1,9 @@
-﻿using Dapplo.Windows.Input.Enums;
+﻿using System.Reactive.Linq;
+using Dapplo.Windows.Input.Enums;
 using Dapplo.Windows.Input.Keyboard;
+using Dapplo.Windows.Input.Mouse;
 using TAC_COM.Models;
+using TAC_COM.Utilities.MouseHook;
 
 namespace Tests.UnitTests.ModelTests
 {
@@ -97,7 +100,7 @@ namespace Tests.UnitTests.ModelTests
         /// method.
         /// </summary>
         [TestMethod]
-        public void TestIsPressed()
+        public void TestIsPressed_Keyboard()
         {
             testKeybind = new Keybind(
                 keyCode: VirtualKeyCode.KeyV,
@@ -129,13 +132,40 @@ namespace Tests.UnitTests.ModelTests
 
             KeyboardInputGenerator.KeyCombinationPress([VirtualKeyCode.Shift, VirtualKeyCode.KeyV]);
 
-            Assert.IsTrue(keyboardCorrectTestArgs != null);
+            Assert.IsNotNull(keyboardCorrectTestArgs);
             Assert.IsTrue(testKeybind.IsPressed(keyboardCorrectTestArgs));
 
             KeyboardInputGenerator.KeyCombinationPress([VirtualKeyCode.Control, VirtualKeyCode.KeyX]);
 
-            Assert.IsTrue(keyboardIncorrectTestArgs != null);
+            Assert.IsNotNull(keyboardIncorrectTestArgs);
             Assert.IsFalse(testKeybind.IsPressed(keyboardIncorrectTestArgs));
+        }
+
+        [TestMethod]
+        public void TestIsPressed_Mouse()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.Mbutton,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            var testCorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Mbutton,
+                IsKeyDown = true
+            };
+
+            var testIncorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Xbutton1,
+                IsKeyDown = true
+            };
+
+            Assert.IsTrue(testKeybind.IsPressed(testCorrectArgs));
+            Assert.IsFalse(testKeybind.IsPressed(testIncorrectArgs));
         }
 
         /// <summary>
@@ -143,7 +173,7 @@ namespace Tests.UnitTests.ModelTests
         /// method.
         /// </summary>
         [TestMethod]
-        public void TestIsReleased()
+        public void TestIsReleased_Keyboard()
         {
             testKeybind = new Keybind(
                 keyCode: VirtualKeyCode.KeyF,
@@ -172,13 +202,43 @@ namespace Tests.UnitTests.ModelTests
 
             KeyboardInputGenerator.KeyUp(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardCorrectTestArgs != null);
+            Assert.IsNotNull(keyboardCorrectTestArgs);
             Assert.IsTrue(testKeybind.IsReleased(keyboardCorrectTestArgs));
 
             KeyboardInputGenerator.KeyDown(VirtualKeyCode.KeyF);
 
-            Assert.IsTrue(keyboardIncorrectTestArgs != null);
+            Assert.IsNotNull(keyboardIncorrectTestArgs);
             Assert.IsFalse(testKeybind.IsReleased(keyboardIncorrectTestArgs));
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="Keybind.IsReleased(MouseHookEventArgsExtended)"/>
+        /// </summary>
+        [TestMethod]
+        public void TestIsReleased_Mouse()
+        {
+            testKeybind = new Keybind(
+                keyCode: VirtualKeyCode.Mbutton,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false);
+
+            var testCorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Mbutton,
+                IsKeyDown = false
+            };
+
+            var testIncorrectArgs = new MouseHookEventArgsExtended
+            {
+                Key = VirtualKeyCode.Xbutton1,
+                IsKeyDown = false
+            };
+
+            Assert.IsTrue(testKeybind.IsReleased(testCorrectArgs));
+            Assert.IsFalse(testKeybind.IsReleased(testIncorrectArgs));
         }
 
         /// <summary>
@@ -226,7 +286,7 @@ namespace Tests.UnitTests.ModelTests
 
             var expectedString = "Shift + Ctrl + Alt + V";
 
-            Assert.AreEqual(testKeybind.ToString(), expectedString);
+            Assert.AreEqual(expectedString, testKeybind.ToString());
         }
 
         /// <summary>
