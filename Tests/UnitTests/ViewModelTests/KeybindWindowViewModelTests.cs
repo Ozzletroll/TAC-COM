@@ -72,7 +72,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.KeybindManager = mockKeybindManager.Object;
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.PassthroughState), true);
-            Assert.AreEqual(true, testViewModel.PassthroughState);
+            Assert.IsTrue(testViewModel.PassthroughState);
             mockKeybindManager.VerifySet(keybindManager => keybindManager.PassthroughState = true);
         }
 
