@@ -91,7 +91,7 @@ namespace TAC_COM.Utilities.MouseHook
             // Handle XButton1 and XButton2
             // Here, the XButton messages are split into separate messages for each button.
             // The high-order word of MouseData specifies which X button was pressed or released.
-            if (mouseMessage == MouseMessages.WM_XBUTTON1DOWN 
+            if (mouseMessage == MouseMessages.WM_XBUTTON1DOWN
                 || mouseMessage == MouseMessages.WM_XBUTTON1UP)
             {
                 uint xButton = mouseLowLevelHookStruct.MouseData >> 16;
@@ -115,7 +115,7 @@ namespace TAC_COM.Utilities.MouseHook
                 }
             }
             // Handle middle mouse button
-            else if (mouseMessage == MouseMessages.WM_MBUTTONDOWN 
+            else if (mouseMessage == MouseMessages.WM_MBUTTONDOWN
                 || mouseMessage == MouseMessages.WM_MBUTTONUP)
             {
                 keyCode = VirtualKeyCode.Mbutton;

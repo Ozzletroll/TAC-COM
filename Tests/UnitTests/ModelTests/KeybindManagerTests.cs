@@ -455,10 +455,10 @@ namespace Tests.UnitTests.ModelTests
 
             FieldInfo? pttKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
-            
+
             FieldInfo? pttKeybindCatchSubscriptionField
                 = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
-            
+
             FieldInfo? userKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
 

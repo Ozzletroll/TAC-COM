@@ -113,7 +113,7 @@ namespace TAC_COM.Models
             if (args.Key != KeyCode) return false;
 
             args.Handled = !Passthrough;
-            
+
             if (args.IsKeyDown)
             {
                 return true;

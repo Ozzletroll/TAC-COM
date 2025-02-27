@@ -293,7 +293,6 @@ namespace TAC_COM.Models
         {
             activeInputDevice = inputDevice.Device;
             InputMeter.Initialise(activeInputDevice);
-            DebugService.GetDeviceInfo(activeInputDevice);
         }
 
         /// <summary>
@@ -307,7 +306,6 @@ namespace TAC_COM.Models
             activeOutputDevice = outputDeviceWrapper.Device;
             lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
             OutputMeter.Initialise(activeOutputDevice);
-            DebugService.GetDeviceInfo(activeOutputDevice);
         }
 
         /// <summary>
@@ -525,7 +523,7 @@ namespace TAC_COM.Models
         {
             await sfxAudioSemaphore.WaitAsync();
 
-            try 
+            try
             {
                 if (activeOutputDevice != null
                 && ActiveProfile != null)

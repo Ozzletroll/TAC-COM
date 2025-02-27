@@ -219,7 +219,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel,nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.NoiseGateThreshold), testThresholdValue);
 
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.NoiseGateThreshold), testThresholdValue), Times.Once);
@@ -244,7 +244,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.SettingsService = mockSettingsService.Object;
             testViewModel.AudioManager = mockAudioManager.Object;
 
-            Utils.TestPropertyChange(testViewModel,nameof(testViewModel.OutputLevel),testOutputLevelValue);
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.OutputLevel), testOutputLevelValue);
 
             mockSettingsService.Verify(
                 settingsService => settingsService.UpdateAppConfig(nameof(testViewModel.OutputLevel), testOutputLevelValue), Times.Once);
