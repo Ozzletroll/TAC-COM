@@ -173,7 +173,7 @@ namespace TAC_COM.Models
 
             // Use generic keyboardEvents hook so that key up values are passed
             pttKeybindSubscription
-                = KeyboardHook.KeyboardEvents.Subscribe(args =>
+                = KeyboardHook.KeyboardEvents.Where(args => args.Key == PTTKey.KeyCode).Subscribe(args =>
                 {
                     TogglePTT(args);
                 });
@@ -207,7 +207,7 @@ namespace TAC_COM.Models
 
             // Mouse hook to handle mouse button presses
             pttMouseButtonSubscription
-                = MouseHookExtended.MouseEvents.Subscribe(args =>
+                = MouseHookExtended.MouseEvents.Where(args => allowedMouseMessages.Contains(args.MouseMessage)).Subscribe(args =>
                 {
                     TogglePTT(args);
                 });
