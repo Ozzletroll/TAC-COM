@@ -22,8 +22,8 @@ namespace TAC_COM.Models
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? output;
         private IWasapiOutWrapper? sfxOutput;
-        private SemaphoreSlim startAudioSemaphore = new(1, 1);
-        private SemaphoreSlim sfxAudioSemaphore = new(1, 1);
+        private readonly SemaphoreSlim startAudioSemaphore = new(1, 1);
+        private readonly SemaphoreSlim sfxAudioSemaphore = new(1, 1);
         private TaskCompletionSource<bool> startPlaybackCompletionSource = new();
         private TaskCompletionSource<bool> stopPlaybackCompletionSource = new();
         private CancellationTokenSource cancellationTokenSource;
@@ -293,6 +293,7 @@ namespace TAC_COM.Models
         {
             activeInputDevice = inputDevice.Device;
             InputMeter.Initialise(activeInputDevice);
+            DebugService.GetDeviceInfo(activeInputDevice);
         }
 
         /// <summary>
@@ -306,6 +307,7 @@ namespace TAC_COM.Models
             activeOutputDevice = outputDeviceWrapper.Device;
             lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
             OutputMeter.Initialise(activeOutputDevice);
+            DebugService.GetDeviceInfo(activeOutputDevice);
         }
 
         /// <summary>
