@@ -6,6 +6,7 @@ using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Settings;
+using TAC_COM.Utilities.MouseHook;
 using Tests.Utilities;
 
 namespace Tests.UnitTests.ModelTests
@@ -121,6 +122,28 @@ namespace Tests.UnitTests.ModelTests
 
         /// <summary>
         /// Test method for the <see cref="KeybindManager.TogglePTT"/> method,
+        /// with a test case of <see cref="Keybind.IsPressed(MouseHookEventArgsExtended)"/> = true.
+        /// </summary>
+        [TestMethod]
+        public void TestTogglePTT_PTTMouseButtonIsPressed()
+        {
+            var mockPTTKey = new Mock<IKeybind>();
+            mockPTTKey.Setup(key => key.IsPressed(It.IsAny<MouseHookEventArgsExtended>())).Returns(true);
+
+            var mockMouseHookEventArgs = new Mock<MouseHookEventArgsExtended>();
+
+            FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
+            pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            keybindManager.ToggleState = false;
+
+            keybindManager.TogglePTT(mockMouseHookEventArgs.Object);
+
+            Assert.IsTrue(keybindManager.ToggleState);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTT"/> method,
         /// with a test case of <see cref="Keybind.IsReleased(KeyboardHookEventArgs)"/> = true.
         /// </summary>
         [TestMethod]
@@ -144,16 +167,46 @@ namespace Tests.UnitTests.ModelTests
         }
 
         /// <summary>
-        /// Test method for the <see cref="KeybindManager.TogglePTTKeybindSubscription"/> method,
-        /// with the parameter state = true.
+        /// Test method for the <see cref="KeybindManager.TogglePTT"/> method,
+        /// with a test case of <see cref="Keybind.IsReleased(MouseHookEventArgsExtended)"/> = true.
         /// </summary>
         [TestMethod]
-        public void TestTogglePTTKeybindSubscription_StateTrue()
+        public void TestTogglePTT_PTTMouseButtonIsReleased()
         {
             var mockPTTKey = new Mock<IKeybind>();
-            mockPTTKey.Object.Passthrough = true;
+
+            mockPTTKey.Setup(key => key.IsPressed(It.IsAny<MouseHookEventArgsExtended>())).Returns(false);
+            mockPTTKey.Setup(key => key.IsReleased(It.IsAny<MouseHookEventArgsExtended>())).Returns(true);
+
+            var mockMouseHookEventArgs = new Mock<MouseHookEventArgsExtended>();
+
             FieldInfo? pttKeyField = typeof(KeybindManager).GetField("pttKey", BindingFlags.NonPublic | BindingFlags.Instance);
             pttKeyField?.SetValue(keybindManager, mockPTTKey.Object);
+
+            keybindManager.ToggleState = true;
+
+            keybindManager.TogglePTT(mockMouseHookEventArgs.Object);
+
+            Assert.IsFalse(keybindManager.ToggleState);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTTKeybindSubscription"/> method,
+        /// with the parameter state = true and keyboard input.
+        /// </summary>
+        [TestMethod]
+        public void TestTogglePTTKeybindSubscription_StateTrue_KeyboardInput()
+        {
+            var mockPTTKey = new Keybind(
+                keyCode: VirtualKeyCode.KeyF,
+                shift: false,
+                ctrl: false,
+                alt: false,
+                isModifier: false,
+                passthrough: false
+            );
+
+            keybindManager.PTTKey = mockPTTKey;
 
             keybindManager.TogglePTTKeybindSubscription(true);
 
@@ -166,9 +219,59 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? systemKeybindSubscription = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
             var systemKeybindSubscriptionValue = systemKeybindSubscription?.GetValue(keybindManager);
 
+            FieldInfo? mouseButtonSubscription = typeof(KeybindManager).GetField("pttMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var mouseButtonSubscriptionValue = mouseButtonSubscription?.GetValue(keybindManager);
+
             Assert.IsNotNull(pttKeyValue);
             Assert.IsNotNull(pttKeybingCatchValue);
             Assert.IsNotNull(systemKeybindSubscriptionValue);
+            Assert.IsNotNull(mouseButtonSubscriptionValue);
+
+            KeyboardInputGenerator.KeyDown(VirtualKeyCode.KeyF);
+
+            Assert.IsTrue(keybindManager.ToggleState);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.TogglePTTKeybindSubscription"/> method,
+        /// with the parameter state = true and mouse input.
+        /// </summary>
+        [TestMethod]
+        public void TestTogglePTTKeybindSubscription_StateTrue_MouseInput()
+        {
+            var mockPTTKey = new Keybind(
+               keyCode: VirtualKeyCode.Xbutton1,
+               shift: false,
+               ctrl: false,
+               alt: false,
+               isModifier: false,
+               passthrough: false
+           );
+
+            keybindManager.PTTKey = mockPTTKey;
+
+            keybindManager.TogglePTTKeybindSubscription(true);
+
+            FieldInfo? pttKeybindSubscription = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var pttKeyValue = pttKeybindSubscription?.GetValue(keybindManager);
+
+            FieldInfo? pttKeybindCatchSubscription = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var pttKeybingCatchValue = pttKeybindCatchSubscription?.GetValue(keybindManager);
+
+            FieldInfo? systemKeybindSubscription = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var systemKeybindSubscriptionValue = systemKeybindSubscription?.GetValue(keybindManager);
+
+            FieldInfo? mouseButtonSubscription = typeof(KeybindManager).GetField("pttMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var mouseButtonSubscriptionValue = mouseButtonSubscription?.GetValue(keybindManager);
+
+            Assert.IsNotNull(pttKeyValue);
+            Assert.IsNotNull(pttKeybingCatchValue);
+            Assert.IsNotNull(systemKeybindSubscriptionValue);
+            Assert.IsNotNull(mouseButtonSubscriptionValue);
+
+            KeyboardInputGenerator.KeyDown(VirtualKeyCode.Xbutton1);
+
+            Assert.IsTrue(keybindManager.ToggleState);
         }
 
         /// <summary>
@@ -192,30 +295,37 @@ namespace Tests.UnitTests.ModelTests
             var mockSystemKeybindSubscription = new Mock<IDisposable>();
             mockSystemKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
 
+            var mockPTTMouseButtonSubscription = new Mock<IDisposable>();
+            mockPTTMouseButtonSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
             FieldInfo? pttKeybindSubscriptionField = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo? pttKeybindCatchSubscriptionField = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo? systemKeybindSubscriptionField = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? pttMouseButtonSubscriptionField = typeof(KeybindManager).GetField("pttMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
 
             pttKeybindSubscriptionField?.SetValue(keybindManager, mockKeybindSubscription.Object);
             pttKeybindCatchSubscriptionField?.SetValue(keybindManager, mockPTTKeybindCatchSubscription.Object);
             systemKeybindSubscriptionField?.SetValue(keybindManager, mockSystemKeybindSubscription.Object);
+            pttMouseButtonSubscriptionField?.SetValue(keybindManager, mockPTTMouseButtonSubscription.Object);
 
             keybindManager.TogglePTTKeybindSubscription(false);
 
             var pttKeyValue = pttKeybindSubscriptionField?.GetValue(keybindManager);
             var pttKeybindCatchValue = pttKeybindCatchSubscriptionField?.GetValue(keybindManager);
             var systemKeybindSubscriptionValue = systemKeybindSubscriptionField?.GetValue(keybindManager);
+            var mouseButtonSubscriptionValue = pttMouseButtonSubscriptionField?.GetValue(keybindManager);
 
             mockKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
             mockPTTKeybindCatchSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
             mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockPTTMouseButtonSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
 
         /// <summary>
         /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
         /// with the parameter state = true.
         /// </summary>
-        public void TestToggleUserKeybindSubscription_StateTrue()
+        public void TestToggleUserKeybindSubscription_StateTrue_KeyboardInput()
         {
             keybindManager.ToggleUserKeybindSubscription(true);
             KeyboardInputGenerator.KeyCombinationPress(VirtualKeyCode.KeyV);
@@ -223,9 +333,34 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? userKeybindSubscriptionField = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
             var userKeybindSubscriptionValue = userKeybindSubscriptionField?.GetValue(keybindManager);
 
+            FieldInfo? userMouseButtonSubscriptionField = typeof(KeybindManager).GetField("userMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var userMouseButtonSubscriptionValue = userMouseButtonSubscriptionField?.GetValue(keybindManager);
+
             Assert.IsNotNull(userKeybindSubscriptionValue);
+            Assert.IsNotNull(userMouseButtonSubscriptionValue);
             Assert.IsNotNull(keybindManager.NewPTTKeybind);
             Assert.AreEqual(VirtualKeyCode.KeyV, keybindManager.NewPTTKeybind.KeyCode);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
+        /// with the parameter state = true and mouse input.
+        /// </summary>
+        public void TestToggleUserKeybindSubscription_StateTrue_MouseInput()
+        {
+            keybindManager.ToggleUserKeybindSubscription(true);
+            KeyboardInputGenerator.KeyCombinationPress(VirtualKeyCode.Mbutton);
+
+            FieldInfo? userKeybindSubscriptionField = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var userKeybindSubscriptionValue = userKeybindSubscriptionField?.GetValue(keybindManager);
+
+            FieldInfo? userMouseButtonSubscriptionField = typeof(KeybindManager).GetField("userMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            var userMouseButtonSubscriptionValue = userMouseButtonSubscriptionField?.GetValue(keybindManager);
+
+            Assert.IsNotNull(userKeybindSubscriptionValue);
+            Assert.IsNotNull(userMouseButtonSubscriptionValue);
+            Assert.IsNotNull(keybindManager.NewPTTKeybind);
+            Assert.AreEqual(VirtualKeyCode.Mbutton, keybindManager.NewPTTKeybind.KeyCode);
         }
 
         /// <summary>
@@ -238,12 +373,19 @@ namespace Tests.UnitTests.ModelTests
             var mockKeybindSubscription = new Mock<IDisposable>();
             mockKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
 
+            var mockMouseButtonSubscription = new Mock<IDisposable>();
+            mockMouseButtonSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+
             FieldInfo? userKeybindSubscriptionField = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
             userKeybindSubscriptionField?.SetValue(keybindManager, mockKeybindSubscription.Object);
+
+            FieldInfo? userMouseButtonSubscriptionField = typeof(KeybindManager).GetField("userMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+            userMouseButtonSubscriptionField?.SetValue(keybindManager, mockMouseButtonSubscription.Object);
 
             keybindManager.ToggleUserKeybindSubscription(false);
 
             mockKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockMouseButtonSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
 
         /// <summary>
@@ -301,31 +443,40 @@ namespace Tests.UnitTests.ModelTests
             var mockPTTKeybindCatchSubscription = new Mock<IDisposable>();
             var mockUserKeybindSubscription = new Mock<IDisposable>();
             var mockSystemKeybindSubscription = new Mock<IDisposable>();
+            var mockPTTMouseButtonSubscription = new Mock<IDisposable>();
+            var mockUserMouseButtonSubscription = new Mock<IDisposable>();
 
             mockPTTKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
             mockPTTKeybindCatchSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
             mockUserKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
             mockSystemKeybindSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+            mockPTTMouseButtonSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
+            mockUserMouseButtonSubscription.Setup(mockSubscription => mockSubscription.Dispose()).Verifiable();
 
             FieldInfo? pttKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("pttKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            pttKeybindSubscriptionField?.SetValue(keybindManager, mockPTTKeybindSubscription.Object);
-
+            
             FieldInfo? pttKeybindCatchSubscriptionField
                 = typeof(KeybindManager).GetField("pttKeybindCatchSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            pttKeybindCatchSubscriptionField?.SetValue(keybindManager, mockPTTKeybindCatchSubscription.Object);
-
+            
             FieldInfo? userKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("userKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            userKeybindSubscriptionField?.SetValue(keybindManager, mockUserKeybindSubscription.Object);
 
             FieldInfo? systemKeybindSubscriptionField
                 = typeof(KeybindManager).GetField("systemKeybindSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
 
+            FieldInfo? pttMouseButtonSubscriptionField
+                = typeof(KeybindManager).GetField("pttMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            FieldInfo? userMouseButtonSubscriptionField
+                = typeof(KeybindManager).GetField("userMouseButtonSubscription", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            pttKeybindSubscriptionField?.SetValue(keybindManager, mockPTTKeybindSubscription.Object);
+            pttKeybindCatchSubscriptionField?.SetValue(keybindManager, mockPTTKeybindCatchSubscription.Object);
+            userKeybindSubscriptionField?.SetValue(keybindManager, mockUserKeybindSubscription.Object);
             systemKeybindSubscriptionField?.SetValue(keybindManager, mockSystemKeybindSubscription.Object);
+            pttMouseButtonSubscriptionField?.SetValue(keybindManager, mockPTTMouseButtonSubscription.Object);
+            userMouseButtonSubscriptionField?.SetValue(keybindManager, mockUserMouseButtonSubscription.Object);
 
             keybindManager.Dispose();
 
@@ -333,6 +484,8 @@ namespace Tests.UnitTests.ModelTests
             mockPTTKeybindCatchSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
             mockUserKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
             mockSystemKeybindSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockPTTMouseButtonSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
+            mockUserMouseButtonSubscription.Verify(mockSubscription => mockSubscription.Dispose(), Times.Once);
         }
     }
 }
