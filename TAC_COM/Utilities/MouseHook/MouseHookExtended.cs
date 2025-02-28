@@ -83,7 +83,7 @@ namespace TAC_COM.Utilities.MouseHook
         /// <returns>MouseEventArgs</returns>
         private static MouseHookEventArgsExtended CreateMouseEventArgs(nint wParam, nint lParam)
         {
-            var mouseLowLevelHookStruct = (MouseLowLevelHookStruct)Marshal.PtrToStructure(lParam, typeof(MouseLowLevelHookStruct));
+            var mouseLowLevelHookStruct = Marshal.PtrToStructure<MouseLowLevelHookStruct>(lParam);
             var mouseMessage = (MouseMessages)wParam.ToInt32();
             VirtualKeyCode keyCode = VirtualKeyCode.None;
             bool isKeyDown = false;
