@@ -25,16 +25,6 @@ namespace TAC_COM.Models
         private IDisposable? pttMouseButtonSubscription;
         private IDisposable? userMouseButtonSubscription;
 
-        private readonly HashSet<MouseMessages> allowedMouseMessages =
-        [
-            MouseMessages.WM_XBUTTON1DOWN,
-            MouseMessages.WM_XBUTTON1UP,
-            MouseMessages.WM_XBUTTON2DOWN,
-            MouseMessages.WM_XBUTTON2UP,
-            MouseMessages.WM_MBUTTONDOWN,
-            MouseMessages.WM_MBUTTONUP,
-        ];
-
         private ISettingsService settingsService = settingsService;
 
         /// <summary>
@@ -207,7 +197,8 @@ namespace TAC_COM.Models
 
             // Mouse hook to handle mouse button presses
             pttMouseButtonSubscription
-                = MouseHookExtended.MouseEvents.Where(args => allowedMouseMessages.Contains(args.MouseMessage)).Subscribe(args =>
+                = MouseHookExtended.MouseEvents.Where(
+                    args => MouseMessageFilter.AllowedMouseMessages.Contains(args.MouseMessage)).Subscribe(args =>
                 {
                     TogglePTT(args);
                 });
@@ -231,10 +222,7 @@ namespace TAC_COM.Models
         /// </summary>
         private void InitialiseUserKeybindSubscription()
         {
-            if (PTTKey != null)
-            {
-                PTTKey?.CallKeyUp();
-            };
+            PTTKey?.CallKeyUp();
 
             userKeybindSubscription
                 = KeyboardHook.KeyboardEvents.Subscribe(args =>
@@ -245,16 +233,14 @@ namespace TAC_COM.Models
                     }
                 });
 
-            userMouseButtonSubscription = MouseHookExtended.MouseEvents.Subscribe(args =>
-            {
-                if (allowedMouseMessages.Contains(args.MouseMessage))
+            userMouseButtonSubscription = MouseHookExtended.MouseEvents.Where(
+                args => MouseMessageFilter.AllowedMouseMessages.Contains(args.MouseMessage)).Subscribe(args =>
                 {
                     if (args.IsKeyDown)
                     {
                         NewPTTKeybind = new Keybind(args.Key, false, false, false, false, PassthroughState);
                     }
-                }
-            });
+                });
         }
 
         public void UpdateKeybind()
