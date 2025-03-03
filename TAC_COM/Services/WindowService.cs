@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using AdonisUI.Controls;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
@@ -17,14 +18,13 @@ namespace TAC_COM.Services
     {
         private readonly IApplicationContextWrapper applicationContext = _applicationContext;
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
-        private KeybindWindowView? keybindWindow;
 
         /// <summary>
         /// Boolean value representing if the newly created
         /// windows need to be shown.
         /// </summary>
         /// <remarks>
-        /// This of true by default. Set to false during
+        /// This is true by default. Set to false during
         /// testing to prevent dialogs showing.
         /// </remarks>
         public bool ShowWindow = true;
@@ -32,17 +32,30 @@ namespace TAC_COM.Services
         public void OpenKeybindWindow()
         {
             var viewModel = new KeybindWindowViewModel(keybindManager);
+            OpenWindow<KeybindWindowView, KeybindWindowViewModel>(viewModel);
+        }
 
-            keybindWindow = new KeybindWindowView()
+        public void OpenDebugWindow()
+        {
+            var viewModel = new DebugWindowViewModel();
+            OpenWindow<DebugWindowView, DebugWindowViewModel>(viewModel);
+        }
+
+        public TView OpenWindow<TView, TViewModel>(ViewModelBase viewModel)
+            where TViewModel : ViewModelBase
+            where TView : AdonisWindow, new()
+        {
+            var window = new TView
             {
                 DataContext = viewModel,
                 Owner = applicationContext.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Icon = applicationContext.MainWindow.Icon,
             };
-            viewModel.Close += (s, e) => keybindWindow.Close();
 
-            if (ShowWindow) keybindWindow.ShowDialog();
+            viewModel.Close += (s, e) => window.Close();
+            if (ShowWindow) window.ShowDialog();
+            return window;
         }
     }
 }

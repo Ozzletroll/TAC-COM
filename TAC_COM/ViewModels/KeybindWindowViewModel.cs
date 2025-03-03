@@ -48,27 +48,6 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
-        /// Delegate that represents the method that will handle the close
-        /// event of the <see cref="Views.KeybindWindowView"/>.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public delegate void CloseEventHandler(object sender, EventArgs e);
-
-        /// <summary>
-        /// Event that occurs when the window is closed.
-        /// </summary>
-        public event CloseEventHandler? Close;
-
-        /// <summary>
-        /// Method to manually raise the close event.
-        /// </summary>
-        protected virtual void RaiseClose()
-        {
-            Close?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
         /// <see cref="RelayCommand"/> to confirm and close the new keybind
         /// dialog. Bound to the "Confirm" button in the
         /// <see cref="Views.KeybindWindowView"/>.

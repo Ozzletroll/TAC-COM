@@ -11,5 +11,11 @@
         /// as a dialog.
         /// </summary>
         void OpenKeybindWindow();
+
+        /// <summary>
+        /// Method to open a new instance of a <see cref="Views.DebugWindowView"/>
+        /// as a dialog.
+        /// </summary>
+        void OpenDebugWindow();
     }
 }
