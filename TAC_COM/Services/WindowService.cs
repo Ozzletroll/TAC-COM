@@ -35,9 +35,9 @@ namespace TAC_COM.Services
             OpenWindow<KeybindWindowView, KeybindWindowViewModel>(viewModel);
         }
 
-        public void OpenDebugWindow()
+        public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
-            var viewModel = new DebugWindowViewModel();
+            var viewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
             OpenWindow<DebugWindowView, DebugWindowViewModel>(viewModel);
         }
 

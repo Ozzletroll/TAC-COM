@@ -518,6 +518,21 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// <see cref="RelayCommand"/> to show debug panel window.
+        /// Bound to a button in the <see cref="Views.AudioInterfaceView"/>.
+        /// </summary>
+        public RelayCommand ShowDebugDialog => new(execute => ExecuteShowDebugDialog());
+
+        /// <summary>
+        /// Method to open the debug window using the
+        /// <see cref="WindowService"/>.
+        /// </summary>
+        private void ExecuteShowDebugDialog()
+        {
+            windowService.OpenDebugWindow(AudioManager.GetDeviceInfo());
+        }
+
+        /// <summary>
         /// <see cref="RelayCommand"/> to show keybind window.
         /// Bound to a button in the <see cref="Views.AudioInterfaceView"/>.
         /// </summary>
