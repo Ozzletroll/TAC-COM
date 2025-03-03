@@ -1,4 +1,6 @@
-﻿using TAC_COM.Models;
+﻿using System.Diagnostics;
+using System.Reflection;
+using TAC_COM.Models;
 
 namespace TAC_COM.ViewModels
 {
@@ -37,6 +39,18 @@ namespace TAC_COM.ViewModels
             {
                 outputDevice = value;
             }
+        }
+
+        public static string VersionNumber
+        {
+            get => GetTitle();
+        }
+
+        private static string GetTitle()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fileVersionInfo.FileVersion ?? "Version not found";
         }
     }
 }
