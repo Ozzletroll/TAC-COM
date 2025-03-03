@@ -13,17 +13,29 @@ namespace TAC_COM.Models
         /// </summary>
         public required string DeviceName { get; set; }
 
+        private string? sampleRate;
+
         /// <summary>
         /// Gets or sets the value representing the device's
         /// samplerate.
         /// </summary>
-        public required string SampleRate { get; set; }
+        public required string SampleRate
+        {
+            get => sampleRate != null ? sampleRate + "Hz" : "---";
+            set => sampleRate = value;
+        }
+
+        private string? bitsPerSample;
 
         /// <summary>
         /// Gets or sets the value representing the device's
         /// bit depth per sample.
         /// </summary>
-        public required string BitsPerSample { get; set; }
+        public required string BitsPerSample
+        {
+            get => bitsPerSample != null ? bitsPerSample + "bit" : "---";
+            set => bitsPerSample = value;
+        }
 
         /// <summary>
         /// Gets or sets the value representing the device's
