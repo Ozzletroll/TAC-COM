@@ -283,6 +283,31 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(OutputDevices));
         }
 
+        public Dictionary<string, DeviceInfo> GetDeviceInfo()
+        {
+            var inputDeviceInfo = new DeviceInfo()
+            {
+                DeviceName = activeInputDevice?.FriendlyName ?? "No device set",
+                SampleRate = activeInputDevice?.DeviceFormat.SampleRate.ToString() ?? "---",
+                BitsPerSample = activeInputDevice?.DeviceFormat.BitsPerSample.ToString() ?? "---",
+                WaveFormatTag = activeInputDevice?.DeviceFormat.WaveFormatTag.ToString() ?? "---",
+            };
+
+            var outputDeviceInfo = new DeviceInfo()
+            {
+                DeviceName = activeOutputDevice?.FriendlyName ?? "No device set",
+                SampleRate = activeOutputDevice?.DeviceFormat.SampleRate.ToString() ?? "---",
+                BitsPerSample = activeOutputDevice?.DeviceFormat.BitsPerSample.ToString() ?? "---",
+                WaveFormatTag = activeOutputDevice?.DeviceFormat.WaveFormatTag.ToString() ?? "---",
+            };
+
+            return new Dictionary<string, DeviceInfo>
+            {
+                { "InputDevice", inputDeviceInfo },
+                { "OutputDevice", outputDeviceInfo }
+            };
+        }
+
         /// <summary>
         /// Sets the current active input device to the 
         /// <see cref="MMDevice"/> of the given <see cref="IMMDeviceWrapper"/>
