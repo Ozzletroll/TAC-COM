@@ -65,12 +65,14 @@ namespace TAC_COM.ViewModels
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("Input Device:");
             stringBuilder.AppendLine(InputDevice.DeviceName);
+            stringBuilder.AppendLine(InputDevice.ChannelCount);
             stringBuilder.AppendLine(InputDevice.SampleRate);
             stringBuilder.AppendLine(InputDevice.BitsPerSample);
             stringBuilder.AppendLine(InputDevice.WaveFormatTag);
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("Output Device:");
             stringBuilder.AppendLine(OutputDevice.DeviceName);
+            stringBuilder.AppendLine(OutputDevice.ChannelCount);
             stringBuilder.AppendLine(OutputDevice.SampleRate);
             stringBuilder.AppendLine(OutputDevice.BitsPerSample);
             stringBuilder.AppendLine(OutputDevice.WaveFormatTag);

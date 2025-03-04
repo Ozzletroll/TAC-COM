@@ -13,6 +13,18 @@ namespace TAC_COM.Models
         /// </summary>
         public required string DeviceName { get; set; }
 
+        private string? channelCount;
+
+        /// <summary>
+        /// Gets or sets the value representing the device's
+        /// channel count.
+        /// </summary>
+        public required string ChannelCount
+        {
+            get => channelCount != null ? channelCount + " channel" : "---";
+            set => channelCount = value;
+        }
+
         private string? sampleRate;
 
         /// <summary>
