@@ -56,6 +56,17 @@ namespace TAC_COM
         }
 
         /// <summary>
+        /// Method to show show device info panel from system tray.
+        /// </summary>
+        private void ShowDeviceInfo()
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.ShowDeviceInfo();
+            }
+        }
+
+        /// <summary>
         /// Method to make the window remain on top when focus is lost.
         /// </summary>
         /// <param name="parameter"> The <see cref="ToolStripMenuItem"/>
@@ -118,6 +129,7 @@ namespace TAC_COM
             contextMenuStrip = new ContextMenuStrip();
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, (s, e) => ShowWindow()));
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Always on Top", null, (s, e) => ToggleAlwaysOnTop(s)) { CheckOnClick = true });
+            contextMenuStrip.Items.Add(new ToolStripMenuItem("Device Info", null, (s, e) => ShowDeviceInfo()));
             contextMenuStrip.Items.Add(new ToolStripSeparator());
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Exit", null, (s, e) => ExitApplication()));
 
