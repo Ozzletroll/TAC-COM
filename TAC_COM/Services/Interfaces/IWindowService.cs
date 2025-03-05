@@ -6,7 +6,7 @@ namespace TAC_COM.Services.Interfaces
     /// Interface representing the service responsible for opening
     /// additional windows.
     /// </summary>
-    public interface IWindowService
+    public interface IWindowService : IDisposable
     {
         /// <summary>
         /// Method to open a new instance of a <see cref="Views.KeybindWindowView"/>

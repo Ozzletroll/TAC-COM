@@ -567,6 +567,7 @@ namespace TAC_COM.ViewModels
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();
             KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
+            windowService.Dispose();
         }
 
         /// <summary>

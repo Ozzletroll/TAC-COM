@@ -18,6 +18,8 @@ namespace TAC_COM.Services
     {
         private readonly IApplicationContextWrapper applicationContext = _applicationContext;
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
+        private KeybindWindowView? keybindWindowView;
+        private DebugWindowView? debugWindowView;
 
         /// <summary>
         /// Boolean value representing if the newly created
@@ -32,13 +34,13 @@ namespace TAC_COM.Services
         public void OpenKeybindWindow()
         {
             var viewModel = new KeybindWindowViewModel(keybindManager);
-            OpenWindow<KeybindWindowView, KeybindWindowViewModel>(viewModel);
+            keybindWindowView = OpenWindow<KeybindWindowView, KeybindWindowViewModel>(viewModel);
         }
 
         public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
             var viewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
-            OpenWindow<DebugWindowView, DebugWindowViewModel>(viewModel);
+            debugWindowView = OpenWindow<DebugWindowView, DebugWindowViewModel>(viewModel);
         }
 
         public TView OpenWindow<TView, TViewModel>(ViewModelBase viewModel)
@@ -56,6 +58,17 @@ namespace TAC_COM.Services
             viewModel.Close += (s, e) => window.Close();
             if (ShowWindow) window.ShowDialog();
             return window;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+
+            keybindWindowView?.Close();
+            keybindWindowView = null;
+
+            debugWindowView?.Close();
+            debugWindowView = null;
         }
     }
 }
