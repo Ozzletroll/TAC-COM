@@ -7,11 +7,17 @@ namespace TAC_COM.Models
     /// </summary>
     public class DeviceInfo
     {
+        private string? deviceName;
+
         /// <summary>
         /// Gets or sets the value representing the device's
         /// FriendlyName.
         /// </summary>
-        public required string DeviceName { get; set; }
+        public string? DeviceName
+        {
+            get => deviceName != null ? deviceName : "Please set a device";
+            set => deviceName = value;
+        }
 
         private string? channelCount;
 
@@ -19,7 +25,7 @@ namespace TAC_COM.Models
         /// Gets or sets the value representing the device's
         /// channel count.
         /// </summary>
-        public required string ChannelCount
+        public string? ChannelCount
         {
             get => channelCount != null ? channelCount + " channel" : "---";
             set => channelCount = value;
@@ -31,7 +37,7 @@ namespace TAC_COM.Models
         /// Gets or sets the value representing the device's
         /// samplerate.
         /// </summary>
-        public required string SampleRate
+        public string? SampleRate
         {
             get => sampleRate != null ? sampleRate + "Hz" : "---";
             set => sampleRate = value;
@@ -43,7 +49,7 @@ namespace TAC_COM.Models
         /// Gets or sets the value representing the device's
         /// bit depth per sample.
         /// </summary>
-        public required string BitsPerSample
+        public string? BitsPerSample
         {
             get => bitsPerSample != null ? bitsPerSample + "bit" : "---";
             set => bitsPerSample = value;
@@ -53,6 +59,6 @@ namespace TAC_COM.Models
         /// Gets or sets the value representing the device's
         /// wave format encoding.
         /// </summary>
-        public required string WaveFormatTag { get; set; }
+        public string? WaveFormatTag { get; set; }
     }
 }

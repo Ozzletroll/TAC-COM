@@ -287,20 +287,20 @@ namespace TAC_COM.Models
         {
             var inputDeviceInfo = new DeviceInfo()
             {
-                DeviceName = activeInputDevice?.FriendlyName ?? "No device set",
-                ChannelCount = activeInputDevice?.DeviceFormat.Channels.ToString() ?? "---",
-                SampleRate = activeInputDevice?.DeviceFormat.SampleRate.ToString() ?? "---",
-                BitsPerSample = activeInputDevice?.DeviceFormat.BitsPerSample.ToString() ?? "---",
-                WaveFormatTag = activeInputDevice?.DeviceFormat.WaveFormatTag.ToString() ?? "---",
+                DeviceName = activeInputDevice?.FriendlyName,
+                ChannelCount = activeInputDevice?.DeviceFormat.Channels.ToString(),
+                SampleRate = activeInputDevice?.DeviceFormat.SampleRate.ToString(),
+                BitsPerSample = activeInputDevice?.DeviceFormat.BitsPerSample.ToString(),
+                WaveFormatTag = activeInputDevice?.DeviceFormat.WaveFormatTag.ToString(),
             };
 
             var outputDeviceInfo = new DeviceInfo()
             {
-                DeviceName = activeOutputDevice?.FriendlyName ?? "No device set",
-                ChannelCount = activeOutputDevice?.DeviceFormat.Channels.ToString() ?? "---",
-                SampleRate = activeOutputDevice?.DeviceFormat.SampleRate.ToString() ?? "---",
-                BitsPerSample = activeOutputDevice?.DeviceFormat.BitsPerSample.ToString() ?? "---",
-                WaveFormatTag = activeOutputDevice?.DeviceFormat.WaveFormatTag.ToString() ?? "---",
+                DeviceName = activeOutputDevice?.FriendlyName,
+                ChannelCount = activeOutputDevice?.DeviceFormat.Channels.ToString(),
+                SampleRate = activeOutputDevice?.DeviceFormat.SampleRate.ToString(),
+                BitsPerSample = activeOutputDevice?.DeviceFormat.BitsPerSample.ToString(),
+                WaveFormatTag = activeOutputDevice?.DeviceFormat.WaveFormatTag.ToString(),
             };
 
             return new Dictionary<string, DeviceInfo>
