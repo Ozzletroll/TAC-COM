@@ -30,6 +30,8 @@ namespace TAC_COM.Models
             }
         }
 
+        public bool IsDisposed => Device.IsDisposed;
+
         /// <inheritdoc/>
         /// <remarks>
         /// This is purely to ensure the name is correctly

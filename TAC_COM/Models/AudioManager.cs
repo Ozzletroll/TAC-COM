@@ -331,7 +331,7 @@ namespace TAC_COM.Models
         public void ResetOutputDevice()
         {
             if (activeOutputDeviceWrapper?.Device is null) return;
-            if (activeOutputDeviceWrapper.Device.IsDisposed)
+            if (activeOutputDeviceWrapper.IsDisposed)
             {
                 GetAudioDevices();
                 var refoundOutputDevice = OutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == lastOutputDeviceName);

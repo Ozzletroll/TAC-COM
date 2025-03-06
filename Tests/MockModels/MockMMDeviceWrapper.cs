@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CSCore.CoreAudioAPI;
+using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
@@ -24,6 +25,10 @@ namespace Tests.MockModels
                 device = value;
             }
         }
+
+        public DeviceInfo DeviceInformation => new();
+
+        public bool IsDisposed => Device.IsDisposed;
 
         /// <summary>
         /// Method to manually set the disposed state of the wrapped <see cref="MMDevice"/>.

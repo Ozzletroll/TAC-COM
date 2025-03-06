@@ -28,6 +28,12 @@ namespace TAC_COM.Models.Interfaces
         public DeviceInfo DeviceInformation { get; }
 
         /// <summary>
+        /// Gets the value representing if the device has been
+        /// disposed.
+        /// </summary>
+        public bool IsDisposed { get; }
+
+        /// <summary>
         /// Method to convert the wrapped <see cref="MMDevice"/>
         /// name correctly for use in the <see cref="ViewModels.AudioInterfaceViewModel"/>
         /// combobox item.
