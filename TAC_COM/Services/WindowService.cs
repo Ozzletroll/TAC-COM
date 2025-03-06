@@ -16,10 +16,19 @@ namespace TAC_COM.Services
     /// the <see cref="KeybindWindowViewModel"/>.</param>
     public class WindowService(IApplicationContextWrapper _applicationContext, IKeybindManager _keybindManager) : IWindowService
     {
-        private readonly IApplicationContextWrapper applicationContext = _applicationContext;
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
         private KeybindWindowView? keybindWindowView;
         private DebugWindowView? debugWindowView;
+
+        private IWindowFactoryService windowFactoryService = new WindowFactoryService(_applicationContext);
+        public IWindowFactoryService WindowFactoryService
+        {
+            get => windowFactoryService;
+            set
+            {
+                windowFactoryService = value;
+            }
+        }
 
         /// <summary>
         /// Boolean value representing if the newly created
@@ -34,30 +43,15 @@ namespace TAC_COM.Services
         public void OpenKeybindWindow()
         {
             var viewModel = new KeybindWindowViewModel(keybindManager);
-            keybindWindowView = OpenWindow<KeybindWindowView, KeybindWindowViewModel>(viewModel);
+            keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(viewModel);
+            if (ShowWindow) keybindWindowView.ShowDialog();
         }
 
         public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
             var viewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
-            debugWindowView = OpenWindow<DebugWindowView, DebugWindowViewModel>(viewModel);
-        }
-
-        public TView OpenWindow<TView, TViewModel>(ViewModelBase viewModel)
-            where TViewModel : ViewModelBase
-            where TView : AdonisWindow, new()
-        {
-            var window = new TView
-            {
-                DataContext = viewModel,
-                Owner = applicationContext.MainWindow,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Icon = applicationContext.MainWindow.Icon,
-            };
-
-            viewModel.Close += (s, e) => window.Close();
-            if (ShowWindow) window.ShowDialog();
-            return window;
+            debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(viewModel);
+            if (ShowWindow) debugWindowView.ShowDialog();
         }
 
         public void Dispose()
