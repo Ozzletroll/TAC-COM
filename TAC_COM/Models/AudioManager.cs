@@ -540,7 +540,7 @@ namespace TAC_COM.Models
                 if (activeOutputDeviceWrapper != null
                 && ActiveProfile != null)
                 {
-                    if (activeOutputDeviceWrapper.Device.IsDisposed)
+                    if (activeOutputDeviceWrapper.IsDisposed)
                     {
                         ResetOutputDevice();
                     };

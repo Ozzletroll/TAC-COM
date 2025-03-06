@@ -331,24 +331,29 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestSetInputDevice()
         {
-            var mockDevice1 = new MockMMDeviceWrapper("Test Input Device 1");
-            var mockDevice2 = new MockMMDeviceWrapper("Test Input Device 2");
+            var mockDevice1 = new Mock<IMMDeviceWrapper>();
+            mockDevice1.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 1");
+            mockDevice1.Setup(wrapper => wrapper.Device).Returns(new MockDevice("Test Input Device 1"));
 
-            audioManager.InputDevices = [mockDevice1, mockDevice2];
+            var mockDevice2 = new Mock<IMMDeviceWrapper>();
+            mockDevice2.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 2");
+            mockDevice2.Setup(wrapper => wrapper.Device).Returns(new MockDevice("Test Input Device 2"));
+
+            audioManager.InputDevices = [mockDevice1.Object, mockDevice2.Object];
 
             var mockInputMeter = new Mock<IPeakMeterWrapper>();
-            mockInputMeter.Setup(meter => meter.Initialise(mockDevice1.Device)).Verifiable();
+            mockInputMeter.Setup(meter => meter.Initialise(mockDevice1.Object.Device)).Verifiable();
 
             audioManager.InputMeter = mockInputMeter.Object;
 
-            audioManager.SetInputDevice(mockDevice1);
+            audioManager.SetInputDevice(mockDevice1.Object);
 
-            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            MMDevice? activeInputDevice = (MMDevice?)fieldInfo?.GetValue(audioManager);
+            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeInputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            IMMDeviceWrapper? activeInputDeviceWrapper = (IMMDeviceWrapper?)(fieldInfo?.GetValue(audioManager));
 
-            Assert.IsNotNull(activeInputDevice);
-            Assert.AreEqual(activeInputDevice.ToString(), mockDevice1.FriendlyName);
-            mockInputMeter.Verify(meter => meter.Initialise(mockDevice1.Device), Times.Once());
+            Assert.IsNotNull(activeInputDeviceWrapper);
+            Assert.AreEqual(activeInputDeviceWrapper.FriendlyName, mockDevice1.Object.FriendlyName);
+            mockInputMeter.Verify(meter => meter.Initialise(mockDevice1.Object.Device), Times.Once());
         }
 
         /// <summary>
@@ -357,24 +362,29 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public void TestSetOutputDevice()
         {
-            var mockDevice1 = new MockMMDeviceWrapper("Test Output Device 1");
-            var mockDevice2 = new MockMMDeviceWrapper("Test Output Device 2");
+            var mockDevice1 = new Mock<IMMDeviceWrapper>();
+            mockDevice1.Setup(wrapper => wrapper.FriendlyName).Returns("Test Output Device 1");
+            mockDevice1.Setup(wrapper => wrapper.Device).Returns(new MockDevice("Test Output Device 1"));
 
-            audioManager.OutputDevices = [mockDevice1, mockDevice2];
+            var mockDevice2 = new Mock<IMMDeviceWrapper>();
+            mockDevice2.Setup(wrapper => wrapper.FriendlyName).Returns("Test Output Device 2");
+            mockDevice2.Setup(wrapper => wrapper.Device).Returns(new MockDevice("Test Output Device 2"));
+
+            audioManager.OutputDevices = [mockDevice1.Object, mockDevice2.Object];
 
             var mockOutputMeter = new Mock<IPeakMeterWrapper>();
-            mockOutputMeter.Setup(meter => meter.Initialise(mockDevice2.Device)).Verifiable();
+            mockOutputMeter.Setup(meter => meter.Initialise(mockDevice1.Object.Device)).Verifiable();
 
             audioManager.OutputMeter = mockOutputMeter.Object;
 
-            audioManager.SetOutputDevice(mockDevice2);
+            audioManager.SetOutputDevice(mockDevice1.Object);
 
-            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            MMDevice? activeOutputDevice = (MMDevice?)fieldInfo?.GetValue(audioManager);
+            FieldInfo? fieldInfo = typeof(AudioManager).GetField("activeOutputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            IMMDeviceWrapper? activeOutputDeviceWrapper = (IMMDeviceWrapper?)(fieldInfo?.GetValue(audioManager));
 
-            Assert.IsNotNull(activeOutputDevice);
-            Assert.AreEqual(activeOutputDevice.ToString(), mockDevice2.FriendlyName);
-            mockOutputMeter.Verify(meter => meter.Initialise(mockDevice2.Device), Times.Once());
+            Assert.IsNotNull(activeOutputDeviceWrapper);
+            Assert.AreEqual(activeOutputDeviceWrapper.FriendlyName, mockDevice1.Object.FriendlyName);
+            mockOutputMeter.Verify(meter => meter.Initialise(mockDevice1.Object.Device), Times.Once());
         }
 
         /// <summary>
@@ -467,11 +477,11 @@ namespace Tests.UnitTests.ModelTests
             stateField?.SetValue(audioManager, true);
 
             // activeInputDevice = null
-            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
             activeInputField?.SetValue(audioManager, null);
 
             // activeOutputDevice = null
-            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
             activeOutputField?.SetValue(audioManager, null);
 
             FieldInfo? inputField = typeof(AudioManager).GetField("input", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -497,8 +507,11 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public async Task TestToggleStateAsync_StateTrue_ValidDevices()
         {
-            var mockInputDevice = new MockMMDeviceWrapper("Test Input Device 1");
-            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockInputDevice = new Mock<IMMDeviceWrapper>();
+            mockInputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 1");
+
+            var mockOutputDevice = new Mock<IMMDeviceWrapper>();
+            mockInputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Output Device 1");
 
             var mockProfile = new Mock<IProfile>();
             mockProfile.Setup(profile => profile.LoadSources()).Verifiable();
@@ -547,12 +560,12 @@ namespace Tests.UnitTests.ModelTests
             stateField?.SetValue(audioManager, true);
 
             // activeInputDevice = mockInputDevice
-            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            activeInputField?.SetValue(audioManager, mockInputDevice.Device);
+            FieldInfo? activeInputField = typeof(AudioManager).GetField("activeInputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeInputField?.SetValue(audioManager, mockInputDevice.Object);
 
             // activeOutput = mockOutputDevice
-            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Object);
 
             await audioManager.ToggleStateAsync();
 
@@ -646,7 +659,8 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public async Task TestToggleBypassState_StateTrue_BypassStateTrue()
         {
-            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockOutputDevice = new Mock<IMMDeviceWrapper>();
+            mockOutputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 1");
 
             var mockFileSourceWrapper = new Mock<IFileSourceWrapper>();
             mockFileSourceWrapper.Setup(source => source.SetPosition(new TimeSpan(0))).Verifiable();
@@ -679,8 +693,8 @@ namespace Tests.UnitTests.ModelTests
             audioManager.BypassState = true;
             audioManager.AudioProcessor.HasInitialised = true;
 
-            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Object);
 
             mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(true)).Verifiable();
 
@@ -701,7 +715,8 @@ namespace Tests.UnitTests.ModelTests
         [TestMethod]
         public async Task TestToggleBypassState_StateTrue_BypassStateFalse()
         {
-            var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
+            var mockOutputDevice = new Mock<IMMDeviceWrapper>();
+            mockOutputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 1");
 
             var mockFileSourceWrapper = new Mock<IFileSourceWrapper>();
             mockFileSourceWrapper.Setup(source => source.SetPosition(new TimeSpan(0))).Verifiable();
@@ -731,8 +746,8 @@ namespace Tests.UnitTests.ModelTests
             audioManager.WasapiService = mockWasapiService.Object;
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
-            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDevice", BindingFlags.NonPublic | BindingFlags.Instance);
-            activeOutputField?.SetValue(audioManager, mockOutputDevice.Device);
+            FieldInfo? activeOutputField = typeof(AudioManager).GetField("activeOutputDeviceWrapper", BindingFlags.NonPublic | BindingFlags.Instance);
+            activeOutputField?.SetValue(audioManager, mockOutputDevice.Object);
 
             mockAudioProcessor.Setup(audioProcessor => audioProcessor.SetMixerLevels(false)).Verifiable();
 
