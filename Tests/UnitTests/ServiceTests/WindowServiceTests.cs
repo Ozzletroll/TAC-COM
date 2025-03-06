@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
 using System.Windows;
+using AdonisUI.Controls;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
 using TAC_COM.Views;
 using Tests.MockModels;
@@ -15,34 +17,6 @@ namespace Tests.UnitTests.ServiceTests
     [TestClass]
     public class WindowServiceTests
     {
-        private readonly WindowService windowService;
-        private readonly Mock<Window> mockMainWindow;
-        private readonly MockApplicationContextWrapper mockApplication;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="WindowServiceTests"/> class.
-        /// </summary>
-        public WindowServiceTests()
-        {
-            // Create and configure a mock MainWindow
-            mockMainWindow = new Mock<Window>();
-            mockMainWindow.SetupAllProperties();
-
-            mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
-            {
-                MainWindow = mockMainWindow.Object
-            };
-            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
-            mockApplication.MainWindow.Show();
-
-            SettingsService settingsService = new();
-            KeybindManager keybindManager = new(settingsService);
-            windowService = new WindowService(mockApplication, keybindManager)
-            {
-                ShowWindow = false
-            };
-        }
-
         /// <summary>
         /// Test method for the <see cref="WindowService.OpenKeybindWindow"/> method.
         /// </summary>
@@ -54,26 +28,105 @@ namespace Tests.UnitTests.ServiceTests
         [STATestMethod]
         public void TestOpenKeybindWindow()
         {
+            var mockMainWindow = new Mock<Window>();
+            mockMainWindow.SetupAllProperties();
+
+            var mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
+            {
+                MainWindow = mockMainWindow.Object
+            };
+
+            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
+            mockApplication.MainWindow.Show();
+
+            SettingsService settingsService = new();
+            KeybindManager keybindManager = new(settingsService);
+
+            var mockWindow = new Mock<AdonisWindow>(MockBehavior.Loose);
+
+            var mockWindowFactoryService = new Mock<IWindowFactoryService>();
+
+            mockWindowFactoryService
+            .Setup(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()))
+            .Verifiable();
+
+            var windowService = new WindowService(mockApplication, keybindManager)
+            {
+                ShowWindow = false,
+                WindowFactoryService = mockWindowFactoryService.Object,
+            };
+
             windowService.OpenKeybindWindow();
 
-            // Access keybindWindow private field
-            FieldInfo? fieldInfo = typeof(WindowService).GetField("keybindWindow", BindingFlags.NonPublic | BindingFlags.Instance);
-            KeybindWindowView? keybindWindow = (KeybindWindowView?)fieldInfo?.GetValue(windowService);
+            mockWindowFactoryService.Verify(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()), Times.Once());
+        }
 
-            Assert.IsNotNull(keybindWindow);
+        /// <summary>
+        /// Test method for the <see cref="WindowService.OpenDebugWindow(Dictionary{string, DeviceInfo})"/> method.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="STATestMethodAttribute"/> is used to ensure that
+        /// the tests are run in a single-threaded apartment (STA), which
+        /// is required for WPF components.
+        /// </remarks>
+        [STATestMethod]
+        public void TestOpenDebugWindow()
+        {
+            var mockMainWindow = new Mock<Window>();
+            mockMainWindow.SetupAllProperties();
 
-            var viewModel = keybindWindow.DataContext as KeybindWindowViewModel;
-            Assert.IsNotNull(viewModel);
-            Assert.AreEqual(viewModel, keybindWindow.DataContext);
-            Assert.AreEqual(mockApplication.MainWindow, keybindWindow.Owner);
-            Assert.AreEqual(WindowStartupLocation.CenterOwner, keybindWindow.WindowStartupLocation);
-            Assert.AreEqual(mockApplication.MainWindow.Icon, keybindWindow.Icon);
+            var mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
+            {
+                MainWindow = mockMainWindow.Object
+            };
 
-            bool closeEventTriggered = false;
-            viewModel.Close += (s, e) => closeEventTriggered = true;
+            // Show the mockMainWindow so that it may be set as the KeybindWindow's owner
+            mockApplication.MainWindow.Show();
 
-            viewModel.CloseKeybindDialog.Execute(null);
-            Assert.IsTrue(closeEventTriggered);
+            SettingsService settingsService = new();
+            KeybindManager keybindManager = new(settingsService);
+
+            var mockWindow = new Mock<AdonisWindow>(MockBehavior.Loose);
+
+            var mockWindowFactoryService = new Mock<IWindowFactoryService>();
+
+            mockWindowFactoryService
+            .Setup(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()))
+            .Verifiable();
+
+            var windowService = new WindowService(mockApplication, keybindManager)
+            {
+                ShowWindow = false,
+                WindowFactoryService = mockWindowFactoryService.Object,
+            };
+
+            var inputDeviceInfo = new DeviceInfo()
+            {
+                DeviceName = "Mock Input Device Name",
+                ChannelCount = "1",
+                SampleRate = "48000",
+                BitsPerSample = "16",
+                WaveFormatTag = "Extensible",
+            };
+
+            var outputDeviceInfo = new DeviceInfo()
+            {
+                DeviceName = "Mock Output Device Name",
+                ChannelCount = "2",
+                SampleRate = "48000",
+                BitsPerSample = "24",
+                WaveFormatTag = "Extensible",
+            };
+
+            var mockDeviceInfo = new Dictionary<string, DeviceInfo>
+            {
+                { "InputDevice", inputDeviceInfo },
+                { "OutputDevice", outputDeviceInfo }
+            };
+
+            windowService.OpenDebugWindow(mockDeviceInfo);
+
+            mockWindowFactoryService.Verify(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()), Times.Once());
         }
     }
 }
