@@ -29,6 +29,19 @@ namespace Tests.UnitTests.ModelTests
             keybindManager = new KeybindManager(mockSettingsService.Object);
         }
 
+        [TestInitialize] public void Initialise()
+        {
+            var mockSettingsService = new Mock<ISettingsService>();
+            keybindManager = new KeybindManager(mockSettingsService.Object);
+        }
+
+        [TestCleanup] public void Cleanup()
+        {
+            keybindManager.TogglePTTKeybindSubscription(false);
+            keybindManager.ToggleUserKeybindSubscription(false);
+            keybindManager.Dispose();
+        }
+
         /// <summary>
         /// Test method for the <see cref="KeybindManager.PTTKey"/> property.
         /// </summary>
@@ -325,6 +338,7 @@ namespace Tests.UnitTests.ModelTests
         /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
         /// with the parameter state = true.
         /// </summary>
+        [TestMethod]
         public void TestToggleUserKeybindSubscription_StateTrue_KeyboardInput()
         {
             keybindManager.ToggleUserKeybindSubscription(true);
@@ -346,6 +360,7 @@ namespace Tests.UnitTests.ModelTests
         /// Test method for the <see cref="KeybindManager.ToggleUserKeybindSubscription"/> method,
         /// with the parameter state = true and mouse input.
         /// </summary>
+        [TestMethod]
         public void TestToggleUserKeybindSubscription_StateTrue_MouseInput()
         {
             keybindManager.ToggleUserKeybindSubscription(true);
