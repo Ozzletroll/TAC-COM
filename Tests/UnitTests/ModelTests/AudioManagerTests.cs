@@ -277,6 +277,10 @@ namespace Tests.UnitTests.ModelTests
             Assert.IsTrue(outputPropertyChangeRaised, $"Property change not raised for {outputDevicesProperty}");
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.GetDeviceInfo"/>
+        /// method.
+        /// </summary>
         [TestMethod]
         public void TestGetDeviceInfo()
         {
