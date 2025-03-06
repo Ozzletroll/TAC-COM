@@ -15,7 +15,7 @@ namespace TAC_COM.Models
         /// </summary>
         public string? DeviceName
         {
-            get => deviceName != null ? deviceName : "Please set a device";
+            get => deviceName ?? "Please set a device";
             set => deviceName = value;
         }
 
