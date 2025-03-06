@@ -16,8 +16,8 @@ namespace TAC_COM.Models
     /// </summary>
     public class AudioManager : NotifyProperty, IAudioManager, IDisposable
     {
-        private MMDevice? activeInputDevice;
-        private MMDevice? activeOutputDevice;
+        private IMMDeviceWrapper? activeInputDeviceWrapper;
+        private IMMDeviceWrapper? activeOutputDeviceWrapper;
         private string? lastOutputDeviceName;
         private IWasapiCaptureWrapper? input;
         private IWasapiOutWrapper? output;
@@ -283,16 +283,28 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(OutputDevices));
         }
 
+        public Dictionary<string, DeviceInfo> GetDeviceInfo()
+        {
+            var inputDeviceInfo = activeInputDeviceWrapper?.DeviceInformation ?? new DeviceInfo();
+            var outputDeviceInfo = activeOutputDeviceWrapper?.DeviceInformation ?? new DeviceInfo();
+
+            return new Dictionary<string, DeviceInfo>
+            {
+                { "InputDevice", inputDeviceInfo },
+                { "OutputDevice", outputDeviceInfo }
+            };
+        }
+
         /// <summary>
         /// Sets the current active input device to the 
         /// <see cref="MMDevice"/> of the given <see cref="IMMDeviceWrapper"/>
         /// and initialises the <see cref="InputMeter"/>. 
         /// </summary>
-        /// <param name="inputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
-        public void SetInputDevice(IMMDeviceWrapper inputDevice)
+        /// <param name="inputDeviceWrapper">The selected <see cref="IMMDeviceWrapper"/>.</param>
+        public void SetInputDevice(IMMDeviceWrapper inputDeviceWrapper)
         {
-            activeInputDevice = inputDevice.Device;
-            InputMeter.Initialise(activeInputDevice);
+            activeInputDeviceWrapper = inputDeviceWrapper;
+            InputMeter.Initialise(activeInputDeviceWrapper.Device);
         }
 
         /// <summary>
@@ -303,23 +315,23 @@ namespace TAC_COM.Models
         /// <param name="outputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            activeOutputDevice = outputDeviceWrapper.Device;
+            activeOutputDeviceWrapper = outputDeviceWrapper;
             lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
-            OutputMeter.Initialise(activeOutputDevice);
+            OutputMeter.Initialise(activeOutputDeviceWrapper.Device);
         }
 
         /// <summary>
-        /// Checks if the <see cref="activeOutputDevice"/> has become disposed, and attempts to reset it 
+        /// Checks if the <see cref="activeOutputDeviceWrapper"/> has become disposed, and attempts to reset it 
         /// to a device matching the <see cref="MMDevice.FriendlyName"/> of <see cref="lastOutputDeviceName"/>.
         /// </summary>
         /// <remarks>
-        /// This method handles cases where the <see cref="activeOutputDevice"/> has been disposed through
+        /// This method handles cases where the <see cref="activeOutputDeviceWrapper"/> has been disposed through
         /// system changes, such as unplugging a USB audio device, or other device related errors.
         /// </remarks>
         public void ResetOutputDevice()
         {
-            if (activeOutputDevice is null) return;
-            if (activeOutputDevice.IsDisposed)
+            if (activeOutputDeviceWrapper?.Device is null) return;
+            if (activeOutputDeviceWrapper.IsDisposed)
             {
                 GetAudioDevices();
                 var refoundOutputDevice = OutputDevices.FirstOrDefault(deviceWrapper => deviceWrapper.FriendlyName == lastOutputDeviceName);
@@ -352,7 +364,7 @@ namespace TAC_COM.Models
                     cancellationTokenSource?.Cancel();
                     cancellationTokenSource = new CancellationTokenSource();
 
-                    if (activeInputDevice == null || activeOutputDevice == null)
+                    if (activeInputDeviceWrapper == null || activeOutputDeviceWrapper == null)
                     {
                         State = false;
                         return;
@@ -390,9 +402,9 @@ namespace TAC_COM.Models
         }
 
         /// <summary>
-        /// Starts audio recording and playback. Initialises recording from the <see cref="activeInputDevice"/>,
+        /// Starts audio recording and playback. Initialises recording from the <see cref="activeInputDeviceWrapper"/>,
         /// constructing the signal processing chain through the <see cref="AudioProcessor"/>, and starting
-        /// playback to the current <see cref="activeOutputDevice"/>.
+        /// playback to the current <see cref="activeOutputDeviceWrapper"/>.
         /// </summary>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task StartAudioAsync()
@@ -402,8 +414,8 @@ namespace TAC_COM.Models
 
             await Task.Run(() =>
             {
-                if (activeInputDevice != null
-                && activeOutputDevice != null
+                if (activeInputDeviceWrapper != null
+                && activeOutputDeviceWrapper != null
                 && activeProfile != null)
                 {
                     activeProfile.LoadSources();
@@ -412,14 +424,14 @@ namespace TAC_COM.Models
 
                     ResetOutputDevice();
 
-                    input.Device = activeInputDevice;
+                    input.Device = activeInputDeviceWrapper.Device;
                     input.Initialise();
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;
 
                     AudioProcessor.Initialise(input, activeProfile, cancellationTokenSource.Token);
 
-                    output.Device = activeOutputDevice;
+                    output.Device = activeOutputDeviceWrapper.Device;
                     output.Initialise(audioProcessor.ReturnCompleteSignalChain());
                     output.Stopped += OnOutputStopped;
 
@@ -525,10 +537,10 @@ namespace TAC_COM.Models
 
             try
             {
-                if (activeOutputDevice != null
+                if (activeOutputDeviceWrapper != null
                 && ActiveProfile != null)
                 {
-                    if (activeOutputDevice.IsDisposed)
+                    if (activeOutputDeviceWrapper.IsDisposed)
                     {
                         ResetOutputDevice();
                     };
@@ -566,12 +578,12 @@ namespace TAC_COM.Models
         {
             await Task.Run(() =>
             {
-                if (activeOutputDevice != null && fileSourceWrapper.WaveSource != null)
+                if (activeOutputDeviceWrapper != null && fileSourceWrapper.WaveSource != null)
                 {
                     sfxOutput?.Dispose();
                     sfxOutput = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
 
-                    sfxOutput.Device = activeOutputDevice;
+                    sfxOutput.Device = activeOutputDeviceWrapper.Device;
 
                     sfxOutput.Initialise(fileSourceWrapper.WaveSource);
                     sfxOutput.Volume = SFXVolume;

@@ -1,4 +1,5 @@
-﻿using CSCore.CoreAudioAPI;
+﻿using CSCore;
+using CSCore.CoreAudioAPI;
 using CSCore.Win32;
 using Moq;
 
@@ -11,6 +12,12 @@ namespace Tests.MockModels
     public class MockDevice(string _friendlyName) : IMMDevice
     {
         private readonly string friendlyName = _friendlyName;
+
+        private readonly WaveFormat waveFormat = new();
+        public WaveFormat DeviceFormat
+        {
+            get => waveFormat;
+        }
 
         public override string ToString()
         {

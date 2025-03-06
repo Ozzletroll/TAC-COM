@@ -15,6 +15,23 @@ namespace TAC_COM.Models
 
         public string FriendlyName => Device.FriendlyName;
 
+        public DeviceInfo DeviceInformation
+        {
+            get
+            {
+                return new DeviceInfo()
+                {
+                    DeviceName = Device.FriendlyName,
+                    ChannelCount = Device.DeviceFormat.Channels.ToString(),
+                    SampleRate = Device.DeviceFormat.SampleRate.ToString(),
+                    BitsPerSample = Device.DeviceFormat.BitsPerSample.ToString(),
+                    WaveFormatTag = Device.DeviceFormat.WaveFormatTag.ToString(),
+                };
+            }
+        }
+
+        public bool IsDisposed => Device.IsDisposed;
+
         /// <inheritdoc/>
         /// <remarks>
         /// This is purely to ensure the name is correctly

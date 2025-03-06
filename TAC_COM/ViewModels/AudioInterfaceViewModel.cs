@@ -518,6 +518,15 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// Method to open the debug window using the
+        /// <see cref="WindowService"/>.
+        /// </summary>
+        public void ShowDebugDialog()
+        {
+            windowService.OpenDebugWindow(AudioManager.GetDeviceInfo());
+        }
+
+        /// <summary>
         /// <see cref="RelayCommand"/> to show keybind window.
         /// Bound to a button in the <see cref="Views.AudioInterfaceView"/>.
         /// </summary>
@@ -558,6 +567,7 @@ namespace TAC_COM.ViewModels
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();
             KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
+            windowService.Dispose();
         }
 
         /// <summary>

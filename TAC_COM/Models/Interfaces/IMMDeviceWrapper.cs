@@ -1,4 +1,5 @@
 ﻿
+using CSCore;
 using CSCore.CoreAudioAPI;
 
 namespace TAC_COM.Models.Interfaces
@@ -19,6 +20,18 @@ namespace TAC_COM.Models.Interfaces
         /// <see cref="MMDevice"/>.
         /// </summary>
         public string FriendlyName { get; }
+
+        /// <summary>
+        /// Gets the device format info formatted as
+        /// a <see cref="DeviceInfo"/>.
+        /// </summary>
+        public DeviceInfo DeviceInformation { get; }
+
+        /// <summary>
+        /// Gets the value representing if the device has been
+        /// disposed.
+        /// </summary>
+        public bool IsDisposed { get; }
 
         /// <summary>
         /// Method to convert the wrapped <see cref="MMDevice"/>

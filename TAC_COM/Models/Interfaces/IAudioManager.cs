@@ -89,6 +89,13 @@ namespace TAC_COM.Models.Interfaces
         void GetAudioDevices();
 
         /// <summary>
+        /// Method to return debug information about the current
+        /// active input/output devices.
+        /// </summary>
+        /// <returns> A dictionary of the relevant device info.</returns>
+        Dictionary<string, DeviceInfo> GetDeviceInfo();
+
+        /// <summary>
         /// Method to set the current active input device.
         /// </summary>
         /// <param name="inputDevice">The <see cref="IMMDeviceWrapper"/> representing
@@ -114,6 +121,5 @@ namespace TAC_COM.Models.Interfaces
         /// changes.
         /// </summary>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task ToggleBypassStateAsync();
-    }
+        Task ToggleBypassStateAsync();    }
 }

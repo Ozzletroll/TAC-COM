@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
@@ -44,6 +45,11 @@ namespace Tests.MockModels
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public Dictionary<string, DeviceInfo> GetDeviceInfo()
+        {
+            return [];
         }
 
         public MockAudioManager()

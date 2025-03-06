@@ -92,6 +92,17 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// Method to show device info panel.
+        /// </summary>
+        public void ShowDeviceInfo()
+        {
+            if (CurrentViewModel is AudioInterfaceViewModel audioInterfaceViewModel)
+            {
+                audioInterfaceViewModel.ShowDebugDialog();
+            }
+        }
+
+        /// <summary>
         /// Override method to dispose of the current viewmodel.
         /// </summary>
         public override void Dispose()
