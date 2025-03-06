@@ -6,6 +6,10 @@ using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.Services
 {
+    /// <summary>
+    /// Class responsible for creation of WPF views.
+    /// </summary>
+    /// <param name="applicationContext"> The current application context wrapper.</param>
     public class WindowFactoryService(IApplicationContextWrapper applicationContext) : IWindowFactoryService
     {
         private readonly IApplicationContextWrapper applicationContextWrapper = applicationContext;
