@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using AdonisUI.Controls;
-using TAC_COM.Models;
+﻿using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
