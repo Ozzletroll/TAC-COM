@@ -11,10 +11,48 @@ namespace TAC_COM.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase, IDisposable
     {
+        private ViewModelBase currentViewModel;
+
         /// <summary>
         /// Gets or sets the current viewmodel of the application.
         /// </summary>
-        public ViewModelBase CurrentViewModel { get; set; }
+        public ViewModelBase CurrentViewModel
+        {
+            get => currentViewModel;
+            set
+            {
+                currentViewModel = value;
+                OnPropertyChanged(nameof(CurrentViewModel));
+            }
+        }
+
+        private AudioInterfaceViewModel audioInterfaceViewModel;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ViewModels.AudioInterfaceViewModel"/>.
+        /// </summary>
+        public AudioInterfaceViewModel AudioInterfaceViewModel
+        {
+            get => audioInterfaceViewModel;
+            set
+            {
+                audioInterfaceViewModel = value;
+            }
+        }
+
+        private SettingsPanelViewModel settingsPanelViewModel;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ViewModels.SettingsPanelViewModel"/>.
+        /// </summary>
+        public SettingsPanelViewModel SettingsPanelViewModel
+        {
+            get => settingsPanelViewModel;
+            set
+            {
+                settingsPanelViewModel = value;
+            }
+        }
 
         private System.Windows.Media.ImageSource? activeProfileIcon;
 
@@ -103,11 +141,32 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// <see cref="RelayCommand"/> to show/hide the settings view.
+        /// </summary>
+        public RelayCommand ToggleSettingsView => new(execute => ExecuteToggleSettingsView());
+
+        /// <summary>
+        /// Method to show/hide the settings view.
+        /// </summary>
+        private void ExecuteToggleSettingsView()
+        {
+            if (CurrentViewModel == audioInterfaceViewModel)
+            {
+                CurrentViewModel = SettingsPanelViewModel;
+            }
+            else
+            {
+                CurrentViewModel = AudioInterfaceViewModel;
+            }
+        }
+
+        /// <summary>
         /// Override method to dispose of the current viewmodel.
         /// </summary>
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            AudioInterfaceViewModel.Dispose();
             CurrentViewModel.Dispose();
         }
 
@@ -125,7 +184,9 @@ namespace TAC_COM.ViewModels
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 
-            CurrentViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService);
+            audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService);
+            settingsPanelViewModel = new SettingsPanelViewModel();
+            currentViewModel = AudioInterfaceViewModel;
         }
     }
 }

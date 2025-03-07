@@ -38,21 +38,6 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
-        </Grid.RowDefinitions>
-
         <StackPanel Grid.Column="2" Grid.Row="4" Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
 
