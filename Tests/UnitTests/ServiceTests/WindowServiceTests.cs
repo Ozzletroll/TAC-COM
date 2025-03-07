@@ -59,6 +59,10 @@ namespace Tests.UnitTests.ServiceTests
             windowService.OpenKeybindWindow();
 
             mockWindowFactoryService.Verify(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()), Times.Once());
+
+            mockWindow.Object.Close();
+            keybindManager.Dispose();
+            windowService.Dispose();
         }
 
         /// <summary>
@@ -127,6 +131,10 @@ namespace Tests.UnitTests.ServiceTests
             windowService.OpenDebugWindow(mockDeviceInfo);
 
             mockWindowFactoryService.Verify(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()), Times.Once());
+
+            mockWindow.Object.Close();
+            keybindManager.Dispose();
+            windowService.Dispose();
         }
     }
 }
