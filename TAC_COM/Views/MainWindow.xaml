@@ -35,11 +35,9 @@
 
         <StackPanel Grid.Column="2" Grid.Row="4"
                     HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Button Content="{StaticResource SettingsIcon}"
+            <Button Content="{Binding CurrentIcon}"
                     Command="{Binding ToggleSettingsView}"
                     Height="24" Width="24"
-                    HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
                     Margin="0" Padding="4"
                     Cursor="Hand"
                     Background="Transparent"

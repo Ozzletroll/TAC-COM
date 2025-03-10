@@ -1,5 +1,4 @@
-﻿
-using TAC_COM.Models.Interfaces;
+﻿using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.ViewModels

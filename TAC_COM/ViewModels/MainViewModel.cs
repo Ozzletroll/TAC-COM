@@ -103,6 +103,20 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private readonly object settingsIcon;
+        private readonly object settingsOffIcon;
+        private object currentIcon;
+
+        public object CurrentIcon
+        {
+            get => currentIcon;
+            set
+            {
+                currentIcon = value;
+                OnPropertyChanged(nameof(CurrentIcon));
+            }
+        }
+
         /// <summary>
         /// Method to handle the <see cref="IIconService.ChangeSystemTrayIcon"/>
         /// event, updating the notify icon image and text with the new values.
@@ -152,6 +166,7 @@ namespace TAC_COM.ViewModels
         private void ExecuteToggleSettingsView()
         {
             CurrentViewModel = (CurrentViewModel == audioInterfaceViewModel) ? SettingsPanelViewModel : AudioInterfaceViewModel;
+            CurrentIcon = CurrentIcon == settingsIcon ? settingsOffIcon : settingsIcon;
         }
 
         /// <summary>
@@ -177,6 +192,10 @@ namespace TAC_COM.ViewModels
             IIconService iconService = _iconService;
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
+
+            settingsIcon = applicationContext.Resources["SettingsIcon"];
+            settingsOffIcon = applicationContext.Resources["SettingsOffIcon"];
+            currentIcon = settingsIcon;
 
             var settingsService = new SettingsService();
 
