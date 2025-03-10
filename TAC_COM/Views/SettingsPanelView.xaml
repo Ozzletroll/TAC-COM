@@ -62,7 +62,7 @@
                     <StackPanel Grid.Column="0" Margin="10"
                                 HorizontalAlignment="Left"> 
                         <Label Content="Buffer Size (ms)"
-                               FontSize="10" FontWeight="Normal"/>
+                               FontSize="12" FontWeight="Normal"/>
                         
                         <ComboBox  Margin="0, 10, 0, 0"
                                   ItemsSource="{Binding BufferSizes}"
@@ -86,7 +86,8 @@
                                TextAlignment="Center"
                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                Grid.Column="2">
-                        Sets the size of the internal audio buffer.
+                        Sets the size of the internal audio buffer. Raise this if you experience popping/crackling
+                        during playback.
                     </TextBlock>
                 </Grid>
 
