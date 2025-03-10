@@ -10,9 +10,41 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:SettingsPanelViewModel}"
              mc:Ignorable="d" 
              FontSize="12">
-
     <Grid>
-        
+        <StackPanel Grid.Column="2" Grid.Row="4" Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="Auto" Height="300">
+
+            <StackPanel Width="400" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                        Orientation="Vertical" 
+                        Margin="5">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Center"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                        INPUT DEVICE SETTINGS
+                    </TextBlock>
+                </Label>
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Margin="10">
+                    <CheckBox IsChecked="{Binding InputDeviceExclusiveMode}"
+                              Content="Use input device in exclusive mode"
+                              Margin="10"/>
+                    <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                        Exclusive mode prevents any other application from using the input device, 
+                        which can prevent playback errors and inconsistencies.
+                    </TextBlock>
+                </StackPanel>
+                
+                
+            </StackPanel>
+        </StackPanel>
     </Grid>
-    
+
 </UserControl>

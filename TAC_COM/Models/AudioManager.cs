@@ -28,7 +28,7 @@ namespace TAC_COM.Models
         private TaskCompletionSource<bool> stopPlaybackCompletionSource = new();
         private CancellationTokenSource cancellationTokenSource;
         private const float SFXVolume = 0.2f;
-
+        
         /// <summary>
         /// Initialises a new instance of the <see cref="AudioManager"/>.
         /// </summary>
@@ -266,6 +266,17 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool inputDeviceExclusiveMode;
+        public bool InputDeviceExclusiveMode
+        {
+            get => inputDeviceExclusiveMode;
+            set
+            {
+                inputDeviceExclusiveMode = value;
+                OnPropertyChanged(nameof(InputDeviceExclusiveMode));
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 
@@ -419,7 +430,7 @@ namespace TAC_COM.Models
                 && activeProfile != null)
                 {
                     activeProfile.LoadSources();
-                    input = WasapiService.CreateWasapiCapture(cancellationTokenSource.Token);
+                    input = WasapiService.CreateWasapiCapture(InputDeviceExclusiveMode, cancellationTokenSource.Token);
                     output = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
 
                     ResetOutputDevice();

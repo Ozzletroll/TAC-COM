@@ -150,14 +150,7 @@ namespace TAC_COM.ViewModels
         /// </summary>
         private void ExecuteToggleSettingsView()
         {
-            if (CurrentViewModel == audioInterfaceViewModel)
-            {
-                CurrentViewModel = SettingsPanelViewModel;
-            }
-            else
-            {
-                CurrentViewModel = AudioInterfaceViewModel;
-            }
+            CurrentViewModel = (CurrentViewModel == audioInterfaceViewModel) ? SettingsPanelViewModel : AudioInterfaceViewModel;
         }
 
         /// <summary>
@@ -185,7 +178,7 @@ namespace TAC_COM.ViewModels
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 
             audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService);
-            settingsPanelViewModel = new SettingsPanelViewModel();
+            settingsPanelViewModel = new SettingsPanelViewModel(AudioInterfaceViewModel.AudioManager);
             currentViewModel = AudioInterfaceViewModel;
         }
     }

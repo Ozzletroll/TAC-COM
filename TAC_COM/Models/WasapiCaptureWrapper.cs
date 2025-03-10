@@ -9,11 +9,28 @@ namespace TAC_COM.Models
     /// Wrapper class for the <see cref="WasapiCapture"/>, to facilitate
     /// easier testing.
     /// </summary>
-    public class WasapiCaptureWrapper(CancellationToken token) : IWasapiCaptureWrapper
+    public class WasapiCaptureWrapper : IWasapiCaptureWrapper
     {
-        private readonly CancellationToken cancellationToken = token;
+        private readonly CancellationToken cancellationToken;
+        private readonly bool useExclusiveMode;
 
-        private WasapiCapture wasapiCapture = new(true, AudioClientShareMode.Shared, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
+        public WasapiCaptureWrapper(bool _useExclusiveMode, CancellationToken _token)
+        {
+            cancellationToken = _token;
+            useExclusiveMode = _useExclusiveMode;
+
+            // Exclusive mode cannot be used alongside eventsync
+            if (useExclusiveMode)
+            {
+                wasapiCapture = new(false, AudioClientShareMode.Exclusive, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
+            }
+            else
+            {
+                wasapiCapture = new(true, AudioClientShareMode.Shared, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
+            }
+        }
+
+        private WasapiCapture wasapiCapture;
 
         public WasapiCapture WasapiCapture
         {
