@@ -277,6 +277,15 @@ namespace TAC_COM.Models
             }
         }
 
+        public int BufferSize
+        {
+            get => audioProcessor.BufferSize;
+            set
+            {
+                audioProcessor.BufferSize = value;
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 

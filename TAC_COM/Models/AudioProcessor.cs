@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using CSCore.CoreAudioAPI;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using NWaves.Operations;
@@ -108,13 +109,25 @@ namespace TAC_COM.Models
             }
         }
 
+        private int bufferSize;
+        public int BufferSize
+        {
+            get => bufferSize;
+            set
+            {
+                bufferSize = value;
+            }
+        }
+
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested) return;
 
-            inputSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
-            parallelSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
-            passthroughSource = new SoundInSource(inputWrapper.WasapiCapture) { FillWithZeros = true };
+            var bufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * ((float)BufferSize / 1000));
+
+            inputSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
+            parallelSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
+            passthroughSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             sampleRate = inputSource.WaveFormat.SampleRate;
             activeProfile = profile;
             HasInitialised = true;

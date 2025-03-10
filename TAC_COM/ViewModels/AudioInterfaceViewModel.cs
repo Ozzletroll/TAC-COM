@@ -461,6 +461,7 @@ namespace TAC_COM.ViewModels
                 OutputDevice = savedOutputDevice;
             }
             AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
+            AudioManager.BufferSize = settingsService.AudioSettings.BufferSize;
         }
 
         /// <summary>

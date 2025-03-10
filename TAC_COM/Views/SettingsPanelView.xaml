@@ -27,22 +27,69 @@
                     </TextBlock>
                 </Label>
 
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Margin="10">
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
                     <CheckBox IsChecked="{Binding ExclusiveMode}"
                               Content="Use exclusive mode"
-                              Margin="10"/>
+                              Margin="10"
+                              Grid.Column="0" />
+
+                    <StackPanel Grid.Column="1"
+                                Width="200"/>
+
                     <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
                                VerticalAlignment="Center"
                                TextAlignment="Center"
-                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+                               Grid.Column="2">
                         Exclusive mode prevents any other application from using the input device, 
                         which can help prevent playback errors and inconsistencies.
                     </TextBlock>
-                </StackPanel>
-                
-                
+                </Grid>
+
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="10"
+                                HorizontalAlignment="Left"> 
+                        <Label Content="Buffer Size (ms)"
+                               FontSize="10" FontWeight="Normal"/>
+                        
+                        <ComboBox  Margin="0, 10, 0, 0"
+                                  ItemsSource="{Binding BufferSizes}"
+                                  SelectedItem="{Binding BufferSize}"
+                                  BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer1BorderBrush}}"
+                                  Cursor="Hand"
+                                  IsEditable="False" IsReadOnly="True">
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Width="200"/>
+
+                    <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"
+                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+                               Grid.Column="2">
+                        Sets the size of the internal audio buffer.
+                    </TextBlock>
+                </Grid>
+
             </StackPanel>
         </StackPanel>
     </Grid>

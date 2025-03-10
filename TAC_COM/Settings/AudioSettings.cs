@@ -120,5 +120,19 @@ namespace TAC_COM.Settings
                 this["exclusiveMode"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the int value representing the size
+        /// of the internal buffer in milliseconds.
+        /// </summary>
+        [ConfigurationProperty("bufferSize", DefaultValue = 50)]
+        public int BufferSize
+        {
+            get => (int)this["bufferSize"];
+            set
+            {
+                this["bufferSize"] = value;
+            }
+        }
     }
 }
