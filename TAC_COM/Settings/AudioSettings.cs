@@ -106,5 +106,19 @@ namespace TAC_COM.Settings
                 this["activeProfile"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if
+        /// exclusive mode is enabled.
+        /// </summary>
+        [ConfigurationProperty("exclusiveMode", DefaultValue = false)]
+        public bool ExclusiveMode
+        {
+            get => (bool)this["exclusiveMode"];
+            set
+            {
+                this["exclusiveMode"] = value;
+            }
+        }
     }
 }

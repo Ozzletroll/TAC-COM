@@ -1,21 +1,22 @@
 ﻿
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services.Interfaces;
 
 namespace TAC_COM.ViewModels
 {
-    public class SettingsPanelViewModel(IAudioManager _audioManager) : ViewModelBase, IDisposable
+    public class SettingsPanelViewModel(IAudioManager _audioManager, ISettingsService _settingsService) : ViewModelBase, IDisposable
     {
         private readonly IAudioManager audioManager = _audioManager;
+        private readonly ISettingsService settingsService = _settingsService;
 
-        private bool inputDeviceExclusiveMode;
-        public bool InputDeviceExclusiveMode
+        public bool ExclusiveMode
         {
-            get => inputDeviceExclusiveMode;
+            get => audioManager.InputDeviceExclusiveMode;
             set
             {
-                inputDeviceExclusiveMode = value;
                 audioManager.InputDeviceExclusiveMode = value;
-                OnPropertyChanged(nameof(InputDeviceExclusiveMode));
+                OnPropertyChanged(nameof(ExclusiveMode));
+                settingsService.UpdateAppConfig(nameof(ExclusiveMode), value);
             }
         }
     }

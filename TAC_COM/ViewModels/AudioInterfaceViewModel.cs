@@ -460,6 +460,7 @@ namespace TAC_COM.ViewModels
             {
                 OutputDevice = savedOutputDevice;
             }
+            AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
         }
 
         /// <summary>
@@ -580,14 +581,14 @@ namespace TAC_COM.ViewModels
         /// <param name="_uriService"> The <see cref="IUriService"/> to pass to the <see cref="ProfileService"/>.</param>
         /// <param name="_iconService"> The <see cref="IIconService"/> to use.</param>
         /// <param name="_themeService"> The <see cref="IThemeService"/> to use.</param>
-        public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService)
+        public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService, ISettingsService _settingsService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
             audioManager = _audioManager;
             audioManager.PropertyChanged += AudioManager_PropertyChanged;
 
-            settingsService = new SettingsService();
+            settingsService = _settingsService;
 
             iconService = _iconService;
 

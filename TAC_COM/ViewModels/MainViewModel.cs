@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
 
@@ -177,8 +178,10 @@ namespace TAC_COM.ViewModels
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 
-            audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService);
-            settingsPanelViewModel = new SettingsPanelViewModel(AudioInterfaceViewModel.AudioManager);
+            var settingsService = new SettingsService();
+
+            audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService, settingsService);
+            settingsPanelViewModel = new SettingsPanelViewModel(audioManager, settingsService);
             currentViewModel = AudioInterfaceViewModel;
         }
     }

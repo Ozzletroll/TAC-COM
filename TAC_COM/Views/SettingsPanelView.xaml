@@ -23,22 +23,22 @@
                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                     <TextBlock TextAlignment="Center"
                                HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
-                        INPUT DEVICE SETTINGS
+                        DEVICE SETTINGS
                     </TextBlock>
                 </Label>
 
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
                             Margin="10">
-                    <CheckBox IsChecked="{Binding InputDeviceExclusiveMode}"
-                              Content="Use input device in exclusive mode"
+                    <CheckBox IsChecked="{Binding ExclusiveMode}"
+                              Content="Use exclusive mode"
                               Margin="10"/>
                     <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
                                VerticalAlignment="Center"
                                TextAlignment="Center"
                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                         Exclusive mode prevents any other application from using the input device, 
-                        which can prevent playback errors and inconsistencies.
+                        which can help prevent playback errors and inconsistencies.
                     </TextBlock>
                 </StackPanel>
                 
