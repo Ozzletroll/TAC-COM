@@ -44,7 +44,7 @@
 
                     <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
                                VerticalAlignment="Center"
-                               TextAlignment="Center"
+                               TextAlignment="Left"
                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                Grid.Column="2">
                         Exclusive mode prevents any other application from using the input device, 
@@ -60,10 +60,9 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="10"
-                                HorizontalAlignment="Left"> 
+                                HorizontalAlignment="Left">
                         <Label Content="Buffer Size (ms)"
                                FontSize="12" FontWeight="Normal"/>
-                        
                         <ComboBox  Margin="0, 10, 0, 0"
                                   ItemsSource="{Binding BufferSizes}"
                                   SelectedItem="{Binding BufferSize}"
@@ -83,7 +82,7 @@
 
                     <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
                                VerticalAlignment="Center"
-                               TextAlignment="Center"
+                               TextAlignment="Left"
                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                Grid.Column="2">
                         Sets the size of the internal audio buffer. Raise this if you experience popping/crackling
