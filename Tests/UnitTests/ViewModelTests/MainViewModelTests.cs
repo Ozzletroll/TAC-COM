@@ -62,6 +62,10 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsInstanceOfType(viewModel.CurrentViewModel, typeof(AudioInterfaceViewModel));
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.AudioInterfaceViewModel"/>
+        /// property.
+        /// </summary>
         [TestMethod]
         public void TestCurrentViewModelProperty()
         {
@@ -94,6 +98,10 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(newPropertyValue, testViewModel.AudioInterfaceViewModel);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.SettingsPanelViewModel"/>
+        /// property.
+        /// </summary>
         [TestMethod]
         public void TestSettingsPanelViewModelProperty()
         {
@@ -143,6 +151,15 @@ namespace Tests.UnitTests.ViewModelTests
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.IconText), newPropertyValue);
             Assert.AreEqual("Icon Text", testViewModel.IconText);
+        }
+
+        [TestMethod]
+        public void TestCurrentIconProperty()
+        {
+            var newPropertyValue = new BitmapImage();
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.CurrentIcon), newPropertyValue);
+            Assert.AreEqual(newPropertyValue, testViewModel.CurrentIcon);
         }
 
         /// <summary>
