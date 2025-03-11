@@ -55,6 +55,16 @@ namespace Tests.UnitTests.ServiceTests
             var floatPropertyValue = floatPropertyInfo?.GetValue(testSettingsService.AudioSettings);
 
             Assert.AreEqual(testFloatValue, floatPropertyValue);
+
+            var testIntProperty = "BufferSize";
+            var testIntValue = 70;
+
+            testSettingsService.UpdateAppConfig(testIntProperty, testIntValue);
+
+            var intPropertyInfo = testSettingsService.AudioSettings.GetType().GetProperty(testIntProperty);
+            var intPropertyValue = intPropertyInfo?.GetValue(testSettingsService.AudioSettings);
+
+            Assert.AreEqual(testIntValue, intPropertyValue);
         }
 
         /// <summary>
