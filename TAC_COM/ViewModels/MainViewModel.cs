@@ -149,10 +149,7 @@ namespace TAC_COM.ViewModels
         /// </summary>
         public void ShowDeviceInfo()
         {
-            if (CurrentViewModel is AudioInterfaceViewModel audioInterfaceViewModel)
-            {
-                audioInterfaceViewModel.ShowDebugDialog();
-            }
+            audioInterfaceViewModel.ShowDebugDialog();
         }
 
         /// <summary>
