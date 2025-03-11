@@ -109,7 +109,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private int bufferSize;
+        private int bufferSize = 50;
         public int BufferSize
         {
             get => bufferSize;
