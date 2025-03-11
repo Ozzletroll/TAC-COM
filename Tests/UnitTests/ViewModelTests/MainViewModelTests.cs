@@ -94,6 +94,19 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(newPropertyValue, testViewModel.AudioInterfaceViewModel);
         }
 
+        [TestMethod]
+        public void TestSettingsPanelViewModelProperty()
+        {
+            var mockAudioManager = new MockAudioManager();
+            var mockSettingsService = new MockSettingsService();
+
+            var newPropertyValue = new SettingsPanelViewModel(mockAudioManager, mockSettingsService);
+
+            testViewModel.SettingsPanelViewModel = newPropertyValue;
+
+            Assert.AreEqual(newPropertyValue, testViewModel.SettingsPanelViewModel);
+        }
+
         /// <summary>
         /// Test method for the <see cref="MainViewModel.ActiveProfileIcon"/> property.
         /// </summary>
