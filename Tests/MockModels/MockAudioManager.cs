@@ -23,6 +23,8 @@ namespace Tests.MockModels
         public IProfile? ActiveProfile { get; set; }
         public float InterferenceLevel { get; set; }
         public bool PlaybackReady { get; set; }
+        public bool InputDeviceExclusiveMode {  get; set; }
+        public int BufferSize {  get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

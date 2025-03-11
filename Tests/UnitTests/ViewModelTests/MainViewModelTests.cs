@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models.Interfaces;
@@ -13,7 +14,7 @@ namespace Tests.UnitTests.ViewModelTests
     /// <summary>
     /// Test class for the <see cref="MainViewModel"/> class.
     /// </summary>
-    [TestClass]
+    [STATestClass]
     public class MainViewModelTests
     {
         private readonly MainViewModel testViewModel;
@@ -23,13 +24,13 @@ namespace Tests.UnitTests.ViewModelTests
         /// </summary>
         public MainViewModelTests()
         {
-            var mockApplication = new Mock<IApplicationContextWrapper>();
+            var mockApplication = new MockApplicationContextWrapper(new Mock<Window>().Object);
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new MockThemeService();
             var mockAudioManager = new MockAudioManager();
             var mockUriService = new MockUriService();
 
-            testViewModel = new MainViewModel(mockApplication.Object, mockAudioManager, mockUriService, mockIconService.Object, mockThemeService);
+            testViewModel = new MainViewModel(mockApplication, mockAudioManager, mockUriService, mockIconService.Object, mockThemeService);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestConstructor()
         {
-            var mockApplication = new Mock<IApplicationContextWrapper>();
+            var mockApplication = new MockApplicationContextWrapper(new Mock<Window>().Object);
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new MockThemeService();
             var mockAudioManager = new MockAudioManager();
@@ -52,7 +53,7 @@ namespace Tests.UnitTests.ViewModelTests
             mockIconService.SetupAdd(iconService => iconService.ChangeProfileIcon += It.IsAny<EventHandler>())
                            .Callback<EventHandler>(handler => profileIconChangedSubscribed = true);
 
-            var viewModel = new MainViewModel(mockApplication.Object, mockAudioManager, mockUriService, mockIconService.Object, mockThemeService);
+            var viewModel = new MainViewModel(mockApplication, mockAudioManager, mockUriService, mockIconService.Object, mockThemeService);
 
             Assert.IsTrue(systemTrayIconChangedSubscribed, "ChangeSystemTrayIcon event is not subscribed.");
             Assert.IsTrue(profileIconChangedSubscribed, "ChangeProfileIcon event is not subscribed.");

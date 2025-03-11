@@ -18,29 +18,27 @@ namespace Tests.MockServices
         public void UpdateAppConfig(string propertyName, object value)
         {
             var property = AudioSettings.GetType().GetProperty(propertyName)
-                ?? KeybindSettings.GetType().GetProperty(propertyName);
+                            ?? KeybindSettings.GetType().GetProperty(propertyName);
 
-            // Update AppConfig
             if (property != null)
             {
-                if (property.PropertyType == typeof(string))
+                var propertyType = property.PropertyType;
+
+                if (propertyType == typeof(string))
                 {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, value.ToString());
+                    property.SetValue(
+                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings,
+                        value.ToString());
                 }
-                else if (property.PropertyType == typeof(float))
+                else
                 {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (float)value);
-                }
-                else if (property.PropertyType == typeof(bool))
-                {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (bool)value);
+                    property.SetValue(
+                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings,
+                        Convert.ChangeType(value, propertyType));
                 }
             }
         }
-
+        
         /// <summary>
         /// Initialises a new instance of the <see cref="MockSettingsService"/> class
         /// with default test values.
