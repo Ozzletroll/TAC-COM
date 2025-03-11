@@ -71,6 +71,29 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(newPropertyValue, testViewModel.CurrentViewModel);
         }
 
+        [TestMethod]
+        public void TestAudioInterfaceViewModelProperty()
+        {
+            var mockApplicationContext = new Mock<IApplicationContextWrapper>();
+            var mockAudioManager = new MockAudioManager();
+            var mockUriService = new MockUriService();
+            var mockIconService = new Mock<IIconService>();
+            var mockThemeService = new Mock<IThemeService>();
+            var mockSettingsService = new MockSettingsService();
+
+            var newPropertyValue = new AudioInterfaceViewModel(
+                mockApplicationContext.Object, 
+                mockAudioManager, 
+                mockUriService, 
+                mockIconService.Object, 
+                mockThemeService.Object, 
+                mockSettingsService);
+
+            testViewModel.AudioInterfaceViewModel = newPropertyValue;
+
+            Assert.AreEqual(newPropertyValue, testViewModel.AudioInterfaceViewModel);
+        }
+
         /// <summary>
         /// Test method for the <see cref="MainViewModel.ActiveProfileIcon"/> property.
         /// </summary>
