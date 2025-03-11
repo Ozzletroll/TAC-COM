@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Moq;
+using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
@@ -160,6 +161,36 @@ namespace Tests.UnitTests.ViewModelTests
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.CurrentIcon), newPropertyValue);
             Assert.AreEqual(newPropertyValue, testViewModel.CurrentIcon);
+        }
+
+        [TestMethod]
+        public void TestShowDeviceInfo()
+        {
+            var mockApplicationContext = new Mock<IApplicationContextWrapper>();
+            var mockAudioManager = new MockAudioManager();
+            var mockUriService = new MockUriService();
+            var mockIconService = new Mock<IIconService>();
+            var mockThemeService = new Mock<IThemeService>();
+            var mockSettingsService = new MockSettingsService();
+
+            var audioInterfaceViewModel = new AudioInterfaceViewModel(
+                mockApplicationContext.Object,
+                mockAudioManager,
+                mockUriService,
+                mockIconService.Object,
+                mockThemeService.Object,
+                mockSettingsService);
+
+            var mockWindowService = new Mock<IWindowService>();
+            mockWindowService.Setup(service => service.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
+
+            audioInterfaceViewModel.WindowService = mockWindowService.Object;
+
+            testViewModel.AudioInterfaceViewModel = audioInterfaceViewModel;
+
+            testViewModel.ShowDeviceInfo();
+
+            mockWindowService.Verify(service => service.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once());
         }
 
         /// <summary>
