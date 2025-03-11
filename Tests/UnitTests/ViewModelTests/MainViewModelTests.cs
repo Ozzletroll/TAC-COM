@@ -62,6 +62,15 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsInstanceOfType(viewModel.CurrentViewModel, typeof(AudioInterfaceViewModel));
         }
 
+        [TestMethod]
+        public void TestCurrentViewModelProperty()
+        {
+            var newPropertyValue = new ViewModelBase();
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.CurrentViewModel), newPropertyValue);
+            Assert.AreEqual(newPropertyValue, testViewModel.CurrentViewModel);
+        }
+
         /// <summary>
         /// Test method for the <see cref="MainViewModel.ActiveProfileIcon"/> property.
         /// </summary>
