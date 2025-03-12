@@ -549,6 +549,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual("[ CTRL + V ]", testViewModel.KeybindName);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.ShowDebugDialog"/> method.
+        /// </summary>
         [TestMethod]
         public void TestShowDebugDialog()
         {

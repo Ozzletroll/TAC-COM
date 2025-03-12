@@ -6,9 +6,16 @@ using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
 {
+    /// <summary>
+    /// Test class for the <see cref="SettingsPanelViewModel"/> class.
+    /// </summary>
     [TestClass]
     public class SettingsPanelViewModelTests
     {
+        /// <summary>
+        /// Test method for the <see cref="SettingsPanelViewModel.ExclusiveMode"/>
+        /// property.
+        /// </summary>
         [TestMethod]
         public void TestExclusiveModeProperty()
         {
@@ -23,7 +30,11 @@ namespace Tests.UnitTests.ViewModelTests
 
             mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.ExclusiveMode), testValue));
         }
-    
+
+        /// <summary>
+        /// Test method for the <see cref="SettingsPanelViewModel.BufferSize"/>
+        /// property.
+        /// </summary>
         [TestMethod]
         public void TestBufferSizeProperty()
         {
