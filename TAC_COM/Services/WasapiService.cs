@@ -10,9 +10,9 @@ namespace TAC_COM.Services
     /// </summary>
     public class WasapiService : IWasapiService
     {
-        public IWasapiCaptureWrapper CreateWasapiCapture(CancellationToken cancellationToken)
+        public IWasapiCaptureWrapper CreateWasapiCapture(bool useExclusiveMode, CancellationToken cancellationToken)
         {
-            return new WasapiCaptureWrapper(cancellationToken);
+            return new WasapiCaptureWrapper(useExclusiveMode, cancellationToken);
         }
 
         public IWasapiOutWrapper CreateWasapiOut(CancellationToken cancellationToken)

@@ -40,6 +40,12 @@ namespace TAC_COM.Models.Interfaces
         float RingModulationWetDryMix { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the buffer to use
+        /// in milliseconds.
+        /// </summary>
+        int BufferSize { get; set; }
+
+        /// <summary>
         /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.
         /// </summary>
         void Dispose();

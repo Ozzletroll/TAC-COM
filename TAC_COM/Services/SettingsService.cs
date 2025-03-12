@@ -47,21 +47,21 @@ namespace TAC_COM.Services
 
             if (property != null)
             {
-                if (property.PropertyType == typeof(string))
+                var propertyType = property.PropertyType;
+
+                if (propertyType == typeof(string))
                 {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, value.ToString());
+                    property.SetValue(
+                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings,
+                        value.ToString());
                 }
-                else if (property.PropertyType == typeof(float))
+                else
                 {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (float)value);
+                    property.SetValue(
+                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings, 
+                        Convert.ChangeType(value, propertyType));
                 }
-                else if (property.PropertyType == typeof(bool))
-                {
-                    property.SetValue(property.DeclaringType
-                        == typeof(AudioSettings) ? AudioSettings : KeybindSettings, (bool)value);
-                }
+
                 AppConfig.Save();
             }
         }

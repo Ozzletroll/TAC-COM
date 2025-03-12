@@ -11,14 +11,66 @@
                              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
                              mc:Ignorable="d"
                              Title="TAC/COM"
-                             Height="350" Width="500" MinHeight="350" MinWidth="500"
+                             Height="350" Width="500"
                              TitleBarForeground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                              TitleBarBackground="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              BorderThickness="1" BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.WindowButtonInteractionBrush}}"
                              ResizeMode="CanMinimize"
                              Icon="{Binding ActiveProfileIcon}">
     <Grid>
-        <views:AudioInterfaceView DataContext="{Binding CurrentViewModel}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="2" Grid.Row="4"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Focusable="False">
+            <Button Content="{Binding CurrentIcon}"
+                    Command="{Binding ToggleSettingsView}"
+                    Height="24" Width="24"
+                    Margin="0" Padding="4"
+                    Cursor="Hand"
+                    Background="Transparent"
+                    adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                    adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0"
+                    IsEnabled="{Binding AudioInterfaceViewModel.UIDeviceControlsEnabled}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="1">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+        <ContentControl Content="{Binding CurrentViewModel}"
+                        Grid.Column="2" Grid.Row="4"
+                        Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"
+                        Focusable="False"/>
+        
     </Grid>
 
 </adonisControls:AdonisWindow>

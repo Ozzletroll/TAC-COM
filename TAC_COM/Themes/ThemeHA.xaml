@@ -43,6 +43,9 @@
     <!--Click-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer3BackgroundColor}">#E06500</Color>
 
+    <!--Settings Icon-->
+    <Color x:Key="{x:Static adonisUi:Colors.Layer3BorderColor}">#7c7c7c</Color>
+
     <!--Dial-->
     <!--Border-->
     <Color x:Key="{x:Static adonisUi:Colors.Layer4BorderColor}">#ababab</Color>

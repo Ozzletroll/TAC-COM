@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
 
@@ -11,10 +12,48 @@ namespace TAC_COM.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase, IDisposable
     {
+        private ViewModelBase currentViewModel;
+
         /// <summary>
         /// Gets or sets the current viewmodel of the application.
         /// </summary>
-        public ViewModelBase CurrentViewModel { get; set; }
+        public ViewModelBase CurrentViewModel
+        {
+            get => currentViewModel;
+            set
+            {
+                currentViewModel = value;
+                OnPropertyChanged(nameof(CurrentViewModel));
+            }
+        }
+
+        private AudioInterfaceViewModel audioInterfaceViewModel;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ViewModels.AudioInterfaceViewModel"/>.
+        /// </summary>
+        public AudioInterfaceViewModel AudioInterfaceViewModel
+        {
+            get => audioInterfaceViewModel;
+            set
+            {
+                audioInterfaceViewModel = value;
+            }
+        }
+
+        private SettingsPanelViewModel settingsPanelViewModel;
+
+        /// <summary>
+        /// Gets or sets the current <see cref="ViewModels.SettingsPanelViewModel"/>.
+        /// </summary>
+        public SettingsPanelViewModel SettingsPanelViewModel
+        {
+            get => settingsPanelViewModel;
+            set
+            {
+                settingsPanelViewModel = value;
+            }
+        }
 
         private System.Windows.Media.ImageSource? activeProfileIcon;
 
@@ -64,6 +103,20 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private readonly object settingsIcon;
+        private readonly object settingsOffIcon;
+        private object currentIcon;
+
+        public object CurrentIcon
+        {
+            get => currentIcon;
+            set
+            {
+                currentIcon = value;
+                OnPropertyChanged(nameof(CurrentIcon));
+            }
+        }
+
         /// <summary>
         /// Method to handle the <see cref="IIconService.ChangeSystemTrayIcon"/>
         /// event, updating the notify icon image and text with the new values.
@@ -96,10 +149,21 @@ namespace TAC_COM.ViewModels
         /// </summary>
         public void ShowDeviceInfo()
         {
-            if (CurrentViewModel is AudioInterfaceViewModel audioInterfaceViewModel)
-            {
-                audioInterfaceViewModel.ShowDebugDialog();
-            }
+            audioInterfaceViewModel.ShowDebugDialog();
+        }
+
+        /// <summary>
+        /// <see cref="RelayCommand"/> to show/hide the settings view.
+        /// </summary>
+        public RelayCommand ToggleSettingsView => new(execute => ExecuteToggleSettingsView());
+
+        /// <summary>
+        /// Method to show/hide the settings view.
+        /// </summary>
+        private void ExecuteToggleSettingsView()
+        {
+            CurrentViewModel = (CurrentViewModel == audioInterfaceViewModel) ? SettingsPanelViewModel : AudioInterfaceViewModel;
+            CurrentIcon = CurrentIcon == settingsIcon ? settingsOffIcon : settingsIcon;
         }
 
         /// <summary>
@@ -108,6 +172,7 @@ namespace TAC_COM.ViewModels
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            AudioInterfaceViewModel.Dispose();
             CurrentViewModel.Dispose();
         }
 
@@ -125,7 +190,15 @@ namespace TAC_COM.ViewModels
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 
-            CurrentViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService);
+            settingsIcon = applicationContext.Resources["SettingsIcon"];
+            settingsOffIcon = applicationContext.Resources["SettingsOffIcon"];
+            currentIcon = settingsIcon;
+
+            var settingsService = new SettingsService();
+
+            audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService, settingsService);
+            settingsPanelViewModel = new SettingsPanelViewModel(audioManager, settingsService);
+            currentViewModel = AudioInterfaceViewModel;
         }
     }
 }

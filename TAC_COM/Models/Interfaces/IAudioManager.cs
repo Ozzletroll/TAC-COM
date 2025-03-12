@@ -79,6 +79,19 @@ namespace TAC_COM.Models.Interfaces
         float InterferenceLevel { get; set; }
 
         /// <summary>
+        /// Gets or sets the value representing if the current
+        /// <see cref="WasapiCaptureWrapper"/> should be run
+        /// in exclusive mode.
+        /// </summary>
+        bool InputDeviceExclusiveMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the buffer to use
+        /// in milliseconds.
+        /// </summary>
+        int BufferSize { get; set; }
+
+        /// <summary>
         /// Gets or sets the current active <see cref="IProfile"/>.
         /// </summary>
         IProfile? ActiveProfile { get; set; }

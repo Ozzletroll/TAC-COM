@@ -132,6 +132,14 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(ringModulator.Dry, 1 - ringModulator.Wet);
         }
 
+        [TestMethod]
+        public void TestBufferSizeProperty()
+        {
+            var newPropertyValue = 30;
+            audioProcessor.BufferSize = newPropertyValue;
+            Assert.AreEqual(audioProcessor.BufferSize, newPropertyValue);
+        }
+
         /// <summary>
         /// Test method for the <see cref="AudioProcessor.Initialise"/> method.
         /// </summary>

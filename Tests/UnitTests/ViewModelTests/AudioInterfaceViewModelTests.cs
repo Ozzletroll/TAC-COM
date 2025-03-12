@@ -23,7 +23,7 @@ namespace Tests.UnitTests.ViewModelTests
     {
         private readonly MockUriService mockUriService = new();
         private readonly IThemeService mockThemeService = new MockThemeService();
-        private readonly ISettingsService settingsService = new MockSettingsService();
+        private readonly ISettingsService mockSettingsService = new MockSettingsService();
         private readonly IAudioManager mockAudioManager = new MockAudioManager();
         private readonly Mock<IApplicationContextWrapper> mockApplication = new();
         private readonly AudioInterfaceViewModel testViewModel;
@@ -33,10 +33,13 @@ namespace Tests.UnitTests.ViewModelTests
         /// </summary>
         public AudioInterfaceViewModelTests()
         {
-            testViewModel = new AudioInterfaceViewModel(mockApplication.Object, mockAudioManager, mockUriService, new IconService(), mockThemeService)
-            {
-                SettingsService = settingsService,
-            };
+            testViewModel = new AudioInterfaceViewModel(
+                mockApplication.Object,
+                mockAudioManager,
+                mockUriService,
+                new IconService(),
+                mockThemeService,
+                mockSettingsService);
         }
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace Tests.UnitTests.ViewModelTests
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new Mock<IThemeService>();
 
-            var viewModel = new AudioInterfaceViewModel(mockApplication.Object, mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object);
+            var viewModel = new AudioInterfaceViewModel(mockApplication.Object, mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object, mockSettingsService);
 
             Assert.IsNotNull(viewModel.AudioManager);
             Assert.IsNotNull(viewModel.SettingsService);
@@ -544,6 +547,21 @@ namespace Tests.UnitTests.ViewModelTests
             mockKeybindManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PTTKey"));
 
             Assert.AreEqual("[ CTRL + V ]", testViewModel.KeybindName);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.ShowDebugDialog"/> method.
+        /// </summary>
+        [TestMethod]
+        public void TestShowDebugDialog()
+        {
+            var mockWindowService = new Mock<IWindowService>();
+            mockWindowService.Setup(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
+
+            testViewModel.WindowService = mockWindowService.Object;
+
+            testViewModel.ShowDebugDialog();
+            mockWindowService.Verify(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once);
         }
 
         /// <summary>

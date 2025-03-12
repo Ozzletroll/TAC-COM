@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media.Imaging;
 using TAC_COM.Models.Interfaces;
 
 namespace Tests.MockModels
@@ -7,9 +8,9 @@ namespace Tests.MockModels
     /// Mock class to act as the application context during testing.
     /// </summary>
     /// <param name="mainWindow"> The <see cref="MainWindow"/> to use.</param>
-    public class MockApplicationContextWrapper(Window mainWindow) : IApplicationContextWrapper
+    public class MockApplicationContextWrapper : IApplicationContextWrapper
     {
-        public Window MainWindow { get; set; } = mainWindow;
+        public Window MainWindow { get; set; }
 
         private ResourceDictionary resources = [];
         public ResourceDictionary Resources
@@ -19,6 +20,14 @@ namespace Tests.MockModels
             {
                 resources = value;
             }
+        }
+
+        public MockApplicationContextWrapper(Window mainWindow)
+        {
+            MainWindow = mainWindow;
+
+            Resources["SettingsIcon"] = new BitmapImage();
+            Resources["SettingsOffIcon"] = new BitmapImage();
         }
     }
 }

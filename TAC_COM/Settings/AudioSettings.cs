@@ -106,5 +106,33 @@ namespace TAC_COM.Settings
                 this["activeProfile"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if
+        /// exclusive mode is enabled.
+        /// </summary>
+        [ConfigurationProperty("exclusiveMode", DefaultValue = false)]
+        public bool ExclusiveMode
+        {
+            get => (bool)this["exclusiveMode"];
+            set
+            {
+                this["exclusiveMode"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the int value representing the size
+        /// of the internal buffer in milliseconds.
+        /// </summary>
+        [ConfigurationProperty("bufferSize", DefaultValue = 50)]
+        public int BufferSize
+        {
+            get => (int)this["bufferSize"];
+            set
+            {
+                this["bufferSize"] = value;
+            }
+        }
     }
 }
