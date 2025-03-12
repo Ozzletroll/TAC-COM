@@ -549,6 +549,18 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual("[ CTRL + V ]", testViewModel.KeybindName);
         }
 
+        [TestMethod]
+        public void TestShowDebugDialog()
+        {
+            var mockWindowService = new Mock<IWindowService>();
+            mockWindowService.Setup(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
+
+            testViewModel.WindowService = mockWindowService.Object;
+
+            testViewModel.ShowDebugDialog();
+            mockWindowService.Verify(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once);
+        }
+
         /// <summary>
         /// Test method for the <see cref="AudioInterfaceViewModel.ShowKeybindDialog"/> method.
         /// </summary>
