@@ -14,6 +14,12 @@ namespace TAC_COM.Models
         private readonly CancellationToken cancellationToken;
         private readonly bool useExclusiveMode;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="WasapiCaptureWrapper"/>.
+        /// </summary>
+        /// <param name="_useExclusiveMode">Boolean value representing if the wasapicapture should run
+        /// in exclusive mode.</param>
+        /// <param name="_token"> Cancellation token issued upon playback start toggle.</param>
         public WasapiCaptureWrapper(bool _useExclusiveMode, CancellationToken _token)
         {
             cancellationToken = _token;
