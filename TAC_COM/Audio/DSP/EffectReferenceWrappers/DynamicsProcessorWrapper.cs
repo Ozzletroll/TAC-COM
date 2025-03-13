@@ -84,7 +84,7 @@ namespace TAC_COM.Audio.DSP.EffectReferenceWrappers
         }
 
         /// <summary>
-        /// Gets or sets teh release in milliseconds.
+        /// Gets or sets the release time in milliseconds.
         /// </summary>
         public float Release
         {
