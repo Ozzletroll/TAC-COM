@@ -94,17 +94,22 @@ namespace TAC_COM.Models
         }
 
         private float ringModulationWetDryMix;
-        private const float MaxRingModulationWetMix = 0.8f;
+        private const float MaxRingModulationWetMix = 0.9f;
+        private float ringModulationWet;
+        private float ringModulationDry;
         public float RingModulationWetDryMix
         {
             get => ringModulationWetDryMix;
             set
             {
                 ringModulationWetDryMix = Math.Clamp(value, 0, 1);
+                ringModulationWet = ringModulationWetDryMix * MaxRingModulationWetMix;
+                ringModulationDry = 1 - ringModulationWet;
+
                 if (ringModulator != null)
                 {
-                    ringModulator.Wet = ringModulationWetDryMix * MaxRingModulationWetMix;
-                    ringModulator.Dry = 1 - ringModulator.Wet;
+                    ringModulator.Wet = ringModulationWet;
+                    ringModulator.Dry = ringModulationDry;
                 }
             }
         }
@@ -245,8 +250,8 @@ namespace TAC_COM.Models
                 outputSampleSource = outputSampleSource.AppendSource(x => new RingModulatorWrapper(x)
                 {
                     ModulatedSignalAdjustmentDB = activeProfile.Settings.RingModulatorGainAdjust,
-                    Wet = RingModulationWetDryMix,
-                    Dry = 1 - RingModulationWetDryMix,
+                    Wet = ringModulationWet,
+                    Dry = ringModulationDry,
                     ModulatorSignalType = activeProfile.Settings.RingModulatorType,
                     ModulatorParameters = activeProfile.Settings.RingModulatorParameters,
                 }, out ringModulator);
