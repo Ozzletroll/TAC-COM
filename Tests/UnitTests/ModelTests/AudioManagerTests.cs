@@ -246,6 +246,17 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
         }
 
+        [TestMethod]
+        public void TestBufferSize()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = 90;
+            audioManager.BufferSize = newPropertyValue;
+            Assert.AreEqual(audioManager.BufferSize, newPropertyValue);
+        }
+
         /// <summary>
         /// Test method for the <see cref="AudioManager.GetAudioDevices"/> method.
         /// </summary>
