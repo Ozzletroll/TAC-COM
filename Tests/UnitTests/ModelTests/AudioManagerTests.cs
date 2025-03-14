@@ -238,6 +238,14 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.RingModulationWetDryMix, newPropertyValue);
         }
 
+        [TestMethod]
+        public void TestInputDeviceExclusiveMode()
+        {
+            var newPropertyValue = true;
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputDeviceExclusiveMode), newPropertyValue);
+            Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
+        }
+
         /// <summary>
         /// Test method for the <see cref="AudioManager.GetAudioDevices"/> method.
         /// </summary>
