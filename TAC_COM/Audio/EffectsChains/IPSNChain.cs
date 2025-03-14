@@ -1,5 +1,5 @@
-﻿using NWaves.Effects;
-using NWaves.Operations;
+﻿using NWaves.Operations;
+using NWaves.Signals.Builders;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models;
 
@@ -16,7 +16,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2000f },
+                    { "Frequency", 1000f },
                 }
             },
 
@@ -24,23 +24,55 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2300f },
+                    { "Frequency", 2000f },
+                }
+            },
+
+            new(typeof(DmoDistortionWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Gain", -15f },
+                    { "OffsetGain", -60f },
+                    { "Edge", 35f },
+                    { "PostEQCenterFrequency", 5000f },
+                    { "PostEQBandwidth", 4500f },
+                    { "PreLowpassCutoff", 8000f },
                 }
             },
         ];
 
         public static List<EffectReference> PostCompressionEffects { get; } =
         [
-            new(typeof(TubeDistortionWrapper))
+            new(typeof(DynamicsProcessorWrapper))
+            {
+                Parameters = new Dictionary<string, object>
+                {
+                    { "Mode", DynamicsMode.Limiter },
+                    { "MinAmplitude", -120 },
+                    { "Threshold", -30 },
+                    { "Ratio", 20 },
+                    { "Attack", 30 },
+                    { "Release", 300 },
+                    { "MakeupGain", 30 },
+                }
+            },
+
+            new(typeof(RingModulatorWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Wet", 0.2f },
                     { "Dry", 0.8f },
-                    { "InputGainDB", 10 },
-                    { "OutputGainDB", 5 },
-                    { "Q", -0.2f },
-                    { "Distortion", 15 },
+                    { "ModulatorSignalType", typeof(PulseWaveBuilder) },
+                    { "ModulatedSignalAdjustmentDB", 60f },
+                    { "ModulatorParameters",
+                        new Dictionary<string, object>
+                        {
+                            { "pulse", 0.1f },
+                            { "period", 0.2f }
+                        }
+                    },
                 }
             },
 
@@ -54,20 +86,6 @@ namespace TAC_COM.Audio.EffectsChains
                     { "ModulationIndex", 1.3f },
                 }
             },
-
-            new(typeof(DynamicsProcessorWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Mode", DynamicsMode.Compressor },
-                    { "MinAmplitude", -120 },
-                    { "Threshold", 5 },
-                    { "Ratio", 1 },
-                    { "Attack", 30 },
-                    { "Release", 300 },
-                    { "MakeupGain", -5 },
-                }
-            },
         ];
 
         public override List<EffectReference> GetPreCompressionEffects() => PreCompressionEffects;
@@ -79,7 +97,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 1500f },
+                    { "Frequency", 800f },
                 }
             },
 
@@ -87,7 +105,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2000f },
+                    { "Frequency", 1500f },
                 }
             },
         ];
@@ -103,30 +121,17 @@ namespace TAC_COM.Audio.EffectsChains
                 }
             },
 
-            new(typeof(DmoDistortionWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Gain", -50f },
-                    { "OffsetGain", 0f },
-                    { "Edge", 50f },
-                    { "PostEQCenterFrequency", 1800f },
-                    { "PostEQBandwidth", 2800f },
-                    { "PreLowpassCutoff", 5000f },
-                }
-            },
-
             new(typeof(DynamicsProcessorWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
                     { "Mode", DynamicsMode.Compressor },
                     { "MinAmplitude", -120 },
-                    { "Threshold", 5 },
-                    { "Ratio", 1 },
+                    { "Threshold", -10 },
+                    { "Ratio", 2 },
                     { "Attack", 30 },
                     { "Release", 300 },
-                    { "MakeupGain", -5 },
+                    { "MakeupGain", 22 },
                 }
             },
         ];
