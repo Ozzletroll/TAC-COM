@@ -25,6 +25,7 @@ namespace TAC_COM
         protected override void OnStateChanged(EventArgs e)
         {
             if (WindowState == WindowState.Minimized) Hide();
+            else Show();
             base.OnStateChanged(e);
         }
 
