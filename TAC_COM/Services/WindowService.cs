@@ -17,6 +17,8 @@ namespace TAC_COM.Services
         private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
         private KeybindWindowView? keybindWindowView;
         private DebugWindowView? debugWindowView;
+        private KeybindWindowViewModel? keybindWindowViewModel;
+        private DebugWindowViewModel? debugWindowViewModel;
 
         private IWindowFactoryService windowFactoryService = new WindowFactoryService(_applicationContext);
         public IWindowFactoryService WindowFactoryService
@@ -40,15 +42,15 @@ namespace TAC_COM.Services
 
         public void OpenKeybindWindow()
         {
-            var viewModel = new KeybindWindowViewModel(keybindManager);
-            keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(viewModel);
+            keybindWindowViewModel = new KeybindWindowViewModel(keybindManager);
+            keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(keybindWindowViewModel);
             if (ShowWindow) keybindWindowView.ShowDialog();
         }
 
         public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
-            var viewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
-            debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(viewModel);
+            debugWindowViewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
+            debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(debugWindowViewModel);
             if (ShowWindow) debugWindowView.ShowDialog();
         }
 
@@ -59,8 +61,14 @@ namespace TAC_COM.Services
             keybindWindowView?.Close();
             keybindWindowView = null;
 
+            keybindWindowViewModel?.Dispose();
+            keybindWindowViewModel = null;
+
             debugWindowView?.Close();
             debugWindowView = null;
+
+            debugWindowViewModel?.Dispose();
+            debugWindowViewModel = null;
         }
     }
 }

@@ -173,7 +173,7 @@ namespace TAC_COM.ViewModels
         {
             GC.SuppressFinalize(this);
             AudioInterfaceViewModel.Dispose();
-            CurrentViewModel.Dispose();
+            SettingsPanelViewModel.Dispose();
         }
 
         /// <summary>

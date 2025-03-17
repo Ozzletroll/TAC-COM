@@ -194,19 +194,37 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
-        /// Test method for the <see cref="IDisposable.Dispose"/> method.
+        /// Test method for the <see cref="MainViewModel.Dispose"/> method.
         /// </summary>
         [TestMethod]
         public void TestDispose()
         {
-            var mockCurrentViewModel = new Mock<ViewModelBase>();
-            mockCurrentViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
+            var mockApplicationContext = new Mock<IApplicationContextWrapper>();
+            var mockAudioManager = new MockAudioManager();
+            var mockUriService = new MockUriService();
+            var mockIconService = new Mock<IIconService>();
+            var mockThemeService = new Mock<IThemeService>();
+            var mockSettingsService = new MockSettingsService();
 
-            testViewModel.CurrentViewModel = mockCurrentViewModel.Object;
+            var mockSettingsPanelViewModel = new Mock<SettingsPanelViewModel>(mockAudioManager, mockSettingsService);
+            mockSettingsPanelViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
+
+            var mockAudioInterfaceViewModel = new Mock<AudioInterfaceViewModel>
+                (mockApplicationContext.Object, 
+                mockAudioManager, 
+                mockUriService, 
+                mockIconService.Object,
+                mockThemeService.Object,
+                mockSettingsService);
+            mockAudioInterfaceViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
+
+            testViewModel.AudioInterfaceViewModel = mockAudioInterfaceViewModel.Object;
+            testViewModel.SettingsPanelViewModel = mockSettingsPanelViewModel.Object;
 
             testViewModel.Dispose();
 
-            mockCurrentViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
+            mockSettingsPanelViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
+            mockAudioInterfaceViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
         }
     }
 }
