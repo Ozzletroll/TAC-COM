@@ -155,6 +155,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual("Icon Text", testViewModel.IconText);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.CurrentIcon"/> property.
+        /// </summary>
         [TestMethod]
         public void TestCurrentIconProperty()
         {
@@ -164,6 +167,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(newPropertyValue, testViewModel.CurrentIcon);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.MinimiseToTray"/> property.
+        /// </summary>
         [TestMethod]
         public void TestMinimiseToTray()
         {
@@ -173,6 +179,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.AreEqual(newPropertyValue, testViewModel.MinimiseToTray);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.LoadApplicationSettings"/> method.
+        /// </summary>
         [TestMethod]
         public void TestLoadApplicationSettings()
         {
@@ -189,6 +198,9 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsTrue(testViewModel.MinimiseToTray);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="MainViewModel.ShowSettingsPanel"/> method.
+        /// </summary>
         [TestMethod]
         public void TestShowDeviceInfo()
         {
