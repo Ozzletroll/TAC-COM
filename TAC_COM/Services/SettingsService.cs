@@ -15,6 +15,7 @@ namespace TAC_COM.Services
         /// </summary>
         public Configuration AppConfig { get; private set; }
 
+        public ApplicationSettings ApplicationSettings { get; set; }
         public AudioSettings AudioSettings { get; set; }
         public KeybindSettings KeybindSettings { get; set; }
 
@@ -27,6 +28,10 @@ namespace TAC_COM.Services
         {
             AppConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
+            if (AppConfig.Sections["ApplicationSettings"] is null)
+            {
+                AppConfig.Sections.Add("ApplicationSettings", new ApplicationSettings());
+            }
             if (AppConfig.Sections["AudioSettings"] is null)
             {
                 AppConfig.Sections.Add("AudioSettings", new AudioSettings());
@@ -36,33 +41,30 @@ namespace TAC_COM.Services
                 AppConfig.Sections.Add("KeybindSettings", new KeybindSettings());
             }
 
+            ApplicationSettings = (ApplicationSettings)AppConfig.GetSection("ApplicationSettings");
             AudioSettings = (AudioSettings)AppConfig.GetSection("AudioSettings");
             KeybindSettings = (KeybindSettings)AppConfig.GetSection("KeybindSettings");
         }
 
         public void UpdateAppConfig(string propertyName, object value)
         {
-            var property = AudioSettings.GetType().GetProperty(propertyName)
-                ?? KeybindSettings.GetType().GetProperty(propertyName);
+            var settings = new object[] { ApplicationSettings, AudioSettings, KeybindSettings };
+            var settingsType = settings.Select(s => s.GetType().GetProperty(propertyName))
+                                      .FirstOrDefault(p => p != null)?.DeclaringType;
 
-            if (property != null)
+            if (settingsType != null)
             {
-                var propertyType = property.PropertyType;
+                var settingsObject = settings.First(s => s.GetType() == settingsType);
+                var property = settingsType.GetProperty(propertyName);
 
-                if (propertyType == typeof(string))
+                if (property != null)
                 {
-                    property.SetValue(
-                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings,
-                        value.ToString());
-                }
-                else
-                {
-                    property.SetValue(
-                        property.DeclaringType == typeof(AudioSettings) ? AudioSettings : KeybindSettings, 
-                        Convert.ChangeType(value, propertyType));
-                }
+                    var propertyType = property.PropertyType;
+                    var convertedValue = propertyType == typeof(string) ? value.ToString() : Convert.ChangeType(value, propertyType);
+                    property.SetValue(settingsObject, convertedValue);
 
-                AppConfig.Save();
+                    AppConfig.Save();
+                }
             }
         }
     }

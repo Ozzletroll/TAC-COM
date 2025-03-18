@@ -9,6 +9,12 @@ namespace TAC_COM.Services.Interfaces
     public interface ISettingsService
     {
         /// <summary>
+        /// Gets or sets the application settings
+        /// <see cref="System.Configuration.ConfigurationSection"/>.
+        /// </summary>
+        ApplicationSettings ApplicationSettings { get; set; }
+
+        /// <summary>
         /// Gets or sets the audio settings
         /// <see cref="System.Configuration.ConfigurationSection"/>.
         /// </summary>

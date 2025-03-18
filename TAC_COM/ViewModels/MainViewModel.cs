@@ -55,6 +55,20 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private ISettingsService settingsService;
+        /// <summary>
+        /// Gets or sets the <see cref="ISettingsService"/> to use to handle
+        /// application settings.
+        /// </summary>
+        public ISettingsService SettingsService
+        {
+            get => settingsService;
+            set
+            {
+                settingsService = value;
+            }
+        }
+
         private System.Windows.Media.ImageSource? activeProfileIcon;
 
         /// <summary>
@@ -107,6 +121,9 @@ namespace TAC_COM.ViewModels
         private readonly object settingsOffIcon;
         private object currentIcon;
 
+        /// <summary>
+        /// Gets or sets the current icon of the application.
+        /// </summary>
         public object CurrentIcon
         {
             get => currentIcon;
@@ -115,6 +132,29 @@ namespace TAC_COM.ViewModels
                 currentIcon = value;
                 OnPropertyChanged(nameof(CurrentIcon));
             }
+        }
+
+        /// <summary>
+        /// Gets the boolean value representing if the app should
+        /// minimise to the system tray when minimised.
+        /// </summary>
+        public bool MinimiseToTray
+        {
+            get => settingsPanelViewModel.MinimiseToTray;
+            set
+            {
+                settingsPanelViewModel.MinimiseToTray = value;
+                OnPropertyChanged(nameof(MinimiseToTray));
+            }
+        }
+
+        /// <summary>
+        /// Method to load the application settings from the
+        /// config file.
+        /// </summary>
+        public void LoadApplicationSettings()
+        {
+            MinimiseToTray = SettingsService.ApplicationSettings.MinimiseToTray;
         }
 
         /// <summary>
@@ -194,11 +234,13 @@ namespace TAC_COM.ViewModels
             settingsOffIcon = applicationContext.Resources["SettingsOffIcon"];
             currentIcon = settingsIcon;
 
-            var settingsService = new SettingsService();
+            settingsService = new SettingsService();
 
             audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService, settingsService);
             settingsPanelViewModel = new SettingsPanelViewModel(audioManager, settingsService);
             currentViewModel = AudioInterfaceViewModel;
+
+            LoadApplicationSettings();
         }
     }
 }

@@ -19,14 +19,21 @@ namespace TAC_COM
 
         /// <summary>
         /// Override method to handle the <see cref="Window.StateChanged"/>
-        /// event, hiding the window to the system tray when minimised.
+        /// event, hiding the window to the system tray when minimised
+        /// if <see cref="MainViewModel.MinimiseToTray"/> to true.
         /// </summary>
         /// <param name="e">The event data for the event.</param>
         protected override void OnStateChanged(EventArgs e)
         {
-            if (WindowState == WindowState.Minimized) Hide();
-            else Show();
             base.OnStateChanged(e);
+            if (DataContext is MainViewModel viewModel)
+            {
+                if (viewModel.MinimiseToTray)
+                {
+                    if (WindowState == WindowState.Minimized) Hide();
+                    else Show();
+                }
+            }
         }
 
         /// <summary>

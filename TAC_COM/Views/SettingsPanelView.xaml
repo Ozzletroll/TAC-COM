@@ -90,6 +90,38 @@
                     </TextBlock>
                 </Grid>
 
+                <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
+                    <TextBlock TextAlignment="Center"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                        APP SETTINGS
+                    </TextBlock>
+                </Label>
+
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <CheckBox IsChecked="{Binding MinimiseToTray}"
+                              Content="Minimise to system tray"
+                              Margin="10"
+                              Grid.Column="0" />
+
+                    <StackPanel Grid.Column="1"
+                                Width="200"/>
+
+                    <TextBlock Width="170" TextWrapping="WrapWithOverflow" FontSize="10"
+                               VerticalAlignment="Center"
+                               TextAlignment="Left"
+                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+                               Grid.Column="2">
+                        Minimises the application to the system tray instead of the taskbar.
+                    </TextBlock>
+                </Grid>
+
             </StackPanel>
         </StackPanel>
     </Grid>
