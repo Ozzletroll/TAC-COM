@@ -5,6 +5,7 @@ using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
+using TAC_COM.Settings;
 using TAC_COM.ViewModels;
 using Tests.MockModels;
 using Tests.MockServices;
@@ -170,6 +171,22 @@ namespace Tests.UnitTests.ViewModelTests
 
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.MinimiseToTray), newPropertyValue);
             Assert.AreEqual(newPropertyValue, testViewModel.MinimiseToTray);
+        }
+
+        [TestMethod]
+        public void TestLoadApplicationSettings()
+        {
+            var mockApplicationSettings = new ApplicationSettings
+            {
+                MinimiseToTray = true,
+            };
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(service => service.ApplicationSettings).Returns(mockApplicationSettings);
+
+            testViewModel.LoadApplicationSettings();
+
+            Assert.IsTrue(testViewModel.MinimiseToTray);
         }
 
         [TestMethod]
