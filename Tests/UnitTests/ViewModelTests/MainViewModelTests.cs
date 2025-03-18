@@ -164,6 +164,15 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         [TestMethod]
+        public void TestMinimiseToTray()
+        {
+            var newPropertyValue = true;
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.MinimiseToTray), newPropertyValue);
+            Assert.AreEqual(newPropertyValue, testViewModel.MinimiseToTray);
+        }
+
+        [TestMethod]
         public void TestShowDeviceInfo()
         {
             var mockApplicationContext = new Mock<IApplicationContextWrapper>();
