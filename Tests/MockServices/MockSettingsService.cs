@@ -14,6 +14,7 @@ namespace Tests.MockServices
     {
         public AudioSettings AudioSettings { get; set; }
         public KeybindSettings KeybindSettings { get; set; }
+        public ApplicationSettings ApplicationSettings { get; set; }
 
         public void UpdateAppConfig(string propertyName, object value)
         {
@@ -63,6 +64,11 @@ namespace Tests.MockServices
                 Alt = false,
                 IsModifier = false,
                 Passthrough = false,
+            };
+
+            ApplicationSettings = new ApplicationSettings
+            {
+                MinimiseToTray = false,
             };
         }
     }
