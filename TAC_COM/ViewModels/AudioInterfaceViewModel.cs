@@ -590,9 +590,7 @@ namespace TAC_COM.ViewModels
             audioManager.PropertyChanged += AudioManager_PropertyChanged;
 
             settingsService = _settingsService;
-
             iconService = _iconService;
-
             themeService = _themeService;
 
             keybindManager = new KeybindManager(settingsService);
