@@ -1,4 +1,5 @@
 ﻿using TAC_COM.Services;
+using TAC_COM.Settings;
 
 namespace Tests.UnitTests.ServiceTests
 {
@@ -24,9 +25,21 @@ namespace Tests.UnitTests.ServiceTests
         [TestMethod]
         public void TestConstructor()
         {
-            Assert.IsNotNull(testSettingsService.AppConfig);
-            Assert.IsNotNull(testSettingsService.AudioSettings);
-            Assert.IsNotNull(testSettingsService.KeybindSettings);
+            var testSettingsService = new SettingsService();
+
+            var appConfig = testSettingsService.AppConfig;
+            var applicationSettings = testSettingsService.ApplicationSettings;
+            var audioSettings = testSettingsService.AudioSettings;
+            var keybindSettings = testSettingsService.KeybindSettings;
+
+            Assert.IsNotNull(appConfig, "AppConfig should not be null.");
+            Assert.IsNotNull(applicationSettings, "ApplicationSettings should not be null.");
+            Assert.IsNotNull(audioSettings, "AudioSettings should not be null.");
+            Assert.IsNotNull(keybindSettings, "KeybindSettings should not be null.");
+
+            Assert.IsInstanceOfType(applicationSettings, typeof(ApplicationSettings), "ApplicationSettings should be of type ApplicationSettings.");
+            Assert.IsInstanceOfType(audioSettings, typeof(AudioSettings), "AudioSettings should be of type AudioSettings.");
+            Assert.IsInstanceOfType(keybindSettings, typeof(KeybindSettings), "KeybindSettings should be of type KeybindSettings.");
         }
 
         /// <summary>
