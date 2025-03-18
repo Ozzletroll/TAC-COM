@@ -44,6 +44,24 @@ namespace Tests.UnitTests.ServiceTests
 
         /// <summary>
         /// Test method for the <see cref="SettingsService.UpdateAppConfig"/> method,
+        /// testing the <see cref="SettingsService.ApplicationSettings"/> is updated.
+        /// </summary>
+        [TestMethod]
+        public void TestUpdateAppConfig_ApplicationSettings()
+        {
+            var testBoolProperty = "MinimiseToTray";
+            var testBoolValue = true;
+
+            testSettingsService.UpdateAppConfig(testBoolProperty, testBoolValue);
+
+            var boolPropertyInfo = testSettingsService.ApplicationSettings.GetType().GetProperty(testBoolProperty);
+            var boolPropertyValue = boolPropertyInfo?.GetValue(testSettingsService.ApplicationSettings);
+
+            Assert.AreEqual(testBoolValue, boolPropertyValue);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="SettingsService.UpdateAppConfig"/> method,
         /// testing the <see cref="SettingsService.AudioSettings"/> is updated.
         /// </summary>
         [TestMethod]
