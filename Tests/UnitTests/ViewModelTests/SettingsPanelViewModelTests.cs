@@ -49,5 +49,23 @@ namespace Tests.UnitTests.ViewModelTests
 
             mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.BufferSize), testValue));
         }
+
+        /// <summary>
+        /// Test method for the <see cref="SettingsPanelViewModel.MinimiseToTray"/>
+        /// </summary>
+        [TestMethod]
+        public void TestMinimiseToTrayProperty()
+        {
+            var testValue = true;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(service => service.UpdateAppConfig("MinimiseToTray", testValue)).Verifiable();
+
+            var viewModel = new SettingsPanelViewModel(new MockAudioManager(), mockSettingsService.Object);
+
+            Utils.TestPropertyChange(viewModel, nameof(viewModel.MinimiseToTray), testValue);
+
+            mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.MinimiseToTray), testValue));
+        }
     }
 }
