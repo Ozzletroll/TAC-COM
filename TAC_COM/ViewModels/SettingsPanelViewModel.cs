@@ -49,6 +49,7 @@ namespace TAC_COM.ViewModels
         }
 
         private bool minimiseToTray;
+
         /// <summary>
         /// Gets or sets the boolean value representing if the
         /// app should minimise to the system tray when minimised.
