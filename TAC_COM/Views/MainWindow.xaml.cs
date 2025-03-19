@@ -3,8 +3,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using AdonisUI.Controls;
-using TAC_COM.Models;
-using TAC_COM.Services;
+using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
 
 namespace TAC_COM
@@ -44,9 +43,12 @@ namespace TAC_COM
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            if (DataContext is IDisposable disposable)
+            if (DataContext is MainViewModel viewModel)
             {
-                disposable.Dispose();
+                viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+                viewModel.Dispose();
+                notifyIcon.DoubleClick -= (s, e) => ShowWindow();
+                Closing -= (s, e) => notifyIcon.Dispose();
             }
         }
 
@@ -119,20 +121,11 @@ namespace TAC_COM
         /// with any dependencies, as well as where the system tray context
         /// menu is initialised.
         /// </summary>
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel, IIconService iconService)
         {
             InitializeComponent();
 
-            string[] themeDirectoryFolders = ["Themes"];
-            string[] iconDirectoryFolders = ["Static", "Icons"];
-            var uriService = new UriService(themeDirectoryFolders, iconDirectoryFolders);
-            var audioManager = new AudioManager();
-            var iconService = new IconService();
-            var applicationContext = new ApplicationContextWrapper();
-            var themeService = new ThemeService(applicationContext, uriService);
-
-            var viewModel = new MainViewModel(applicationContext, audioManager, uriService, iconService, themeService);
-            DataContext = viewModel;
+            DataContext = mainViewModel;
 
             contextMenuStrip = new ContextMenuStrip();
             contextMenuStrip.Items.Add(new ToolStripMenuItem("Show TAC/COM", null, (s, e) => ShowWindow()));
@@ -149,7 +142,11 @@ namespace TAC_COM
                 Visible = true,
                 ContextMenuStrip = contextMenuStrip,
             };
-            viewModel.PropertyChanged += OnViewModelPropertyChanged;
+
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            }
 
             notifyIcon.DoubleClick += (s, e) => ShowWindow();
             Closing += (s, e) => notifyIcon.Dispose();

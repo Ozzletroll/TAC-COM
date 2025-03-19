@@ -46,5 +46,10 @@ namespace TAC_COM.Services.Interfaces
         /// parameters required to set the "Standby" state.
         /// </summary>
         void SetStandbyIcon();
+
+        /// <summary>
+        /// Method to check the if the system is using the light theme.
+        /// </summary>
+        bool IsLightThemeEnabled();
     }
 }

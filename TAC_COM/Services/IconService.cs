@@ -35,9 +35,6 @@ namespace TAC_COM.Services
             ChangeProfileIcon?.Invoke(this, new ProfileChangeEventArgs(icon));
         }
 
-        /// <summary>
-        /// Static method to check the if the system is using the light theme.
-        /// </summary>
         public bool IsLightThemeEnabled()
         {
             return RegistryService.GetThemeRegistryValue() == 1;
