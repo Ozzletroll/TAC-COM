@@ -44,6 +44,7 @@ namespace TAC_COM.Services
         {
             keybindWindowViewModel = new KeybindWindowViewModel(keybindManager);
             keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(keybindWindowViewModel);
+            keybindWindowView.Closed += OnKeybindWindowClosed;
             if (ShowWindow) keybindWindowView.ShowDialog();
         }
 
@@ -51,21 +52,62 @@ namespace TAC_COM.Services
         {
             debugWindowViewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
             debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(debugWindowViewModel);
+            debugWindowView.Closed += OnDebugWindowClosed;
             if (ShowWindow) debugWindowView.ShowDialog();
+        }
+
+        /// <summary>
+        /// Event handler for when the keybind window is closed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnKeybindWindowClosed(object? sender, EventArgs e)
+        {
+            if (keybindWindowView != null)
+            {
+                keybindWindowView.Closed -= OnKeybindWindowClosed;
+                keybindWindowView = null;
+            }
+            keybindWindowViewModel?.Dispose();
+            keybindWindowViewModel = null;
+        }
+
+        /// <summary>
+        /// Event handler for when the debug window is closed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDebugWindowClosed(object? sender, EventArgs e)
+        {
+            if (debugWindowView != null)
+            {
+                debugWindowView.Closed -= OnDebugWindowClosed;
+                debugWindowView = null;
+            }
+            debugWindowViewModel?.Dispose();
+            debugWindowViewModel = null;
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
 
-            keybindWindowView?.Close();
-            keybindWindowView = null;
+            if (keybindWindowView != null)
+            {
+                keybindWindowView.Close();
+                keybindWindowView.Closed -= OnKeybindWindowClosed;
+                keybindWindowView = null;
+            }
 
             keybindWindowViewModel?.Dispose();
             keybindWindowViewModel = null;
 
-            debugWindowView?.Close();
-            debugWindowView = null;
+            if (debugWindowView != null)
+            {
+                debugWindowView.Close();
+                debugWindowView.Closed -= OnDebugWindowClosed;
+                debugWindowView = null;
+            }
 
             debugWindowViewModel?.Dispose();
             debugWindowViewModel = null;
