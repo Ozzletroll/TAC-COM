@@ -26,8 +26,15 @@ namespace TAC_COM.Services
             };
 
             viewModel.Close += (s, e) => window.Close();
+            window.Closed += (s, e) =>
+            {
+                if (viewModel is IDisposable disposableViewModel)
+                {
+                    disposableViewModel.Dispose();
+                }
+            };
 
-            return window!;
+            return window;
         }
     }
 }

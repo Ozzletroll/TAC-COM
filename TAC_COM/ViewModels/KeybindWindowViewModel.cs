@@ -67,6 +67,7 @@ namespace TAC_COM.ViewModels
 
         public override void Dispose()
         {
+            base.Dispose();
             KeybindManager.Dispose();
             KeybindManager.ToggleUserKeybindSubscription(false);
             KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;

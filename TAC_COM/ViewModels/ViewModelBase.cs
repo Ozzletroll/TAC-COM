@@ -11,6 +11,7 @@ namespace TAC_COM.ViewModels
         public virtual void Dispose()
         {
             GC.SuppressFinalize(this);
+            Close = null;
         }
 
         /// <summary>

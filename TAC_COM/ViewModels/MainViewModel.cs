@@ -56,6 +56,7 @@ namespace TAC_COM.ViewModels
         }
 
         private ISettingsService settingsService;
+
         /// <summary>
         /// Gets or sets the <see cref="ISettingsService"/> to use to handle
         /// application settings.
@@ -66,6 +67,21 @@ namespace TAC_COM.ViewModels
             set
             {
                 settingsService = value;
+            }
+        }
+
+        private IIconService iconService;
+
+        /// <summary>
+        /// Gets or sets the <see cref="IIconService"/> used to handle
+        /// icon changes.
+        /// </summary>
+        public IIconService IconService
+        {
+            get => iconService;
+            set
+            {
+                iconService = value;
             }
         }
 
@@ -214,6 +230,8 @@ namespace TAC_COM.ViewModels
             GC.SuppressFinalize(this);
             AudioInterfaceViewModel.Dispose();
             SettingsPanelViewModel.Dispose();
+            iconService.ChangeSystemTrayIcon -= OnChangeSystemTrayIcon;
+            iconService.ChangeProfileIcon -= OnSetActiveProfileIcon;
         }
 
         /// <summary>
@@ -226,7 +244,7 @@ namespace TAC_COM.ViewModels
         /// <param name="themeService"> The <see cref="IThemeService"/> to use to handle theme changes.</param>
         public MainViewModel(IApplicationContextWrapper applicationContext, IAudioManager audioManager, IUriService uriService, IIconService _iconService, IThemeService themeService)
         {
-            IIconService iconService = _iconService;
+            iconService = _iconService;
             iconService.ChangeSystemTrayIcon += OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon += OnSetActiveProfileIcon;
 

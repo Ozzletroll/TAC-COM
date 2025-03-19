@@ -99,5 +99,11 @@ namespace TAC_COM.ViewModels
         {
             return $"OS: {Environment.OSVersion.Version}";
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }
