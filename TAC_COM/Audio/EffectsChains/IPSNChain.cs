@@ -16,7 +16,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 1800f },
+                    { "Frequency", 1500f },
                 }
             },
 
@@ -24,24 +24,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2500f },
-                }
-            },
-
-        ];
-
-        public static List<EffectReference> PostCompressionEffects { get; } =
-        [
-            new(typeof(DmoDistortionWrapper))
-            {
-                Parameters = new Dictionary<string, object>
-                {
-                    { "Gain", -60f },
-                    { "OffsetGain", -30f },
-                    { "Edge", 60f },
-                    { "PostEQCenterFrequency", 4000f },
-                    { "PostEQBandwidth", 500f },
-                    { "PreLowpassCutoff", 3000f },
+                    { "Frequency", 2800f },
                 }
             },
 
@@ -57,18 +40,20 @@ namespace TAC_COM.Audio.EffectsChains
                     { "Distortion", 15 },
                 }
             },
+        ];
 
-            new(typeof(DynamicsProcessorWrapper))
+        public static List<EffectReference> PostCompressionEffects { get; } =
+        [
+            new(typeof(DmoDistortionWrapper))
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Mode", DynamicsMode.Compressor },
-                    { "MinAmplitude", -120 },
-                    { "Threshold", -10 },
-                    { "Ratio", 4 },
-                    { "Attack", 30 },
-                    { "Release", 300 },
-                    { "MakeupGain", 2 },
+                    { "Gain", -40f },
+                    { "OffsetGain", -55f },
+                    { "Edge", 60f },
+                    { "PostEQCenterFrequency", 4000f },
+                    { "PostEQBandwidth", 500f },
+                    { "PreLowpassCutoff", 3000f },
                 }
             },
 
@@ -111,7 +96,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 1500f },
+                    { "Frequency", 500f },
                 }
             },
 
@@ -119,7 +104,7 @@ namespace TAC_COM.Audio.EffectsChains
             {
                 Parameters = new Dictionary<string, object>
                 {
-                    { "Frequency", 2000f },
+                    { "Frequency", 1300f },
                 }
             },
         ];
