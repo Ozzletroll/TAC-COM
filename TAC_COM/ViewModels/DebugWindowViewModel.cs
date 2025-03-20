@@ -10,18 +10,32 @@ namespace TAC_COM.ViewModels
     /// </summary>
     /// <param name="inputDeviceInfo"> DeviceInfo for the input device.</param>
     /// <param name="outputDeviceInfo"> DeviceInfo for the output device.</param>
-    public class DebugWindowViewModel(DeviceInfo inputDeviceInfo, DeviceInfo outputDeviceInfo) : ViewModelBase
+    public class DebugWindowViewModel : ViewModelBase
     {
+        public DebugWindowViewModel(DeviceInfo inputDeviceInfo, DeviceInfo outputDeviceInfo)
+        {
+            inputDevice = inputDeviceInfo;
+            outputDevice = outputDeviceInfo;
+            DebugInfo = GetAllDebugInfo();
+        }
+
+        private string debugInfo = "";
+
         /// <summary>
         /// Gets the formatted text readout of all relevant debug
         /// info, for display in the view textbox.
         /// </summary>
         public string DebugInfo
         {
-            get => GetAllDebugInfo();
+            get => debugInfo;
+            set
+            {
+                debugInfo = value;
+                OnPropertyChanged(nameof(DebugInfo));
+            }
         }
 
-        private DeviceInfo inputDevice = inputDeviceInfo;
+        private DeviceInfo inputDevice;
 
         /// <summary>
         /// Gets or sets the <see cref="DeviceInfo"/> of
@@ -36,7 +50,7 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private DeviceInfo outputDevice = outputDeviceInfo;
+        private DeviceInfo outputDevice;
 
         /// <summary>
         /// Gets or sets the <see cref="DeviceInfo"/> of
@@ -87,8 +101,9 @@ namespace TAC_COM.ViewModels
         private static string GetVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            return $"TAC/COM v:{fileVersionInfo.FileVersion}";
+            var versionAttribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            var version = versionAttribute?.InformationalVersion?.Split('+')[0] ?? "unknown";
+            return $"TAC/COM v:{version}";
         }
 
         /// <summary>
