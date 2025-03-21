@@ -135,7 +135,7 @@ Allows TAC/COM to utilise the chosen input device in exclusive mode, preventing 
 ### Buffer Size
 Sets TAC/COM's internal sample buffer size in milliseconds. Increase this if popping/crackling occurs.
 
-### Minimise to system tray
+### Minimise to System Tray
 Set whether TAC/COM will minimise to the system tray icon rather than the taskbar.
 
 ## System Tray Icon
