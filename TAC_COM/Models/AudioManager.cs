@@ -286,11 +286,6 @@ namespace TAC_COM.Models
             }
         }
 
-        /// <summary>
-        /// Uses the <see cref="EnumeratorService"/> to get all
-        /// input and output devices, setting the values of the <see cref="InputDevices"/> 
-        /// and <see cref="OutputDevices"/> properties.
-        /// </summary>
         public void GetAudioDevices()
         {
             InputDevices.Clear();
