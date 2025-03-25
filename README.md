@@ -129,7 +129,16 @@ Sets the level of the processed signal's "background noise" effect during transm
 Sets the level of the processed signal's simulated signal degradation/interference. Ranges from 0% to 100%. 
 Use sparingly for dramatic effect, as values above 50% become increasingly unintelligible.
 
-## System Tray
+### Exclusive Mode
+Allows TAC/COM to utilise the chosen input device in exclusive mode, preventing other applications from accessing it. This can help prevent third-party audio software from interfering with audio playback.
+
+### Buffer Size
+Sets TAC/COM's internal sample buffer size in milliseconds. Increase this if popping/crackling occurs.
+
+### Minimise to System Tray
+Set whether TAC/COM will minimise to the system tray icon rather than the taskbar.
+
+## System Tray Icon
 While running, TAC/COM creates an icon on the system tray that provides a simple visual indicator of the push-to-talk transmission state.
 
 | Icon | Description |
@@ -138,6 +147,6 @@ While running, TAC/COM creates an icon on the system tray that provides a simple
 | <img height="32px" width="32px" align="center" src="/TAC_COM/Static/Icons/enabled.ico" alt="A white microphone icon, indicating that TAC/COM is transmitting unprocessed audio."> | **Enabled:** Regular microphone input being passed to the output voice, with no radio effect applied. |
 | <img height="32px" width="32px" align="center" src="/TAC_COM/Static/Icons/live.ico" alt="A red microphone icon, indicating that TAC/COM is applying the radio effect to the output."> | **Transmitting:** Processed radio effect audio being passed to output device. |
 
-Right clicking the system icon shows a dropdown menu of additional options to show/hide the app, or toggle if TAC/COM's window should stay on top of other windows.
+Right clicking the system icon shows a dropdown menu of additional options to show/hide the app, toggle if TAC/COM's window should stay on top of other windows, and to display an audio device debug panel.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

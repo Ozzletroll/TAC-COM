@@ -22,7 +22,10 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
+**System (please complete the following information):**
+
+Right click the TAC/COM system tray icon and select "Device Info" for full audio device specs.
+
  - OS: [e.g. Windows 10]
  - TAC/COM Version [e.g. 1.0]
  - Audio hardware [e.g. microphone, soundcard]
