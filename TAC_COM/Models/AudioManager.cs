@@ -286,6 +286,11 @@ namespace TAC_COM.Models
             }
         }
 
+        /// <summary>
+        /// Uses the <see cref="EnumeratorService"/> to get all
+        /// input and output devices, setting the values of the <see cref="InputDevices"/> 
+        /// and <see cref="OutputDevices"/> properties.
+        /// </summary>
         public void GetAudioDevices()
         {
             InputDevices.Clear();
@@ -298,6 +303,10 @@ namespace TAC_COM.Models
             OnPropertyChanged(nameof(OutputDevices));
         }
 
+        /// <summary>
+        /// Creates a dictionary of <see cref="DeviceInfo"/> objects for the current active
+        /// input and output devices, to be displayed in the <see cref="ViewModels.DebugWindowViewModel"/>.
+        /// </summary>
         public Dictionary<string, DeviceInfo> GetDeviceInfo()
         {
             var inputDeviceInfo = activeInputDeviceWrapper?.DeviceInformation ?? new DeviceInfo();
