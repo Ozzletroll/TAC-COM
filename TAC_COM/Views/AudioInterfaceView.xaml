@@ -140,23 +140,44 @@
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                     <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" 
-                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
+                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"
+                               IsEnabled="{Binding PTTControlsEnabled}">
                         PTT KEY
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
                     </TextBlock>
                 </Label>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                           FontWeight="Normal" Width="250" Height="20" 
-                           Content="{Binding KeybindName}"/>
-                    <Button DockPanel.Dock="Right" Width="50" Height="20" 
-                                HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
-                                IsEnabled="{Binding UIDeviceControlsEnabled}" Command="{Binding ShowKeybindDialog}" FontSize="10"
-                                BorderThickness="0"
-                                adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
-                                adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
+                           FontWeight="Normal" Width="150" Height="20" Margin="0" Padding="0"
+                           Content="{Binding KeybindName}"
+                           IsEnabled="{Binding PTTControlsEnabled}">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <Button DockPanel.Dock="Right" Width="50" Height="20" Margin="0, 0, 10, 0"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" 
+                            HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
+                            IsEnabled="{Binding PTTControlsEnabled}" Command="{Binding ShowKeybindDialog}" FontSize="10"
+                            BorderThickness="0"
+                            adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                            adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
                         EDIT
                         <Button.Style>
                             <Style TargetType="Button">
@@ -164,8 +185,8 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}"
-                                                        BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"
-                                                        BorderThickness="1" CornerRadius="1">
+                                    BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"
+                                    BorderThickness="1" CornerRadius="1">
                                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                         </ControlTemplate>
@@ -188,6 +209,52 @@
                             </Style>
                         </Button.Style>
                     </Button>
+
+                    <ToggleButton DockPanel.Dock="Right" Width="90" Height="20" 
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                  IsChecked="{Binding UseOpenMic}"
+                                  Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
+                                  IsEnabled="{Binding UIDeviceControlsEnabled}" FontSize="10"
+                                  BorderThickness="0"
+                                  adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                                  adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                                                    BorderThickness="1" Background="{TemplateBinding Background}" CornerRadius="1">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
+                                        <Setter Property="Content" Value="MODE: OPEN MIC"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
+                                        <Setter Property="Content" Value="MODE: PTT"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
 
                 </StackPanel>
             </StackPanel>
@@ -231,7 +298,7 @@
                     </ToggleButton.Style>
                 </ToggleButton>
 
-                <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140"
+                <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140" Height="25"
                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                               FontSize="18" FontWeight="ExtraLight"
                               IsChecked="{Binding BypassState}" IsEnabled="{Binding UIPTTControlsEnabled}"
@@ -251,12 +318,12 @@
                             <Style.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
-                                    <Setter Property="Content" Value="BYPASS"/>
+                                    <Setter Property="Content" Value="TRANSMITTING"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
-                                    <Setter Property="Content" Value="PUSH TO TALK"/>
+                                    <Setter Property="Content" Value="BYPASS"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">

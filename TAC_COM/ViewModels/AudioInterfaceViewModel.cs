@@ -236,6 +236,27 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private bool pttControlsEnabled = true;
+
+        /// <summary>
+        /// Gets or sets the value representing if the 
+        /// PTT ui controls are visually enabled.
+        /// </summary>
+        /// <remarks>
+        /// Both <see cref="UIDeviceControlsEnabled"/> and
+        /// <see cref="pttControlsEnabled"/> must be true for this
+        /// to return true.
+        /// </remarks>
+        public bool PTTControlsEnabled
+        {
+            get => pttControlsEnabled && UIDeviceControlsEnabled;
+            set
+            {
+                pttControlsEnabled = value;
+                OnPropertyChanged(nameof(PTTControlsEnabled));
+            }
+        }
+
         /// <summary>
         /// Gets or sets the value representing if audio processing
         /// is applied to the playback signal.
@@ -371,6 +392,19 @@ namespace TAC_COM.ViewModels
             {
                 keybindName = "[ " + value + " ]";
                 OnPropertyChanged(nameof(KeybindName));
+            }
+        }
+
+        private bool useOpenMic;
+        public bool UseOpenMic
+        {
+            get => useOpenMic;
+            set
+            {
+                useOpenMic = value;
+                PTTControlsEnabled = !value;
+                OnPropertyChanged(nameof(UseOpenMic));
+                OnPropertyChanged(nameof(PTTControlsEnabled));
             }
         }
 
