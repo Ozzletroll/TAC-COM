@@ -82,7 +82,7 @@ namespace TAC_COM.Audio.DSP
             }
         }
 
-        public void Process(byte[] buffer, int length, int startIndex = 0)
+        public void Process(byte[] buffer)
         {
             State = webRtcVad.HasSpeech(buffer);
         }

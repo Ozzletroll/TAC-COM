@@ -204,11 +204,9 @@ namespace TAC_COM.Models
                 && voiceActivityDetector != null)
             {
                 byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
-                int read;
-
-                while ((read = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
+                while ((_ = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    voiceActivityDetector.Process(buffer, read);
+                    voiceActivityDetector.Process(buffer);
                 }
             }
         }
