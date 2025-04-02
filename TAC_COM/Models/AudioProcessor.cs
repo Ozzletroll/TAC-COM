@@ -159,6 +159,13 @@ namespace TAC_COM.Models
             HasInitialised = true;
         }
 
+        /// <summary>
+        /// Initialises the components required for Voice Activity Detection.
+        /// The microphone input is passed first through a noise gate, then
+        /// converted to a 16bit PCM format, with a buffer of 30ms, which is required by
+        /// the <see cref="WebRtcVadSharp.WebRtcVad"/>.
+        /// </summary>
+        /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> to use for microphone input. </param>
         private void InitialiseVoiceActivityDetector(IWasapiCaptureWrapper inputWrapper)
         {
             var voiceActivityBufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * (30f / 1000));
@@ -183,6 +190,14 @@ namespace TAC_COM.Models
             voiceActivitySource.DataAvailable += OnInputDataAvailable;
         }
 
+        /// <summary>
+        /// Handles the <see cref="SoundInSource.DataAvailable"/> event
+        /// from the <see cref="voiceActivitySource"/>, converting the bytes
+        /// buffer of the <see cref="SoundInSource"/> to the format
+        /// specified by the <see cref="convertedSource"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the event.</param>
         private void OnInputDataAvailable(object? sender, DataAvailableEventArgs e)
         {
             if (convertedSource != null
