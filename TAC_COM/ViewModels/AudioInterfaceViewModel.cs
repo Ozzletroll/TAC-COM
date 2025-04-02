@@ -396,12 +396,19 @@ namespace TAC_COM.ViewModels
         }
 
         private bool useOpenMic;
+
+        /// <summary>
+        /// Gets or sets the value representing if the "Open Mic"
+        /// setting should be used. If false, default PTT
+        /// behaviour is used.
+        /// </summary>
         public bool UseOpenMic
         {
             get => useOpenMic;
             set
             {
                 useOpenMic = value;
+                audioManager.UseOpenMic = value;
                 PTTControlsEnabled = !value;
                 OnPropertyChanged(nameof(UseOpenMic));
                 OnPropertyChanged(nameof(PTTControlsEnabled));
@@ -531,8 +538,43 @@ namespace TAC_COM.ViewModels
             {
                 UIDeviceControlsEnabled = !AudioManager.PlaybackReady;
                 UIPTTControlsEnabled = AudioManager.PlaybackReady;
-                keybindManager.TogglePTTKeybindSubscription(State);
+
+                if (!UseOpenMic) keybindManager.TogglePTTKeybindSubscription(State);
+                else keybindManager.TogglePTTKeybindSubscription(false);
+
+                if (AudioManager.PlaybackReady)
+                {
+                    AudioManager.VoiceActivityDetected += OnVoiceActivityDetected;
+                    AudioManager.VoiceActivityStopped += OnVoiceActivityStopped;
+                }
+                else
+                {
+                    AudioManager.VoiceActivityDetected -= OnVoiceActivityDetected;
+                    AudioManager.VoiceActivityStopped -= OnVoiceActivityStopped;
+                }
             }
+        }
+
+        /// <summary>
+        /// Handles the event when voice activity begins,
+        /// toggling <see cref="BypassState"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
+        private void OnVoiceActivityDetected(object? sender, EventArgs e)
+        {
+            BypassState = true;
+        }
+
+        /// <summary>
+        /// Handles the event when voice activity ends,
+        /// toggling <see cref="BypassState"/> off.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
+        private void OnVoiceActivityStopped(object? sender, EventArgs e)
+        {
+            BypassState = false;
         }
 
         /// <summary>
@@ -552,6 +594,7 @@ namespace TAC_COM.ViewModels
                 KeybindName = KeybindManager?.PTTKey?.ToString().ToUpper() ?? "NONE";
             }
         }
+
 
         /// <summary>
         /// Method to open the debug window using the
@@ -599,6 +642,8 @@ namespace TAC_COM.ViewModels
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            AudioManager.VoiceActivityDetected -= OnVoiceActivityDetected;
+            AudioManager.VoiceActivityStopped -= OnVoiceActivityStopped;
             AudioManager.Dispose();
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();

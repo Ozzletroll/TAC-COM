@@ -1,5 +1,4 @@
 ﻿using CSCore;
-using CSCore.CoreAudioAPI;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using NWaves.Operations;
@@ -18,6 +17,7 @@ namespace TAC_COM.Models
         private SoundInSource? inputSource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
+        private VoiceActivityDetector? voiceActivityDetector;
         private VolumeSource? dryMixLevel;
         private VolumeSource? wetMixLevel;
         private VolumeSource? noiseMixLevel;
@@ -124,6 +124,16 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool useVoiceActivityDetector;
+        public bool UseVoiceActivityDetector
+        {
+            get => useVoiceActivityDetector;
+            set
+            {
+                useVoiceActivityDetector = value;
+            }
+        }
+
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested) return;
@@ -133,6 +143,7 @@ namespace TAC_COM.Models
             inputSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
+
             sampleRate = inputSource.WaveFormat.SampleRate;
             activeProfile = profile;
             HasInitialised = true;
@@ -196,6 +207,11 @@ namespace TAC_COM.Models
                 Hold = 30,
                 Release = 5,
             }, out processedNoiseGate);
+
+            if (UseVoiceActivityDetector)
+            {
+                sampleSource = VoiceActivityDetectorSubChain(sampleSource);
+            }
 
             // Apply profile specific pre-compression effects
             var preCompressionSource = sampleSource;
@@ -481,6 +497,47 @@ namespace TAC_COM.Models
             return compressedOutput.ToMono();
         }
 
+        /// <summary>
+        /// Returns the <see cref="ISampleSource"/> with the appended
+        /// <see cref="VoiceActivityDetector"/> and subscribes to the 
+        /// detector's events.
+        /// </summary>
+        /// <param name="sampleSource"> The <see cref="ISampleSource"/> to apply the detector to.</param>
+        /// <returns> The completed sub-chain.</returns>
+        private ISampleSource VoiceActivityDetectorSubChain(ISampleSource sampleSource)
+        {
+            var waveSource = sampleSource.ToWaveSource()
+                .AppendSource(x => new VoiceActivityDetector(x)
+                {
+                    HoldTime = 1000,
+                }, out voiceActivityDetector);
+
+            return waveSource.ToSampleSource() 
+                ?? throw new InvalidOperationException("Voice Activity Detector source cannot be null");
+        }
+
+        public event EventHandler VoiceActivityDetected
+        {
+            add => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityDetected += value);
+            remove => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityDetected -= value);
+        }
+
+        public event EventHandler VoiceActivityStopped
+        {
+            add => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityStopped += value);
+            remove => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityStopped -= value);
+        }
+
+        /// <summary>
+        /// Adds or removes event handlers for the specified <see cref="VoiceActivityDetector"/> instance.
+        /// </summary>
+        /// <param name="detector">The <see cref="VoiceActivityDetector"/> instance to attach or detach event handlers from.</param>
+        /// <param name="action">The action that adds or removes the event handler.</param>
+        private static void AddOrRemoveEventHandler(ref VoiceActivityDetector? detector, Action<VoiceActivityDetector> action)
+        {
+            if (detector != null) action(detector);
+        }
+
         /// <inheritdoc/>
         /// <remarks>
         /// <para>
@@ -520,6 +577,7 @@ namespace TAC_COM.Models
             processedNoiseGate?.Dispose();
             parallelNoiseGate?.Dispose();
             dryNoiseGate?.Dispose();
+            voiceActivityDetector?.Dispose();
             HasInitialised = false;
         }
     }

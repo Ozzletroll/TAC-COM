@@ -2,6 +2,7 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
+using TAC_COM.Audio.DSP;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
@@ -286,6 +287,18 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool useOpenMic;
+        public bool UseOpenMic
+        {
+            get => useOpenMic;
+            set
+            {
+                useOpenMic = value;
+                audioProcessor.UseVoiceActivityDetector = value;
+                OnPropertyChanged(nameof(UseOpenMic));
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 
@@ -548,6 +561,18 @@ namespace TAC_COM.Models
         {
             InputPeakMeterValue = InputMeter.GetValue();
             OutputPeakMeterValue = OutputMeter.GetValue();
+        }
+
+        public event EventHandler VoiceActivityDetected
+        {
+            add => audioProcessor.VoiceActivityDetected += value;
+            remove => audioProcessor.VoiceActivityDetected -= value;
+        }
+
+        public event EventHandler VoiceActivityStopped
+        {
+            add => audioProcessor.VoiceActivityStopped += value;
+            remove => audioProcessor.VoiceActivityStopped -= value;
         }
 
         /// <summary>
