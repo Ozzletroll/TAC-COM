@@ -1,4 +1,5 @@
-﻿using CSCore;
+﻿using System.Timers;
+using CSCore;
 using WebRtcVadSharp;
 
 namespace TAC_COM.Audio.DSP
@@ -7,18 +8,51 @@ namespace TAC_COM.Audio.DSP
     /// Analyses a given <see cref="IWaveSource"/> for voice activity using a <see cref="webRtcVad"/>.
     /// </summary>
     /// <param name="_waveSource"> The <see cref="IWaveSource"/> to analyse for voice activity.</param>
-    public class VoiceActivityDetector(IWaveSource _waveSource) : IWaveSource
+    public class VoiceActivityDetector : IWaveSource
     {
-        private readonly IWaveSource waveSource = _waveSource;
-
+        private readonly IWaveSource waveSource;
+        private System.Timers.Timer timer;
         private readonly WebRtcVad webRtcVad = new()
         {
             FrameLength = FrameLength.Is30ms,
             SampleRate = SampleRate.Is48kHz,
-            OperatingMode = OperatingMode.LowBitrate,
+            OperatingMode = OperatingMode.HighQuality,
         };
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="VoiceActivityDetector"/>.
+        /// </summary>
+        /// <param name="_waveSource"> The <see cref="IWaveSource"/> to monitor.</param>
+        public VoiceActivityDetector(IWaveSource _waveSource)
+        {
+            waveSource = _waveSource;
+            timer = new(HoldTime);
+            timer.Elapsed += OnCloseTimerElapsed;
+            timer.AutoReset = false;
+        }
+
+        private double holdTime = 1000;
+
+        /// <summary>
+        /// Gets or sets the double value representing the
+        /// delay after voice activity stops and the 
+        /// <see cref="VoiceActivityStopped"/> event triggering.
+        /// </summary>
+        public double HoldTime
+        {
+            get => holdTime;
+            set
+            {
+                holdTime = value;
+                timer.Elapsed -= OnCloseTimerElapsed;
+                timer = new(HoldTime);
+                timer.Elapsed += OnCloseTimerElapsed;
+                timer.AutoReset = false;
+            }
+        }
+
         private bool state;
+        private bool isOpenEventTriggered = false;
 
         /// <summary>
         /// Gets or sets the boolean value representing if speech
@@ -34,11 +68,17 @@ namespace TAC_COM.Audio.DSP
                     state = value;
                     if (state)
                     {
-                        OnVoiceActivityDetected(EventArgs.Empty);
+                        timer.Stop();
+
+                        if (!isOpenEventTriggered)
+                        {
+                            OnVoiceActivityDetected(EventArgs.Empty);
+                            isOpenEventTriggered = true;
+                        }
                     }
                     else
                     {
-                        OnVoiceActivityStopped(EventArgs.Empty);
+                        timer.Start();
                     }
                 }
             }
@@ -59,16 +99,20 @@ namespace TAC_COM.Audio.DSP
         }
 
         /// <summary>
-        /// Event triggered when voice activity ends.
+        /// Event triggered when voice activity ends and the 
+        /// <see cref="HoldTime"/> has elapsed.
         /// </summary>
         public event EventHandler? VoiceActivityStopped;
 
         /// <summary>
-        /// Raises the <see cref="VoiceActivityStopped"/> event.
+        /// Raises the <see cref="VoiceActivityStopped"/> event
+        /// and resets the event triggers.
         /// </summary>
-        /// <param name="e">An <see cref="EventArgs"/> that contains the event data.</param>
-        protected virtual void OnVoiceActivityStopped(EventArgs e)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCloseTimerElapsed(object? sender, ElapsedEventArgs e)
         {
+            isOpenEventTriggered = false;
             VoiceActivityStopped?.Invoke(this, e);
         }
 
@@ -95,8 +139,9 @@ namespace TAC_COM.Audio.DSP
         /// </remarks>
         public int Read(byte[] buffer, int offset, int count)
         {
+            var bytes = waveSource.Read(buffer, offset, count);
             State = webRtcVad.HasSpeech(buffer);
-            return waveSource.Read(buffer, offset, count);
+            return bytes;
         }
 
         /// <inheritdoc/>
