@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using NWaves.Operations;
@@ -15,8 +16,10 @@ namespace TAC_COM.Models
     public class AudioProcessor : IAudioProcessor
     {
         private SoundInSource? inputSource;
+        private SoundInSource? voiceActivitySource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
+        private IWaveSource? convertedSource;
         private VoiceActivityDetector? voiceActivityDetector;
         private VolumeSource? dryMixLevel;
         private VolumeSource? wetMixLevel;
@@ -27,6 +30,7 @@ namespace TAC_COM.Models
         private Gate? processedNoiseGate;
         private Gate? parallelNoiseGate;
         private Gate? dryNoiseGate;
+        private Gate? voiceActivityGate;
         private int sampleRate = 48000;
         private IProfile? activeProfile;
 
@@ -74,6 +78,10 @@ namespace TAC_COM.Models
                     if (dryNoiseGate != null)
                     {
                         dryNoiseGate.ThresholdDB = value;
+                    }
+                    if (voiceActivityGate != null)
+                    {
+                        voiceActivityGate.ThresholdDB = value;
                     }
                 }
             }
@@ -144,9 +152,50 @@ namespace TAC_COM.Models
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
 
+            if (UseVoiceActivityDetector) InitialiseVoiceActivityDetector(inputWrapper);
+
             sampleRate = inputSource.WaveFormat.SampleRate;
             activeProfile = profile;
             HasInitialised = true;
+        }
+
+        private void InitialiseVoiceActivityDetector(IWasapiCaptureWrapper inputWrapper)
+        {
+            var voiceActivityBufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * (30f / 1000));
+            voiceActivitySource = new SoundInSource(inputWrapper.WasapiCapture, voiceActivityBufferLength) { FillWithZeros = false };
+
+            convertedSource 
+                = voiceActivitySource.ToSampleSource()
+                .AppendSource(x => new Gate(x)
+                {
+                    ThresholdDB = NoiseGateThreshold,
+                    Attack = 5,
+                    Hold = 30,
+                    Release = 5,
+                }, out voiceActivityGate)
+                .ToWaveSource(16)
+                .ToMono();
+
+            voiceActivityDetector = new()
+            {
+                HoldTime = 1000,
+            };
+            voiceActivitySource.DataAvailable += OnInputDataAvailable;
+        }
+
+        private void OnInputDataAvailable(object? sender, DataAvailableEventArgs e)
+        {
+            if (convertedSource != null
+                && voiceActivityDetector != null)
+            {
+                byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
+                int read;
+
+                while ((read = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    voiceActivityDetector.Process(buffer, read);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -197,7 +246,7 @@ namespace TAC_COM.Models
         {
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
-            var sampleSource = inputSource.ToSampleSource();
+            var sampleSource = inputSource.ToMono().ToSampleSource();
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
@@ -207,11 +256,6 @@ namespace TAC_COM.Models
                 Hold = 30,
                 Release = 5,
             }, out processedNoiseGate);
-
-            if (UseVoiceActivityDetector)
-            {
-                sampleSource = VoiceActivityDetectorSubChain(sampleSource);
-            }
 
             // Apply profile specific pre-compression effects
             var preCompressionSource = sampleSource;
@@ -497,25 +541,6 @@ namespace TAC_COM.Models
             return compressedOutput.ToMono();
         }
 
-        /// <summary>
-        /// Returns the <see cref="ISampleSource"/> with the appended
-        /// <see cref="VoiceActivityDetector"/> and subscribes to the 
-        /// detector's events.
-        /// </summary>
-        /// <param name="sampleSource"> The <see cref="ISampleSource"/> to apply the detector to.</param>
-        /// <returns> The completed sub-chain.</returns>
-        private ISampleSource VoiceActivityDetectorSubChain(ISampleSource sampleSource)
-        {
-            var waveSource = sampleSource.ToWaveSource()
-                .AppendSource(x => new VoiceActivityDetector(x)
-                {
-                    HoldTime = 1000,
-                }, out voiceActivityDetector);
-
-            return waveSource.ToSampleSource() 
-                ?? throw new InvalidOperationException("Voice Activity Detector source cannot be null");
-        }
-
         public event EventHandler VoiceActivityDetected
         {
             add => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityDetected += value);
@@ -577,7 +602,14 @@ namespace TAC_COM.Models
             processedNoiseGate?.Dispose();
             parallelNoiseGate?.Dispose();
             dryNoiseGate?.Dispose();
+            voiceActivityGate?.Dispose();
             voiceActivityDetector?.Dispose();
+
+            if (voiceActivitySource != null)
+            {
+                voiceActivitySource.DataAvailable -= OnInputDataAvailable;
+            }
+            
             HasInitialised = false;
         }
     }
