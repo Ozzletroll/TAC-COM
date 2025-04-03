@@ -29,6 +29,18 @@ namespace TAC_COM.Audio.DSP
             timer.AutoReset = false;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="WebRtcVad.OperatingMode"/>.
+        /// </summary>
+        public OperatingMode OperatingMode
+        {
+            get => webRtcVad.OperatingMode;
+            set
+            {
+                webRtcVad.OperatingMode = value;
+            }
+        }
+
         private double holdTime = 1000;
 
         /// <summary>

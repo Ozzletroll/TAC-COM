@@ -134,5 +134,34 @@ namespace TAC_COM.Settings
                 this["bufferSize"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if 
+        /// the Open Mic setting should be used.
+        /// </summary>
+        [ConfigurationProperty("useOpenMic", DefaultValue = false)]
+        public bool UseOpenMic
+        {
+            get => (bool)this["useOpenMic"];
+            set
+            {
+                this["useOpenMic"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the int value representing the 
+        /// <see cref="WebRtcVadSharp.OperatingMode"/> to
+        /// be used for voice activity detection.
+        /// </summary>
+        [ConfigurationProperty("operatingMode", DefaultValue = 3)]
+        public int OperatingMode
+        {
+            get => (int)this["operatingMode"];
+            set
+            {
+                this["operatingMode"] = value;
+            }
+        }
     }
 }

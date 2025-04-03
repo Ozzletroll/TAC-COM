@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -99,6 +100,12 @@ namespace TAC_COM.Models.Interfaces
         /// If false, defaults to push to talk.
         /// </remarks>
         bool UseOpenMic { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IAudioProcessor.OperatingMode"/> 
+        /// for voice activity detection.
+        /// </summary>
+        OperatingMode OperatingMode { get; set; }
 
         /// <summary>
         /// Gets or sets the current active <see cref="IProfile"/>.

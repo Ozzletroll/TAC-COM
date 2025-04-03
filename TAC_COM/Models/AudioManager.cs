@@ -6,6 +6,7 @@ using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models
 {
@@ -295,6 +296,15 @@ namespace TAC_COM.Models
                 useOpenMic = value;
                 audioProcessor.UseVoiceActivityDetector = value;
                 OnPropertyChanged(nameof(UseOpenMic));
+            }
+        }
+
+        public OperatingMode OperatingMode
+        {
+            get => audioProcessor.OperatingMode;
+            set
+            {
+                audioProcessor.OperatingMode = value;
             }
         }
 

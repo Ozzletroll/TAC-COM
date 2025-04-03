@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -51,6 +52,12 @@ namespace TAC_COM.Models.Interfaces
         /// is required.
         /// </summary>
         bool UseVoiceActivityDetector { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value representing if the 
+        /// <see cref="Audio.DSP.VoiceActivityDetector.OperatingMode"/>.
+        /// </summary>
+        OperatingMode OperatingMode { get; set; }
 
         /// <summary>
         /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.

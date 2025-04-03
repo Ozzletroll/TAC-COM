@@ -6,6 +6,7 @@ using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
 using TAC_COM.Models.Interfaces;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models
 {
@@ -139,6 +140,20 @@ namespace TAC_COM.Models
             set
             {
                 useVoiceActivityDetector = value;
+            }
+        }
+
+        private OperatingMode operatingMode = OperatingMode.VeryAggressive;
+        public OperatingMode OperatingMode
+        {
+            get => operatingMode;
+            set
+            {
+                operatingMode = value;
+                if (voiceActivityDetector != null)
+                {
+                    voiceActivityDetector.OperatingMode = value;
+                }
             }
         }
 
