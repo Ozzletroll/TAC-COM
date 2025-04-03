@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
+using WebRtcVadSharp;
 
 namespace TAC_COM.ViewModels
 {
@@ -46,6 +47,21 @@ namespace TAC_COM.ViewModels
                 OnPropertyChanged(nameof(BufferSize));
                 settingsService.UpdateAppConfig(nameof(BufferSize), value);
             }
+        }
+
+        public ObservableCollection<OperatingMode> OperatingModes { get; } 
+            = [OperatingMode.HighQuality, OperatingMode.LowBitrate, OperatingMode.Aggressive, OperatingMode.VeryAggressive];
+
+        public OperatingMode OperatingMode
+        {
+            get => audioManager.OperatingMode;
+            set
+            {
+                audioManager.OperatingMode = value;
+                OnPropertyChanged(nameof(OperatingMode));
+                settingsService.UpdateAppConfig(nameof(OperatingMode), value);
+            }
+
         }
 
         private bool minimiseToTray;
