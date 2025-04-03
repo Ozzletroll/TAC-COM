@@ -419,6 +419,7 @@ namespace TAC_COM.ViewModels
             set
             {
                 useOpenMic = value;
+                settingsService.UpdateAppConfig(nameof(UseOpenMic), value);
                 audioManager.UseOpenMic = value;
                 PTTSettingsControlsEnabled = !value;
                 OnPropertyChanged(nameof(UseOpenMic));
@@ -512,6 +513,7 @@ namespace TAC_COM.ViewModels
             {
                 OutputDevice = savedOutputDevice;
             }
+            UseOpenMic = settingsService.AudioSettings.UseOpenMic;
             AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
             AudioManager.BufferSize = settingsService.AudioSettings.BufferSize;
             AudioManager.OperatingMode = (WebRtcVadSharp.OperatingMode)settingsService.AudioSettings.OperatingMode;
