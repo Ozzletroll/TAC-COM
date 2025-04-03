@@ -140,8 +140,7 @@
                 <Label HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16"
                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                     <TextBlock TextAlignment="Left" TextWrapping="WrapWithOverflow" 
-                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal"
-                               IsEnabled="{Binding PTTControlsEnabled}">
+                               Width="70" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Normal">
                         PTT KEY
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -158,8 +157,9 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" VerticalContentAlignment="Center"
                            FontWeight="Normal" Width="150" Height="20" Margin="0" Padding="0"
+                           Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
                            Content="{Binding KeybindName}"
-                           IsEnabled="{Binding PTTControlsEnabled}">
+                           IsEnabled="{Binding PTTSettingsControlsEnabled}">
                         <Label.Style>
                             <Style TargetType="Label">
                                 <Style.Triggers>
@@ -174,7 +174,7 @@
                             HorizontalAlignment="Center" VerticalAlignment="Center" 
                             HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" Cursor="Hand"
-                            IsEnabled="{Binding PTTControlsEnabled}" Command="{Binding ShowKeybindDialog}" FontSize="10"
+                            IsEnabled="{Binding UIEditKeybindButtonEnabled}" Command="{Binding ShowKeybindDialog}" FontSize="10"
                             BorderThickness="0"
                             adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
                             adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
@@ -301,7 +301,7 @@
                 <ToggleButton HorizontalAlignment="Center" Margin="10" Width="140" Height="25"
                               Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}" 
                               FontSize="18" FontWeight="ExtraLight"
-                              IsChecked="{Binding BypassState}" IsEnabled="{Binding UIPTTControlsEnabled}"
+                              IsChecked="{Binding BypassState}" IsEnabled="{Binding UITransmitControlsEnabled}"
                               VerticalAlignment="Center" Cursor="Hand">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">

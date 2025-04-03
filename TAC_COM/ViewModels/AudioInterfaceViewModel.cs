@@ -200,19 +200,19 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private bool uiPTTControlsEnabled;
+        private bool uiTransmitControlsEnabled;
 
         /// <summary>
-        /// Gets or sets the value representing if the PTT UI controls
-        /// are currently selectable.
+        /// Gets or sets the value representing if the Enable/Bypass
+        /// controls on the UI are enabled.
         /// </summary>
-        public bool UIPTTControlsEnabled
+        public bool UITransmitControlsEnabled
         {
-            get => uiPTTControlsEnabled;
+            get => uiTransmitControlsEnabled;
             set
             {
-                uiPTTControlsEnabled = value;
-                OnPropertyChanged(nameof(UIPTTControlsEnabled));
+                uiTransmitControlsEnabled = value;
+                OnPropertyChanged(nameof(UITransmitControlsEnabled));
             }
         }
 
@@ -233,10 +233,11 @@ namespace TAC_COM.ViewModels
             {
                 uiDeviceControlsEnabled = value;
                 OnPropertyChanged(nameof(UIDeviceControlsEnabled));
+                OnPropertyChanged(nameof(UIEditKeybindButtonEnabled));
             }
         }
 
-        private bool pttControlsEnabled = true;
+        private bool pttSettingsControlsEnabled = true;
 
         /// <summary>
         /// Gets or sets the value representing if the 
@@ -244,17 +245,27 @@ namespace TAC_COM.ViewModels
         /// </summary>
         /// <remarks>
         /// Both <see cref="UIDeviceControlsEnabled"/> and
-        /// <see cref="pttControlsEnabled"/> must be true for this
+        /// <see cref="pttSettingsControlsEnabled"/> must be true for this
         /// to return true.
         /// </remarks>
-        public bool PTTControlsEnabled
+        public bool PTTSettingsControlsEnabled
         {
-            get => pttControlsEnabled && UIDeviceControlsEnabled;
+            get => pttSettingsControlsEnabled;
             set
             {
-                pttControlsEnabled = value;
-                OnPropertyChanged(nameof(PTTControlsEnabled));
+                pttSettingsControlsEnabled = value;
+                OnPropertyChanged(nameof(PTTSettingsControlsEnabled));
+                OnPropertyChanged(nameof(UIEditKeybindButtonEnabled));
             }
+        }
+
+        /// <summary>
+        /// Gets the value representing if the button to edit the
+        /// PTT keybind is enabled.
+        /// </summary>
+        public bool UIEditKeybindButtonEnabled
+        {
+            get => UIDeviceControlsEnabled && PTTSettingsControlsEnabled;
         }
 
         /// <summary>
@@ -409,9 +420,9 @@ namespace TAC_COM.ViewModels
             {
                 useOpenMic = value;
                 audioManager.UseOpenMic = value;
-                PTTControlsEnabled = !value;
+                PTTSettingsControlsEnabled = !value;
                 OnPropertyChanged(nameof(UseOpenMic));
-                OnPropertyChanged(nameof(PTTControlsEnabled));
+                OnPropertyChanged(nameof(PTTSettingsControlsEnabled));
             }
         }
 
@@ -537,7 +548,7 @@ namespace TAC_COM.ViewModels
             if (e.PropertyName == nameof(AudioManager.PlaybackReady))
             {
                 UIDeviceControlsEnabled = !AudioManager.PlaybackReady;
-                UIPTTControlsEnabled = AudioManager.PlaybackReady;
+                UITransmitControlsEnabled = AudioManager.PlaybackReady;
 
                 if (!UseOpenMic) keybindManager.TogglePTTKeybindSubscription(State);
                 else keybindManager.TogglePTTKeybindSubscription(false);
