@@ -60,6 +60,13 @@ namespace TAC_COM.Models.Interfaces
         OperatingMode OperatingMode { get; set; }
 
         /// <summary>
+        /// Gets or sets the value representing the time between
+        /// voice activity ending and the end of the transmission
+        /// effect in ms.
+        /// </summary>
+        double HoldTime { get; set; }
+
+        /// <summary>
         /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.
         /// </summary>
         void Dispose();

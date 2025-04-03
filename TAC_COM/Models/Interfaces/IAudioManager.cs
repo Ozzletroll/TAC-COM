@@ -102,6 +102,13 @@ namespace TAC_COM.Models.Interfaces
         bool UseOpenMic { get; set; }
 
         /// <summary>
+        /// Gets or sets the value representing the time between
+        /// voice activity ending and the end of the transmission
+        /// effect in ms.
+        /// </summary>
+        double HoldTime { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="IAudioProcessor.OperatingMode"/> 
         /// for voice activity detection.
         /// </summary>

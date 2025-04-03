@@ -514,6 +514,8 @@ namespace TAC_COM.ViewModels
             }
             AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
             AudioManager.BufferSize = settingsService.AudioSettings.BufferSize;
+            AudioManager.OperatingMode = (WebRtcVadSharp.OperatingMode)settingsService.AudioSettings.OperatingMode;
+            AudioManager.HoldTime = settingsService.AudioSettings.HoldTime;
         }
 
         /// <summary>

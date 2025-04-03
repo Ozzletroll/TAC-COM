@@ -49,9 +49,15 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the collection of OperatingModes to choose from.
+        /// </summary>
         public ObservableCollection<OperatingMode> OperatingModes { get; } 
             = [OperatingMode.HighQuality, OperatingMode.LowBitrate, OperatingMode.Aggressive, OperatingMode.VeryAggressive];
 
+        /// <summary>
+        /// Gets or sets the voice activity detector's OperatingMode setting.
+        /// </summary>
         public OperatingMode OperatingMode
         {
             get => audioManager.OperatingMode;
@@ -62,6 +68,20 @@ namespace TAC_COM.ViewModels
                 settingsService.UpdateAppConfig(nameof(OperatingMode), value);
             }
 
+        }
+
+        /// <summary>
+        /// Gets or sets the voice activity detectors hold time in ms.
+        /// </summary>
+        public double HoldTime
+        {
+            get => audioManager.HoldTime;
+            set
+            {
+                audioManager.HoldTime = value;
+                OnPropertyChanged(nameof(HoldTime));
+                settingsService.UpdateAppConfig(nameof(HoldTime), value);
+            }
         }
 
         private bool minimiseToTray;

@@ -308,6 +308,15 @@ namespace TAC_COM.Models
             }
         }
 
+        public double HoldTime
+        {
+            get => audioProcessor.HoldTime;
+            set
+            {
+                audioProcessor.HoldTime = value;
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 

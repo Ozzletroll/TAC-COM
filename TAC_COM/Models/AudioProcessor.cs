@@ -157,6 +157,20 @@ namespace TAC_COM.Models
             }
         }
 
+        private double holdTime = 1000;
+        public double HoldTime
+        {
+            get => holdTime;
+            set
+            {
+                holdTime = value;
+                if (voiceActivityDetector != null)
+                {
+                    voiceActivityDetector.HoldTime = holdTime;
+                }
+            }
+        }
+
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested) return;
@@ -178,7 +192,7 @@ namespace TAC_COM.Models
         /// Initialises the components required for Voice Activity Detection.
         /// The microphone input is passed first through a noise gate, then
         /// converted to a 16bit PCM format, with a buffer of 30ms, which is required by
-        /// the <see cref="WebRtcVadSharp.WebRtcVad"/>.
+        /// the <see cref="WebRtcVad"/>.
         /// </summary>
         /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> to use for microphone input. </param>
         private void InitialiseVoiceActivityDetector(IWasapiCaptureWrapper inputWrapper)
@@ -200,7 +214,8 @@ namespace TAC_COM.Models
 
             voiceActivityDetector = new()
             {
-                HoldTime = 1000,
+                OperatingMode = OperatingMode,
+                HoldTime = HoldTime,
             };
             voiceActivitySource.DataAvailable += OnInputDataAvailable;
         }
@@ -636,6 +651,7 @@ namespace TAC_COM.Models
             if (voiceActivitySource != null)
             {
                 voiceActivitySource.DataAvailable -= OnInputDataAvailable;
+                voiceActivityDetector = null;
             }
 
             HasInitialised = false;
