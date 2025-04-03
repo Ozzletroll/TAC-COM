@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Windows;
+﻿using System.Windows;
 using AdonisUI.Controls;
 using Moq;
 using TAC_COM.Models;

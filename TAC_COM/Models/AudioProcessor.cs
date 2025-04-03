@@ -171,7 +171,7 @@ namespace TAC_COM.Models
             var voiceActivityBufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * (30f / 1000));
             voiceActivitySource = new SoundInSource(inputWrapper.WasapiCapture, voiceActivityBufferLength) { FillWithZeros = false };
 
-            convertedSource 
+            convertedSource
                 = voiceActivitySource.ToSampleSource()
                 .AppendSource(x => new Gate(x)
                 {
@@ -622,7 +622,7 @@ namespace TAC_COM.Models
             {
                 voiceActivitySource.DataAvailable -= OnInputDataAvailable;
             }
-            
+
             HasInitialised = false;
         }
     }

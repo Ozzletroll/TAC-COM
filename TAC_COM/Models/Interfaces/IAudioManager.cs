@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using CSCore.XAudio2;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -99,7 +98,7 @@ namespace TAC_COM.Models.Interfaces
         /// <remarks>
         /// If false, defaults to push to talk.
         /// </remarks>
-        bool UseOpenMic {  get; set; }
+        bool UseOpenMic { get; set; }
 
         /// <summary>
         /// Gets or sets the current active <see cref="IProfile"/>.

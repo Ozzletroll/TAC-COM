@@ -50,7 +50,7 @@ namespace TAC_COM.Models.Interfaces
         /// the <see cref="Audio.DSP.VoiceActivityDetector"/>
         /// is required.
         /// </summary>
-        bool UseVoiceActivityDetector {  get; set; }
+        bool UseVoiceActivityDetector { get; set; }
 
         /// <summary>
         /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.

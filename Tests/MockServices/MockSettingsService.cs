@@ -39,7 +39,7 @@ namespace Tests.MockServices
                 }
             }
         }
-        
+
         /// <summary>
         /// Initialises a new instance of the <see cref="MockSettingsService"/> class
         /// with default test values.

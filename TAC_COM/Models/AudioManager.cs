@@ -2,7 +2,6 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;
-using TAC_COM.Audio.DSP;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
@@ -29,7 +28,7 @@ namespace TAC_COM.Models
         private TaskCompletionSource<bool> stopPlaybackCompletionSource = new();
         private CancellationTokenSource cancellationTokenSource;
         private const float SFXVolume = 0.2f;
-        
+
         /// <summary>
         /// Initialises a new instance of the <see cref="AudioManager"/>.
         /// </summary>
@@ -592,7 +591,8 @@ namespace TAC_COM.Models
                     if (activeOutputDeviceWrapper.IsDisposed)
                     {
                         ResetOutputDevice();
-                    };
+                    }
+                    ;
 
                     IFileSourceWrapper? file;
                     if (bypassState)

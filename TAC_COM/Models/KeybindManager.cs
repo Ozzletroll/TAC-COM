@@ -133,7 +133,8 @@ namespace TAC_COM.Models
                 pttKeybindCatchSubscription?.Dispose();
                 systemKeybindSubscription?.Dispose();
                 pttMouseButtonSubscription?.Dispose();
-            };
+            }
+            ;
         }
 
         /// <summary>

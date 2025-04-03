@@ -1,8 +1,8 @@
-﻿using AdonisUI.Controls;
-using System.Windows;
-using TAC_COM.ViewModels;
+﻿using System.Windows;
+using AdonisUI.Controls;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
+using TAC_COM.ViewModels;
 
 namespace TAC_COM.Services
 {
