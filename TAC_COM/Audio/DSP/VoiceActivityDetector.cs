@@ -53,7 +53,7 @@ namespace TAC_COM.Audio.DSP
             get => holdTime;
             set
             {
-                holdTime = value;
+                holdTime = Math.Max(value, 1);
                 timer.Elapsed -= OnCloseTimerElapsed;
                 timer = new(HoldTime);
                 timer.Elapsed += OnCloseTimerElapsed;
