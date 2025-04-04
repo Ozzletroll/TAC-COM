@@ -10,6 +10,8 @@
 	<Version>1.1.0</Version>
 	<FileVersion>1.1.0</FileVersion>
 	<PlatformTarget>x64</PlatformTarget>
+	<Platforms>x64</Platforms>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
 	<ItemGroup>
