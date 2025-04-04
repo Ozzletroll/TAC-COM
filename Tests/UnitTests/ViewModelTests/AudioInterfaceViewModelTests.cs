@@ -161,21 +161,57 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.UITransmitControlsEnabled"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUITransmitControlsEnabledProperty()
+        {
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UITransmitControlsEnabled), !testViewModel.UITransmitControlsEnabled);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioInterfaceViewModel.UIDeviceControlsEnabled"/> property.
         /// </summary>
         [TestMethod]
         public void TestUIDeviceControlsEnabledProperty()
         {
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIDeviceControlsEnabled), !testViewModel.UIDeviceControlsEnabled);
+            Utils.TestMultiplePropertyChange(
+                testViewModel,
+                nameof(testViewModel.UIDeviceControlsEnabled),
+                !testViewModel.UIEditKeybindButtonEnabled,
+                [nameof(testViewModel.UIEditKeybindButtonEnabled)]
+            );
         }
 
         /// <summary>
-        /// Test method for the <see cref="AudioInterfaceViewModel.UIPTTControlsEnabled"/> property.
+        /// Test method for the <see cref="AudioInterfaceViewModel.PTTSettingsControlsEnabled"/> property.
         /// </summary>
         [TestMethod]
-        public void TestUIPTTControlsEnabledProperty()
+        public void TestPTTSettingsControlsEnabled()
         {
-            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.UIPTTControlsEnabled), !testViewModel.UIPTTControlsEnabled);
+            Utils.TestMultiplePropertyChange(
+                testViewModel,
+                nameof(testViewModel.PTTSettingsControlsEnabled),
+                !testViewModel.PTTSettingsControlsEnabled,
+                [nameof(testViewModel.UIEditKeybindButtonEnabled)]
+            );
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.UIEditKeybindButtonEnabled"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUIEditKeybindButtonEnabled()
+        {
+            testViewModel.UIDeviceControlsEnabled = false;
+            testViewModel.PTTSettingsControlsEnabled = true;
+
+            Assert.IsFalse(testViewModel.UIEditKeybindButtonEnabled);
+
+            testViewModel.UIDeviceControlsEnabled = true;
+            testViewModel.PTTSettingsControlsEnabled = true;
+
+            Assert.IsTrue(testViewModel.UIEditKeybindButtonEnabled);
         }
 
         /// <summary>
@@ -386,6 +422,28 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.UseOpenMic"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseOpenMicProperty()
+        {
+            testViewModel.UseOpenMic = false;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            testViewModel.SettingsService = mockSettingsService.Object;
+
+            Utils.TestMultiplePropertyChange(
+                testViewModel,
+                nameof(testViewModel.UseOpenMic),
+                true,
+                [nameof(testViewModel.PTTSettingsControlsEnabled)]
+            );
+
+            mockSettingsService.Verify(settingsService => settingsService.UpdateAppConfig(It.IsAny<string>(), It.IsAny<object>()), Times.Once());
+            Assert.IsFalse(testViewModel.PTTSettingsControlsEnabled);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioInterfaceViewModel.LoadInputDevices"/> method.
         /// </summary>
         [TestMethod]
@@ -491,24 +549,47 @@ namespace Tests.UnitTests.ViewModelTests
 
             void handler(object? sender, PropertyChangedEventArgs args)
             {
-                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
+                propertyChangeMethod?.Invoke(testViewModel, new object[] { sender, args });
             }
 
             mockAudioManager.Object.PropertyChanged += handler;
             testViewModel.AudioManager = mockAudioManager.Object;
 
             var mockKeybindManager = new Mock<IKeybindManager>();
-            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(true)).Verifiable();
+            mockKeybindManager.Setup(keybindManager => keybindManager.TogglePTTKeybindSubscription(It.IsAny<bool>())).Verifiable();
 
             testViewModel.KeybindManager = mockKeybindManager.Object;
 
+            // Test when PlaybackReady is true and UseOpenMic is false
+            testViewModel.UseOpenMic = false;
             mockAudioManager.Object.State = true;
             mockAudioManager.Object.PlaybackReady = true;
             mockAudioManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PlaybackReady"));
 
             Assert.IsFalse(testViewModel.UIDeviceControlsEnabled);
-            Assert.IsTrue(testViewModel.UIPTTControlsEnabled);
+            Assert.IsTrue(testViewModel.UITransmitControlsEnabled);
             mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(true), Times.Once);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Never);
+            mockAudioManager.VerifyAdd(m => m.VoiceActivityDetected += It.IsAny<EventHandler>(), Times.Once);
+            mockAudioManager.VerifyAdd(m => m.VoiceActivityStopped += It.IsAny<EventHandler>(), Times.Once);
+
+            // Test when PlaybackReady is false
+            mockAudioManager.Object.PlaybackReady = false;
+            mockAudioManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PlaybackReady"));
+
+            Assert.IsTrue(testViewModel.UIDeviceControlsEnabled);
+            Assert.IsFalse(testViewModel.UITransmitControlsEnabled);
+            mockAudioManager.VerifyRemove(m => m.VoiceActivityDetected -= It.IsAny<EventHandler>(), Times.Once);
+            mockAudioManager.VerifyRemove(m => m.VoiceActivityStopped -= It.IsAny<EventHandler>(), Times.Once);
+
+            // Test when PlaybackReady is true and UseOpenMic is true
+            testViewModel.UseOpenMic = true;
+            mockAudioManager.Object.PlaybackReady = true;
+            mockAudioManager.Raise(m => m.PropertyChanged += null, new PropertyChangedEventArgs("PlaybackReady"));
+
+            Assert.IsFalse(testViewModel.UIDeviceControlsEnabled);
+            Assert.IsTrue(testViewModel.UITransmitControlsEnabled);
+            mockKeybindManager.Verify(keybindManager => keybindManager.TogglePTTKeybindSubscription(false), Times.Once);
         }
 
         /// <summary>
@@ -602,21 +683,29 @@ namespace Tests.UnitTests.ViewModelTests
         {
             var mockAudioManager = new Mock<IAudioManager>();
             var mockKeybindManager = new Mock<IKeybindManager>();
+            var mockWindowService = new Mock<IWindowService>();
 
             mockAudioManager.Setup(audioManager => audioManager.Dispose()).Verifiable();
             mockAudioManager.SetupRemove(audioManager => audioManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
+            mockAudioManager.SetupRemove(audioManager => audioManager.VoiceActivityDetected -= It.IsAny<EventHandler>()).Verifiable();
+            mockAudioManager.SetupRemove(audioManager => audioManager.VoiceActivityStopped -= It.IsAny<EventHandler>()).Verifiable();
             mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
             mockKeybindManager.SetupRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
+            mockWindowService.Setup(windowService => windowService.Dispose()).Verifiable();
 
             testViewModel.AudioManager = mockAudioManager.Object;
             testViewModel.KeybindManager = mockKeybindManager.Object;
+            testViewModel.WindowService = mockWindowService.Object;
 
             testViewModel.Dispose();
 
             mockAudioManager.Verify(audioManager => audioManager.Dispose(), Times.Once);
             mockAudioManager.VerifyRemove(audioManager => audioManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
+            mockAudioManager.VerifyRemove(audioManager => audioManager.VoiceActivityDetected -= It.IsAny<EventHandler>(), Times.Once);
+            mockAudioManager.VerifyRemove(audioManager => audioManager.VoiceActivityStopped -= It.IsAny<EventHandler>(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
             mockKeybindManager.VerifyRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
+            mockWindowService.Verify(windowService => windowService.Dispose(), Times.Once);
         }
     }
 }
