@@ -654,6 +654,7 @@ namespace TAC_COM.Models
                 voiceActivitySource.DataAvailable -= OnInputDataAvailable;
                 voiceActivityDetector = null;
             }
+            voiceActivitySource?.Dispose();
 
             HasInitialised = false;
         }
