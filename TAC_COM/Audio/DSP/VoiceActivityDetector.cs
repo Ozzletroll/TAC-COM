@@ -1,5 +1,6 @@
 ﻿using System.Timers;
 using CSCore;
+using TAC_COM.Audio.DSP.Interfaces;
 using WebRtcVadSharp;
 
 namespace TAC_COM.Audio.DSP
@@ -8,7 +9,7 @@ namespace TAC_COM.Audio.DSP
     /// Analyses a given <see cref="IWaveSource"/> for voice activity using a <see cref="webRtcVad"/>.
     /// </summary>
     /// <param name="_waveSource"> The <see cref="IWaveSource"/> to analyse for voice activity.</param>
-    public class VoiceActivityDetector : IDisposable
+    public class VoiceActivityDetector : IVoiceActivityDetector
     {
         private System.Timers.Timer timer;
         private readonly WebRtcVad webRtcVad = new()
@@ -29,9 +30,6 @@ namespace TAC_COM.Audio.DSP
             timer.AutoReset = false;
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="WebRtcVad.OperatingMode"/>.
-        /// </summary>
         public OperatingMode OperatingMode
         {
             get => webRtcVad.OperatingMode;
@@ -42,12 +40,6 @@ namespace TAC_COM.Audio.DSP
         }
 
         private double holdTime = 1000;
-
-        /// <summary>
-        /// Gets or sets the double value representing the
-        /// delay in Ms after voice activity stops and the 
-        /// <see cref="VoiceActivityStopped"/> event triggering.
-        /// </summary>
         public double HoldTime
         {
             get => holdTime;
@@ -63,11 +55,6 @@ namespace TAC_COM.Audio.DSP
 
         private bool state;
         private bool isOpenEventTriggered = false;
-
-        /// <summary>
-        /// Gets or sets the boolean value representing if speech
-        /// is detected.
-        /// </summary>
         public bool State
         {
             get => state;
@@ -99,9 +86,6 @@ namespace TAC_COM.Audio.DSP
             State = webRtcVad.HasSpeech(buffer);
         }
 
-        /// <summary>
-        /// Event triggered when voice activity is detected;
-        /// </summary>
         public event EventHandler? VoiceActivityDetected;
 
         /// <summary>
@@ -113,18 +97,14 @@ namespace TAC_COM.Audio.DSP
             VoiceActivityDetected?.Invoke(this, e);
         }
 
-        /// <summary>
-        /// Event triggered when voice activity ends and the 
-        /// <see cref="HoldTime"/> has elapsed.
-        /// </summary>
         public event EventHandler? VoiceActivityStopped;
 
         /// <summary>
         /// Raises the <see cref="VoiceActivityStopped"/> event
         /// and resets the event triggers.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> The object that triggered the event.</param>
+        /// <param name="e">An <see cref="ElapsedEventArgs"/> that contains the event data.</param>
         private void OnCloseTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             isOpenEventTriggered = false;

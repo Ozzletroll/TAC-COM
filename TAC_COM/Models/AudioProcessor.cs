@@ -5,6 +5,7 @@ using CSCore.Streams.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
+using TAC_COM.Audio.DSP.Interfaces;
 using TAC_COM.Models.Interfaces;
 using WebRtcVadSharp;
 
@@ -21,7 +22,7 @@ namespace TAC_COM.Models
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
         private IWaveSource? convertedSource;
-        private VoiceActivityDetector? voiceActivityDetector;
+        private IVoiceActivityDetector? voiceActivityDetector;
         private VolumeSource? dryMixLevel;
         private VolumeSource? wetMixLevel;
         private VolumeSource? noiseMixLevel;
@@ -212,7 +213,7 @@ namespace TAC_COM.Models
                 .ToWaveSource(16)
                 .ToMono();
 
-            voiceActivityDetector = new()
+            voiceActivityDetector = new VoiceActivityDetector()
             {
                 OperatingMode = OperatingMode,
                 HoldTime = HoldTime,
@@ -601,7 +602,7 @@ namespace TAC_COM.Models
         /// </summary>
         /// <param name="detector">The <see cref="VoiceActivityDetector"/> instance to attach or detach event handlers from.</param>
         /// <param name="action">The action that adds or removes the event handler.</param>
-        private static void AddOrRemoveEventHandler(ref VoiceActivityDetector? detector, Action<VoiceActivityDetector> action)
+        private static void AddOrRemoveEventHandler(ref IVoiceActivityDetector? detector, Action<IVoiceActivityDetector> action)
         {
             if (detector != null) action(detector);
         }
