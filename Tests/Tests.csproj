@@ -53,7 +53,7 @@
     <ProjectReference Include="..\TAC_COM\TAC_COM.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
