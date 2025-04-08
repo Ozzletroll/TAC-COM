@@ -290,7 +290,7 @@ namespace TAC_COM.Models
         {
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
-            var sampleSource = inputSource.ToMono().ToSampleSource();
+            var sampleSource = inputSource.ToSampleSource();
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
