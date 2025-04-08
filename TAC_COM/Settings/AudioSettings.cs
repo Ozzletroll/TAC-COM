@@ -165,7 +165,7 @@ namespace TAC_COM.Settings
         }
 
         /// <summary>
-        /// Gets or sets the int value representing hold time
+        /// Gets or sets the value representing hold time
         /// for the voice activity detector in ms.
         /// </summary>
         [ConfigurationProperty("holdTime", DefaultValue = 800d)]
