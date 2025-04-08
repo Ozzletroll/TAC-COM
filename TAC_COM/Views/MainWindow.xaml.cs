@@ -107,11 +107,17 @@ namespace TAC_COM
         {
             if (e.PropertyName == nameof(MainViewModel.NotifyIconImage))
             {
-                notifyIcon.Icon = ((MainViewModel)DataContext).NotifyIconImage;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    notifyIcon.Icon = ((MainViewModel)DataContext).NotifyIconImage;
+                }));
             }
             if (e.PropertyName == nameof(MainViewModel.IconText))
             {
-                notifyIcon.Text = ((MainViewModel)DataContext).IconText;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    notifyIcon.Text = ((MainViewModel)DataContext).IconText;
+                }));
             }
         }
 

@@ -6,6 +6,7 @@ using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Utilities;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models
 {
@@ -28,7 +29,7 @@ namespace TAC_COM.Models
         private TaskCompletionSource<bool> stopPlaybackCompletionSource = new();
         private CancellationTokenSource cancellationTokenSource;
         private const float SFXVolume = 0.2f;
-        
+
         /// <summary>
         /// Initialises a new instance of the <see cref="AudioManager"/>.
         /// </summary>
@@ -283,6 +284,36 @@ namespace TAC_COM.Models
             set
             {
                 audioProcessor.BufferSize = value;
+            }
+        }
+
+        private bool useOpenMic;
+        public bool UseOpenMic
+        {
+            get => useOpenMic;
+            set
+            {
+                useOpenMic = value;
+                audioProcessor.UseVoiceActivityDetector = value;
+                OnPropertyChanged(nameof(UseOpenMic));
+            }
+        }
+
+        public OperatingMode OperatingMode
+        {
+            get => audioProcessor.OperatingMode;
+            set
+            {
+                audioProcessor.OperatingMode = value;
+            }
+        }
+
+        public double HoldTime
+        {
+            get => audioProcessor.HoldTime;
+            set
+            {
+                audioProcessor.HoldTime = value;
             }
         }
 
@@ -550,6 +581,18 @@ namespace TAC_COM.Models
             OutputPeakMeterValue = OutputMeter.GetValue();
         }
 
+        public event EventHandler VoiceActivityDetected
+        {
+            add => audioProcessor.VoiceActivityDetected += value;
+            remove => audioProcessor.VoiceActivityDetected -= value;
+        }
+
+        public event EventHandler VoiceActivityStopped
+        {
+            add => audioProcessor.VoiceActivityStopped += value;
+            remove => audioProcessor.VoiceActivityStopped -= value;
+        }
+
         /// <summary>
         /// Checks the current <see cref="bypassState"/> and loads the appropriate <see cref="IFileSourceWrapper"/> from
         /// the <see cref="ActiveProfile"/> before calling <see cref="PlaySFXAsync(IFileSourceWrapper)"/>.
@@ -567,7 +610,8 @@ namespace TAC_COM.Models
                     if (activeOutputDeviceWrapper.IsDisposed)
                     {
                         ResetOutputDevice();
-                    };
+                    }
+                    ;
 
                     IFileSourceWrapper? file;
                     if (bypassState)

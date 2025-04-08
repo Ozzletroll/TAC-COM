@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
+using WebRtcVadSharp;
 
 namespace Tests.MockModels
 {
@@ -23,10 +24,17 @@ namespace Tests.MockModels
         public IProfile? ActiveProfile { get; set; }
         public float InterferenceLevel { get; set; }
         public bool PlaybackReady { get; set; }
-        public bool InputDeviceExclusiveMode {  get; set; }
-        public int BufferSize {  get; set; }
+        public bool InputDeviceExclusiveMode { get; set; }
+        public int BufferSize { get; set; }
+        public bool UseOpenMic {  get; set; }
+        public double HoldTime {  get; set; }
+        public OperatingMode OperatingMode { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public event EventHandler? VoiceActivityDetected;
+
+        public event EventHandler? VoiceActivityStopped;
 
         public void GetAudioDevices() { }
 

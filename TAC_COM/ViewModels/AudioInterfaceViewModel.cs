@@ -200,19 +200,19 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private bool uiPTTControlsEnabled;
+        private bool uiTransmitControlsEnabled;
 
         /// <summary>
-        /// Gets or sets the value representing if the PTT UI controls
-        /// are currently selectable.
+        /// Gets or sets the value representing if the Enable/Bypass
+        /// controls on the UI are enabled.
         /// </summary>
-        public bool UIPTTControlsEnabled
+        public bool UITransmitControlsEnabled
         {
-            get => uiPTTControlsEnabled;
+            get => uiTransmitControlsEnabled;
             set
             {
-                uiPTTControlsEnabled = value;
-                OnPropertyChanged(nameof(UIPTTControlsEnabled));
+                uiTransmitControlsEnabled = value;
+                OnPropertyChanged(nameof(UITransmitControlsEnabled));
             }
         }
 
@@ -233,7 +233,39 @@ namespace TAC_COM.ViewModels
             {
                 uiDeviceControlsEnabled = value;
                 OnPropertyChanged(nameof(UIDeviceControlsEnabled));
+                OnPropertyChanged(nameof(UIEditKeybindButtonEnabled));
             }
+        }
+
+        private bool pttSettingsControlsEnabled = true;
+
+        /// <summary>
+        /// Gets or sets the value representing if the 
+        /// PTT ui controls are visually enabled.
+        /// </summary>
+        /// <remarks>
+        /// Both <see cref="UIDeviceControlsEnabled"/> and
+        /// <see cref="pttSettingsControlsEnabled"/> must be true for this
+        /// to return true.
+        /// </remarks>
+        public bool PTTSettingsControlsEnabled
+        {
+            get => pttSettingsControlsEnabled;
+            set
+            {
+                pttSettingsControlsEnabled = value;
+                OnPropertyChanged(nameof(PTTSettingsControlsEnabled));
+                OnPropertyChanged(nameof(UIEditKeybindButtonEnabled));
+            }
+        }
+
+        /// <summary>
+        /// Gets the value representing if the button to edit the
+        /// PTT keybind is enabled.
+        /// </summary>
+        public bool UIEditKeybindButtonEnabled
+        {
+            get => UIDeviceControlsEnabled && PTTSettingsControlsEnabled;
         }
 
         /// <summary>
@@ -374,6 +406,27 @@ namespace TAC_COM.ViewModels
             }
         }
 
+        private bool useOpenMic;
+
+        /// <summary>
+        /// Gets or sets the value representing if the "Open Mic"
+        /// setting should be used. If false, default PTT
+        /// behaviour is used.
+        /// </summary>
+        public bool UseOpenMic
+        {
+            get => useOpenMic;
+            set
+            {
+                useOpenMic = value;
+                settingsService.UpdateAppConfig(nameof(UseOpenMic), value);
+                audioManager.UseOpenMic = value;
+                PTTSettingsControlsEnabled = !value;
+                OnPropertyChanged(nameof(UseOpenMic));
+                OnPropertyChanged(nameof(PTTSettingsControlsEnabled));
+            }
+        }
+
         /// <summary>
         /// Method to set the overall application state,
         /// called via the <see cref="State"/> property setter.
@@ -460,8 +513,11 @@ namespace TAC_COM.ViewModels
             {
                 OutputDevice = savedOutputDevice;
             }
+            UseOpenMic = settingsService.AudioSettings.UseOpenMic;
             AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
             AudioManager.BufferSize = settingsService.AudioSettings.BufferSize;
+            AudioManager.OperatingMode = (WebRtcVadSharp.OperatingMode)settingsService.AudioSettings.OperatingMode;
+            AudioManager.HoldTime = settingsService.AudioSettings.HoldTime;
         }
 
         /// <summary>
@@ -496,9 +552,44 @@ namespace TAC_COM.ViewModels
             if (e.PropertyName == nameof(AudioManager.PlaybackReady))
             {
                 UIDeviceControlsEnabled = !AudioManager.PlaybackReady;
-                UIPTTControlsEnabled = AudioManager.PlaybackReady;
-                keybindManager.TogglePTTKeybindSubscription(State);
+                UITransmitControlsEnabled = AudioManager.PlaybackReady;
+
+                if (!UseOpenMic) keybindManager.TogglePTTKeybindSubscription(State);
+                else keybindManager.TogglePTTKeybindSubscription(false);
+
+                if (AudioManager.PlaybackReady)
+                {
+                    AudioManager.VoiceActivityDetected += OnVoiceActivityDetected;
+                    AudioManager.VoiceActivityStopped += OnVoiceActivityStopped;
+                }
+                else
+                {
+                    AudioManager.VoiceActivityDetected -= OnVoiceActivityDetected;
+                    AudioManager.VoiceActivityStopped -= OnVoiceActivityStopped;
+                }
             }
+        }
+
+        /// <summary>
+        /// Handles the event when voice activity begins,
+        /// toggling <see cref="BypassState"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
+        private void OnVoiceActivityDetected(object? sender, EventArgs e)
+        {
+            BypassState = true;
+        }
+
+        /// <summary>
+        /// Handles the event when voice activity ends,
+        /// toggling <see cref="BypassState"/> off.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the data available event.</param>
+        private void OnVoiceActivityStopped(object? sender, EventArgs e)
+        {
+            BypassState = false;
         }
 
         /// <summary>
@@ -518,6 +609,7 @@ namespace TAC_COM.ViewModels
                 KeybindName = KeybindManager?.PTTKey?.ToString().ToUpper() ?? "NONE";
             }
         }
+
 
         /// <summary>
         /// Method to open the debug window using the
@@ -565,6 +657,8 @@ namespace TAC_COM.ViewModels
         public override void Dispose()
         {
             GC.SuppressFinalize(this);
+            AudioManager.VoiceActivityDetected -= OnVoiceActivityDetected;
+            AudioManager.VoiceActivityStopped -= OnVoiceActivityStopped;
             AudioManager.Dispose();
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();

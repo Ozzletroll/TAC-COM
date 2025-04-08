@@ -1,8 +1,10 @@
 ﻿using Moq;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.ViewModels;
 using Tests.MockModels;
 using Tests.Utilities;
+using WebRtcVadSharp;
 
 namespace Tests.UnitTests.ViewModelTests
 {
@@ -66,6 +68,50 @@ namespace Tests.UnitTests.ViewModelTests
             Utils.TestPropertyChange(viewModel, nameof(viewModel.MinimiseToTray), testValue);
 
             mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.MinimiseToTray), testValue));
+        }
+
+        /// <summary>
+        /// Test method of the <see cref="SettingsPanelViewModel.OperatingMode"/>
+        /// property.
+        /// </summary>
+        [TestMethod]
+        public void TestOperatingModeProperty()
+        {
+            var testValue = OperatingMode.Aggressive;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(service => service.UpdateAppConfig("OperatingMode", testValue)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+
+            var viewModel = new SettingsPanelViewModel(mockAudioManager.Object, mockSettingsService.Object);
+
+            Utils.TestPropertyChange(viewModel, nameof(viewModel.OperatingMode), testValue);
+
+            Assert.AreEqual(viewModel.OperatingMode, mockAudioManager.Object.OperatingMode);
+            mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.OperatingMode), testValue));
+        }
+
+        /// <summary>
+        /// Test method of the <see cref="SettingsPanelViewModel.HoldTime"/>
+        /// property.
+        /// </summary>
+        [TestMethod]
+        public void TestHoldTimeProperty()
+        {
+            double testValue = 800;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(service => service.UpdateAppConfig("HoldTime", testValue)).Verifiable();
+
+            var mockAudioManager = new Mock<IAudioManager>();
+
+            var viewModel = new SettingsPanelViewModel(mockAudioManager.Object, mockSettingsService.Object);
+
+            Utils.TestPropertyChange(viewModel, nameof(viewModel.HoldTime), testValue);
+
+            Assert.AreEqual(viewModel.HoldTime, mockAudioManager.Object.HoldTime);
+            mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.HoldTime), testValue));
         }
     }
 }

@@ -29,13 +29,15 @@ namespace Tests.UnitTests.ModelTests
             keybindManager = new KeybindManager(mockSettingsService.Object);
         }
 
-        [TestInitialize] public void Initialise()
+        [TestInitialize]
+        public void Initialise()
         {
             var mockSettingsService = new Mock<ISettingsService>();
             keybindManager = new KeybindManager(mockSettingsService.Object);
         }
 
-        [TestCleanup] public void Cleanup()
+        [TestCleanup]
+        public void Cleanup()
         {
             keybindManager.TogglePTTKeybindSubscription(false);
             keybindManager.ToggleUserKeybindSubscription(false);

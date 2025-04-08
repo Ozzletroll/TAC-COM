@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models.Interfaces
 {
@@ -46,6 +47,26 @@ namespace TAC_COM.Models.Interfaces
         int BufferSize { get; set; }
 
         /// <summary>
+        /// Gets or sets the value representing if
+        /// the <see cref="Audio.DSP.VoiceActivityDetector"/>
+        /// is required.
+        /// </summary>
+        bool UseVoiceActivityDetector { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value representing if the 
+        /// <see cref="Audio.DSP.VoiceActivityDetector.OperatingMode"/>.
+        /// </summary>
+        OperatingMode OperatingMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value representing the time between
+        /// voice activity ending and the end of the transmission
+        /// effect in ms.
+        /// </summary>
+        double HoldTime { get; set; }
+
+        /// <summary>
         /// Method to manually dispose of the <see cref="IAudioProcessor"/>'s resources.
         /// </summary>
         void Dispose();
@@ -66,6 +87,16 @@ namespace TAC_COM.Models.Interfaces
         /// </summary>
         /// <returns>The complete assembled <see cref="IWaveSource"/>.</returns>
         IWaveSource? ReturnCompleteSignalChain();
+
+        /// <summary>
+        /// Occurs when voice activity is detected.
+        /// </summary>
+        event EventHandler VoiceActivityDetected;
+
+        /// <summary>
+        /// Occurs when voice activity stops.
+        /// </summary>
+        event EventHandler VoiceActivityStopped;
 
         /// <summary>
         /// Sets the respective volume levels of the <see cref="wetNoiseMixLevel"/> and <see cref="dryMixLevel"/>.

@@ -74,7 +74,8 @@ namespace TAC_COM.Models
             {
                 GC.SuppressFinalize(this);
                 wasapiCapture.Dispose();
-            };
+            }
+            ;
         }
 
         public void Initialise()

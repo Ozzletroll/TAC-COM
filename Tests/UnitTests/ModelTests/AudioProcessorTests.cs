@@ -5,10 +5,12 @@ using CSCore.Streams;
 using Moq;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
+using TAC_COM.Audio.DSP.Interfaces;
 using TAC_COM.Audio.EffectsChains;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
 using Tests.MockModels;
+using WebRtcVadSharp;
 
 namespace Tests.UnitTests.ModelTests
 {
@@ -132,6 +134,9 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(ringModulator.Dry, 1 - ringModulator.Wet);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.BufferSize"/> property.
+        /// </summary>
         [TestMethod]
         public void TestBufferSizeProperty()
         {
@@ -140,6 +145,59 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioProcessor.BufferSize, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.UseVoiceActivityDetector"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseVoiceActivityDetectorProperty()
+        {
+            var newPropertyValue = true;
+            audioProcessor.UseVoiceActivityDetector = newPropertyValue;
+            Assert.AreEqual(audioProcessor.UseVoiceActivityDetector, newPropertyValue);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.OperatingMode"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestOperatingModeProperty()
+        {
+            audioProcessor.HasInitialised = true;
+
+            var voiceActivityDetector = new Mock<IVoiceActivityDetector>();
+            voiceActivityDetector.SetupAllProperties();
+
+            FieldInfo? voiceActivityDetectorField = typeof(AudioProcessor).GetField("voiceActivityDetector", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityDetectorField?.SetValue(audioProcessor, voiceActivityDetector.Object);
+
+            var newPropertyValue = OperatingMode.LowBitrate;
+
+            audioProcessor.OperatingMode = newPropertyValue;
+
+            Assert.AreEqual(voiceActivityDetector.Object.OperatingMode, newPropertyValue);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.HoldTime"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestHoldTimeProperty()
+        {
+            audioProcessor.HasInitialised = true;
+
+            var voiceActivityDetector = new Mock<IVoiceActivityDetector>();
+            voiceActivityDetector.SetupAllProperties();
+
+            FieldInfo? voiceActivityDetectorField = typeof(AudioProcessor).GetField("voiceActivityDetector", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityDetectorField?.SetValue(audioProcessor, voiceActivityDetector.Object);
+
+            double newPropertyValue = 800;
+
+            audioProcessor.HoldTime = newPropertyValue;
+
+            Assert.AreEqual(voiceActivityDetector.Object.HoldTime, newPropertyValue);
+        }
+        
         /// <summary>
         /// Test method for the <see cref="AudioProcessor.Initialise"/> method.
         /// </summary>
@@ -219,6 +277,70 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.IsNotNull(output);
             Assert.IsInstanceOfType(output, typeof(IWaveSource));
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.VoiceActivityDetected"/>
+        /// event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestVoiceActivityDetectedEvent()
+        {
+            var mockVoiceActivityDetector = new Mock<IVoiceActivityDetector>();
+
+            FieldInfo? voiceActivityDetectorField = typeof(AudioProcessor).GetField("voiceActivityDetector", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityDetectorField?.SetValue(audioProcessor, mockVoiceActivityDetector.Object);
+
+            var eventRaised = false;
+            void handler(object? sender, EventArgs args) => eventRaised = true;
+
+            // Adding the event handler
+            audioProcessor.VoiceActivityDetected += handler;
+
+            // Raising the event
+            mockVoiceActivityDetector.Raise(detector => detector.VoiceActivityDetected += null, EventArgs.Empty);
+
+            Assert.IsTrue(eventRaised);
+
+            // Removing the event handler
+            eventRaised = false;
+            audioProcessor.VoiceActivityDetected -= handler;
+
+            // Raising the event again to ensure handler is removed
+            mockVoiceActivityDetector.Raise(detector => detector.VoiceActivityDetected += null, EventArgs.Empty);
+
+            Assert.IsFalse(eventRaised);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioProcessor.VoiceActivityStopped"/>
+        /// event handler.
+        /// </summary>
+        [TestMethod]
+        public void TestVoiceActivityStoppedEvent()
+        {
+            var mockVoiceActivityDetector = new Mock<IVoiceActivityDetector>();
+
+            FieldInfo? voiceActivityDetectorField = typeof(AudioProcessor).GetField("voiceActivityDetector", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityDetectorField?.SetValue(audioProcessor, mockVoiceActivityDetector.Object);
+
+            var eventRaised = false;
+            void handler(object? sender, EventArgs args) => eventRaised = true;
+
+            audioProcessor.VoiceActivityStopped += handler;
+
+            // Raising the event
+            mockVoiceActivityDetector.Raise(detector => detector.VoiceActivityStopped += null, EventArgs.Empty);
+
+            Assert.IsTrue(eventRaised);
+
+            // Removing the event handler
+            eventRaised = false;
+            audioProcessor.VoiceActivityStopped -= handler;
+
+            mockVoiceActivityDetector.Raise(detector => detector.VoiceActivityStopped += null, EventArgs.Empty);
+
+            Assert.IsFalse(eventRaised);
         }
 
         /// <summary>
@@ -315,18 +437,30 @@ namespace Tests.UnitTests.ModelTests
 
             var mockProcessedNoiseGateSource = new Mock<ISampleSource>();
             mockProcessedNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
-            mockProcessedNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            mockProcessedNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(48000);
             var mockProcessedNoiseGate = new Gate(mockProcessedNoiseGateSource.Object);
 
             var mockParallelNoiseGateSource = new Mock<ISampleSource>();
             mockParallelNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
-            mockParallelNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            mockParallelNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(48000);
             var mockParallelNoiseGate = new Gate(mockParallelNoiseGateSource.Object);
 
             var mockDryNoiseGateSource = new Mock<ISampleSource>();
             mockDryNoiseGateSource.Setup(m => m.Dispose()).Verifiable();
-            mockDryNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(44100);
+            mockDryNoiseGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(48000);
             var mockDryNoiseGate = new Gate(mockDryNoiseGateSource.Object);
+
+            var mockVoiceActivityGateSource = new Mock<ISampleSource>();
+            mockVoiceActivityGateSource.Setup(m => m.Dispose()).Verifiable();
+            mockVoiceActivityGateSource.Setup(m => m.WaveFormat.SampleRate).Returns(48000);
+            var mockVoiceActivityGate = new Gate(mockVoiceActivityGateSource.Object);
+
+            var mockVoiceActivityDetector = new Mock<IVoiceActivityDetector>();
+            mockVoiceActivityDetector.Setup(m => m.Dispose()).Verifiable();
+
+            var mockVoiceActivitySource = new Mock<ISoundIn>();
+            mockVoiceActivitySource.Setup(m => m.WaveFormat).Returns(new WaveFormat());
+            mockVoiceActivitySource.Setup(m => m.Dispose()).Verifiable();
 
             // Setup all private fields
             FieldInfo? inputSourceField = typeof(AudioProcessor).GetField("inputSource", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -368,11 +502,22 @@ namespace Tests.UnitTests.ModelTests
             FieldInfo? dryNoiseGateField = typeof(AudioProcessor).GetField("dryNoiseGate", BindingFlags.NonPublic | BindingFlags.Instance);
             dryNoiseGateField?.SetValue(audioProcessor, mockDryNoiseGate);
 
+            FieldInfo? voiceActivityGateField = typeof(AudioProcessor).GetField("voiceActivityGate", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityGateField?.SetValue(audioProcessor, mockVoiceActivityGate);
+
+            FieldInfo? voiceActivityDetectorField = typeof(AudioProcessor).GetField("voiceActivityDetector", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivityDetectorField?.SetValue(audioProcessor, mockVoiceActivityDetector.Object);
+
+            FieldInfo? voiceActivitySourceField = typeof(AudioProcessor).GetField("voiceActivitySource", BindingFlags.NonPublic | BindingFlags.Instance);
+            voiceActivitySourceField?.SetValue(audioProcessor, new SoundInSource(mockVoiceActivitySource.Object));
+            var voiceActivitySourceValue = voiceActivitySourceField?.GetValue(audioProcessor) as SoundInSource;
+
             audioProcessor.Dispose();
 
             Assert.IsNull(inputSourceValue?.SoundIn);
             Assert.IsNull(parallelSourceValue?.SoundIn);
             Assert.IsNull(passthroughSourceValue?.SoundIn);
+            Assert.IsNull(voiceActivitySourceValue?.SoundIn);
 
             mockDryMixLevelSource.Verify(m => m.Dispose(), Times.Once);
             mockWetMixLevelSource.Verify(m => m.Dispose(), Times.Once);
@@ -383,6 +528,8 @@ namespace Tests.UnitTests.ModelTests
             mockProcessedNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
             mockParallelNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
             mockDryNoiseGateSource.Verify(m => m.Dispose(), Times.Once);
+            mockVoiceActivityGateSource.Verify(m => m.Dispose(), Times.Once);
+            mockVoiceActivityDetector.Verify(m => m.Dispose(), Times.Once);
         }
     }
 }

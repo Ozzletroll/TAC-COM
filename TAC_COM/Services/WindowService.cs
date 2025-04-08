@@ -60,13 +60,13 @@ namespace TAC_COM.Services
 
             keybindWindowView?.Close();
             keybindWindowView = null;
-            
+
             keybindWindowViewModel?.Dispose();
             keybindWindowViewModel = null;
 
             debugWindowView?.Close();
             debugWindowView = null;
-            
+
             debugWindowViewModel?.Dispose();
             debugWindowViewModel = null;
         }

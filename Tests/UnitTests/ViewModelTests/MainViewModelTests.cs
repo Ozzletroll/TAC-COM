@@ -88,11 +88,11 @@ namespace Tests.UnitTests.ViewModelTests
             var mockSettingsService = new MockSettingsService();
 
             var newPropertyValue = new AudioInterfaceViewModel(
-                mockApplicationContext.Object, 
-                mockAudioManager, 
-                mockUriService, 
-                mockIconService.Object, 
-                mockThemeService.Object, 
+                mockApplicationContext.Object,
+                mockAudioManager,
+                mockUriService,
+                mockIconService.Object,
+                mockThemeService.Object,
                 mockSettingsService);
 
             testViewModel.AudioInterfaceViewModel = newPropertyValue;
@@ -248,9 +248,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockSettingsPanelViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
 
             var mockAudioInterfaceViewModel = new Mock<AudioInterfaceViewModel>
-                (mockApplicationContext.Object, 
-                mockAudioManager, 
-                mockUriService, 
+                (mockApplicationContext.Object,
+                mockAudioManager,
+                mockUriService,
                 mockIconService.Object,
                 mockThemeService.Object,
                 mockSettingsService);

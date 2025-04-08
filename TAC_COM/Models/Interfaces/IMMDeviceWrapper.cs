@@ -1,6 +1,4 @@
-﻿
-using CSCore;
-using CSCore.CoreAudioAPI;
+﻿using CSCore.CoreAudioAPI;
 
 namespace TAC_COM.Models.Interfaces
 {

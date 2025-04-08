@@ -9,6 +9,9 @@
     <ApplicationIcon>Static\Icons\Icon-GMS.ico</ApplicationIcon>
 	<Version>1.1.0</Version>
 	<FileVersion>1.1.0</FileVersion>
+	<PlatformTarget>x64</PlatformTarget>
+	<Platforms>x64</Platforms>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -132,8 +135,11 @@
     <PackageReference Include="Dapplo.Windows.Input" Version="1.0.28" />
     <PackageReference Include="NWaves" Version="0.9.6" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+    <PackageReference Include="WebRtcVadSharp" Version="1.3.2" />
   </ItemGroup>
 
+  <Import Project="Build/WebRtcVadSharp.targets" />
+	
   <ItemGroup>
     <Resource Include="Themes\ThemeGMS.xaml" />
     <Resource Include="Themes\ThemeHA.xaml" />

@@ -13,6 +13,7 @@ using TAC_COM.Services.Interfaces;
 using Tests.MockModels;
 using Tests.MockServices;
 using Tests.Utilities;
+using WebRtcVadSharp;
 
 namespace Tests.UnitTests.ModelTests
 {
@@ -238,16 +239,23 @@ namespace Tests.UnitTests.ModelTests
             Assert.AreEqual(audioManager.AudioProcessor.RingModulationWetDryMix, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.InputDeviceExclusiveMode"/>
+        /// property.
+        /// </summary>
         [TestMethod]
-        public void TestInputDeviceExclusiveMode()
+        public void TestInputDeviceExclusiveModeProperty()
         {
             var newPropertyValue = true;
             Utils.TestPropertyChange(audioManager, nameof(audioManager.InputDeviceExclusiveMode), newPropertyValue);
             Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.BufferSize"/> property.
+        /// </summary>
         [TestMethod]
-        public void TestBufferSize()
+        public void TestBufferSizeProperty()
         {
             var mockAudioProcessor = new Mock<AudioProcessor>();
             audioManager.AudioProcessor = mockAudioProcessor.Object;
@@ -255,6 +263,54 @@ namespace Tests.UnitTests.ModelTests
             var newPropertyValue = 90;
             audioManager.BufferSize = newPropertyValue;
             Assert.AreEqual(audioManager.BufferSize, newPropertyValue);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.UseOpenMic"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseOpenMicProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = true;
+            Utils.TestPropertyChange(audioManager, nameof(audioManager.UseOpenMic), newPropertyValue);
+
+            Assert.AreEqual(audioManager.UseOpenMic, newPropertyValue);
+            Assert.AreEqual(audioManager.UseOpenMic, mockAudioProcessor.Object.UseVoiceActivityDetector);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.OperatingMode"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestOperatingModeProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            OperatingMode newPropertyValue = OperatingMode.LowBitrate;
+            audioManager.OperatingMode = newPropertyValue;
+
+            Assert.AreEqual(audioManager.OperatingMode, newPropertyValue);
+            Assert.AreEqual(audioManager.OperatingMode, mockAudioProcessor.Object.OperatingMode);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.HoldTime"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestHoldTimeProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            double newPropertyValue = 800;
+            audioManager.HoldTime = newPropertyValue;
+
+            Assert.AreEqual(audioManager.HoldTime, newPropertyValue);
+            Assert.AreEqual(audioManager.HoldTime, mockAudioProcessor.Object.HoldTime);
         }
 
         /// <summary>
@@ -836,6 +892,40 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.AreEqual(42.0, audioManager.InputPeakMeterValue);
             Assert.AreEqual(84.0, audioManager.OutputPeakMeterValue);
+        }
+
+        /// <summary>
+        /// Test method for the event handler <see cref="AudioManager.VoiceActivityDetected"/>.
+        /// </summary>
+        [TestMethod]
+        public void TestVoiceActivityDetected_RaiseEvent()
+        {
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var eventRaised = false;
+            audioManager.VoiceActivityDetected += (sender, args) => eventRaised = true;
+
+            mockAudioProcessor.Raise(m => m.VoiceActivityDetected += null, EventArgs.Empty);
+
+            Assert.IsTrue(eventRaised);
+        }
+
+        /// <summary>
+        /// Test method for the event handler <see cref="AudioManager.VoiceActivityStopped"/>.
+        /// </summary>
+        [TestMethod]
+        public void TestVoiceActivityStopped_RaiseEvent()
+        {
+            var mockAudioProcessor = new Mock<IAudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var eventRaised = false;
+            audioManager.VoiceActivityStopped += (sender, args) => eventRaised = true;
+
+            mockAudioProcessor.Raise(m => m.VoiceActivityStopped += null, EventArgs.Empty);
+
+            Assert.IsTrue(eventRaised);
         }
 
         /// <summary>

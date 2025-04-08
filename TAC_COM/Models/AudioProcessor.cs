@@ -1,11 +1,13 @@
 ﻿using CSCore;
-using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
 using NWaves.Operations;
 using TAC_COM.Audio.DSP;
 using TAC_COM.Audio.DSP.EffectReferenceWrappers;
+using TAC_COM.Audio.DSP.Interfaces;
 using TAC_COM.Models.Interfaces;
+using WebRtcVadSharp;
 
 namespace TAC_COM.Models
 {
@@ -16,8 +18,11 @@ namespace TAC_COM.Models
     public class AudioProcessor : IAudioProcessor
     {
         private SoundInSource? inputSource;
+        private SoundInSource? voiceActivitySource;
         private SoundInSource? parallelSource;
         private SoundInSource? passthroughSource;
+        private IWaveSource? convertedSource;
+        private IVoiceActivityDetector? voiceActivityDetector;
         private VolumeSource? dryMixLevel;
         private VolumeSource? wetMixLevel;
         private VolumeSource? noiseMixLevel;
@@ -27,6 +32,7 @@ namespace TAC_COM.Models
         private Gate? processedNoiseGate;
         private Gate? parallelNoiseGate;
         private Gate? dryNoiseGate;
+        private Gate? voiceActivityGate;
         private int sampleRate = 48000;
         private IProfile? activeProfile;
 
@@ -74,6 +80,10 @@ namespace TAC_COM.Models
                     if (dryNoiseGate != null)
                     {
                         dryNoiseGate.ThresholdDB = value;
+                    }
+                    if (voiceActivityGate != null)
+                    {
+                        voiceActivityGate.ThresholdDB = value;
                     }
                 }
             }
@@ -124,6 +134,44 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool useVoiceActivityDetector;
+        public bool UseVoiceActivityDetector
+        {
+            get => useVoiceActivityDetector;
+            set
+            {
+                useVoiceActivityDetector = value;
+            }
+        }
+
+        private OperatingMode operatingMode = OperatingMode.VeryAggressive;
+        public OperatingMode OperatingMode
+        {
+            get => operatingMode;
+            set
+            {
+                operatingMode = value;
+                if (voiceActivityDetector != null)
+                {
+                    voiceActivityDetector.OperatingMode = value;
+                }
+            }
+        }
+
+        private double holdTime = 800;
+        public double HoldTime
+        {
+            get => holdTime;
+            set
+            {
+                holdTime = value;
+                if (voiceActivityDetector != null)
+                {
+                    voiceActivityDetector.HoldTime = holdTime;
+                }
+            }
+        }
+
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested) return;
@@ -133,9 +181,65 @@ namespace TAC_COM.Models
             inputSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             parallelSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
             passthroughSource = new SoundInSource(inputWrapper.WasapiCapture, bufferLength) { FillWithZeros = true };
+
+            if (UseVoiceActivityDetector) InitialiseVoiceActivityDetector(inputWrapper);
+
             sampleRate = inputSource.WaveFormat.SampleRate;
             activeProfile = profile;
             HasInitialised = true;
+        }
+
+        /// <summary>
+        /// Initialises the components required for Voice Activity Detection.
+        /// The microphone input is passed first through a noise gate, then
+        /// converted to a 16bit PCM format, with a buffer of 30ms, which is required by
+        /// the <see cref="WebRtcVad"/>.
+        /// </summary>
+        /// <param name="inputWrapper">The <see cref="IWasapiCaptureWrapper"/> to use for microphone input. </param>
+        private void InitialiseVoiceActivityDetector(IWasapiCaptureWrapper inputWrapper)
+        {
+            var voiceActivityBufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * (30f / 1000));
+            voiceActivitySource = new SoundInSource(inputWrapper.WasapiCapture, voiceActivityBufferLength) { FillWithZeros = false };
+
+            convertedSource
+                = voiceActivitySource.ToSampleSource()
+                .AppendSource(x => new Gate(x)
+                {
+                    ThresholdDB = NoiseGateThreshold,
+                    Attack = 5,
+                    Hold = 30,
+                    Release = 5,
+                }, out voiceActivityGate)
+                .ToWaveSource(16)
+                .ToMono();
+
+            voiceActivityDetector = new VoiceActivityDetector()
+            {
+                OperatingMode = OperatingMode,
+                HoldTime = HoldTime,
+            };
+            voiceActivitySource.DataAvailable += OnInputDataAvailable;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="SoundInSource.DataAvailable"/> event
+        /// from the <see cref="voiceActivitySource"/>, converting the bytes
+        /// buffer of the <see cref="SoundInSource"/> to the format
+        /// specified by the <see cref="convertedSource"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data for the event.</param>
+        private void OnInputDataAvailable(object? sender, DataAvailableEventArgs e)
+        {
+            if (convertedSource != null
+                && voiceActivityDetector != null)
+            {
+                byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
+                while ((_ = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    voiceActivityDetector.Process(buffer);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -481,6 +585,28 @@ namespace TAC_COM.Models
             return compressedOutput.ToMono();
         }
 
+        public event EventHandler VoiceActivityDetected
+        {
+            add => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityDetected += value);
+            remove => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityDetected -= value);
+        }
+
+        public event EventHandler VoiceActivityStopped
+        {
+            add => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityStopped += value);
+            remove => AddOrRemoveEventHandler(ref voiceActivityDetector, handler => handler.VoiceActivityStopped -= value);
+        }
+
+        /// <summary>
+        /// Adds or removes event handlers for the specified <see cref="VoiceActivityDetector"/> instance.
+        /// </summary>
+        /// <param name="detector">The <see cref="VoiceActivityDetector"/> instance to attach or detach event handlers from.</param>
+        /// <param name="action">The action that adds or removes the event handler.</param>
+        private static void AddOrRemoveEventHandler(ref IVoiceActivityDetector? detector, Action<IVoiceActivityDetector> action)
+        {
+            if (detector != null) action(detector);
+        }
+
         /// <inheritdoc/>
         /// <remarks>
         /// <para>
@@ -520,6 +646,16 @@ namespace TAC_COM.Models
             processedNoiseGate?.Dispose();
             parallelNoiseGate?.Dispose();
             dryNoiseGate?.Dispose();
+            voiceActivityGate?.Dispose();
+            voiceActivityDetector?.Dispose();
+
+            if (voiceActivitySource != null)
+            {
+                voiceActivitySource.DataAvailable -= OnInputDataAvailable;
+                voiceActivityDetector = null;
+            }
+            voiceActivitySource?.Dispose();
+
             HasInitialised = false;
         }
     }
