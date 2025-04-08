@@ -168,7 +168,7 @@ namespace TAC_COM.Settings
         /// Gets or sets the int value representing hold time
         /// for the voice activity detector in ms.
         /// </summary>
-        [ConfigurationProperty("holdTime", DefaultValue = 1000d)]
+        [ConfigurationProperty("holdTime", DefaultValue = 800d)]
         public double HoldTime
         {
             get => (double)this["holdTime"];

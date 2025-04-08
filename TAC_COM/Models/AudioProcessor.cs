@@ -158,7 +158,7 @@ namespace TAC_COM.Models
             }
         }
 
-        private double holdTime = 1000;
+        private double holdTime = 800;
         public double HoldTime
         {
             get => holdTime;
