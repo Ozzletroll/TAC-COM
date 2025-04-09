@@ -49,19 +49,18 @@ namespace Tests.UnitTests.ServiceTests
             .Setup(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()))
             .Verifiable();
 
-            var windowService = new WindowService(mockApplication, keybindManager)
-            {
-                ShowWindow = false,
-                WindowFactoryService = mockWindowFactoryService.Object,
-            };
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
 
-            windowService.OpenKeybindWindow();
+            WindowService.Instance.OpenKeybindWindow(keybindManager);
 
             mockWindowFactoryService.Verify(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            windowService.Dispose();
+            WindowService.Instance.Dispose();
+            WindowService.TestReset();
         }
 
         /// <summary>
@@ -97,11 +96,9 @@ namespace Tests.UnitTests.ServiceTests
             .Setup(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()))
             .Verifiable();
 
-            var windowService = new WindowService(mockApplication, keybindManager)
-            {
-                ShowWindow = false,
-                WindowFactoryService = mockWindowFactoryService.Object,
-            };
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
 
             var inputDeviceInfo = new DeviceInfo()
             {
@@ -127,13 +124,14 @@ namespace Tests.UnitTests.ServiceTests
                 { "OutputDevice", outputDeviceInfo }
             };
 
-            windowService.OpenDebugWindow(mockDeviceInfo);
+            WindowService.Instance.OpenDebugWindow(mockDeviceInfo);
 
             mockWindowFactoryService.Verify(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            windowService.Dispose();
+            WindowService.Instance.Dispose();
+            WindowService.TestReset();
         }
     }
 }

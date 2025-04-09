@@ -9,11 +9,17 @@ namespace TAC_COM.Services.Interfaces
     /// </summary>
     public interface IWindowService : IDisposable
     {
-        static abstract WindowService Instance { get; }
-
         IWindowFactoryService WindowFactoryService { get; set; }
 
-        static abstract void Initialise(IApplicationContextWrapper _applicationContext);
+        /// <summary>
+        /// Boolean value representing if the newly created
+        /// windows need to be shown.
+        /// </summary>
+        /// <remarks>
+        /// This is true by default. Set to false during
+        /// testing to prevent dialogs showing.
+        /// </remarks>
+        bool ShowWindow {  get; set; }
 
         /// <summary>
         /// Method to open a new instance of a <see cref="Views.KeybindWindowView"/>

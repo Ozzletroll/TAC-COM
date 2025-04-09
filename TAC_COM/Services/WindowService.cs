@@ -11,8 +11,35 @@ namespace TAC_COM.Services
     /// </summary>
     public class WindowService : IWindowService
     {
-        private static WindowService? instance;
-        public static WindowService Instance => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+        private KeybindWindowView? keybindWindowView;
+        private DebugWindowView? debugWindowView;
+        private KeybindWindowViewModel? keybindWindowViewModel;
+        private DebugWindowViewModel? debugWindowViewModel;
+
+        private static IWindowService? instance;
+        public static IWindowService Instance => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+
+        /// <summary>
+        /// Method used to swap the singleton instance.
+        /// </summary>
+        /// /// <remarks>
+        /// This is only to be used during testing.
+        /// </remarks>
+        public static IWindowService TestInstance
+        {
+            set => instance = value;
+        }
+
+        /// <summary>
+        /// Method to reset the instance.
+        /// </summary>
+        /// <remarks>
+        /// This is only to be used during testing.
+        /// </remarks>
+        public static void TestReset()
+        {
+            instance = null;
+        }
 
         /// <summary>
         /// Initialises the instance of the <see cref="WindowService"/> singleton.
@@ -38,11 +65,6 @@ namespace TAC_COM.Services
             windowFactoryService = new WindowFactoryService(_applicationContext);
         }
 
-        private KeybindWindowView? keybindWindowView;
-        private DebugWindowView? debugWindowView;
-        private KeybindWindowViewModel? keybindWindowViewModel;
-        private DebugWindowViewModel? debugWindowViewModel;
-
         private IWindowFactoryService windowFactoryService;
         public IWindowFactoryService WindowFactoryService
         {
@@ -53,15 +75,15 @@ namespace TAC_COM.Services
             }
         }
 
-        /// <summary>
-        /// Boolean value representing if the newly created
-        /// windows need to be shown.
-        /// </summary>
-        /// <remarks>
-        /// This is true by default. Set to false during
-        /// testing to prevent dialogs showing.
-        /// </remarks>
-        public bool ShowWindow = true;
+        private bool showWindow = true;
+        public bool ShowWindow
+        {
+            get => showWindow;
+            set
+            {
+                showWindow = value;
+            }
+        }
 
         public void OpenKeybindWindow(IKeybindManager keybindManager)
         {

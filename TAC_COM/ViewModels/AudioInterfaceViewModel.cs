@@ -595,7 +595,6 @@ namespace TAC_COM.ViewModels
             }
         }
 
-
         /// <summary>
         /// Method to open the debug window using the
         /// <see cref="WindowService"/>.
@@ -660,7 +659,7 @@ namespace TAC_COM.ViewModels
         /// <param name="_uriService"> The <see cref="IUriService"/> to pass to the <see cref="ProfileService"/>.</param>
         /// <param name="_iconService"> The <see cref="IIconService"/> to use.</param>
         /// <param name="_themeService"> The <see cref="IThemeService"/> to use.</param>
-        public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService, ISettingsService _settingsService)
+        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService, ISettingsService _settingsService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
