@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.ViewModels;
 
@@ -19,6 +20,8 @@ namespace TAC_COM
             var iconService = new IconService();
             var applicationContext = new ApplicationContextWrapper();
             var themeService = new ThemeService(applicationContext, uriService);
+
+            WindowService.Initialise(applicationContext);
 
             var viewModel = new MainViewModel(applicationContext, audioManager, uriService, iconService, themeService);
 

@@ -29,21 +29,6 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private IWindowService windowService;
-
-        /// <summary>
-        /// Gets or sets the current <see cref="IWindowService"/>
-        /// to be used for new window creation.
-        /// </summary>
-        public IWindowService WindowService
-        {
-            get => windowService;
-            set
-            {
-                windowService = value;
-            }
-        }
-
         private IThemeService themeService;
 
         /// <summary>
@@ -617,7 +602,7 @@ namespace TAC_COM.ViewModels
         /// </summary>
         public void ShowDebugDialog()
         {
-            windowService.OpenDebugWindow(AudioManager.GetDeviceInfo());
+            WindowService.Instance.OpenDebugWindow(AudioManager.GetDeviceInfo());
         }
 
         /// <summary>
@@ -632,7 +617,7 @@ namespace TAC_COM.ViewModels
         /// </summary>
         private void ExecuteShowKeybindDialog()
         {
-            windowService.OpenKeybindWindow();
+            WindowService.Instance.OpenKeybindWindow(KeybindManager);
         }
 
         /// <summary>
@@ -663,7 +648,6 @@ namespace TAC_COM.ViewModels
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();
             KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
-            windowService.Dispose();
         }
 
         /// <summary>
@@ -689,8 +673,6 @@ namespace TAC_COM.ViewModels
 
             keybindManager = new KeybindManager(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
-
-            windowService = new WindowService(applicationContext, keybindManager);
 
             keybindManager.LoadKeybindSettings();
 

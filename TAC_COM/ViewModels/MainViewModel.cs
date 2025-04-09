@@ -232,6 +232,7 @@ namespace TAC_COM.ViewModels
             SettingsPanelViewModel.Dispose();
             iconService.ChangeSystemTrayIcon -= OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon -= OnSetActiveProfileIcon;
+            WindowService.Instance.Dispose();
         }
 
         /// <summary>

@@ -7,20 +7,43 @@ using TAC_COM.Views;
 namespace TAC_COM.Services
 {
     /// <summary>
-    /// Class responsible for creating new dialog window views.
+    /// Singleton class responsible for creating new dialog window views.
     /// </summary>
-    /// <param name="_applicationContext"> The current application context wrapper.</param>
-    /// <param name="_keybindManager"> The <see cref="IKeybindManager"/> to pass to
-    /// the <see cref="KeybindWindowViewModel"/>.</param>
-    public class WindowService(IApplicationContextWrapper _applicationContext, IKeybindManager _keybindManager) : IWindowService
+    public class WindowService : IWindowService
     {
-        private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
+        private static WindowService? instance;
+        public static WindowService Instance => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+
+        /// <summary>
+        /// Initialises the instance of the <see cref="WindowService"/> singleton.
+        /// </summary>
+        /// <param name="_applicationContext">The current application context.</param>
+        /// <exception cref="InvalidOperationException"> Thrown if an instance is already initialised.</exception>
+        public static void Initialise(IApplicationContextWrapper _applicationContext)
+        {
+            if (instance != null)
+            {
+                throw new InvalidOperationException("WindowService is already initialised.");
+            }
+
+            instance = new WindowService(_applicationContext);
+        }
+
+        /// <summary>
+        /// Private constructor to enforce singleton pattern.
+        /// </summary>
+        /// <param name="_applicationContext"> The current application context.</param>
+        private WindowService(IApplicationContextWrapper _applicationContext)
+        {
+            windowFactoryService = new WindowFactoryService(_applicationContext);
+        }
+
         private KeybindWindowView? keybindWindowView;
         private DebugWindowView? debugWindowView;
         private KeybindWindowViewModel? keybindWindowViewModel;
         private DebugWindowViewModel? debugWindowViewModel;
 
-        private IWindowFactoryService windowFactoryService = new WindowFactoryService(_applicationContext);
+        private IWindowFactoryService windowFactoryService;
         public IWindowFactoryService WindowFactoryService
         {
             get => windowFactoryService;
@@ -40,9 +63,9 @@ namespace TAC_COM.Services
         /// </remarks>
         public bool ShowWindow = true;
 
-        public void OpenKeybindWindow()
+        public void OpenKeybindWindow(IKeybindManager keybindManager)
         {
-            keybindWindowViewModel = new KeybindWindowViewModel(keybindManager);
+            keybindWindowViewModel = new KeybindWindowViewModel((KeybindManager)keybindManager);
             keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(keybindWindowViewModel);
             if (ShowWindow) keybindWindowView.ShowDialog();
         }
