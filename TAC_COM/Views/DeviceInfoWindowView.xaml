@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TAC_COM.Views"
              xmlns:viewmodels="clr-namespace:TAC_COM.ViewModels" 
-             d:DataContext="{d:DesignInstance Type=viewmodels:DebugWindowViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:DeviceInfoWindowViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="450"
              Height="400" Width="450"
