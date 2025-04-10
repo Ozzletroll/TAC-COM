@@ -57,11 +57,56 @@
                 
             </ScrollViewer>
 
-            <Button Content="CLOSE APPLICATION"
-                    HorizontalAlignment="Center"
-                    Margin="10"/>
+            <Button Command="{Binding TerminateApplication}"
+                    Content="CLOSE APPLICATION"
+                    Width="180"
+                    Height="20"
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.Layer2IntenseHighlightBrush}}"
+                    Cursor="Hand"
+                    FontSize="14"
+                    BorderThickness="0"
+                    adonisExtensions:CursorSpotlightExtension.RelativeSpotlightSize="0"
+                    adonisExtensions:CursorSpotlightExtension.MaxBlurRadius="0">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"
+                                            BorderThickness="1"
+                                            CornerRadius="1">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="False">
+                                <Setter Property="Background"
+                                        Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2InteractionBrush}}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed"
+                                     Value="True">
+                                <Setter Property="Background"
+                                        Value="{DynamicResource {x:Static adonisUi:Brushes.Layer3BackgroundBrush}}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
-
 
     </Grid>
 </adonisControls:AdonisWindow>

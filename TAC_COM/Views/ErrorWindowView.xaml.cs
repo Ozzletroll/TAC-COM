@@ -1,4 +1,5 @@
-﻿using AdonisUI.Controls;
+﻿using System.Windows;
+using AdonisUI.Controls;
 
 namespace TAC_COM.Views
 {
@@ -10,6 +11,12 @@ namespace TAC_COM.Views
         public ErrorWindowView()
         {
             InitializeComponent();
+            Closed += OnClosed;
+        }
+
+        private void OnClosed(object? sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

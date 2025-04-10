@@ -25,8 +25,8 @@ namespace TAC_COM.Services
         /// Static method to recursively format a given <see cref="Exception"/>
         /// and all nested inner exceptions as a string.
         /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
+        /// <param name="e"> The exception to format as a string.</param>
+        /// <returns> The formatted string.</returns>
         private static string GetExceptionDetails(Exception e)
         {
             if (e == null) return string.Empty;
