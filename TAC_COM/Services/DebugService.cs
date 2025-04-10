@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Windows;
 
 namespace TAC_COM.Services
 {
@@ -14,7 +15,10 @@ namespace TAC_COM.Services
         /// <param name="e"> The <see cref="Exception"/> to format and display.</param>
         public static void ShowErrorMessage(Exception e)
         {
-            WindowService.Instance.OpenErrorWindow(GetExceptionDetails(e).ToString());
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                WindowService.Instance.OpenErrorWindow(GetExceptionDetails(e).ToString());
+            });
         }
 
         /// <summary>
