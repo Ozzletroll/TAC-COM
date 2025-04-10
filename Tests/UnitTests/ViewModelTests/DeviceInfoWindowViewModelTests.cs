@@ -7,7 +7,7 @@ namespace Tests.UnitTests.ViewModelTests
     /// Test class for the <see cref="DeviceInfoWindowViewModel"/>.
     /// </summary>
     [TestClass]
-    public class DebugWindowViewModelTests
+    public class DeviceInfoWindowViewModelTests
     {
         /// <summary>
         /// Test method for the <see cref="DeviceInfoWindowViewModel.DebugInfo"/>
