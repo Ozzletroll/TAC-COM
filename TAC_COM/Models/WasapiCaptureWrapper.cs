@@ -2,6 +2,7 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {
@@ -72,17 +73,30 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                GC.SuppressFinalize(this);
-                wasapiCapture.Dispose();
-            }
-            ;
+                try
+                {
+                    GC.SuppressFinalize(this);
+                    wasapiCapture.Dispose();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
+            };
         }
 
         public void Initialise()
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                wasapiCapture.Initialize();
+                try
+                {
+                    wasapiCapture.Initialize();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
 
@@ -90,7 +104,14 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                wasapiCapture.Start();
+                try
+                {
+                    wasapiCapture.Start();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
 
@@ -99,7 +120,14 @@ namespace TAC_COM.Models
             if (wasapiCapture.RecordingState != RecordingState.Stopped
                 && !cancellationToken.IsCancellationRequested)
             {
-                wasapiCapture.Stop();
+                try
+                {
+                    wasapiCapture.Stop();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
     }
