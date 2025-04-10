@@ -28,9 +28,15 @@ namespace TAC_COM.Services.Interfaces
         void OpenKeybindWindow(IKeybindManager keybindManager);
 
         /// <summary>
-        /// Method to open a new instance of a <see cref="Views.DebugWindowView"/>
+        /// Method to open a new instance of a <see cref="Views.DeviceInfoWindowView"/>
         /// as a dialog.
         /// </summary>
         void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict);
+
+        /// <summary>
+        /// Method to open a new instance of a <see cref="Views.ErrorWindowView"/>.
+        /// </summary>
+        /// <param name="exception"> A string representing the current Exception.</param>
+        void OpenErrorWindow(string exception);
     }
 }

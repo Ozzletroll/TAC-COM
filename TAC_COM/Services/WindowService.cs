@@ -12,12 +12,17 @@ namespace TAC_COM.Services
     public class WindowService : IWindowService
     {
         private KeybindWindowView? keybindWindowView;
-        private DebugWindowView? debugWindowView;
+        private DeviceInfoWindowView? debugWindowView;
         private KeybindWindowViewModel? keybindWindowViewModel;
-        private DebugWindowViewModel? debugWindowViewModel;
+        private DeviceInfoWindowViewModel? debugWindowViewModel;
+        private ErrorWindowView? errorWindowView;
+        private ErrorWindowViewModel? errorWindowViewModel;
 
         private static IWindowService? instance;
-        public static IWindowService Instance => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+        public static IWindowService Instance
+        {
+            get => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+        }
 
         /// <summary>
         /// Method used to swap the singleton instance.
@@ -94,9 +99,16 @@ namespace TAC_COM.Services
 
         public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
-            debugWindowViewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
-            debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(debugWindowViewModel);
+            debugWindowViewModel = new DeviceInfoWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
+            debugWindowView = WindowFactoryService.OpenWindow<DeviceInfoWindowView>(debugWindowViewModel);
             if (ShowWindow) debugWindowView.ShowDialog();
+        }
+
+        public void OpenErrorWindow(string exception)
+        {
+            errorWindowViewModel = new ErrorWindowViewModel(exception);
+            errorWindowView = WindowFactoryService.OpenWindow<ErrorWindowView>(errorWindowViewModel);
+            if (ShowWindow) errorWindowView.ShowDialog();
         }
 
         public void Dispose()
@@ -114,6 +126,9 @@ namespace TAC_COM.Services
 
             debugWindowViewModel?.Dispose();
             debugWindowViewModel = null;
+
+            errorWindowView?.Close();
+            errorWindowViewModel?.Dispose();
         }
     }
 }

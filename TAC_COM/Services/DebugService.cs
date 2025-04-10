@@ -1,4 +1,5 @@
-﻿
+﻿using System.Text;
+
 namespace TAC_COM.Services
 {
     /// <summary>
@@ -13,37 +14,41 @@ namespace TAC_COM.Services
         /// <param name="e"> The <see cref="Exception"/> to format and display.</param>
         public static void ShowErrorMessage(Exception e)
         {
-            Dictionary<string, object> errorDict = [];
+            WindowService.Instance.OpenErrorWindow(GetExceptionDetails(e).ToString());
+        }
 
-            Dictionary<string, string?> outerExceptionDict = new()
+        /// <summary>
+        /// Static method to recursively format a given <see cref="Exception"/>
+        /// and all nested inner exceptions as a string.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private static string GetExceptionDetails(Exception e)
+        {
+            if (e == null) return string.Empty;
+
+            var exceptionDetails = new StringBuilder();
+
+            exceptionDetails.AppendLine($"Exception: {e.Message}");
+            exceptionDetails.AppendLine();
+            exceptionDetails.AppendLine($"Source: {e.Source}");
+            exceptionDetails.AppendLine();
+            exceptionDetails.AppendLine($"Type: {e.GetType()}");
+            exceptionDetails.AppendLine();
+
+            if (!string.IsNullOrEmpty(e.StackTrace))
             {
-                { "Message", e.Message },
-                { "Source", e.Source },
-                { "Target Site", e.TargetSite?.ToString() },
-                { "Stack Trace", e.StackTrace },
-            };
-
-            errorDict.Add("Exception", outerExceptionDict);
-
-            Exception? currentException = e.InnerException;
-            int innerLevel = 1;
-            while (currentException != null)
+                exceptionDetails.AppendLine("StackTrace:");
+                exceptionDetails.AppendLine(e.StackTrace);
+            }
+            if (e.InnerException != null)
             {
-                Dictionary<string, string?> innerExceptionDict = new()
-                {
-                    { "Message", e.Message },
-                    { "Source", e.Source },
-                    { "Target Site", e.TargetSite?.ToString() },
-                    { "Stack Trace", e.StackTrace },
-                };
-
-                errorDict.Add($"Inner Exception {currentException}", innerExceptionDict);
-
-                currentException = currentException.InnerException;
-                innerLevel++;
+                exceptionDetails.AppendLine("Inner Exception:");
+                exceptionDetails.AppendLine(GetExceptionDetails(e.InnerException));
+                exceptionDetails.AppendLine();
             }
 
-            WindowService.Instance.OpenErrorWindow(errorDict);
+            return exceptionDetails.ToString();
         }
     }
 }
