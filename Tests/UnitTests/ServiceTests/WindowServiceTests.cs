@@ -93,7 +93,7 @@ namespace Tests.UnitTests.ServiceTests
             var mockWindowFactoryService = new Mock<IWindowFactoryService>();
 
             mockWindowFactoryService
-            .Setup(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()))
+            .Setup(service => service.OpenWindow<DeviceInfoWindowView>(It.IsAny<DeviceInfoWindowViewModel>()))
             .Verifiable();
 
             WindowService.Initialise(mockApplication);
@@ -126,7 +126,7 @@ namespace Tests.UnitTests.ServiceTests
 
             WindowService.Instance.OpenDebugWindow(mockDeviceInfo);
 
-            mockWindowFactoryService.Verify(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()), Times.Once());
+            mockWindowFactoryService.Verify(service => service.OpenWindow<DeviceInfoWindowView>(It.IsAny<DeviceInfoWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
             keybindManager.Dispose();

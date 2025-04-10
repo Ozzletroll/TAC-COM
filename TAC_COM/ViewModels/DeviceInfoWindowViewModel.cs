@@ -5,13 +5,13 @@ using TAC_COM.Models;
 namespace TAC_COM.ViewModels
 {
     /// <summary>
-    /// Viewmodel exposing various debug properties to the <see cref="Views.DebugWindowView"/>.
+    /// Viewmodel exposing various debug properties to the <see cref="Views.DeviceInfoWindowView"/>.
     /// </summary>
     /// <param name="inputDeviceInfo"> DeviceInfo for the input device.</param>
     /// <param name="outputDeviceInfo"> DeviceInfo for the output device.</param>
-    public class DebugWindowViewModel : ViewModelBase
+    public class DeviceInfoWindowViewModel : ViewModelBase
     {
-        public DebugWindowViewModel(DeviceInfo inputDeviceInfo, DeviceInfo outputDeviceInfo)
+        public DeviceInfoWindowViewModel(DeviceInfo inputDeviceInfo, DeviceInfo outputDeviceInfo)
         {
             inputDevice = inputDeviceInfo;
             outputDevice = outputDeviceInfo;

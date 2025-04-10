@@ -4,13 +4,13 @@ using TAC_COM.ViewModels;
 namespace Tests.UnitTests.ViewModelTests
 {
     /// <summary>
-    /// Test class for the <see cref="DebugWindowViewModel"/>.
+    /// Test class for the <see cref="DeviceInfoWindowViewModel"/>.
     /// </summary>
     [TestClass]
     public class DebugWindowViewModelTests
     {
         /// <summary>
-        /// Test method for the <see cref="DebugWindowViewModel.DebugInfo"/>
+        /// Test method for the <see cref="DeviceInfoWindowViewModel.DebugInfo"/>
         /// property.
         /// </summary>
         [TestMethod]
@@ -34,7 +34,7 @@ namespace Tests.UnitTests.ViewModelTests
                 WaveFormatTag = "Extensible",
             };
 
-            var viewModel = new DebugWindowViewModel(mockInputDeviceInfo, mockOutputDeviceInfo);
+            var viewModel = new DeviceInfoWindowViewModel(mockInputDeviceInfo, mockOutputDeviceInfo);
 
             var result = viewModel.DebugInfo;
 
@@ -51,7 +51,7 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
-        /// Test method for the <see cref="DebugWindowViewModel.InputDevice"/>
+        /// Test method for the <see cref="DeviceInfoWindowViewModel.InputDevice"/>
         /// property.
         /// </summary>
         [TestMethod]
@@ -84,7 +84,7 @@ namespace Tests.UnitTests.ViewModelTests
                 WaveFormatTag = "Extensible",
             };
 
-            var viewModel = new DebugWindowViewModel(mockInputDeviceInfo_1, mockOutputDeviceInfo)
+            var viewModel = new DeviceInfoWindowViewModel(mockInputDeviceInfo_1, mockOutputDeviceInfo)
             {
                 InputDevice = mockInputDeviceInfo_2
             };
@@ -93,7 +93,7 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
-        /// Test method for the <see cref="DebugWindowViewModel.OutputDevice"/>
+        /// Test method for the <see cref="DeviceInfoWindowViewModel.OutputDevice"/>
         /// property.
         /// </summary>
         [TestMethod]
@@ -126,7 +126,7 @@ namespace Tests.UnitTests.ViewModelTests
                 WaveFormatTag = "Extensible",
             };
 
-            var viewModel = new DebugWindowViewModel(mockInputDeviceInfo_1, mockOutputDeviceInfo)
+            var viewModel = new DeviceInfoWindowViewModel(mockInputDeviceInfo_1, mockOutputDeviceInfo)
             {
                 InputDevice = mockOutputDeviceInfo_2
             };
