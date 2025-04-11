@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using Moq;
 using TAC_COM.Models;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 using TAC_COM.Services.Interfaces;
 using TAC_COM.Settings;
 using TAC_COM.ViewModels;
@@ -80,7 +81,6 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestAudioInterfaceViewModelProperty()
         {
-            var mockApplicationContext = new Mock<IApplicationContextWrapper>();
             var mockAudioManager = new MockAudioManager();
             var mockUriService = new MockUriService();
             var mockIconService = new Mock<IIconService>();
@@ -88,7 +88,6 @@ namespace Tests.UnitTests.ViewModelTests
             var mockSettingsService = new MockSettingsService();
 
             var newPropertyValue = new AudioInterfaceViewModel(
-                mockApplicationContext.Object,
                 mockAudioManager,
                 mockUriService,
                 mockIconService.Object,
@@ -204,7 +203,6 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestShowDeviceInfo()
         {
-            var mockApplicationContext = new Mock<IApplicationContextWrapper>();
             var mockAudioManager = new MockAudioManager();
             var mockUriService = new MockUriService();
             var mockIconService = new Mock<IIconService>();
@@ -212,7 +210,6 @@ namespace Tests.UnitTests.ViewModelTests
             var mockSettingsService = new MockSettingsService();
 
             var audioInterfaceViewModel = new AudioInterfaceViewModel(
-                mockApplicationContext.Object,
                 mockAudioManager,
                 mockUriService,
                 mockIconService.Object,
@@ -222,13 +219,15 @@ namespace Tests.UnitTests.ViewModelTests
             var mockWindowService = new Mock<IWindowService>();
             mockWindowService.Setup(service => service.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
 
-            audioInterfaceViewModel.WindowService = mockWindowService.Object;
+            WindowService.TestInstance = mockWindowService.Object;
 
             testViewModel.AudioInterfaceViewModel = audioInterfaceViewModel;
 
             testViewModel.ShowDeviceInfo();
 
             mockWindowService.Verify(service => service.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once());
+
+            WindowService.TestReset();
         }
 
         /// <summary>
@@ -244,12 +243,13 @@ namespace Tests.UnitTests.ViewModelTests
             var mockThemeService = new Mock<IThemeService>();
             var mockSettingsService = new MockSettingsService();
 
+            WindowService.Initialise(mockApplicationContext.Object);
+
             var mockSettingsPanelViewModel = new Mock<SettingsPanelViewModel>(mockAudioManager, mockSettingsService);
             mockSettingsPanelViewModel.Setup(viewModel => viewModel.Dispose()).Verifiable();
 
             var mockAudioInterfaceViewModel = new Mock<AudioInterfaceViewModel>
-                (mockApplicationContext.Object,
-                mockAudioManager,
+                (mockAudioManager,
                 mockUriService,
                 mockIconService.Object,
                 mockThemeService.Object,
@@ -263,6 +263,8 @@ namespace Tests.UnitTests.ViewModelTests
 
             mockSettingsPanelViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
             mockAudioInterfaceViewModel.Verify(viewModel => viewModel.Dispose(), Times.Once);
+
+            WindowService.TestReset();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 
 namespace TAC_COM.Services.Interfaces
 {
@@ -8,16 +9,34 @@ namespace TAC_COM.Services.Interfaces
     /// </summary>
     public interface IWindowService : IDisposable
     {
+        IWindowFactoryService WindowFactoryService { get; set; }
+
+        /// <summary>
+        /// Boolean value representing if the newly created
+        /// windows need to be shown.
+        /// </summary>
+        /// <remarks>
+        /// This is true by default. Set to false during
+        /// testing to prevent dialogs showing.
+        /// </remarks>
+        bool ShowWindow { get; set; }
+
         /// <summary>
         /// Method to open a new instance of a <see cref="Views.KeybindWindowView"/>
         /// as a dialog.
         /// </summary>
-        void OpenKeybindWindow();
+        void OpenKeybindWindow(IKeybindManager keybindManager);
 
         /// <summary>
-        /// Method to open a new instance of a <see cref="Views.DebugWindowView"/>
+        /// Method to open a new instance of a <see cref="Views.DeviceInfoWindowView"/>
         /// as a dialog.
         /// </summary>
         void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict);
+
+        /// <summary>
+        /// Method to open a new instance of a <see cref="Views.ErrorWindowView"/>.
+        /// </summary>
+        /// <param name="exception"> A string representing the current Exception.</param>
+        void OpenErrorWindow(string exception);
     }
 }

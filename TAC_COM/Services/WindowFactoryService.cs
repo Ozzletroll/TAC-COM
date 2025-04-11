@@ -20,10 +20,21 @@ namespace TAC_COM.Services
             var window = new TView
             {
                 DataContext = viewModel,
-                Owner = applicationContextWrapper.MainWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
                 Icon = applicationContextWrapper.MainWindow.Icon,
             };
+
+            // Check mainwindow is not the same window that is being created
+            // before assigning as Owner.
+
+            // This can occur when creating error windows before
+            // the app's MainWindow has been shown.
+
+            if (applicationContextWrapper.MainWindow != null
+                && applicationContextWrapper.MainWindow != window)
+            {
+                window.Owner = applicationContextWrapper.MainWindow;
+            }
 
             viewModel.Close += (s, e) => window.Close();
             window.Closed += (s, e) =>

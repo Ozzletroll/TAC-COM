@@ -197,7 +197,7 @@ namespace Tests.UnitTests.ModelTests
 
             Assert.AreEqual(voiceActivityDetector.Object.HoldTime, newPropertyValue);
         }
-        
+
         /// <summary>
         /// Test method for the <see cref="AudioProcessor.Initialise"/> method.
         /// </summary>

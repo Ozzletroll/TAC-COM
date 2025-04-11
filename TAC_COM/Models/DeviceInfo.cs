@@ -3,7 +3,7 @@ namespace TAC_COM.Models
 {
     /// <summary>
     /// Class to store various <see cref="MMDeviceWrapper.Device"/> properties
-    /// for display in the <see cref="ViewModels.DebugWindowViewModel"/>.
+    /// for display in the <see cref="ViewModels.DeviceInfoWindowViewModel"/>.
     /// </summary>
     public class DeviceInfo
     {

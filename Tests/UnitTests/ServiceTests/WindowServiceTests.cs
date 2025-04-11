@@ -17,6 +17,17 @@ namespace Tests.UnitTests.ServiceTests
     public class WindowServiceTests
     {
         /// <summary>
+        /// Cleans up <see cref="WindowService"/> singleton instance
+        /// after each test.
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            WindowService.Instance.Dispose();
+            WindowService.TestReset();
+        }
+
+        /// <summary>
         /// Test method for the <see cref="WindowService.OpenKeybindWindow"/> method.
         /// </summary>
         /// <remarks>
@@ -49,19 +60,16 @@ namespace Tests.UnitTests.ServiceTests
             .Setup(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()))
             .Verifiable();
 
-            var windowService = new WindowService(mockApplication, keybindManager)
-            {
-                ShowWindow = false,
-                WindowFactoryService = mockWindowFactoryService.Object,
-            };
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
 
-            windowService.OpenKeybindWindow();
+            WindowService.Instance.OpenKeybindWindow(keybindManager);
 
             mockWindowFactoryService.Verify(service => service.OpenWindow<KeybindWindowView>(It.IsAny<KeybindWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            windowService.Dispose();
         }
 
         /// <summary>
@@ -94,14 +102,12 @@ namespace Tests.UnitTests.ServiceTests
             var mockWindowFactoryService = new Mock<IWindowFactoryService>();
 
             mockWindowFactoryService
-            .Setup(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()))
+            .Setup(service => service.OpenWindow<DeviceInfoWindowView>(It.IsAny<DeviceInfoWindowViewModel>()))
             .Verifiable();
 
-            var windowService = new WindowService(mockApplication, keybindManager)
-            {
-                ShowWindow = false,
-                WindowFactoryService = mockWindowFactoryService.Object,
-            };
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
 
             var inputDeviceInfo = new DeviceInfo()
             {
@@ -127,13 +133,55 @@ namespace Tests.UnitTests.ServiceTests
                 { "OutputDevice", outputDeviceInfo }
             };
 
-            windowService.OpenDebugWindow(mockDeviceInfo);
+            WindowService.Instance.OpenDebugWindow(mockDeviceInfo);
 
-            mockWindowFactoryService.Verify(service => service.OpenWindow<DebugWindowView>(It.IsAny<DebugWindowViewModel>()), Times.Once());
+            mockWindowFactoryService.Verify(service => service.OpenWindow<DeviceInfoWindowView>(It.IsAny<DeviceInfoWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            windowService.Dispose();
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="WindowService.OpenErrorWindow(string)/> method.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="STATestMethodAttribute"/> is used to ensure that
+        /// the tests are run in a single-threaded apartment (STA), which
+        /// is required for WPF components.
+        /// </remarks>
+        [STATestMethod]
+        public void TestOpenErrorWindow()
+        {
+            var testErrorString = "Test error string";
+
+            var mockMainWindow = new Mock<Window>();
+            mockMainWindow.SetupAllProperties();
+
+            var mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
+            {
+                MainWindow = mockMainWindow.Object
+            };
+
+            // Show the mockMainWindow so that it may be set as the ErrorWindow's owner
+            mockApplication.MainWindow.Show();
+
+            var mockWindow = new Mock<AdonisWindow>(MockBehavior.Loose);
+
+            var mockWindowFactoryService = new Mock<IWindowFactoryService>();
+
+            mockWindowFactoryService
+            .Setup(service => service.OpenWindow<ErrorWindowView>(It.IsAny<ErrorWindowViewModel>()))
+            .Verifiable();
+
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
+
+            WindowService.Instance.OpenErrorWindow(testErrorString);
+
+            mockWindowFactoryService.Verify(service => service.OpenWindow<ErrorWindowView>(It.IsAny<ErrorWindowViewModel>()), Times.Once());
+
+            mockWindow.Object.Close();
         }
     }
 }

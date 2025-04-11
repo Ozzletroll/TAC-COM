@@ -20,6 +20,8 @@ namespace TAC_COM
             var applicationContext = new ApplicationContextWrapper();
             var themeService = new ThemeService(applicationContext, uriService);
 
+            WindowService.Initialise(applicationContext);
+
             var viewModel = new MainViewModel(applicationContext, audioManager, uriService, iconService, themeService);
 
             MainWindow = new MainWindow(viewModel, iconService);

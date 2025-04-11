@@ -2,6 +2,7 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
 using TAC_COM.Models.Interfaces;
+using TAC_COM.Services;
 
 namespace TAC_COM.Models
 {
@@ -42,8 +43,15 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                GC.SuppressFinalize(this);
-                wasapiOut.Dispose();
+                try
+                {
+                    GC.SuppressFinalize(this);
+                    wasapiOut.Dispose();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
 
@@ -51,7 +59,14 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                wasapiOut.Initialize(source);
+                try
+                {
+                    wasapiOut.Initialize(source);
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
 
@@ -59,7 +74,14 @@ namespace TAC_COM.Models
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                wasapiOut.Play();
+                try
+                {
+                    wasapiOut.Play();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
 
@@ -68,7 +90,14 @@ namespace TAC_COM.Models
             if (wasapiOut.PlaybackState != PlaybackState.Stopped
                 && !cancellationToken.IsCancellationRequested)
             {
-                wasapiOut.Stop();
+                try
+                {
+                    wasapiOut.Stop();
+                }
+                catch (Exception e)
+                {
+                    DebugService.ShowErrorMessage(e);
+                }
             }
         }
     }

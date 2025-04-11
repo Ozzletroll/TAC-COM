@@ -7,20 +7,72 @@ using TAC_COM.Views;
 namespace TAC_COM.Services
 {
     /// <summary>
-    /// Class responsible for creating new dialog window views.
+    /// Singleton class responsible for creating new dialog window views.
     /// </summary>
-    /// <param name="_applicationContext"> The current application context wrapper.</param>
-    /// <param name="_keybindManager"> The <see cref="IKeybindManager"/> to pass to
-    /// the <see cref="KeybindWindowViewModel"/>.</param>
-    public class WindowService(IApplicationContextWrapper _applicationContext, IKeybindManager _keybindManager) : IWindowService
+    public class WindowService : IWindowService
     {
-        private readonly KeybindManager keybindManager = (KeybindManager)_keybindManager;
+        private readonly IApplicationContextWrapper applicationContextWrapper;
         private KeybindWindowView? keybindWindowView;
-        private DebugWindowView? debugWindowView;
+        private DeviceInfoWindowView? debugWindowView;
         private KeybindWindowViewModel? keybindWindowViewModel;
-        private DebugWindowViewModel? debugWindowViewModel;
+        private DeviceInfoWindowViewModel? debugWindowViewModel;
+        private ErrorWindowView? errorWindowView;
+        private ErrorWindowViewModel? errorWindowViewModel;
 
-        private IWindowFactoryService windowFactoryService = new WindowFactoryService(_applicationContext);
+        private static IWindowService? instance;
+        public static IWindowService Instance
+        {
+            get => instance ?? throw new InvalidOperationException("WindowService has not been initialised.");
+        }
+
+        /// <summary>
+        /// Method used to swap the singleton instance.
+        /// </summary>
+        /// /// <remarks>
+        /// This is only to be used during testing.
+        /// </remarks>
+        public static IWindowService TestInstance
+        {
+            set => instance = value;
+        }
+
+        /// <summary>
+        /// Method to reset the instance.
+        /// </summary>
+        /// <remarks>
+        /// This is only to be used during testing.
+        /// </remarks>
+        public static void TestReset()
+        {
+            instance = null;
+        }
+
+        /// <summary>
+        /// Initialises the instance of the <see cref="WindowService"/> singleton.
+        /// </summary>
+        /// <param name="_applicationContext">The current application context.</param>
+        /// <exception cref="InvalidOperationException"> Thrown if an instance is already initialised.</exception>
+        public static void Initialise(IApplicationContextWrapper _applicationContext)
+        {
+            if (instance != null)
+            {
+                throw new InvalidOperationException("WindowService is already initialised.");
+            }
+
+            instance = new WindowService(_applicationContext);
+        }
+
+        /// <summary>
+        /// Private constructor to enforce singleton pattern.
+        /// </summary>
+        /// <param name="_applicationContext"> The current application context.</param>
+        private WindowService(IApplicationContextWrapper _applicationContext)
+        {
+            applicationContextWrapper = _applicationContext;
+            windowFactoryService = new WindowFactoryService(_applicationContext);
+        }
+
+        private IWindowFactoryService windowFactoryService;
         public IWindowFactoryService WindowFactoryService
         {
             get => windowFactoryService;
@@ -30,28 +82,35 @@ namespace TAC_COM.Services
             }
         }
 
-        /// <summary>
-        /// Boolean value representing if the newly created
-        /// windows need to be shown.
-        /// </summary>
-        /// <remarks>
-        /// This is true by default. Set to false during
-        /// testing to prevent dialogs showing.
-        /// </remarks>
-        public bool ShowWindow = true;
-
-        public void OpenKeybindWindow()
+        private bool showWindow = true;
+        public bool ShowWindow
         {
-            keybindWindowViewModel = new KeybindWindowViewModel(keybindManager);
+            get => showWindow;
+            set
+            {
+                showWindow = value;
+            }
+        }
+
+        public void OpenKeybindWindow(IKeybindManager keybindManager)
+        {
+            keybindWindowViewModel = new KeybindWindowViewModel((KeybindManager)keybindManager);
             keybindWindowView = WindowFactoryService.OpenWindow<KeybindWindowView>(keybindWindowViewModel);
             if (ShowWindow) keybindWindowView.ShowDialog();
         }
 
         public void OpenDebugWindow(Dictionary<string, DeviceInfo> deviceInfoDict)
         {
-            debugWindowViewModel = new DebugWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
-            debugWindowView = WindowFactoryService.OpenWindow<DebugWindowView>(debugWindowViewModel);
+            debugWindowViewModel = new DeviceInfoWindowViewModel(deviceInfoDict["InputDevice"], deviceInfoDict["OutputDevice"]);
+            debugWindowView = WindowFactoryService.OpenWindow<DeviceInfoWindowView>(debugWindowViewModel);
             if (ShowWindow) debugWindowView.ShowDialog();
+        }
+
+        public void OpenErrorWindow(string exception)
+        {
+            errorWindowViewModel = new ErrorWindowViewModel(applicationContextWrapper, exception);
+            errorWindowView = WindowFactoryService.OpenWindow<ErrorWindowView>(errorWindowViewModel);
+            if (ShowWindow) errorWindowView.ShowDialog();
         }
 
         public void Dispose()
@@ -69,6 +128,9 @@ namespace TAC_COM.Services
 
             debugWindowViewModel?.Dispose();
             debugWindowViewModel = null;
+
+            errorWindowView?.Close();
+            errorWindowViewModel?.Dispose();
         }
     }
 }

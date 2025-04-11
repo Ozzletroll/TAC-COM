@@ -29,21 +29,6 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private IWindowService windowService;
-
-        /// <summary>
-        /// Gets or sets the current <see cref="IWindowService"/>
-        /// to be used for new window creation.
-        /// </summary>
-        public IWindowService WindowService
-        {
-            get => windowService;
-            set
-            {
-                windowService = value;
-            }
-        }
-
         private IThemeService themeService;
 
         /// <summary>
@@ -610,14 +595,13 @@ namespace TAC_COM.ViewModels
             }
         }
 
-
         /// <summary>
         /// Method to open the debug window using the
         /// <see cref="WindowService"/>.
         /// </summary>
         public void ShowDebugDialog()
         {
-            windowService.OpenDebugWindow(AudioManager.GetDeviceInfo());
+            WindowService.Instance.OpenDebugWindow(AudioManager.GetDeviceInfo());
         }
 
         /// <summary>
@@ -632,7 +616,7 @@ namespace TAC_COM.ViewModels
         /// </summary>
         private void ExecuteShowKeybindDialog()
         {
-            windowService.OpenKeybindWindow();
+            WindowService.Instance.OpenKeybindWindow(KeybindManager);
         }
 
         /// <summary>
@@ -663,7 +647,6 @@ namespace TAC_COM.ViewModels
             AudioManager.PropertyChanged -= AudioManager_PropertyChanged;
             KeybindManager.Dispose();
             KeybindManager.PropertyChanged -= KeybindManager_PropertyChanged;
-            windowService.Dispose();
         }
 
         /// <summary>
@@ -676,7 +659,7 @@ namespace TAC_COM.ViewModels
         /// <param name="_uriService"> The <see cref="IUriService"/> to pass to the <see cref="ProfileService"/>.</param>
         /// <param name="_iconService"> The <see cref="IIconService"/> to use.</param>
         /// <param name="_themeService"> The <see cref="IThemeService"/> to use.</param>
-        public AudioInterfaceViewModel(IApplicationContextWrapper applicationContext, IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService, ISettingsService _settingsService)
+        public AudioInterfaceViewModel(IAudioManager _audioManager, IUriService _uriService, IIconService _iconService, IThemeService _themeService, ISettingsService _settingsService)
         {
             Profiles = new ProfileService(_uriService).GetAllProfiles();
 
@@ -689,8 +672,6 @@ namespace TAC_COM.ViewModels
 
             keybindManager = new KeybindManager(settingsService);
             keybindManager.PropertyChanged += KeybindManager_PropertyChanged;
-
-            windowService = new WindowService(applicationContext, keybindManager);
 
             keybindManager.LoadKeybindSettings();
 

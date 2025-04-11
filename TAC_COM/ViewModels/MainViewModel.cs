@@ -232,6 +232,7 @@ namespace TAC_COM.ViewModels
             SettingsPanelViewModel.Dispose();
             iconService.ChangeSystemTrayIcon -= OnChangeSystemTrayIcon;
             iconService.ChangeProfileIcon -= OnSetActiveProfileIcon;
+            WindowService.Instance.Dispose();
         }
 
         /// <summary>
@@ -254,7 +255,7 @@ namespace TAC_COM.ViewModels
 
             settingsService = new SettingsService();
 
-            audioInterfaceViewModel = new AudioInterfaceViewModel(applicationContext, audioManager, uriService, iconService, themeService, settingsService);
+            audioInterfaceViewModel = new AudioInterfaceViewModel(audioManager, uriService, iconService, themeService, settingsService);
             settingsPanelViewModel = new SettingsPanelViewModel(audioManager, settingsService);
             currentViewModel = AudioInterfaceViewModel;
 

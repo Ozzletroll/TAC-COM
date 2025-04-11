@@ -336,7 +336,7 @@ namespace TAC_COM.Models
 
         /// <summary>
         /// Creates a dictionary of <see cref="DeviceInfo"/> objects for the current active
-        /// input and output devices, to be displayed in the <see cref="ViewModels.DebugWindowViewModel"/>.
+        /// input and output devices, to be displayed in the <see cref="ViewModels.DeviceInfoWindowViewModel"/>.
         /// </summary>
         public Dictionary<string, DeviceInfo> GetDeviceInfo()
         {
@@ -358,8 +358,15 @@ namespace TAC_COM.Models
         /// <param name="inputDeviceWrapper">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetInputDevice(IMMDeviceWrapper inputDeviceWrapper)
         {
-            activeInputDeviceWrapper = inputDeviceWrapper;
-            InputMeter.Initialise(activeInputDeviceWrapper.Device);
+            try
+            {
+                activeInputDeviceWrapper = inputDeviceWrapper;
+                InputMeter.Initialise(activeInputDeviceWrapper.Device);
+            }
+            catch (Exception e)
+            {
+                DebugService.ShowErrorMessage(e);
+            }
         }
 
         /// <summary>
@@ -370,9 +377,16 @@ namespace TAC_COM.Models
         /// <param name="outputDevice">The selected <see cref="IMMDeviceWrapper"/>.</param>
         public void SetOutputDevice(IMMDeviceWrapper outputDeviceWrapper)
         {
-            activeOutputDeviceWrapper = outputDeviceWrapper;
-            lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
-            OutputMeter.Initialise(activeOutputDeviceWrapper.Device);
+            try
+            {
+                activeOutputDeviceWrapper = outputDeviceWrapper;
+                lastOutputDeviceName = outputDeviceWrapper.FriendlyName;
+                OutputMeter.Initialise(activeOutputDeviceWrapper.Device);
+            }
+            catch (Exception e)
+            {
+                DebugService.ShowErrorMessage(e);
+            }
         }
 
         /// <summary>
@@ -432,6 +446,10 @@ namespace TAC_COM.Models
                     await StopAudioAsync();
                     PlaybackReady = false;
                 }
+            }
+            catch (Exception e)
+            {
+                DebugService.ShowErrorMessage(e);
             }
             finally
             {

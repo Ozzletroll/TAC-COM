@@ -34,7 +34,6 @@ namespace Tests.UnitTests.ViewModelTests
         public AudioInterfaceViewModelTests()
         {
             testViewModel = new AudioInterfaceViewModel(
-                mockApplication.Object,
                 mockAudioManager,
                 mockUriService,
                 new IconService(),
@@ -54,7 +53,7 @@ namespace Tests.UnitTests.ViewModelTests
             var mockIconService = new Mock<IIconService>();
             var mockThemeService = new Mock<IThemeService>();
 
-            var viewModel = new AudioInterfaceViewModel(mockApplication.Object, mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object, mockSettingsService);
+            var viewModel = new AudioInterfaceViewModel(mockTestAudioManager.Object, mockUriService, mockIconService.Object, mockThemeService.Object, mockSettingsService);
 
             Assert.IsNotNull(viewModel.AudioManager);
             Assert.IsNotNull(viewModel.SettingsService);
@@ -639,10 +638,12 @@ namespace Tests.UnitTests.ViewModelTests
             var mockWindowService = new Mock<IWindowService>();
             mockWindowService.Setup(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
 
-            testViewModel.WindowService = mockWindowService.Object;
+            WindowService.TestInstance = mockWindowService.Object;
 
             testViewModel.ShowDebugDialog();
             mockWindowService.Verify(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once);
+
+            WindowService.TestReset();
         }
 
         /// <summary>
@@ -652,12 +653,17 @@ namespace Tests.UnitTests.ViewModelTests
         public void TestShowKeybindDialogCommand()
         {
             var mockWindowService = new Mock<IWindowService>();
-            mockWindowService.Setup(windowService => windowService.OpenKeybindWindow()).Verifiable();
+            var mockKeybindManager = new Mock<IKeybindManager>();
 
-            testViewModel.WindowService = mockWindowService.Object;
+            mockWindowService.Setup(windowService => windowService.OpenKeybindWindow(mockKeybindManager.Object)).Verifiable();
+
+            testViewModel.KeybindManager = mockKeybindManager.Object;
+            WindowService.TestInstance = mockWindowService.Object;
 
             testViewModel.ShowKeybindDialog.Execute(null);
-            mockWindowService.Verify(windowService => windowService.OpenKeybindWindow(), Times.Once);
+            mockWindowService.Verify(windowService => windowService.OpenKeybindWindow(mockKeybindManager.Object), Times.Once);
+
+            WindowService.TestReset();
         }
 
         /// <summary>
@@ -691,11 +697,9 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.SetupRemove(audioManager => audioManager.VoiceActivityStopped -= It.IsAny<EventHandler>()).Verifiable();
             mockKeybindManager.Setup(keybindManager => keybindManager.Dispose()).Verifiable();
             mockKeybindManager.SetupRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>()).Verifiable();
-            mockWindowService.Setup(windowService => windowService.Dispose()).Verifiable();
 
             testViewModel.AudioManager = mockAudioManager.Object;
             testViewModel.KeybindManager = mockKeybindManager.Object;
-            testViewModel.WindowService = mockWindowService.Object;
 
             testViewModel.Dispose();
 
@@ -705,7 +709,6 @@ namespace Tests.UnitTests.ViewModelTests
             mockAudioManager.VerifyRemove(audioManager => audioManager.VoiceActivityStopped -= It.IsAny<EventHandler>(), Times.Once);
             mockKeybindManager.Verify(keybindManager => keybindManager.Dispose(), Times.Once);
             mockKeybindManager.VerifyRemove(keybindManager => keybindManager.PropertyChanged -= It.IsAny<PropertyChangedEventHandler>(), Times.Once);
-            mockWindowService.Verify(windowService => windowService.Dispose(), Times.Once);
         }
     }
 }
