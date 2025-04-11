@@ -1,4 +1,7 @@
-﻿using TAC_COM.ViewModels;
+﻿using Moq;
+using TAC_COM.Models.Interfaces;
+using TAC_COM.ViewModels;
+using Tests.MockModels;
 using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
@@ -12,7 +15,9 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestErrorProperty()
         {
-            var testViewModel = new ErrorWindowViewModel("Default string");
+            var mockApplicationContextWrapper = new Mock<IApplicationContextWrapper>();
+            var testViewModel = new ErrorWindowViewModel(mockApplicationContextWrapper.Object, "Default string");
+
             string newPropertyValue = "Test error string";
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.Error), newPropertyValue);
         }
