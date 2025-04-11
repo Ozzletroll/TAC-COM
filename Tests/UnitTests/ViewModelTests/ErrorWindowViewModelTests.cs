@@ -1,7 +1,6 @@
 ﻿using Moq;
 using TAC_COM.Models.Interfaces;
 using TAC_COM.ViewModels;
-using Tests.MockModels;
 using Tests.Utilities;
 
 namespace Tests.UnitTests.ViewModelTests
@@ -12,6 +11,9 @@ namespace Tests.UnitTests.ViewModelTests
     [TestClass]
     public class ErrorWindowViewModelTests
     {
+        /// <summary>
+        /// Test method for the <see cref="ErrorWindowViewModel.Error"/> property.
+        /// </summary>
         [TestMethod]
         public void TestErrorProperty()
         {
@@ -22,6 +24,9 @@ namespace Tests.UnitTests.ViewModelTests
             Utils.TestPropertyChange(testViewModel, nameof(testViewModel.Error), newPropertyValue);
         }
 
+        /// <summary>
+        /// Test method for the <see cref="ErrorWindowViewModel.TerminateApplication"/> command.
+        /// </summary>
         [TestMethod]
         public void TestTerminateApplication()
         {
