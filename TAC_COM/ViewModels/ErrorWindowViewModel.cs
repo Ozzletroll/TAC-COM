@@ -21,7 +21,7 @@ namespace TAC_COM.ViewModels
             set
             {
                 error = value;
-                OnPropertyChanged(nameof(error));
+                OnPropertyChanged(nameof(Error));
             }
         }
 
