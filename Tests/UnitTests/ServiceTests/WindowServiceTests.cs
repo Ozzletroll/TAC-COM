@@ -17,6 +17,17 @@ namespace Tests.UnitTests.ServiceTests
     public class WindowServiceTests
     {
         /// <summary>
+        /// Cleans up <see cref="WindowService"/> singleton instance
+        /// after each test.
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            WindowService.Instance.Dispose();
+            WindowService.TestReset();
+        }
+
+        /// <summary>
         /// Test method for the <see cref="WindowService.OpenKeybindWindow"/> method.
         /// </summary>
         /// <remarks>
@@ -59,8 +70,6 @@ namespace Tests.UnitTests.ServiceTests
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            WindowService.Instance.Dispose();
-            WindowService.TestReset();
         }
 
         /// <summary>
@@ -130,8 +139,6 @@ namespace Tests.UnitTests.ServiceTests
 
             mockWindow.Object.Close();
             keybindManager.Dispose();
-            WindowService.Instance.Dispose();
-            WindowService.TestReset();
         }
 
         /// <summary>
@@ -175,8 +182,6 @@ namespace Tests.UnitTests.ServiceTests
             mockWindowFactoryService.Verify(service => service.OpenWindow<ErrorWindowView>(It.IsAny<ErrorWindowViewModel>()), Times.Once());
 
             mockWindow.Object.Close();
-            WindowService.Instance.Dispose();
-            WindowService.TestReset();
         }
     }
 }
