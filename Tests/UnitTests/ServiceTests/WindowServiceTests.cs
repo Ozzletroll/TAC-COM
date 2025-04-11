@@ -133,5 +133,50 @@ namespace Tests.UnitTests.ServiceTests
             WindowService.Instance.Dispose();
             WindowService.TestReset();
         }
+
+        /// <summary>
+        /// Test method for the <see cref="WindowService.OpenErrorWindow(string)/> method.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="STATestMethodAttribute"/> is used to ensure that
+        /// the tests are run in a single-threaded apartment (STA), which
+        /// is required for WPF components.
+        /// </remarks>
+        [STATestMethod]
+        public void TestOpenErrorWindow()
+        {
+            var testErrorString = "Test error string";
+
+            var mockMainWindow = new Mock<Window>();
+            mockMainWindow.SetupAllProperties();
+
+            var mockApplication = new MockApplicationContextWrapper(mockMainWindow.Object)
+            {
+                MainWindow = mockMainWindow.Object
+            };
+
+            // Show the mockMainWindow so that it may be set as the ErrorWindow's owner
+            mockApplication.MainWindow.Show();
+
+            var mockWindow = new Mock<AdonisWindow>(MockBehavior.Loose);
+
+            var mockWindowFactoryService = new Mock<IWindowFactoryService>();
+
+            mockWindowFactoryService
+            .Setup(service => service.OpenWindow<ErrorWindowView>(It.IsAny<ErrorWindowViewModel>()))
+            .Verifiable();
+
+            WindowService.Initialise(mockApplication);
+            WindowService.Instance.WindowFactoryService = mockWindowFactoryService.Object;
+            WindowService.Instance.ShowWindow = false;
+
+            WindowService.Instance.OpenErrorWindow(testErrorString);
+
+            mockWindowFactoryService.Verify(service => service.OpenWindow<ErrorWindowView>(It.IsAny<ErrorWindowViewModel>()), Times.Once());
+
+            mockWindow.Object.Close();
+            WindowService.Instance.Dispose();
+            WindowService.TestReset();
+        }
     }
 }
