@@ -11,7 +11,7 @@ namespace TAC_COM.Services
     /// </summary>
     public class WindowService : IWindowService
     {
-        private IApplicationContextWrapper applicationContextWrapper;
+        private readonly IApplicationContextWrapper applicationContextWrapper;
         private KeybindWindowView? keybindWindowView;
         private DeviceInfoWindowView? debugWindowView;
         private KeybindWindowViewModel? keybindWindowViewModel;
