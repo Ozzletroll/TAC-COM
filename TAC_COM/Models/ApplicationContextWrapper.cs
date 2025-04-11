@@ -26,5 +26,10 @@ namespace TAC_COM.Models
                 Application.Current.Resources = value;
             }
         }
+
+        public void Shutdown()
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

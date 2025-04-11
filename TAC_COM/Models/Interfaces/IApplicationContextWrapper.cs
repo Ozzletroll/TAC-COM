@@ -18,5 +18,10 @@ namespace TAC_COM.Models.Interfaces
         /// application.
         /// </summary>
         ResourceDictionary Resources { get; set; }
+
+        /// <summary>
+        /// Method to shutdown the application.
+        /// </summary>
+        void Shutdown() { }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using TAC_COM.Models;
+using TAC_COM.Models.Interfaces;
 using TAC_COM.Utilities;
 
 namespace TAC_COM.ViewModels
@@ -7,8 +9,10 @@ namespace TAC_COM.ViewModels
     /// Viewmodel representing a formatted <see cref="Exception"/>, including
     /// any nested inner exceptions.
     /// </summary>
-    public class ErrorWindowViewModel(string exception) : ViewModelBase
+    public class ErrorWindowViewModel(IApplicationContextWrapper _applicationContextWrapper, string exception) : ViewModelBase
     {
+        private readonly IApplicationContextWrapper applicationContextWrapper = _applicationContextWrapper;
+
         private string error = exception;
 
         /// <summary>
@@ -37,7 +41,7 @@ namespace TAC_COM.ViewModels
         private void ExecuteTerminateApplication()
         {
             RaiseClose();
-            Application.Current.Shutdown();
+            applicationContextWrapper.Shutdown();
         }
     }
 }

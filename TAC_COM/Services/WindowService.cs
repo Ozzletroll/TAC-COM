@@ -11,6 +11,7 @@ namespace TAC_COM.Services
     /// </summary>
     public class WindowService : IWindowService
     {
+        private IApplicationContextWrapper applicationContextWrapper;
         private KeybindWindowView? keybindWindowView;
         private DeviceInfoWindowView? debugWindowView;
         private KeybindWindowViewModel? keybindWindowViewModel;
@@ -67,6 +68,7 @@ namespace TAC_COM.Services
         /// <param name="_applicationContext"> The current application context.</param>
         private WindowService(IApplicationContextWrapper _applicationContext)
         {
+            applicationContextWrapper = _applicationContext;
             windowFactoryService = new WindowFactoryService(_applicationContext);
         }
 
@@ -106,7 +108,7 @@ namespace TAC_COM.Services
 
         public void OpenErrorWindow(string exception)
         {
-            errorWindowViewModel = new ErrorWindowViewModel(exception);
+            errorWindowViewModel = new ErrorWindowViewModel(applicationContextWrapper, exception);
             errorWindowView = WindowFactoryService.OpenWindow<ErrorWindowView>(errorWindowViewModel);
             if (ShowWindow) errorWindowView.ShowDialog();
         }
