@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using AdonisUI.Controls;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.SoundOut;

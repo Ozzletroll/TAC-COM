@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using TAC_COM.Models;
-using TAC_COM.Models.Interfaces;
 using TAC_COM.Services;
 using TAC_COM.ViewModels;
 

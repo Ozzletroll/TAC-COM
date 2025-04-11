@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using TAC_COM.Models;
-using TAC_COM.Models.Interfaces;
+﻿using TAC_COM.Models.Interfaces;
 using TAC_COM.Utilities;
 
 namespace TAC_COM.ViewModels

@@ -637,7 +637,7 @@ namespace Tests.UnitTests.ViewModelTests
         {
             var mockWindowService = new Mock<IWindowService>();
             mockWindowService.Setup(windowService => windowService.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>())).Verifiable();
-            
+
             WindowService.TestInstance = mockWindowService.Object;
 
             testViewModel.ShowDebugDialog();

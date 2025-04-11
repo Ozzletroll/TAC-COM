@@ -82,7 +82,8 @@ namespace TAC_COM.Models
                 {
                     DebugService.ShowErrorMessage(e);
                 }
-            };
+            }
+            ;
         }
 
         public void Initialise()

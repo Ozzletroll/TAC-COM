@@ -26,8 +26,8 @@ namespace Tests.MockModels
         public bool PlaybackReady { get; set; }
         public bool InputDeviceExclusiveMode { get; set; }
         public int BufferSize { get; set; }
-        public bool UseOpenMic {  get; set; }
-        public double HoldTime {  get; set; }
+        public bool UseOpenMic { get; set; }
+        public double HoldTime { get; set; }
         public OperatingMode OperatingMode { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;

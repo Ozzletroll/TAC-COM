@@ -52,7 +52,7 @@ namespace TAC_COM.ViewModels
         /// <summary>
         /// Gets the collection of OperatingModes to choose from.
         /// </summary>
-        public ObservableCollection<OperatingMode> OperatingModes { get; } 
+        public ObservableCollection<OperatingMode> OperatingModes { get; }
             = [OperatingMode.HighQuality, OperatingMode.LowBitrate, OperatingMode.Aggressive, OperatingMode.VeryAggressive];
 
         /// <summary>

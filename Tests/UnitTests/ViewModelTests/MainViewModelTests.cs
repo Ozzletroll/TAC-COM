@@ -226,7 +226,7 @@ namespace Tests.UnitTests.ViewModelTests
             testViewModel.ShowDeviceInfo();
 
             mockWindowService.Verify(service => service.OpenDebugWindow(It.IsAny<Dictionary<string, DeviceInfo>>()), Times.Once());
-        
+
             WindowService.TestReset();
         }
 

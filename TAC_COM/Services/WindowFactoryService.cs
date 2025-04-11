@@ -30,11 +30,11 @@ namespace TAC_COM.Services
             // This can occur when creating error windows before
             // the app's MainWindow has been shown.
 
-            if (applicationContextWrapper.MainWindow != null 
+            if (applicationContextWrapper.MainWindow != null
                 && applicationContextWrapper.MainWindow != window)
-                {
-                    window.Owner = applicationContextWrapper.MainWindow;
-                }
+            {
+                window.Owner = applicationContextWrapper.MainWindow;
+            }
 
             viewModel.Close += (s, e) => window.Close();
             window.Closed += (s, e) =>
