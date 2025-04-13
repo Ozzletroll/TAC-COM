@@ -117,6 +117,9 @@ During PTT radio transmission, the audio is deliberately compressed and distorte
 
 ## Settings
 
+### Mode
+Toggles whether TAC/COM should run in the default push-to-talk mode, or in Open Mic mode. In Open Mic mode, the radio effect is triggered automatically upon voice activity detection.
+
 ### Noise Gate Threshold
 The threshold in dB at which noise attenuation begins. All input below the given threshold will be attenuated. Ranges from 0dB to -100dB.
 
@@ -135,6 +138,12 @@ Allows TAC/COM to utilise the chosen input device in exclusive mode, preventing 
 
 ### Buffer Size
 Sets TAC/COM's internal sample buffer size in milliseconds. Increase this if popping/crackling occurs.
+
+### Voice Activity Mode
+When using Open Mic mode, this settings sets the voice activity detector's sensitivity mode. More aggressive values minimise non-speech triggering the detector, but are more prone to missing parts of speech.
+
+### Hold Time
+When using Open Mic mode, this setting controls the length of time in milliseconds between voice activity ending and the end of the radio transmission effect.
 
 ### Minimise to System Tray
 Set whether TAC/COM will minimise to the system tray icon rather than the taskbar.
