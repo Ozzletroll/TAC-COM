@@ -500,6 +500,7 @@ namespace TAC_COM.ViewModels
             }
             UseOpenMic = settingsService.AudioSettings.UseOpenMic;
             AudioManager.InputDeviceExclusiveMode = settingsService.AudioSettings.ExclusiveMode;
+            AudioManager.UseNoiseSuppressor = settingsService.AudioSettings.NoiseSuppression;
             AudioManager.BufferSize = settingsService.AudioSettings.BufferSize;
             AudioManager.OperatingMode = (WebRtcVadSharp.OperatingMode)settingsService.AudioSettings.OperatingMode;
             AudioManager.HoldTime = settingsService.AudioSettings.HoldTime;

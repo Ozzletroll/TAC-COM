@@ -26,7 +26,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="Auto"
-                        Height="400">
+                        Height="450">
 
                 <StackPanel Width="400"
                             VerticalAlignment="Center"
@@ -71,6 +71,34 @@
                                    Grid.Column="2">
                             Exclusive mode prevents any other application from using the input device, 
                             which can help prevent playback errors and inconsistencies.
+                        </TextBlock>
+                    </Grid>
+
+                    <Grid VerticalAlignment="Center"
+                          HorizontalAlignment="Left"
+                          Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox IsChecked="{Binding NoiseSuppression}"
+                                  Content="Enabled noise suppression"
+                                  Margin="5"
+                                  Grid.Column="0" />
+
+                        <StackPanel Grid.Column="1"
+                                    Width="200" />
+
+                        <TextBlock Width="170"
+                                   TextWrapping="WrapWithOverflow"
+                                   FontSize="10"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+                                   Grid.Column="2">
+                            Enables the use of the RNNoise noise suppression algorithm, reducing background noise.
                         </TextBlock>
                     </Grid>
 

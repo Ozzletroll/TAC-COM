@@ -92,6 +92,13 @@ namespace TAC_COM.Models.Interfaces
         /// </summary>
         int BufferSize { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets the value representing if noise suppression
+        /// is enabled.
+        /// </summary>
+        bool UseNoiseSuppressor {  get; set; }
+
         /// <summary>
         /// Gets or sets the value representing if the
         /// user has selected open mic mode.

@@ -278,6 +278,15 @@ namespace TAC_COM.Models
             }
         }
 
+        public bool UseNoiseSuppressor
+        {
+            get => audioProcessor.UseNoiseSuppressor;
+            set
+            {
+                audioProcessor.UseNoiseSuppressor = value;
+            }
+        }
+
         public int BufferSize
         {
             get => audioProcessor.BufferSize;

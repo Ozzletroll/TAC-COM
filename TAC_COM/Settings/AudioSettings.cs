@@ -121,6 +121,20 @@ namespace TAC_COM.Settings
             }
         }
 
+        // <summary>
+        /// Gets or sets the boolean value representing if
+        /// noise suppression is enabled.
+        /// </summary>
+        [ConfigurationProperty("noiseSuppression", DefaultValue = true)]
+        public bool NoiseSuppression
+        {
+            get => (bool)this["noiseSuppression"];
+            set
+            {
+                this["noiseSuppression"] = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets the int value representing the size
         /// of the internal buffer in milliseconds.

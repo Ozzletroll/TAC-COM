@@ -41,6 +41,12 @@ namespace TAC_COM.Models.Interfaces
         float RingModulationWetDryMix { get; set; }
 
         /// <summary>
+        /// Gets or sets the value representing if noise
+        /// suppression is enabled.
+        /// </summary>
+        bool UseNoiseSuppressor { get; set; }
+
+        /// <summary>
         /// Gets or sets the size of the buffer to use
         /// in milliseconds.
         /// </summary>
