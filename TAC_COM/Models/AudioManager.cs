@@ -274,7 +274,6 @@ namespace TAC_COM.Models
             set
             {
                 inputDeviceExclusiveMode = value;
-                OnPropertyChanged(nameof(InputDeviceExclusiveMode));
             }
         }
 
@@ -304,7 +303,6 @@ namespace TAC_COM.Models
             {
                 useOpenMic = value;
                 audioProcessor.UseVoiceActivityDetector = value;
-                OnPropertyChanged(nameof(UseOpenMic));
             }
         }
 
