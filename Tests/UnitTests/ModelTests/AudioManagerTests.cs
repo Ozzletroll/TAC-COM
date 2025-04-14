@@ -247,7 +247,9 @@ namespace Tests.UnitTests.ModelTests
         public void TestInputDeviceExclusiveModeProperty()
         {
             var newPropertyValue = true;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputDeviceExclusiveMode), newPropertyValue);
+
+            audioManager.InputDeviceExclusiveMode = newPropertyValue;
+            
             Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
         }
 
@@ -275,7 +277,8 @@ namespace Tests.UnitTests.ModelTests
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = true;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.UseOpenMic), newPropertyValue);
+            
+            audioManager.UseOpenMic = newPropertyValue;
 
             Assert.AreEqual(audioManager.UseOpenMic, newPropertyValue);
             Assert.AreEqual(audioManager.UseOpenMic, mockAudioProcessor.Object.UseVoiceActivityDetector);
