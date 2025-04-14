@@ -25,6 +25,7 @@ TAC/COM is a realtime VoIP effects processor that emulates sci-fi radio comms ch
 
 - Realtime audio processing
 - Push-to-talk / Open Mic
+- Built-in noise suppression
 - Adjustable noise gate
 - Themed mic click sfx
 - Compatible with any VoIP software
@@ -38,6 +39,7 @@ TAC/COM is a realtime VoIP effects processor that emulates sci-fi radio comms ch
 - Dapplo.Windows.Input
 - AdonisUI
 - WebRtcVadSharp
+- RNNoise.NET
 
 ### Requirements
 
