@@ -295,13 +295,11 @@ namespace TAC_COM.Models
             }
         }
 
-        private bool useOpenMic;
         public bool UseOpenMic
         {
-            get => useOpenMic;
+            get => audioProcessor.UseVoiceActivityDetector;
             set
             {
-                useOpenMic = value;
                 audioProcessor.UseVoiceActivityDetector = value;
             }
         }
