@@ -84,7 +84,7 @@
                         </Grid.ColumnDefinitions>
 
                         <CheckBox IsChecked="{Binding NoiseSuppression}"
-                                  Content="Enabled noise suppression"
+                                  Content="Enable noise suppression"
                                   Margin="5"
                                   Grid.Column="0" />
 
