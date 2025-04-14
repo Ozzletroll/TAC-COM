@@ -268,6 +268,23 @@ namespace Tests.UnitTests.ModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioManager.UseNoiseSuppressor"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseNoiseSuppressorProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = true;
+
+            audioManager.UseNoiseSuppressor = newPropertyValue;
+
+            Assert.AreEqual(audioManager.UseNoiseSuppressor, newPropertyValue);
+            Assert.AreEqual(audioManager.AudioProcessor.UseNoiseSuppressor, audioManager.UseNoiseSuppressor);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioManager.UseOpenMic"/> property.
         /// </summary>
         [TestMethod]
