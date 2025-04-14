@@ -263,8 +263,11 @@ namespace Tests.UnitTests.ModelTests
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = 90;
+
             audioManager.BufferSize = newPropertyValue;
+
             Assert.AreEqual(audioManager.BufferSize, newPropertyValue);
+            Assert.AreEqual(audioManager.BufferSize, audioManager.AudioProcessor.BufferSize);
         }
 
         /// <summary>
