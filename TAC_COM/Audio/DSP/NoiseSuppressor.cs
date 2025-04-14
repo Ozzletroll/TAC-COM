@@ -10,11 +10,12 @@ namespace TAC_COM.Audio.DSP
     /// The <see cref="ISampleSource"/> that this is applied to will be
     /// converted to 16bit PCM mono.
     /// </remarks>
-    /// <param name="inputSource"></param>
+    /// <param name="inputSource"> The <see cref="ISampleSource"/> to apply noise suppression to.</param>
     public class NoiseSuppressor(ISampleSource inputSource) : ISampleSource
     {
         private readonly ISampleSource source = inputSource.ToWaveSource(16).ToSampleSource().ToMono();
         private readonly Denoiser denoiser = new();
+        private const int FrameSize = 480;
 
         /// <inheritdoc/>
         /// <remarks>
@@ -24,17 +25,14 @@ namespace TAC_COM.Audio.DSP
         public int Read(float[] buffer, int offset, int count)
         {
             int samples = source.Read(buffer, offset, count);
-            int frameSize = 480;
             int end = offset + samples;
 
-            // Process the buffer in chunks of 480 samples
-            for (int i = offset; i + frameSize <= end; i += frameSize)
+            for (int i = offset; i + FrameSize <= end; i += FrameSize)
             {
-                denoiser.Denoise(buffer.AsSpan(i, frameSize), false);
+                denoiser.Denoise(buffer.AsSpan(i, FrameSize), false);
             }
 
-            // Handle any remaining samples (excess samples less than a frame size)
-            int remainingSamples = end % frameSize;
+            int remainingSamples = end % FrameSize;
             if (remainingSamples > 0)
             {
                 int startOfRemainder = end - remainingSamples;
@@ -79,6 +77,7 @@ namespace TAC_COM.Audio.DSP
         public void Dispose()
         {
             source?.Dispose();
+            denoiser?.Dispose();
             GC.SuppressFinalize(this);
         }
     }
