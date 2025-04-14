@@ -34,6 +34,25 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="SettingsPanelViewModel.NoiseSuppression"/>
+        /// property.
+        /// </summary>
+        [TestMethod]
+        public void TestNoiseSuppressionProperty()
+        {
+            var testValue = true;
+
+            var mockSettingsService = new Mock<ISettingsService>();
+            mockSettingsService.Setup(service => service.UpdateAppConfig("NoiseSuppression", testValue)).Verifiable();
+
+            var viewModel = new SettingsPanelViewModel(new MockAudioManager(), mockSettingsService.Object);
+
+            Utils.TestPropertyChange(viewModel, nameof(viewModel.NoiseSuppression), testValue);
+
+            mockSettingsService.Verify(service => service.UpdateAppConfig(nameof(viewModel.NoiseSuppression), testValue));
+        }
+
+        /// <summary>
         /// Test method for the <see cref="SettingsPanelViewModel.BufferSize"/>
         /// property.
         /// </summary>

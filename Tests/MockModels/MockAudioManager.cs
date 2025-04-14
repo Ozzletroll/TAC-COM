@@ -29,6 +29,7 @@ namespace Tests.MockModels
         public bool UseOpenMic { get; set; }
         public double HoldTime { get; set; }
         public OperatingMode OperatingMode { get; set; }
+        public bool UseNoiseSuppressor {  get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
