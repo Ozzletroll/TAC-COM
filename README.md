@@ -138,6 +138,9 @@ Use sparingly for dramatic effect, as values above 50% become increasingly unint
 ### Exclusive Mode
 Allows TAC/COM to utilise the chosen input device in exclusive mode, preventing other applications from accessing it. This can help prevent third-party audio software from interfering with audio playback.
 
+### Enable Noise Suppression
+Enables the use of the RNNoise noise suppression algorithm. Removes background noise at the cost of overall audio fidelity.
+
 ### Buffer Size
 Sets TAC/COM's internal sample buffer size in milliseconds. Increase this if popping/crackling occurs.
 
