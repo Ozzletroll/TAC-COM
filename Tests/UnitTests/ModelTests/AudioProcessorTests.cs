@@ -199,6 +199,17 @@ namespace Tests.UnitTests.ModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioProcessor.UseNoiseSuppressor"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseNoiseSuppressorProperty()
+        {
+            var newPropertyValue = true;
+            audioProcessor.UseNoiseSuppressor = newPropertyValue;
+            Assert.AreEqual(audioProcessor.UseNoiseSuppressor, newPropertyValue);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioProcessor.Initialise"/> method.
         /// </summary>
         [TestMethod]

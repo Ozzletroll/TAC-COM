@@ -172,6 +172,16 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool useNoiseSuppressor;
+        public bool UseNoiseSuppressor
+        {
+            get => useNoiseSuppressor;
+            set
+            {
+                useNoiseSuppressor = value;
+            }
+        }
+
         public void Initialise(IWasapiCaptureWrapper inputWrapper, IProfile profile, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested) return;
@@ -201,8 +211,11 @@ namespace TAC_COM.Models
             var voiceActivityBufferLength = (int)(inputWrapper.WasapiCapture.WaveFormat.BytesPerSecond * (30f / 1000));
             voiceActivitySource = new SoundInSource(inputWrapper.WasapiCapture, voiceActivityBufferLength) { FillWithZeros = false };
 
+            var sampleSource = voiceActivitySource.ToSampleSource();
+
             convertedSource
-                = voiceActivitySource.ToSampleSource()
+                = sampleSource
+                .AppendSource(x => new NoiseSuppressor(x))
                 .AppendSource(x => new Gate(x)
                 {
                     ThresholdDB = NoiseGateThreshold,
@@ -291,6 +304,9 @@ namespace TAC_COM.Models
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
             var sampleSource = inputSource.ToSampleSource();
+
+            // Noise suppression
+            if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
@@ -414,6 +430,9 @@ namespace TAC_COM.Models
 
             var sampleSource = parallelSource;
 
+            // Noise suppression
+            if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
+
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
@@ -470,6 +489,9 @@ namespace TAC_COM.Models
         private ISampleSource DrySignalChain()
         {
             var sampleSource = passthroughSource.ToSampleSource();
+
+            // Noise suppression
+            if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
 
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)

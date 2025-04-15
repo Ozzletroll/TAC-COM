@@ -25,7 +25,6 @@ namespace Tests.UnitTests.ViewModelTests
         private readonly IThemeService mockThemeService = new MockThemeService();
         private readonly ISettingsService mockSettingsService = new MockSettingsService();
         private readonly IAudioManager mockAudioManager = new MockAudioManager();
-        private readonly Mock<IApplicationContextWrapper> mockApplication = new();
         private readonly AudioInterfaceViewModel testViewModel;
 
         /// <summary>
@@ -486,8 +485,22 @@ namespace Tests.UnitTests.ViewModelTests
         [TestMethod]
         public void TestLoadDeviceSettings()
         {
-            // MockSettingsService stored InputDevice is set to "Test Input Device 1"
-            // MockSettingsService stored OutputDevice is set to "Test Output Device 1"
+            testViewModel.SettingsService = new MockSettingsService
+            {
+                AudioSettings = new AudioSettings()
+                {
+                    InputDevice = "Test Input Device 1",
+                    OutputDevice = "Test Output Device 1",
+                    NoiseGateThreshold = 50,
+                    OutputLevel = 5,
+                    InterferenceLevel = 25,
+                    ActiveProfile = "GMS Type-4 Datalink",
+                    ExclusiveMode = true,
+                    NoiseSuppression = true,
+                    BufferSize = 900,
+                    UseOpenMic = true,
+                }
+            };
 
             var mockInputDevice = new MockMMDeviceWrapper("Test Input Device 1");
             var mockOutputDevice = new MockMMDeviceWrapper("Test Output Device 1");
@@ -502,6 +515,10 @@ namespace Tests.UnitTests.ViewModelTests
             Assert.IsNotNull(testViewModel.OutputDevice);
             Assert.AreEqual(mockInputDevice.FriendlyName, testViewModel.InputDevice.FriendlyName);
             Assert.AreEqual(mockOutputDevice.FriendlyName, testViewModel.OutputDevice.FriendlyName);
+            Assert.IsTrue(testViewModel.AudioManager.InputDeviceExclusiveMode);
+            Assert.IsTrue(testViewModel.AudioManager.UseNoiseSuppressor);
+            Assert.AreEqual(900, testViewModel.AudioManager.BufferSize);
+            Assert.IsTrue(testViewModel.AudioManager.UseOpenMic);
         }
 
         /// <summary>
@@ -548,7 +565,7 @@ namespace Tests.UnitTests.ViewModelTests
 
             void handler(object? sender, PropertyChangedEventArgs args)
             {
-                propertyChangeMethod?.Invoke(testViewModel, new object[] { sender, args });
+                propertyChangeMethod?.Invoke(testViewModel, [sender, args]);
             }
 
             mockAudioManager.Object.PropertyChanged += handler;

@@ -31,6 +31,21 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the boolean value representing if noise
+        /// suppression is enabled.
+        /// </summary>
+        public bool NoiseSuppression
+        {
+            get => audioManager.UseNoiseSuppressor;
+            set
+            {
+                audioManager.UseNoiseSuppressor = value;
+                OnPropertyChanged(nameof(NoiseSuppression));
+                settingsService.UpdateAppConfig(nameof(NoiseSuppression), value);
+            }
+        }
+
+        /// <summary>
         /// Gets the collection of buffer sizes to choose from.
         /// </summary>
         public ObservableCollection<int> BufferSizes { get; } = [30, 40, 50, 60, 70, 80, 90, 100];

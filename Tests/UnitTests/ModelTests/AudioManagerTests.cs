@@ -247,7 +247,9 @@ namespace Tests.UnitTests.ModelTests
         public void TestInputDeviceExclusiveModeProperty()
         {
             var newPropertyValue = true;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.InputDeviceExclusiveMode), newPropertyValue);
+
+            audioManager.InputDeviceExclusiveMode = newPropertyValue;
+
             Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
         }
 
@@ -261,8 +263,28 @@ namespace Tests.UnitTests.ModelTests
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = 90;
+
             audioManager.BufferSize = newPropertyValue;
+
             Assert.AreEqual(audioManager.BufferSize, newPropertyValue);
+            Assert.AreEqual(audioManager.BufferSize, audioManager.AudioProcessor.BufferSize);
+        }
+
+        /// <summary>
+        /// Test method for the <see cref="AudioManager.UseNoiseSuppressor"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestUseNoiseSuppressorProperty()
+        {
+            var mockAudioProcessor = new Mock<AudioProcessor>();
+            audioManager.AudioProcessor = mockAudioProcessor.Object;
+
+            var newPropertyValue = true;
+
+            audioManager.UseNoiseSuppressor = newPropertyValue;
+
+            Assert.AreEqual(audioManager.UseNoiseSuppressor, newPropertyValue);
+            Assert.AreEqual(audioManager.AudioProcessor.UseNoiseSuppressor, audioManager.UseNoiseSuppressor);
         }
 
         /// <summary>
@@ -275,7 +297,8 @@ namespace Tests.UnitTests.ModelTests
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = true;
-            Utils.TestPropertyChange(audioManager, nameof(audioManager.UseOpenMic), newPropertyValue);
+
+            audioManager.UseOpenMic = newPropertyValue;
 
             Assert.AreEqual(audioManager.UseOpenMic, newPropertyValue);
             Assert.AreEqual(audioManager.UseOpenMic, mockAudioProcessor.Object.UseVoiceActivityDetector);

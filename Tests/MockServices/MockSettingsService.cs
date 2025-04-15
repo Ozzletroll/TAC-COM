@@ -53,7 +53,11 @@ namespace Tests.MockServices
                 NoiseGateThreshold = 50,
                 OutputLevel = 5,
                 InterferenceLevel = 25,
-                ActiveProfile = "GMS Type-4 Datalink"
+                ActiveProfile = "GMS Type-4 Datalink",
+                ExclusiveMode = false,
+                NoiseSuppression = false,
+                BufferSize = 800,
+                UseOpenMic = false,
             };
 
             KeybindSettings = new KeybindSettings

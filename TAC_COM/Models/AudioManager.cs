@@ -274,7 +274,15 @@ namespace TAC_COM.Models
             set
             {
                 inputDeviceExclusiveMode = value;
-                OnPropertyChanged(nameof(InputDeviceExclusiveMode));
+            }
+        }
+
+        public bool UseNoiseSuppressor
+        {
+            get => audioProcessor.UseNoiseSuppressor;
+            set
+            {
+                audioProcessor.UseNoiseSuppressor = value;
             }
         }
 
@@ -287,15 +295,12 @@ namespace TAC_COM.Models
             }
         }
 
-        private bool useOpenMic;
         public bool UseOpenMic
         {
-            get => useOpenMic;
+            get => audioProcessor.UseVoiceActivityDetector;
             set
             {
-                useOpenMic = value;
                 audioProcessor.UseVoiceActivityDetector = value;
-                OnPropertyChanged(nameof(UseOpenMic));
             }
         }
 
