@@ -249,7 +249,7 @@ namespace Tests.UnitTests.ModelTests
             var newPropertyValue = true;
 
             audioManager.InputDeviceExclusiveMode = newPropertyValue;
-            
+
             Assert.AreEqual(audioManager.InputDeviceExclusiveMode, newPropertyValue);
         }
 
@@ -297,7 +297,7 @@ namespace Tests.UnitTests.ModelTests
             audioManager.AudioProcessor = mockAudioProcessor.Object;
 
             var newPropertyValue = true;
-            
+
             audioManager.UseOpenMic = newPropertyValue;
 
             Assert.AreEqual(audioManager.UseOpenMic, newPropertyValue);

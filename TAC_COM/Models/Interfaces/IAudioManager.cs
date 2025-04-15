@@ -97,7 +97,7 @@ namespace TAC_COM.Models.Interfaces
         /// Gets or sets the value representing if noise suppression
         /// is enabled.
         /// </summary>
-        bool UseNoiseSuppressor {  get; set; }
+        bool UseNoiseSuppressor { get; set; }
 
         /// <summary>
         /// Gets or sets the value representing if the

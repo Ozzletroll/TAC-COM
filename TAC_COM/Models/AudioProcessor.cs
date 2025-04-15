@@ -307,7 +307,7 @@ namespace TAC_COM.Models
 
             // Noise suppression
             if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
-            
+
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
@@ -432,7 +432,7 @@ namespace TAC_COM.Models
 
             // Noise suppression
             if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
-            
+
             // Noise gate
             sampleSource = sampleSource.AppendSource(x => new Gate(x)
             {
