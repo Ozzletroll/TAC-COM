@@ -55,7 +55,7 @@
                         </Grid.ColumnDefinitions>
 
                         <CheckBox IsChecked="{Binding ExclusiveMode}"
-                                  Content="Use exclusive mode"
+                                  Content="Enable exclusive mode"
                                   Margin="5"
                                   Grid.Column="0" />
 
@@ -67,7 +67,6 @@
                                    FontSize="10"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                    Grid.Column="2">
                             Exclusive mode prevents any other application from using the input device, 
                             which can help prevent playback errors and inconsistencies.
@@ -96,9 +95,8 @@
                                    FontSize="10"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                    Grid.Column="2">
-                            Enables the use of the RNNoise noise suppression algorithm, reducing background noise.
+                            Enables the use of RNNoise cancellation, reducing background noise.
                         </TextBlock>
                     </Grid>
 
@@ -142,7 +140,6 @@
                                    FontSize="10"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                    Grid.Column="2">
                             Sets the size of the internal audio buffer. Raise this if you experience popping/crackling
                             during playback.
@@ -200,7 +197,6 @@
                                        FontSize="10"
                                        VerticalAlignment="Center"
                                        TextAlignment="Left"
-                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                        Grid.Column="2">
                                 Sets the Voice Activity Detector's sensitivity mode. More aggressive values minimise non-speech
                                 triggering the detector, but are more likely to miss some parts of speech.
@@ -257,13 +253,11 @@
                                        FontSize="10"
                                        VerticalAlignment="Center"
                                        TextAlignment="Left"
-                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                        Grid.Column="2">
                                 Sets the delay between voice activity stopping and the end of transmission effect.
                             </TextBlock>
                         </StackPanel>
-                        
-                        
+                       
                     </Grid>
 
                     <Label HorizontalAlignment="Center"
@@ -300,7 +294,6 @@
                                    FontSize="10"
                                    VerticalAlignment="Center"
                                    TextAlignment="Left"
-                                   Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
                                    Grid.Column="2">
                             Minimises the application to the system tray instead of the taskbar.
                         </TextBlock>
