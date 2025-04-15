@@ -318,12 +318,12 @@
                             <Style.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"/>
-                                    <Setter Property="Content" Value="TRANSMITTING"/>
+                                    <Setter Property="Content" Value="BYPASS"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="False">
                                     <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2HighlightBrush}}"/>
-                                    <Setter Property="Content" Value="BYPASS"/>
+                                    <Setter Property="Content" Value="TRANSMIT"/>
                                     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer2BorderBrush}}"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
