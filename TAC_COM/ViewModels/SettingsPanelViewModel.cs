@@ -115,5 +115,20 @@ namespace TAC_COM.ViewModels
                 settingsService.UpdateAppConfig(nameof(MinimiseToTray), value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if the gate open/close
+        /// sfx should be disabled when toggling the radio effect.
+        /// </summary>
+        public bool DisableMicClickSFX
+        {
+            get => audioManager.DisableMicClickSFX;
+            set
+            {
+                audioManager.DisableMicClickSFX = value;
+                OnPropertyChanged(nameof(DisableMicClickSFX));
+                settingsService.UpdateAppConfig(nameof(DisableMicClickSFX), value);
+            }
+        }
     }
 }
