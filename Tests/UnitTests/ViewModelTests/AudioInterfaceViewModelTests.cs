@@ -442,6 +442,21 @@ namespace Tests.UnitTests.ViewModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioInterfaceViewModel.DisableMicClickSFX"/> property.
+        /// </summary>
+        [TestMethod]
+        public void TestDisableMicClickSFXProperty()
+        {
+            var mockAudioManager = new Mock<IAudioManager>();
+            mockAudioManager.SetupProperty(audioManager => audioManager.DisableMicClickSFX); 
+
+            testViewModel.AudioManager = mockAudioManager.Object;
+
+            Utils.TestPropertyChange(testViewModel, nameof(testViewModel.DisableMicClickSFX), true);
+            mockAudioManager.VerifySet(audioManager => audioManager.DisableMicClickSFX = true, Times.Once);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioInterfaceViewModel.LoadInputDevices"/> method.
         /// </summary>
         [TestMethod]
