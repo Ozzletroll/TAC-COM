@@ -20,5 +20,19 @@ namespace TAC_COM.Settings
                 this["minimiseToTray"] = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the boolean value representing if gate open/close
+        /// sfx should play when toggling the radio effect.
+        /// </summary>
+        [ConfigurationProperty("disableMicClickSFX", DefaultValue = false)]
+        public bool DisableMicClickSFX
+        {
+            get => (bool)this["disableMicClickSFX"];
+            set
+            {
+                this["disableMicClickSFX"] = value;
+            }
+        }
     }
 }
