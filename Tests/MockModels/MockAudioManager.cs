@@ -30,6 +30,7 @@ namespace Tests.MockModels
         public double HoldTime { get; set; }
         public OperatingMode OperatingMode { get; set; }
         public bool UseNoiseSuppressor { get; set; }
+        public bool DisableMicClickSFX { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
