@@ -337,6 +337,19 @@ namespace Tests.UnitTests.ModelTests
         }
 
         /// <summary>
+        /// Test method for the <see cref="AudioManager.DisableMicClickSFX"/>.
+        /// </summary>
+        [TestMethod]
+        public void TestDisableMicClickSFXProperty()
+        {
+            var newPropertyValue = true;
+
+            audioManager.DisableMicClickSFX = newPropertyValue;
+
+            Assert.AreEqual(audioManager.DisableMicClickSFX, newPropertyValue);
+        }
+
+        /// <summary>
         /// Test method for the <see cref="AudioManager.GetAudioDevices"/> method.
         /// </summary>
         [TestMethod]
