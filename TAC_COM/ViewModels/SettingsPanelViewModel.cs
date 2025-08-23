@@ -116,18 +116,16 @@ namespace TAC_COM.ViewModels
             }
         }
 
-        private bool disableMicClickSFX;
-
         /// <summary>
         /// Gets or sets the boolean value representing if the gate open/close
         /// sfx should be disabled when toggling the radio effect.
         /// </summary>
         public bool DisableMicClickSFX
         {
-            get => disableMicClickSFX;
+            get => audioManager.DisableMicClickSFX;
             set
             {
-                disableMicClickSFX = value;
+                audioManager.DisableMicClickSFX = value;
                 OnPropertyChanged(nameof(DisableMicClickSFX));
                 settingsService.UpdateAppConfig(nameof(DisableMicClickSFX), value);
             }

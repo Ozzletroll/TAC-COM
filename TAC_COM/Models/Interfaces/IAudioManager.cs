@@ -127,6 +127,12 @@ namespace TAC_COM.Models.Interfaces
         IProfile? ActiveProfile { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating if the mic click sfx
+        /// should be disabled when toggling the radio effect.
+        /// </summary>
+        bool DisableMicClickSFX { get; set; }
+
+        /// <summary>
         /// Method to get all connecting audio input/output devices.
         /// </summary>
         void GetAudioDevices();

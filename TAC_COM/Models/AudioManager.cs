@@ -322,6 +322,17 @@ namespace TAC_COM.Models
             }
         }
 
+        private bool disableMicCLickSFX;
+        public bool DisableMicClickSFX
+        {
+            get => disableMicCLickSFX;
+            set
+            {
+                disableMicCLickSFX = value;
+                OnPropertyChanged(nameof(DisableMicClickSFX));
+            }
+        }
+
         /// <summary>
         /// Uses the <see cref="EnumeratorService"/> to get all
         /// input and output devices, setting the values of the <see cref="InputDevices"/> 
@@ -623,6 +634,8 @@ namespace TAC_COM.Models
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation</returns>
         private async Task PlayGateSFXAsync()
         {
+            if (DisableMicClickSFX) return;
+
             await sfxAudioSemaphore.WaitAsync();
 
             try
@@ -634,18 +647,12 @@ namespace TAC_COM.Models
                     {
                         ResetOutputDevice();
                     }
-                    ;
 
                     IFileSourceWrapper? file;
-                    if (bypassState)
-                    {
-                        file = ActiveProfile.OpenSFXSource;
-                    }
-                    else
-                    {
-                        file = ActiveProfile.CloseSFXSource;
-                    }
 
+                    if (bypassState) file = ActiveProfile.OpenSFXSource;
+                    else file = ActiveProfile.CloseSFXSource;
+                    
                     if (file != null)
                     {
                         file.SetPosition(new TimeSpan(0));

@@ -413,6 +413,21 @@ namespace TAC_COM.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets the value indicating if the mic click sfx should be
+        /// disabled when toggling the radio effect.
+        /// </summary>
+        public bool DisableMicClickSFX
+        {
+            get => audioManager.DisableMicClickSFX;
+            set
+            {
+                audioManager.DisableMicClickSFX = value;
+                OnPropertyChanged(nameof(DisableMicClickSFX));
+            }
+        }
+
+
+        /// <summary>
         /// Method to set the overall application state,
         /// called via the <see cref="State"/> property setter.
         /// Begins or ends playback and processing via the
@@ -516,6 +531,7 @@ namespace TAC_COM.ViewModels
             OutputLevel = settingsService.AudioSettings.OutputLevel;
             NoiseLevel = settingsService.AudioSettings.NoiseLevel;
             InterferenceLevel = settingsService.AudioSettings.InterferenceLevel;
+            DisableMicClickSFX = settingsService.AudioSettings.DisableMicClickSFX;
             var savedProfile = Profiles.FirstOrDefault(profile => profile.ProfileName == settingsService.AudioSettings.ActiveProfile);
             if (savedProfile != null)
             {
