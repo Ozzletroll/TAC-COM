@@ -303,7 +303,7 @@ namespace TAC_COM.Models
         {
             if (activeProfile == null) throw new InvalidOperationException("No profile currently set.");
 
-            var sampleSource = inputSource.ToSampleSource();
+            var sampleSource = inputSource.ToSampleSource().ToMono();
 
             // Noise suppression
             if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));
@@ -488,7 +488,7 @@ namespace TAC_COM.Models
         /// <returns> The complete <see cref="ISampleSource"/> dry signal chain. </returns>
         private ISampleSource DrySignalChain()
         {
-            var sampleSource = passthroughSource.ToSampleSource();
+            var sampleSource = passthroughSource.ToSampleSource().ToMono();
 
             // Noise suppression
             if (UseNoiseSuppressor) sampleSource = sampleSource.AppendSource(x => new NoiseSuppressor(x));

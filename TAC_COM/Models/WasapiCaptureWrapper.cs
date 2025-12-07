@@ -68,13 +68,24 @@ namespace TAC_COM.Models
         /// <returns> A <see cref="WasapiCapture"/> instance.</returns>
         private static WasapiCapture CreateWasapiCapture(bool useExclusiveMode, int channels)
         {
+            WaveFormat waveFormat;
+            if (channels < 2)
+            {
+                waveFormat = new WaveFormat(48000, 24, channels);
+            }
+            else
+            {
+                Guid guid = WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, channels));
+                waveFormat = new WaveFormatExtensible(48000, 24, channels, guid);
+            }
+
             if (useExclusiveMode)
             {
                 return new WasapiCapture(
                     false,
                     AudioClientShareMode.Exclusive,
                     25,
-                    new WaveFormatExtensible(48000, 24, channels, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, channels))),
+                    waveFormat,
                     ThreadPriority.Highest);
             }
             else
@@ -83,7 +94,7 @@ namespace TAC_COM.Models
                     true,
                     AudioClientShareMode.Shared,
                     25,
-                    new WaveFormatExtensible(48000, 24, channels, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, channels))),
+                    waveFormat,
                     ThreadPriority.Highest);
             }
         }
