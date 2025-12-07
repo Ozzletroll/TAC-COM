@@ -7,48 +7,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Static\Icons\Icon-GMS.ico</ApplicationIcon>
-	<Version>1.2.0</Version>
-	<FileVersion>1.2.0</FileVersion>
+	<Version>1.2.2</Version>
+	<FileVersion>1.2.2</FileVersion>
 	<PlatformTarget>x64</PlatformTarget>
 	<Platforms>x64</Platforms>
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<DebugType>none</DebugType>
+	<DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
-
-	<ItemGroup>
-    <None Remove="Static\Icons\enabled-light.ico" />
-    <None Remove="Static\Icons\enabled.ico" />
-    <None Remove="Static\Icons\Icon-GMS.ico" />
-    <None Remove="Static\Icons\Icon-HA.ico" />
-    <None Remove="Static\Icons\Icon-HORUS.ico" />
-    <None Remove="Static\Icons\Icon-IPSN.ico" />
-    <None Remove="Static\Icons\icon.png" />
-    <None Remove="Static\Icons\live.ico" />
-    <None Remove="Static\Icons\standby-light.ico" />
-    <None Remove="Static\Icons\standby.ico" />
-    <None Remove="Static\SFX\GateClose\GateCloseGMS.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseHA.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseHORUS.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseIPSN.wav" />
-    <None Remove="Static\SFX\GateClose\GateCloseSSC.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenGMS.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenHA.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenHORUS.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenIPSN.wav" />
-    <None Remove="Static\SFX\GateOpen\GateOpenSSC.wav" />
-    <None Remove="Static\SFX\Noise\NoiseGMS.wav" />
-    <None Remove="Static\SFX\Noise\NoiseHA.wav" />
-    <None Remove="Static\SFX\Noise\NoiseHORUS.wav" />
-    <None Remove="Static\SFX\Noise\NoiseIPSN.wav" />
-    <None Remove="Static\SFX\Noise\NoiseSSC.wav" />
-  </ItemGroup>
-
-	<ItemGroup>
-	  <Page Remove="Themes\ThemeGMS.xaml" />
-	  <Page Remove="Themes\ThemeHA.xaml" />
-	  <Page Remove="Themes\ThemeHORUS.xaml" />
-	  <Page Remove="Themes\ThemeIPSN.xaml" />
-	  <Page Remove="Themes\ThemeSSC.xaml" />
-	</ItemGroup>
 
   <ItemGroup>
     <Content Include="Static\Icons\enabled-light.ico">
