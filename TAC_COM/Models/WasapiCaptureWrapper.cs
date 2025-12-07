@@ -26,15 +26,7 @@ namespace TAC_COM.Models
             cancellationToken = _token;
             useExclusiveMode = _useExclusiveMode;
 
-            // Exclusive mode cannot be used alongside eventsync
-            if (useExclusiveMode)
-            {
-                wasapiCapture = new(false, AudioClientShareMode.Exclusive, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
-            }
-            else
-            {
-                wasapiCapture = new(true, AudioClientShareMode.Shared, 25, new WaveFormat(48000, 24, 1), ThreadPriority.Highest);
-            }
+            wasapiCapture = CreateWasapiCapture(useExclusiveMode);
         }
 
         private WasapiCapture wasapiCapture;
@@ -69,6 +61,33 @@ namespace TAC_COM.Models
             remove => wasapiCapture.Stopped -= value;
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="WasapiCapture"/> class.
+        /// </summary>
+        /// <param name="useExclusiveMode"> Indicates whether to use the device in exclusive mode.</param>
+        /// <returns> A <see cref="WasapiCapture"/> instance.</returns>
+        private static WasapiCapture CreateWasapiCapture(bool useExclusiveMode)
+        {
+            if (useExclusiveMode)
+            {
+                return new WasapiCapture(
+                    false,
+                    AudioClientShareMode.Exclusive,
+                    25,
+                    new WaveFormat(48000, 24, 1),
+                    ThreadPriority.Highest);
+            }
+            else
+            {
+                return new WasapiCapture(
+                    true,
+                    AudioClientShareMode.Shared,
+                    25,
+                    new WaveFormatExtensible(48000, 24, 1, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, 1))),
+                    ThreadPriority.Highest);
+            }
+        }
+
         public void Dispose()
         {
             if (!cancellationToken.IsCancellationRequested)
@@ -93,6 +112,21 @@ namespace TAC_COM.Models
                 try
                 {
                     wasapiCapture.Initialize();
+                }
+                catch (CoreAudioAPIException)
+                {
+                    // Retry initialisation in shared mode if exclusive mode fails
+                    try
+                    {
+                        MMDevice device = wasapiCapture.Device;
+                        wasapiCapture = CreateWasapiCapture(false);
+                        wasapiCapture.Device = device;
+                        wasapiCapture.Initialize();
+                    }
+                    catch (Exception e)
+                    {
+                        DebugService.ShowErrorMessage(e);
+                    }
                 }
                 catch (Exception e)
                 {
