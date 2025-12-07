@@ -21,12 +21,12 @@ namespace TAC_COM.Models
         /// <param name="_useExclusiveMode">Boolean value representing if the wasapicapture should run
         /// in exclusive mode.</param>
         /// <param name="_token"> Cancellation token issued upon playback start toggle.</param>
-        public WasapiCaptureWrapper(bool _useExclusiveMode, CancellationToken _token)
+        public WasapiCaptureWrapper(bool _useExclusiveMode, int channels, CancellationToken _token)
         {
             cancellationToken = _token;
             useExclusiveMode = _useExclusiveMode;
 
-            wasapiCapture = CreateWasapiCapture(useExclusiveMode);
+            wasapiCapture = CreateWasapiCapture(useExclusiveMode, channels);
         }
 
         private WasapiCapture wasapiCapture;
@@ -66,7 +66,7 @@ namespace TAC_COM.Models
         /// </summary>
         /// <param name="useExclusiveMode"> Indicates whether to use the device in exclusive mode.</param>
         /// <returns> A <see cref="WasapiCapture"/> instance.</returns>
-        private static WasapiCapture CreateWasapiCapture(bool useExclusiveMode)
+        private static WasapiCapture CreateWasapiCapture(bool useExclusiveMode, int channels)
         {
             if (useExclusiveMode)
             {
@@ -74,7 +74,7 @@ namespace TAC_COM.Models
                     false,
                     AudioClientShareMode.Exclusive,
                     25,
-                    new WaveFormat(48000, 24, 1),
+                    new WaveFormatExtensible(48000, 24, channels, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, channels))),
                     ThreadPriority.Highest);
             }
             else
@@ -83,7 +83,7 @@ namespace TAC_COM.Models
                     true,
                     AudioClientShareMode.Shared,
                     25,
-                    new WaveFormatExtensible(48000, 24, 1, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, 1))),
+                    new WaveFormatExtensible(48000, 24, channels, WaveFormatExtensible.SubTypeFromWaveFormat(new WaveFormat(48000, 24, channels))),
                     ThreadPriority.Highest);
             }
         }
@@ -119,7 +119,7 @@ namespace TAC_COM.Models
                     try
                     {
                         MMDevice device = wasapiCapture.Device;
-                        wasapiCapture = CreateWasapiCapture(false);
+                        wasapiCapture = CreateWasapiCapture(false, device.DeviceFormat.Channels);
                         wasapiCapture.Device = device;
                         wasapiCapture.Initialize();
                     }

@@ -26,6 +26,12 @@ namespace TAC_COM.Models.Interfaces
         public DeviceInfo DeviceInformation { get; }
 
         /// <summary>
+        /// Gets the number of channels of the wrapped
+        /// <see cref="MMDevice"/>.
+        /// </summary>
+        public int Channels { get; }
+
+        /// <summary>
         /// Gets the value representing if the device has been
         /// disposed.
         /// </summary>

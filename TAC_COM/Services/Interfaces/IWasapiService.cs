@@ -15,7 +15,7 @@ namespace TAC_COM.Services.Interfaces
         /// <param name="useExclusiveMode">Indicates whether to use exclusive mode.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> from the <see cref="IAudioManager"/>.</param>
         /// <returns> The created <see cref="IWasapiCaptureWrapper"/>.</returns>
-        IWasapiCaptureWrapper CreateWasapiCapture(bool useExclusiveMode, CancellationToken cancellationToken);
+        IWasapiCaptureWrapper CreateWasapiCapture(bool useExclusiveMode, int channels, CancellationToken cancellationToken);
 
         /// <summary>
         /// Method to create a new <see cref="IWasapiOutWrapper"/>.

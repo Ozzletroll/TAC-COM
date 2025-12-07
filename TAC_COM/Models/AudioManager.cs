@@ -508,12 +508,18 @@ namespace TAC_COM.Models
                 && activeProfile != null)
                 {
                     activeProfile.LoadSources();
-                    input = WasapiService.CreateWasapiCapture(InputDeviceExclusiveMode, cancellationTokenSource.Token);
+
+                    input = WasapiService.CreateWasapiCapture(
+                        InputDeviceExclusiveMode, 
+                        activeInputDeviceWrapper.Channels,
+                        cancellationTokenSource.Token);
+
                     output = WasapiService.CreateWasapiOut(cancellationTokenSource.Token);
 
                     ResetOutputDevice();
 
                     input.Device = activeInputDeviceWrapper.Device;
+
                     input.Initialise();
                     input.DataAvailable += OnDataAvailable;
                     input.Stopped += OnInputStopped;

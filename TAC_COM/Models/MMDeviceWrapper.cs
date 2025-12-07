@@ -30,6 +30,8 @@ namespace TAC_COM.Models
             }
         }
 
+        public int Channels => Device.DeviceFormat.Channels;
+
         public bool IsDisposed => Device.IsDisposed;
 
         /// <inheritdoc/>
