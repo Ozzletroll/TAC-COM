@@ -624,6 +624,7 @@ namespace Tests.UnitTests.ModelTests
         {
             var mockInputDevice = new Mock<IMMDeviceWrapper>();
             mockInputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Input Device 1");
+            mockInputDevice.Setup(wrapper => wrapper.Channels).Returns(1);
 
             var mockOutputDevice = new Mock<IMMDeviceWrapper>();
             mockInputDevice.Setup(wrapper => wrapper.FriendlyName).Returns("Test Output Device 1");
@@ -657,7 +658,7 @@ namespace Tests.UnitTests.ModelTests
 
             mockWasapiOut.Setup(output => output.Play()).Verifiable();
 
-            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
             mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiOut(It.IsAny<CancellationToken>())).Returns(mockWasapiOut.Object);
 
             var mockAudioProcessor = new Mock<IAudioProcessor>();
@@ -794,7 +795,7 @@ namespace Tests.UnitTests.ModelTests
             var mockWasapiOut = new Mock<IWasapiOutWrapper>();
             mockWasapiOut.Setup(output => output.Play()).Verifiable();
 
-            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
             mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiOut(It.IsAny<CancellationToken>())).Returns(mockWasapiOut.Object);
 
             var mockAudioProcessor = new Mock<IAudioProcessor>();
@@ -850,7 +851,7 @@ namespace Tests.UnitTests.ModelTests
             var mockWasapiOut = new Mock<IWasapiOutWrapper>();
             mockWasapiOut.Setup(output => output.Play()).Verifiable();
 
-            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
+            mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiCapture(It.IsAny<bool>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(mockWasapiInput.Object);
             mockWasapiService.Setup(wasapiService => wasapiService.CreateWasapiOut(It.IsAny<CancellationToken>())).Returns(mockWasapiOut.Object);
 
             var mockAudioProcessor = new Mock<IAudioProcessor>();

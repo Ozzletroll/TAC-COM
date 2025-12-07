@@ -26,6 +26,8 @@ namespace Tests.MockModels
             }
         }
 
+        public int Channels { get; set; }
+
         public DeviceInfo DeviceInformation => new();
 
         public bool IsDisposed => Device.IsDisposed;

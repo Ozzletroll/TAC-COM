@@ -18,7 +18,7 @@ namespace Tests.UnitTests.ServiceTests
         public void TestCreateWaspiCapture()
         {
             CancellationToken token = new();
-            var output = wasapiService.CreateWasapiCapture(false, token);
+            var output = wasapiService.CreateWasapiCapture(false, 1, token);
 
             Assert.IsNotNull(output);
             Assert.IsInstanceOfType(output, typeof(WasapiCaptureWrapper));
